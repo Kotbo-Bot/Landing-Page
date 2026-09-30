@@ -58,7 +58,7 @@
   const TEXT = {
     fr: {
       title: 'Cookies et stockage local',
-      subtitle: 'Dernière mise à jour : 5 septembre 2026 · Landing et Dashboard Kotbo',
+      subtitle: 'Dernière mise à jour : 30 septembre 2026 · Landing et Dashboard Kotbo',
       metaDescription: 'Informations sur les cookies et stockages locaux utilisés par Kotbo.',
       sections: {
         mesure: "Mesure d'audience",
@@ -146,6 +146,8 @@
         li2: "la progression des tutoriels et l'état temporaire de certaines erreurs ;",
         li3: "les brouillons enregistrés, modèles d'embed, disposition du dashboard et notes locales du staff ;",
         li4: 'le langage choisi et les données temporaires de l\'IDE.',
+        landing:
+          "Sur kotbo.fr, le serveur que vous montez sur la page d'accueil (son nom, son icône, vos choix et votre message d'accueil) est gardé dans ce navigateur, sous la clé kotbo-kit, pour que vous le retrouviez en revenant. Il n'est envoyé nulle part, à une exception près : la vocation, les modules et le niveau de modération accompagnent le lien quand vous cliquez sur « Ajouter Kotbo », pour que l'installation les reprenne. La photo choisie pour la carte de rang n'est ni enregistrée ni envoyée.",
         infoA: "Le jeton d'authentification Discord ou Kotbo n'est pas conservé dans",
         infoCode: 'localStorage',
         infoB: '. La session repose sur un cookie',
@@ -171,7 +173,7 @@
     },
     en: {
       title: 'Cookies and Local Storage',
-      subtitle: 'Last updated: September 5, 2026 · Kotbo Landing and Dashboard',
+      subtitle: 'Last updated: September 30, 2026 · Kotbo Landing and Dashboard',
       metaDescription: 'Information about the cookies and local storage used by Kotbo.',
       sections: {
         mesure: 'Audience measurement',
@@ -259,6 +261,8 @@
         li2: 'tutorial progress and the temporary state of certain errors;',
         li3: 'saved drafts, embed templates, dashboard layout, and local staff notes;',
         li4: 'the chosen language and temporary IDE data.',
+        landing:
+          'On kotbo.fr, the server you build on the home page (its name, icon, your choices and your welcome message) is kept in this browser, under the kotbo-kit key, so you find it again when you come back. It is not sent anywhere, with one exception: the purpose, modules and moderation level travel with the link when you click “Add Kotbo”, so the setup can pick them up. The photo chosen for the rank card is neither stored nor sent.',
         infoA: 'The Discord or Kotbo authentication token is not stored in',
         infoCode: 'localStorage',
         infoB: '. The session relies on an',
@@ -428,6 +432,7 @@
       <li>{t.s03.li3}</li>
       <li>{t.s03.li4}</li>
     </ul>
+    <p>{t.s03.landing}</p>
     <div class="info-box">
       {t.s03.infoA} <code>{t.s03.infoCode}</code>{t.s03.infoB} <em>{t.s03.infoEm}</em> {t.s03.infoC}
     </div>
