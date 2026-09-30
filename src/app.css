@@ -192,40 +192,119 @@
 .hero-delay-3         { animation-delay: 380ms; }
 .hero-delay-4         { animation-delay: 560ms; }
 
-/* ── Float (hero mockup) ────────────────────────────────────── */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-7px); }
-}
-.float { animation: float 5.5s ease-in-out infinite; }
+/* ── Zones jouables ─────────────────────────────────────────────
+   MOTION 3 (DESIGN.md) : chaque mouvement signale une conséquence.
+   Rien ne boucle. */
 
-/* ── Float chips hero (translateY uniquement, sans écraser parallaxe) ── */
-@keyframes float-y {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-8px); }
+/* Un message qui vient d'arriver dans un aperçu Discord. */
+@keyframes dc-enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
 }
-.chip-float-a { animation: float-y 4.2s ease-in-out infinite; }
-.chip-float-b { animation: float-y 5.1s ease-in-out infinite; animation-delay: 0.85s; }
-.chip-float-c { animation: float-y 3.8s ease-in-out infinite; animation-delay: 1.55s; }
-.chip-float-d { animation: float-y 4.7s ease-in-out infinite; animation-delay: 0.4s; }
-.chip-float-e { animation: float-y 5.5s ease-in-out infinite; animation-delay: 1.15s; }
+.dc-enter { animation: dc-enter 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 
-/* ── Nav backdrop on scroll ─────────────────────────────────── */
-.nav-scrolled {
-  background: rgba(248, 249, 250, 0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06), 0 4px 20px rgba(0, 0, 0, 0.04);
+/* Un salon qui apparaît parce qu'on vient de cocher son module. */
+@keyframes dc-fresh {
+  from { opacity: 0; transform: translateX(-8px); background: rgba(88, 101, 242, 0.35); }
+  60%  { opacity: 1; transform: none; background: rgba(88, 101, 242, 0.35); }
+  to   { background: transparent; }
+}
+.dc-fresh { animation: dc-fresh 0.9s ease-out both; border-radius: 4px; }
+
+/* Changement de salon : le fil se remplace sans saut. */
+@keyframes dc-channel {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.dc-channel { animation: dc-channel 0.18s ease-out both; }
+
+.dc-bar { transition: width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+/* La question suivante de l'onboarding du héros arrive de la droite : on avance. */
+@keyframes step-in {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: none; }
+}
+.step-in { animation: step-in 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+/* Un incident qui tombe dans la liste « À traiter ». */
+@keyframes crisis-drop {
+  from { opacity: 0; transform: translateY(-12px) rotate(-1.5deg); }
+  to   { opacity: 1; transform: none; }
+}
+.crisis-incident { animation: crisis-drop 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.crisis-trace { animation: dc-enter 0.3s ease-out both; }
+.crisis-done { animation: dc-enter 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.sticky-invite { animation: dc-enter 0.25s ease-out both; }
+
+/* ── Navigation par ancres ──────────────────────────────────────
+   Défilement fluide, arrêté sous l'en-tête collant. */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.75rem;
 }
 
-/* ── Timeline line draw ─────────────────────────────────────── */
-.timeline-track {
-  transform-origin: top;
-  transform: scaleY(0);
-  transition: transform 1.3s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+/* L'indicateur de l'en-tête glisse d'un lien à l'autre au défilement. */
+.nav-bar { transition: left 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+/* À l'arrivée par un lien de l'en-tête, un trait au marqueur se pose sous le
+   titre de la zone, puis s'efface : l'œil sait où il a atterri. */
+@keyframes anchor-mark {
+  0%   { text-decoration-color: rgba(79, 70, 229, 0); text-underline-offset: 0.5em; }
+  25%  { text-decoration-color: rgba(79, 70, 229, 1); text-underline-offset: 0.16em; }
+  75%  { text-decoration-color: rgba(79, 70, 229, 1); text-underline-offset: 0.16em; }
+  100% { text-decoration-color: rgba(79, 70, 229, 0); text-underline-offset: 0.16em; }
 }
-#workflow.timeline-visible .timeline-track {
-  transform: scaleY(1);
+@keyframes anchor-mark-dark {
+  0%   { text-decoration-color: rgba(165, 180, 252, 0); text-underline-offset: 0.5em; }
+  25%  { text-decoration-color: rgba(165, 180, 252, 1); text-underline-offset: 0.16em; }
+  75%  { text-decoration-color: rgba(165, 180, 252, 1); text-underline-offset: 0.16em; }
+  100% { text-decoration-color: rgba(165, 180, 252, 0); text-underline-offset: 0.16em; }
+}
+.anchor-arrived {
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.12em;
+  text-decoration-skip-ink: none;
+  animation: anchor-mark 1.8s ease-out both;
+}
+.bg-gray-950 .anchor-arrived { animation-name: anchor-mark-dark; }
+:where(h1, h2)[tabindex='-1']:focus { outline: none; }
+
+/* Les aperçus défilent sans barre épaisse, comme dans Discord. */
+.dc-scroll { scrollbar-width: thin; scrollbar-color: #1a1b1e transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dc-enter,
+  .dc-fresh,
+  .dc-channel,
+  .crisis-incident,
+  .crisis-trace,
+  .crisis-done,
+  .sticky-invite,
+  .step-in,
+  .hero-enter,
+  .anchor-arrived,
+  .marker-path-animated {
+    animation: none !important;
+  }
+  html { scroll-behavior: auto; }
+  .dc-bar,
+  .nav-bar { transition: none; }
+  .will-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Focus visible partout, y compris dans les aperçus sombres. */
+:where(a, button, input, select, textarea, [role='tab']):focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 2px;
+}
+.bg-gray-950 :where(a, button):focus-visible,
+.dc-scroll :where(a, button):focus-visible {
+  outline-color: #a5b4fc;
 }
 
 /* ── MarkerCircle SVG draw ──────────────────────────────────── */
