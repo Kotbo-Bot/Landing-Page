@@ -390,7 +390,7 @@
                     backgroundId="default"
                     font="default"
                     avatarSrc={null}
-                    emojiCodes={['1f3ae']}
+                    badges={['quests_50']}
                     label={t.rankLabel}
                   />
                 </div>

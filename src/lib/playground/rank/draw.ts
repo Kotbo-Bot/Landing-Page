@@ -133,6 +133,121 @@ export function loadFont(id: FontId): Promise<void> {
   return pending;
 }
 
+// ── Succès ────────────────────────────────────────────────────────────────
+//
+// Recopiés de `packages/shared/src/rankCard/achievements.ts` : mêmes tracés,
+// mêmes paliers, mêmes couleurs. Sont écartés « Staff Kotbo » et les succès
+// que l'équipe attribue à la main (testeur, contributeur, chercheur de bug) :
+// les laisser poser sur une carte téléchargée permettrait de fabriquer une
+// fausse carte de l'équipe.
+
+type Tier = 'bronze' | 'silver' | 'gold';
+
+const TIER_COLORS: Record<Tier, string[]> = {
+  bronze: ['#f0b27a', '#a0522d'],
+  silver: ['#f1f5f9', '#94a3b8'],
+  gold: ['#fde68a', '#d97706'],
+};
+
+const BADGE_ICONS = {
+  gem: 'M6 3h12l4 6-10 12L2 9l4-6z',
+  gift: 'M3 8h8v4H3zM13 8h8v4h-8zM4 13h7v8H4zM13 13h7v8h-7zM12 7.5C10 3 6 4 7.5 6.5 8.3 7.8 10.5 8 12 8c1.5 0 3.7-.2 4.5-1.5C18 4 14 3 12 7.5z',
+  bolt: 'M13 2L4 14h7l-1 8 9-12h-7l1-8z',
+  shield: 'M12 2l8 3v6c0 5.5-3.4 9.7-8 11-4.6-1.3-8-5.5-8-11V5l8-3z',
+  peak: 'M2 20L9 7l4 6 3-4 6 11H2z',
+  trophy: 'M7 3h10v6a5 5 0 0 1-10 0V3zM17 4h4v3c0 2.4-1.8 4.3-4.2 4.5l.2-2c1.3-.3 2-1.2 2-2.5V6h-2zM7 4H3v3c0 2.4 1.8 4.3 4.2 4.5l-.2-2C5.7 9.2 5 8.3 5 7V6h2zM11 14h2v4h-2zM7 19h10v3H7z',
+  heart: 'M12 21l-1.5-1.4C5.4 15 2 11.9 2 8.1 2 5 4.4 2.6 7.5 2.6c1.7 0 3.4.8 4.5 2.1 1.1-1.3 2.8-2.1 4.5-2.1C19.6 2.6 22 5 22 8.1c0 3.8-3.4 6.9-8.5 11.5L12 21z',
+  star: 'M12 2.5l2.53 6.52 6.98.39-5.42 4.42 1.79 6.76L12 16.8l-5.88 3.79 1.79-6.76-5.42-4.42 6.98-.39L12 2.5z',
+  target: 'M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20zm0 3a7 7 0 1 1 0 14 7 7 0 1 1 0-14zm0 3a4 4 0 1 0 0 8 4 4 0 1 0 0-8z',
+} as const;
+
+export interface Achievement {
+  id: string;
+  label: { fr: string; en: string };
+  description: { fr: string; en: string };
+  title: { fr: string; en: string };
+  tier: Tier;
+  icon: keyof typeof BADGE_ICONS;
+  /** Niveau requis, pour les succès de niveau : l'atelier suit le curseur. */
+  minLevel?: number;
+}
+
+export const ACHIEVEMENTS = [
+  { id: 'level_25', label: { fr: 'Habitué', en: 'Regular' }, description: { fr: 'Atteindre le niveau 25 sur un serveur.', en: 'Reach level 25 on a server.' }, title: { fr: 'Habitué', en: 'Regular' }, tier: 'bronze', icon: 'bolt', minLevel: 25 },
+  { id: 'level_50', label: { fr: 'Vétéran', en: 'Veteran' }, description: { fr: 'Atteindre le niveau 50 sur un serveur.', en: 'Reach level 50 on a server.' }, title: { fr: 'Vétéran', en: 'Veteran' }, tier: 'silver', icon: 'shield', minLevel: 50 },
+  { id: 'level_100', label: { fr: 'Légende', en: 'Legend' }, description: { fr: 'Atteindre le niveau 100 sur un serveur.', en: 'Reach level 100 on a server.' }, title: { fr: 'Légende', en: 'Legend' }, tier: 'gold', icon: 'peak', minLevel: 100 },
+  { id: 'first_place', label: { fr: 'Numéro un', en: 'Number one' }, description: { fr: "Être premier du classement d'XP d'un serveur d'au moins 10 membres.", en: 'Top the XP leaderboard of a server with at least 10 members.' }, title: { fr: 'Numéro un', en: 'Number one' }, tier: 'gold', icon: 'trophy' },
+  { id: 'reputation_50', label: { fr: 'Apprécié', en: 'Appreciated' }, description: { fr: 'Recevoir 50 points de réputation.', en: 'Receive 50 reputation points.' }, title: { fr: 'Apprécié', en: 'Appreciated' }, tier: 'silver', icon: 'heart' },
+  { id: 'starboard_10', label: { fr: 'Étoile', en: 'Star' }, description: { fr: 'Voir 10 de ses messages mis en avant sur un starboard.', en: 'Get 10 of your messages featured on a starboard.' }, title: { fr: 'Étoile', en: 'Star' }, tier: 'silver', icon: 'star' },
+  { id: 'quests_50', label: { fr: 'Aventurier', en: 'Adventurer' }, description: { fr: 'Terminer 50 quêtes.', en: 'Complete 50 quests.' }, title: { fr: 'Aventurier', en: 'Adventurer' }, tier: 'bronze', icon: 'target' },
+  { id: 'supporter_1', label: { fr: 'Soutien', en: 'Supporter' }, description: { fr: 'Payer un abonnement Kotbo depuis 1 mois.', en: 'Pay for a Kotbo subscription for 1 month.' }, title: { fr: 'Soutien', en: 'Supporter' }, tier: 'bronze', icon: 'gem' },
+  { id: 'supporter_6', label: { fr: 'Mécène', en: 'Patron' }, description: { fr: 'Payer un abonnement Kotbo depuis 6 mois.', en: 'Pay for a Kotbo subscription for 6 months.' }, title: { fr: 'Mécène', en: 'Patron' }, tier: 'silver', icon: 'gem' },
+  { id: 'supporter_12', label: { fr: 'Grand mécène', en: 'Grand patron' }, description: { fr: 'Payer un abonnement Kotbo depuis 12 mois.', en: 'Pay for a Kotbo subscription for 12 months.' }, title: { fr: 'Grand mécène', en: 'Grand patron' }, tier: 'gold', icon: 'gem' },
+  { id: 'gift_giver', label: { fr: 'Bienfaiteur', en: 'Benefactor' }, description: { fr: 'Offrir Kotbo à un serveur.', en: 'Gift Kotbo to a server.' }, title: { fr: 'Bienfaiteur', en: 'Benefactor' }, tier: 'gold', icon: 'gift' },
+] as const satisfies readonly Achievement[];
+
+export type AchievementId = (typeof ACHIEVEMENTS)[number]['id'];
+/** Le catalogue, typé pour être parcouru : `minLevel` n'existe que sur certains succès. */
+export const ACHIEVEMENT_LIST = ACHIEVEMENTS as readonly (Achievement & { id: AchievementId })[];
+export const MAX_BADGES = 3;
+
+export function achievement(id: string): Achievement | null {
+  return (ACHIEVEMENTS as readonly Achievement[]).find((a) => a.id === id) ?? null;
+}
+
+/** Un succès de niveau ne se pose qu'au niveau requis, comme dans le bot. */
+export function isAchievementReachable(item: Achievement, level: number): boolean {
+  return item.minLevel === undefined || level >= item.minLevel;
+}
+
+const BADGE_RADIUS = 15;
+const BADGE_GAP = 10;
+const badgePaths = new Map<string, Path2D>();
+
+/** Les pastilles de succès, comme `drawRankCardBadges` côté bot. */
+function drawBadges(ctx: CanvasRenderingContext2D, ids: readonly string[], startX: number, centerY: number): void {
+  let cx = startX + BADGE_RADIUS;
+  for (const id of ids) {
+    const item = achievement(id);
+    if (!item) continue;
+    const colors = TIER_COLORS[item.tier];
+    const stops = colors.map((color, i) => ({ offset: colors.length === 1 ? 0 : i / (colors.length - 1), color }));
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, centerY, BADGE_RADIUS, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = gradient(ctx, cx - BADGE_RADIUS, centerY - BADGE_RADIUS, cx + BADGE_RADIUS, centerY + BADGE_RADIUS, stops);
+    ctx.stroke();
+
+    const size = BADGE_RADIUS * 1.2;
+    let path = badgePaths.get(item.icon);
+    if (!path) {
+      path = new Path2D(BADGE_ICONS[item.icon]);
+      badgePaths.set(item.icon, path);
+    }
+    ctx.translate(cx - size / 2, centerY - size / 2);
+    ctx.scale(size / 24, size / 24);
+    ctx.fillStyle = gradient(ctx, 0, 0, 24, 24, stops);
+    ctx.fill(path, 'evenodd');
+    ctx.restore();
+
+    cx += BADGE_RADIUS * 2 + BADGE_GAP;
+  }
+}
+
+/** Couleurs d'un palier, pour l'atelier (pastilles cliquables). */
+export function tierColors(item: Achievement): string[] {
+  return TIER_COLORS[item.tier];
+}
+
+/** Tracé SVG d'un succès, pour l'atelier. */
+export function badgePath(item: Achievement): string {
+  return BADGE_ICONS[item.icon];
+}
+
 /** Courbe par défaut du bot (`DEFAULT_LEVEL_CURVE`) : 100·n² + 200·n. */
 export function xpForLevel(level: number): number {
   if (level <= 0) return 0;
@@ -149,7 +264,10 @@ export interface CardInput {
   background: Background;
   font: FontId;
   avatar: HTMLImageElement | null;
-  emojis: HTMLImageElement[];
+  /** Succès affichés en pastilles sous le pseudo, trois au plus. */
+  badges: AchievementId[];
+  /** Succès porté comme titre : il remplace le `@pseudo`, dans la teinte de son palier. */
+  title: AchievementId | null;
   locale: 'fr' | 'en';
 }
 
@@ -253,15 +371,11 @@ export function drawCard(ctx: CanvasRenderingContext2D, input: CardInput): void 
   ctx.font = `bold 30px ${stack}`;
   ctx.fillText(fit(ctx, input.name.trim() || '?', identityMax), nameX, 80);
 
-  const emojiBand = input.emojis.length > 0 ? input.emojis.length * 26 + 10 : 0;
-  ctx.fillStyle = '#8b949e';
-  ctx.font = '17px sans-serif';
-  const tag = fit(ctx, input.tag, identityMax - emojiBand);
-  ctx.fillText(tag, nameX, 106);
-  const tagW = ctx.measureText(tag).width;
-  input.emojis.forEach((img, i) => {
-    ctx.drawImage(img, nameX + tagW + 16 + i * 26, 88, 22, 22);
-  });
+  // Un titre de succès prend la place du tag, dans la teinte de son palier.
+  const title = input.title ? achievement(input.title) : null;
+  ctx.fillStyle = title ? TIER_COLORS[title.tier][0] : '#8b949e';
+  ctx.font = title ? 'bold 17px sans-serif' : '17px sans-serif';
+  ctx.fillText(fit(ctx, title ? title.title[input.locale] : input.tag, identityMax), nameX, 106);
 
   ctx.textAlign = 'right';
   ctx.fillStyle = '#ffffff';
@@ -283,6 +397,8 @@ export function drawCard(ctx: CanvasRenderingContext2D, input: CardInput): void 
     155,
   );
   ctx.textAlign = 'left';
+
+  drawBadges(ctx, input.badges, nameX, 140);
 
   // Barre de progression.
   const barX = nameX;

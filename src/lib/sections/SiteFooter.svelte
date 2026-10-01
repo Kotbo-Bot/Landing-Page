@@ -22,7 +22,7 @@
       dpa: 'DPA',
       notice: 'Mentions légales',
       credits:
-        'Emojis de la carte de rang : Twemoji, CC-BY 4.0. Polices de la carte : SIL Open Font License 1.1.',
+        'Polices de la carte de rang : SIL Open Font License 1.1.',
     },
     en: {
       tagline: 'The control center for Discord communities.',
@@ -37,7 +37,7 @@
       cookies: 'Cookies',
       dpa: 'DPA',
       notice: 'Legal notice',
-      credits: 'Rank card emojis: Twemoji, CC-BY 4.0. Rank card fonts: SIL Open Font License 1.1.',
+      credits: 'Rank card fonts: SIL Open Font License 1.1.',
     },
   };
 

@@ -30,10 +30,5 @@ export function ktb(name: string): string {
   return `${base}/ktb/ktb_${name}.png`;
 }
 
-/** Chemin d'un emoji Twemoji embarqué avec la carte de rang. */
-export function twemoji(code: string): string {
-  return `${base}/rank/emojis/${code}.png`;
-}
-
 /** L'avatar du bot dans les aperçus : le logo de Kotbo. */
 export const KOTBO_AVATAR = `${base}/favicon.svg`;

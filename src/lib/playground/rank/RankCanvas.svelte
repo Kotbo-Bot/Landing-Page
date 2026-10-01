@@ -7,7 +7,6 @@
    * télécharge.
    */
   import { getLocale } from '$lib/i18n/state.svelte';
-  import { twemoji } from '../discord/theme';
   import {
     BACKGROUNDS,
     CARD_HEIGHT,
@@ -15,6 +14,7 @@
     drawCard,
     loadFont,
     loadImage,
+    type AchievementId,
     type FontId,
   } from './draw';
 
@@ -28,7 +28,8 @@
     font: FontId;
     /** URL locale (objet `blob:`) ou `null` pour l'avatar à initiales. */
     avatarSrc: string | null;
-    emojiCodes: string[];
+    badges: AchievementId[];
+    title?: AchievementId | null;
     label: string;
     canvas?: HTMLCanvasElement | null;
   }
@@ -42,13 +43,13 @@
     backgroundId,
     font,
     avatarSrc,
-    emojiCodes,
+    badges,
+    title = null,
     label,
     canvas = $bindable(null),
   }: Props = $props();
 
   let avatar = $state<HTMLImageElement | null>(null);
-  let emojis = $state<HTMLImageElement[]>([]);
   let fontReady = $state(0);
 
   $effect(() => {
@@ -60,17 +61,6 @@
     let cancelled = false;
     void loadImage(src).then((img) => {
       if (!cancelled) avatar = img;
-    });
-    return () => {
-      cancelled = true;
-    };
-  });
-
-  $effect(() => {
-    const codes = [...emojiCodes];
-    let cancelled = false;
-    void Promise.all(codes.map((c) => loadImage(twemoji(c)))).then((imgs) => {
-      if (!cancelled) emojis = imgs.filter((i): i is HTMLImageElement => i !== null);
     });
     return () => {
       cancelled = true;
@@ -95,7 +85,8 @@
       background: BACKGROUNDS.find((b) => b.id === backgroundId) ?? BACKGROUNDS[0],
       font,
       avatar,
-      emojis,
+      badges: [...badges],
+      title,
       locale: getLocale(),
     });
   });

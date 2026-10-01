@@ -18,7 +18,7 @@ bun run check      # svelte-check
   qui a besoin d'un serveur passe par `api.kotbo.fr`.
 - **Dépôt séparé.** Pas d'accès aux paquets du produit : les valeurs partagées
   sont recopiées à la main et le disent en commentaire (`product.ts`, les clés de
-  `playground/kit.svelte.ts`, les fonds et la courbe d'XP de `playground/rank/draw.ts`,
+  `playground/kit.svelte.ts`, les fonds, les succès et la courbe d'XP de `playground/rank/draw.ts`,
   les étapes de `funnel.ts`). Toute modification se vérifie dans le dépôt produit.
 - **Aucun script tiers.** `src/lib/funnel.ts` explique pourquoi : le site tient
   dans l'exemption de consentement de la CNIL. Le lire avant d'y toucher.
@@ -34,7 +34,7 @@ bun run check      # svelte-check
 | `src/lib/playground/` | Les zones jouables : le serveur monté (`kit.svelte.ts`), l'onboarding du héros, les aperçus Discord, la carte de rang. |
 | `src/lib/components/` | Zones reprises de la v1 (catalogue, comparatif, tarifs, FAQ) et écrans du dashboard reconstitués (`mockups/`). |
 | `src/lib/data/` | `media.ts` (captures et vidéos à fournir), `proof.ts` (témoignages réels, vide par défaut). |
-| `static/ktb/`, `static/rank/` | Emojis du bot, polices et emojis de la carte de rang, avec leurs licences. |
+| `static/ktb/`, `static/rank/` | Emojis du bot, polices de la carte de rang avec leurs licences. |
 
 ## Le principe de la v2
 

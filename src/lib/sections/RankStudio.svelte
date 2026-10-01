@@ -15,16 +15,20 @@
   import { track } from '$lib/funnel';
   import { reveal } from '$lib/actions/reveal';
   import RankCanvas from '$lib/playground/rank/RankCanvas.svelte';
-  import { BACKGROUNDS, FONTS, type FontId } from '$lib/playground/rank/draw';
-  import { twemoji } from '$lib/playground/discord/theme';
+  import {
+    ACHIEVEMENT_LIST,
+    BACKGROUNDS,
+    FONTS,
+    MAX_BADGES,
+    badgePath,
+    isAchievementReachable,
+    tierColors,
+    type AchievementId,
+    type FontId,
+  } from '$lib/playground/rank/draw';
   import InviteButton from '$lib/playground/InviteButton.svelte';
   import HandDrawnArrow from '$lib/components/ui/HandDrawnArrow.svelte';
 
-  const EMOJIS = [
-    '1f525', '2b50', '1f451', '1f48e', '1f680', '1f3ae', '1f3af', '1f3c6', '26a1', '2728',
-    '1f98a', '1f43a', '1f480', '1f9ca', '1f30a', '1f319', '1f338', '1f340', '1f3a7', '1fa90',
-  ];
-  const EMOJI_MAX = 3;
 
   const TEXT = {
     fr: {
@@ -41,7 +45,11 @@
       photoNote: 'Ta photo reste dans ton navigateur : elle n’est envoyée nulle part.',
       bgLabel: 'Fond',
       fontLabel: 'Police du pseudo',
-      emojiLabel: (n: number) => `Emojis (${n}/${EMOJI_MAX})`,
+      badgesLabel: (n: number) => `Succès affichés (${n}/${MAX_BADGES})`,
+      badgesHint: 'Les mêmes que dans le bot. Ceux de niveau suivent le curseur plus bas.',
+      needsLevel: (n: number) => `Niveau ${n} requis`,
+      titleLabel: 'Titre sous le pseudo',
+      noTitle: 'Aucun, afficher le @pseudo',
       levelLabel: 'Niveau',
       progressLabel: 'Avancement dans le niveau',
       download: 'Télécharger ma carte',
@@ -64,7 +72,11 @@
       photoNote: 'Your photo stays in your browser: it is not sent anywhere.',
       bgLabel: 'Background',
       fontLabel: 'Username font',
-      emojiLabel: (n: number) => `Emojis (${n}/${EMOJI_MAX})`,
+      badgesLabel: (n: number) => `Achievements shown (${n}/${MAX_BADGES})`,
+      badgesHint: 'The same as in the bot. Level ones follow the slider below.',
+      needsLevel: (n: number) => `Requires level ${n}`,
+      titleLabel: 'Title under the username',
+      noTitle: 'None, show the @username',
       levelLabel: 'Level',
       progressLabel: 'Progress within the level',
       download: 'Download my card',
@@ -81,7 +93,8 @@
   let name = $state('');
   let backgroundId = $state('default');
   let font = $state<FontId>('default');
-  let emojiCodes = $state<string[]>(['1f525']);
+  let badges = $state<AchievementId[]>(['first_place', 'starboard_10']);
+  let title = $state<AchievementId | null>(null);
   let level = $state(12);
   let progress = $state(64);
   let avatarSrc = $state<string | null>(null);
@@ -102,11 +115,24 @@
     track('playground_started', { content: 'rankcard' });
   }
 
-  function toggleEmoji(code: string): void {
+  function toggleBadge(id: AchievementId): void {
     started();
-    if (emojiCodes.includes(code)) emojiCodes = emojiCodes.filter((c) => c !== code);
-    else if (emojiCodes.length < EMOJI_MAX) emojiCodes = [...emojiCodes, code];
+    if (badges.includes(id)) badges = badges.filter((b) => b !== id);
+    else if (badges.length < MAX_BADGES) badges = [...badges, id];
   }
+
+  /**
+   * Redescendre le curseur sous le niveau d'un succès le retire de la carte,
+   * comme un membre qui n'a pas encore ce niveau ne peut pas le porter.
+   */
+  $effect(() => {
+    const reachable = (id: AchievementId) => {
+      const item = ACHIEVEMENT_LIST.find((a) => a.id === id);
+      return item ? isAchievementReachable(item, level) : false;
+    };
+    if (badges.some((id) => !reachable(id))) badges = badges.filter(reachable);
+    if (title && !reachable(title)) title = null;
+  });
 
   function pickPhoto(event: Event & { currentTarget: HTMLInputElement }): void {
     started();
@@ -171,7 +197,8 @@
               {backgroundId}
               {font}
               {avatarSrc}
-              {emojiCodes}
+              {badges}
+              {title}
               label={t.cardLabel(displayName, level)}
             />
           </div>
@@ -277,31 +304,67 @@
         </div>
 
         <fieldset>
-          <legend class="text-sm font-bold text-gray-900">{t.emojiLabel(emojiCodes.length)}</legend>
-          <div class="mt-2 flex flex-wrap gap-1.5">
-            {#each EMOJIS as code (code)}
-              {@const on = emojiCodes.includes(code)}
+          <legend class="text-sm font-bold text-gray-900">{t.badgesLabel(badges.length)}</legend>
+          <p class="mt-1 text-sm text-gray-600">{t.badgesHint}</p>
+          <div class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {#each ACHIEVEMENT_LIST as item (item.id)}
+              {@const on = badges.includes(item.id)}
+              {@const reachable = isAchievementReachable(item, level)}
+              {@const colors = tierColors(item)}
               <button
                 type="button"
                 aria-pressed={on}
-                onclick={() => toggleEmoji(code)}
-                disabled={!on && emojiCodes.length >= EMOJI_MAX}
-                class="grid h-11 w-11 place-items-center rounded-lg border-2 transition-colors disabled:opacity-40 {on
+                onclick={() => toggleBadge(item.id)}
+                disabled={!reachable || (!on && badges.length >= MAX_BADGES)}
+                title={item.description[locale]}
+                class="flex min-h-12 items-center gap-2.5 rounded-xl border-2 px-2.5 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-45 {on
                   ? 'border-indigo-600 bg-indigo-50'
-                  : 'border-transparent bg-white hover:border-gray-300'}"
+                  : 'border-gray-200 bg-white hover:border-gray-400'}"
               >
-                <img src={twemoji(code)} alt={String.fromCodePoint(parseInt(code, 16))} width="24" height="24" class="h-6 w-6" />
+                <!-- La pastille telle que la carte la dessine : liseré et tracé dans la teinte du palier. -->
+                <svg viewBox="0 0 30 30" width="30" height="30" aria-hidden="true" class="shrink-0">
+                  <defs>
+                    <linearGradient id="badge-{item.id}" x1="0" y1="0" x2="1" y2="1">
+                      {#each colors as color, i (i)}
+                        <stop offset={colors.length === 1 ? 0 : i / (colors.length - 1)} stop-color={color} />
+                      {/each}
+                    </linearGradient>
+                  </defs>
+                  <circle cx="15" cy="15" r="14" fill="#111827" stroke="url(#badge-{item.id})" stroke-width="2" />
+                  <path d={badgePath(item)} transform="translate(6 6) scale(0.75)" fill="url(#badge-{item.id})" fill-rule="evenodd" />
+                </svg>
+                <span class="min-w-0">
+                  <span class="block truncate text-sm font-semibold text-gray-900">{item.label[locale]}</span>
+                  {#if !reachable && item.minLevel}
+                    <span class="block text-xs text-gray-600">{t.needsLevel(item.minLevel)}</span>
+                  {/if}
+                </span>
               </button>
             {/each}
           </div>
         </fieldset>
+
+        <div>
+          <label for="rank-card-title" class="block text-sm font-bold text-gray-900">{t.titleLabel}</label>
+          <select
+            id="rank-card-title"
+            bind:value={title}
+            onchange={started}
+            class="mt-2 min-h-11 w-full rounded-lg border-2 border-gray-300 bg-white px-3 text-gray-900 focus:border-indigo-600 focus:outline-none"
+          >
+            <option value={null}>{t.noTitle}</option>
+            {#each ACHIEVEMENT_LIST.filter((a) => isAchievementReachable(a, level)) as item (item.id)}
+              <option value={item.id}>{item.title[locale]}</option>
+            {/each}
+          </select>
+        </div>
 
         <div class="grid gap-5 sm:grid-cols-2">
           <div>
             <label for="rank-level" class="flex justify-between text-sm font-bold text-gray-900">
               {t.levelLabel}<span class="tabular-nums">{level}</span>
             </label>
-            <input id="rank-level" type="range" min="1" max="60" bind:value={level} oninput={started} class="mt-3 w-full accent-indigo-600" />
+            <input id="rank-level" type="range" min="1" max="120" bind:value={level} oninput={started} class="mt-3 w-full accent-indigo-600" />
           </div>
           <div>
             <label for="rank-progress" class="flex justify-between text-sm font-bold text-gray-900">
