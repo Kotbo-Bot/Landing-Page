@@ -65,13 +65,16 @@
     // Suivi de la zone lue : une zone est « en cours » quand elle occupe la
     // bande haute de l'écran, juste sous l'en-tête. Les zones absentes (les
     // communautés quand l'API ne répond pas) sont simplement ignorées.
-    const sections = TEXT.fr.links
-      .map((link) => document.getElementById(link.href.slice(1)))
-      .filter((node): node is HTMLElement => node !== null);
+    // Toutes les zones sont suivies, y compris celles absentes du menu : en
+    // lisant le catalogue, aucun lien ne doit rester allumé à tort.
+    const linked = new Set(TEXT.fr.links.map((link) => link.href));
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('main section[id]'));
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) current = `#${entry.target.id}`;
+          if (!entry.isIntersecting) continue;
+          const href = `#${entry.target.id}`;
+          current = linked.has(href) ? href : null;
         }
       },
       { rootMargin: '-80px 0px -65% 0px' },
