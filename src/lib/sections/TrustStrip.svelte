@@ -22,7 +22,6 @@
       loading: 'Chargement des communautés…',
       serversLabel: 'Serveurs qui utilisent Kotbo',
       members: (n: string) => `${n} membres`,
-      more: 'Voir les communautés',
     },
     en: {
       title: 'They trust us',

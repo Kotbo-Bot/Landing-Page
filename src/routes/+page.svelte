@@ -28,7 +28,6 @@
   import Crisis from '$lib/sections/Crisis.svelte';
   import Commands from '$lib/sections/Commands.svelte';
   import RankStudio from '$lib/sections/RankStudio.svelte';
-  import Communities from '$lib/sections/Communities.svelte';
   import SiteFooter from '$lib/sections/SiteFooter.svelte';
   import StickyInvite from '$lib/sections/StickyInvite.svelte';
 
@@ -98,7 +97,6 @@
     <div use:trackOnView={'comparison_viewed'}>
       <Comparison inviteUrl={links.comparison} />
     </div>
-    <Communities />
     <div use:trackOnView={'pricing_viewed'}>
       <Pricing inviteUrl={links.pricing} salesUrl={SALES_URL} />
     </div>
