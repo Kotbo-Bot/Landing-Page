@@ -60,14 +60,72 @@ export const TRACK_KEYS: readonly TrackKey[] = [
 export const MODERATION_LEVELS: readonly ModerationLevel[] = ['light', 'standard', 'strict'];
 
 /**
- * Icônes proposées pour le serveur : les emojis que la carte de rang du bot
- * embarque déjà (Twemoji, CC-BY 4.0, voir `static/rank/emojis/NOTICE.md`).
+ * L'image du serveur, telle que le visiteur l'a choisie.
+ *
+ * Une vraie photo plutôt qu'un emoji imposé : c'est *son* serveur qui
+ * apparaît dans l'aperçu, et c'est ce qui le rend reconnaissable. L'image est
+ * ramenée à un carré de 128 px dans le navigateur (la taille d'une icône
+ * Discord), ce qui la garde sous la vingtaine de kilo-octets en mémoire locale.
+ * Elle ne quitte jamais le navigateur : `encodeKit` ne l'emporte pas.
  */
-export const SERVER_ICONS = [
-  '1f3ae', '1f525', '1f680', '1f98a', '1f43a', '1f451', '1f48e', '1f3af',
-  '1f3a7', '1f338', '1f30a', '1fa90',
-] as const;
-export type ServerIcon = (typeof SERVER_ICONS)[number];
+const ICON_SIZE = 128;
+/** Au-delà, l'image relue est ignorée : elle ne vient pas de `readServerIcon`. */
+const ICON_DATA_MAX = 200_000;
+const ICON_DATA_PATTERN = /^data:image\/(png|jpeg|webp);base64,[a-z0-9+/=]+$/i;
+
+function isIconData(value: unknown): value is string {
+  return typeof value === 'string' && value.length <= ICON_DATA_MAX && ICON_DATA_PATTERN.test(value);
+}
+
+/**
+ * Lit une image choisie par le visiteur et la recadre au centre, en carré.
+ * Rejette si le fichier n'est pas une image lisible par le navigateur.
+ */
+export function readServerIcon(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    if (!file.type.startsWith('image/')) {
+      reject(new Error('not-an-image'));
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const side = Math.min(img.naturalWidth, img.naturalHeight);
+      if (!side) {
+        reject(new Error('empty-image'));
+        return;
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = ICON_SIZE;
+      canvas.height = ICON_SIZE;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        reject(new Error('no-canvas'));
+        return;
+      }
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(
+        img,
+        (img.naturalWidth - side) / 2,
+        (img.naturalHeight - side) / 2,
+        side,
+        side,
+        0,
+        0,
+        ICON_SIZE,
+        ICON_SIZE,
+      );
+      // WebP quand le navigateur sait l'écrire, PNG sinon (`toDataURL` retombe seul).
+      resolve(canvas.toDataURL('image/webp', 0.86));
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('unreadable'));
+    };
+    img.src = url;
+  });
+}
 
 /** Pistes cochées d'office, par vocation. Ce qu'un serveur de ce genre utilise d'abord. */
 const DEFAULT_TRACKS: Record<ThemeKey, TrackKey[]> = {
@@ -79,7 +137,8 @@ const DEFAULT_TRACKS: Record<ThemeKey, TrackKey[]> = {
 
 export interface Kit {
   name: string;
-  icon: ServerIcon;
+  /** Image du serveur en `data:` (128 px), `null` pour les initiales. */
+  icon: string | null;
   theme: ThemeKey;
   tracks: TrackKey[];
   moderation: ModerationLevel;
@@ -98,7 +157,7 @@ export const WELCOME_MAX = 180;
 function initialKit(): Kit {
   return {
     name: '',
-    icon: '1f3ae',
+    icon: null,
     theme: 'communaute',
     tracks: [...DEFAULT_TRACKS.communaute],
     moderation: 'standard',
@@ -125,7 +184,7 @@ function restore(): Kit {
     const saved = JSON.parse(raw) as Partial<Record<keyof Kit, unknown>>;
 
     if (typeof saved.name === 'string') kit.name = saved.name.slice(0, NAME_MAX);
-    if (SERVER_ICONS.includes(saved.icon as ServerIcon)) kit.icon = saved.icon as ServerIcon;
+    if (isIconData(saved.icon)) kit.icon = saved.icon;
     if (THEME_KEYS.includes(saved.theme as ThemeKey)) kit.theme = saved.theme as ThemeKey;
     if (MODERATION_LEVELS.includes(saved.moderation as ModerationLevel)) {
       kit.moderation = saved.moderation as ModerationLevel;
@@ -186,8 +245,9 @@ export const builder = {
     touch();
   },
 
-  setIcon(icon: ServerIcon): void {
-    kit.icon = icon;
+  /** `null` retire l'image : l'aperçu revient aux initiales du serveur. */
+  setIcon(icon: string | null): void {
+    kit.icon = icon !== null && isIconData(icon) ? icon : null;
     touch();
   },
 

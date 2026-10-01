@@ -11,7 +11,7 @@
    * salon affiche ce que Kotbo y a posé. Sans `onselect`, ce sont des libellés.
    */
   import type { Snippet } from 'svelte';
-  import { KOTBO_AVATAR, twemoji } from './theme';
+  import { KOTBO_AVATAR } from './theme';
 
   export interface Channel {
     id: string;
@@ -30,7 +30,8 @@
 
   interface Props {
     serverName: string;
-    serverIcon?: string;
+    /** Image du serveur (URL ou `data:`). Sans image, les initiales du nom. */
+    serverIcon?: string | null;
     categories: Category[];
     active: string;
     onselect?: (id: string) => void;
@@ -56,6 +57,16 @@
     composer,
   }: Props = $props();
 
+  /** Comme Discord : la première lettre de chaque mot, trois au plus. */
+  const initials = $derived(
+    serverName
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((word) => word[0])
+      .join('')
+      .slice(0, 3),
+  );
+
   const activeChannel = $derived(
     categories.flatMap((c) => c.channels).find((c) => c.id === active),
   );
@@ -77,11 +88,12 @@
     <div class="h-0.5 w-8 rounded bg-[#35363c]"></div>
     <div class="relative">
       <span class="absolute -left-3 top-1/2 h-10 w-1 -translate-y-1/2 rounded-r bg-white"></span>
-      <div class="grid h-12 w-12 place-items-center overflow-hidden rounded-2xl bg-[#5865f2]">
+      <div class="grid h-12 w-12 place-items-center overflow-hidden rounded-2xl {serverIcon ? 'bg-[#313338]' : 'bg-[#5865f2]'}">
         {#if serverIcon}
-          <img src={twemoji(serverIcon)} alt="" width="28" height="28" class="h-7 w-7" />
+          <img src={serverIcon} alt="" width="48" height="48" class="h-12 w-12 object-cover" />
         {:else}
-          <span class="font-semibold text-white">{serverName.slice(0, 2)}</span>
+          <!-- Initiales, comme Discord pour un serveur sans image. -->
+          <span class="text-sm font-semibold text-white">{initials}</span>
         {/if}
       </div>
     </div>

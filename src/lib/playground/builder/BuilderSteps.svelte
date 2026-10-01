@@ -15,16 +15,16 @@
   import {
     builder,
     MODERATION_LEVELS,
-    SERVER_ICONS,
     THEME_KEYS,
     TRACK_KEYS,
     WELCOME_MAX,
+    readServerIcon,
     type TrackKey,
   } from '../kit.svelte';
   import { getLocale } from '$lib/i18n/state.svelte';
   import { track } from '$lib/funnel';
   import { TRIAL_DAYS } from '$lib/product';
-  import { ktb, twemoji } from '../discord/theme';
+  import { ktb } from '../discord/theme';
   import InviteButton from '../InviteButton.svelte';
 
   type Step = 'name' | 'theme' | 'tracks' | 'ready';
@@ -36,7 +36,13 @@
       name: {
         question: 'Comment s’appelle ton serveur ?',
         placeholder: 'Les Nerds, Team Nova…',
-        iconLabel: 'Choisis-lui une icône',
+        iconLabel: 'Son image',
+        iconPick: 'Choisir une image',
+        iconChange: 'Changer d’image',
+        iconRemove: 'Retirer',
+        iconAlt: 'Image du serveur',
+        iconNote: 'Facultatif. L’image reste dans ton navigateur : elle n’est envoyée nulle part.',
+        iconError: 'Ce fichier n’est pas une image lisible. Essaie un PNG ou un JPEG.',
       },
       theme: { question: (name: string) => `Qu’est-ce qu’on fait sur ${name} ?` },
       themes: {
@@ -82,7 +88,13 @@
       name: {
         question: 'What’s your server called?',
         placeholder: 'The Nerds, Team Nova…',
-        iconLabel: 'Pick an icon for it',
+        iconLabel: 'Its picture',
+        iconPick: 'Choose an image',
+        iconChange: 'Change image',
+        iconRemove: 'Remove',
+        iconAlt: 'Server picture',
+        iconNote: 'Optional. The image stays in your browser: it is not sent anywhere.',
+        iconError: 'This file is not a readable image. Try a PNG or a JPEG.',
       },
       theme: { question: (name: string) => `What happens on ${name}?` },
       themes: {
@@ -179,6 +191,36 @@
 
   const index = $derived(STEPS.indexOf(step));
 
+  let iconInput = $state<HTMLInputElement | null>(null);
+  let iconError = $state(false);
+
+  /** Comme Discord pour un serveur sans image : la première lettre de chaque mot. */
+  const initials = $derived(
+    (kit.name.trim() || '?')
+      .split(/\s+/)
+      .map((word) => word[0])
+      .join('')
+      .slice(0, 3),
+  );
+
+  async function pickIcon(event: Event & { currentTarget: HTMLInputElement }): Promise<void> {
+    started();
+    const file = event.currentTarget.files?.[0];
+    iconError = false;
+    if (!file) return;
+    try {
+      builder.setIcon(await readServerIcon(file));
+    } catch {
+      iconError = true;
+    }
+  }
+
+  function removeIcon(): void {
+    builder.setIcon(null);
+    iconError = false;
+    if (iconInput) iconInput.value = '';
+  }
+
   function submitName(event: SubmitEvent): void {
     event.preventDefault();
     started();
@@ -218,31 +260,45 @@
             placeholder={t.name.placeholder}
             class="mt-5 w-full rounded-xl border-2 border-gray-300 bg-white px-4 py-3.5 text-xl font-semibold text-gray-900 placeholder:font-normal placeholder:text-gray-500 focus:border-indigo-600 focus:outline-none"
           />
-          <fieldset class="mt-6">
-            <legend class="text-sm font-bold text-gray-900">{t.name.iconLabel}</legend>
-            <div class="mt-2 flex flex-wrap gap-1.5">
-              {#each SERVER_ICONS as icon (icon)}
-                <label class="relative">
-                  <input
-                    type="radio"
-                    name="kit-icon"
-                    value={icon}
-                    checked={kit.icon === icon}
-                    onchange={() => {
-                      started();
-                      builder.setIcon(icon);
-                    }}
-                    class="peer sr-only"
-                  />
-                  <span
-                    class="grid h-11 w-11 cursor-pointer place-items-center rounded-lg border-2 border-transparent bg-white transition-colors peer-checked:border-indigo-600 peer-checked:bg-indigo-50 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-indigo-600 hover:border-gray-300"
-                  >
-                    <img src={twemoji(icon)} alt={String.fromCodePoint(parseInt(icon, 16))} width="24" height="24" class="h-6 w-6" />
-                  </span>
+          <div class="mt-6">
+            <p id="kit-icon-label" class="text-sm font-bold text-gray-900">{t.name.iconLabel}</p>
+            <div class="mt-2 flex items-center gap-4">
+              <!-- L'icône telle que Discord la montrera : l'image, ou les initiales. -->
+              <span class="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-2xl text-lg font-semibold text-white {kit.icon ? 'bg-[#313338]' : 'bg-[#5865f2]'}">
+                {#if kit.icon}
+                  <img src={kit.icon} alt={t.name.iconAlt} width="64" height="64" class="h-16 w-16 object-cover" />
+                {:else}
+                  <span aria-hidden="true">{initials}</span>
+                {/if}
+              </span>
+              <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
+                <input
+                  bind:this={iconInput}
+                  id="kit-icon"
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp,image/gif"
+                  aria-labelledby="kit-icon-label"
+                  onchange={pickIcon}
+                  class="peer sr-only"
+                />
+                <label
+                  for="kit-icon"
+                  class="inline-flex min-h-11 cursor-pointer items-center rounded-xl border-2 border-gray-900 bg-white px-4 text-sm font-bold text-gray-900 transition-colors hover:bg-gray-900 hover:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-indigo-600"
+                >
+                  {kit.icon ? t.name.iconChange : t.name.iconPick}
                 </label>
-              {/each}
+                {#if kit.icon}
+                  <button type="button" onclick={removeIcon} class="min-h-11 text-sm font-semibold text-gray-700 underline underline-offset-4">
+                    {t.name.iconRemove}
+                  </button>
+                {/if}
+              </div>
             </div>
-          </fieldset>
+            {#if iconError}
+              <p class="mt-2 text-sm font-semibold text-red-700" role="alert">{t.name.iconError}</p>
+            {/if}
+            <p class="mt-2 text-sm text-gray-600">{t.name.iconNote}</p>
+          </div>
           <button
             type="submit"
             disabled={!kit.name.trim()}

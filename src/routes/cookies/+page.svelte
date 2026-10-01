@@ -147,7 +147,7 @@
         li3: "les brouillons enregistrés, modèles d'embed, disposition du dashboard et notes locales du staff ;",
         li4: 'le langage choisi et les données temporaires de l\'IDE.',
         landing:
-          "Sur kotbo.fr, le serveur que vous montez sur la page d'accueil (son nom, son icône, vos choix et votre message d'accueil) est gardé dans ce navigateur, sous la clé kotbo-kit, pour que vous le retrouviez en revenant. Il n'est envoyé nulle part, à une exception près : la vocation, les modules et le niveau de modération accompagnent le lien quand vous cliquez sur « Ajouter Kotbo », pour que l'installation les reprenne. La photo choisie pour la carte de rang n'est ni enregistrée ni envoyée.",
+          "Sur kotbo.fr, le serveur que vous montez sur la page d'accueil (son nom, son image, vos choix et votre message d'accueil) est gardé dans ce navigateur, sous la clé kotbo-kit, pour que vous le retrouviez en revenant. Il n'est envoyé nulle part, à une exception près : la vocation, les modules et le niveau de modération accompagnent le lien quand vous cliquez sur « Ajouter Kotbo », pour que l'installation les reprenne. La photo choisie pour la carte de rang n'est ni enregistrée ni envoyée.",
         infoA: "Le jeton d'authentification Discord ou Kotbo n'est pas conservé dans",
         infoCode: 'localStorage',
         infoB: '. La session repose sur un cookie',
@@ -262,7 +262,7 @@
         li3: 'saved drafts, embed templates, dashboard layout, and local staff notes;',
         li4: 'the chosen language and temporary IDE data.',
         landing:
-          'On kotbo.fr, the server you build on the home page (its name, icon, your choices and your welcome message) is kept in this browser, under the kotbo-kit key, so you find it again when you come back. It is not sent anywhere, with one exception: the purpose, modules and moderation level travel with the link when you click “Add Kotbo”, so the setup can pick them up. The photo chosen for the rank card is neither stored nor sent.',
+          'On kotbo.fr, the server you build on the home page (its name, picture, your choices and your welcome message) is kept in this browser, under the kotbo-kit key, so you find it again when you come back. It is not sent anywhere, with one exception: the purpose, modules and moderation level travel with the link when you click “Add Kotbo”, so the setup can pick them up. The photo chosen for the rank card is neither stored nor sent.',
         infoA: 'The Discord or Kotbo authentication token is not stored in',
         infoCode: 'localStorage',
         infoB: '. The session relies on an',
