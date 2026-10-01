@@ -19,37 +19,10 @@
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
   import { reveal } from '$lib/actions/reveal';
-  import { STATS_ENDPOINT } from '$lib/product';
+  import { publicStats } from '$lib/data/stats.svelte';
   import { TESTIMONIALS } from '$lib/data/proof';
   import { ktb } from '$lib/playground/discord/theme';
   import MarkerCircle from '$lib/components/ui/MarkerCircle.svelte';
-
-  interface ServerStats {
-    name: string;
-    iconUrl: string;
-    memberCount: number;
-    description: string;
-  }
-
-  /**
-   * Une instance du bot, telle qu'elle se déclare à l'API : l'instance publique
-   * et les bots personnalisés que des serveurs font tourner sous leur propre
-   * nom. C'est de leur somme que sortent les deux totaux.
-   */
-  interface BotStats {
-    botName: string;
-    botAvatarUrl: string | null;
-    guildCount: number;
-    userCount: number;
-    isSelfHosted: boolean;
-  }
-
-  interface Stats {
-    totalGuilds: number;
-    totalUsers: number;
-    bots: BotStats[];
-    servers: ServerStats[];
-  }
 
   const TEXT = {
     fr: {
@@ -97,8 +70,8 @@
   const t = $derived(TEXT[getLocale()]);
   const locale = $derived(getLocale());
 
-  let stats = $state<Stats | null>(null);
-  let loading = $state(true);
+  const stats = $derived(publicStats.data);
+  const loading = $derived(publicStats.status === 'loading');
 
   /** Les cartes scotchées gardent l'inclinaison de la v1, une par position. */
   const TILTS = [-1.2, 0.8, -0.6, 1.4];
@@ -111,25 +84,7 @@
     return `+${n}`;
   }
 
-  onMount(async () => {
-    try {
-      const res = await fetch(STATS_ENDPOINT);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      stats = {
-        totalGuilds: Number(data.totalGuilds) || 0,
-        totalUsers: Number(data.totalUsers) || 0,
-        bots: Array.isArray(data.bots) ? data.bots : [],
-        servers: Array.isArray(data.servers) ? data.servers : [],
-      };
-      // « 0 communauté gérée » prouverait surtout le contraire : on masque.
-      if (stats.totalGuilds === 0) stats = null;
-    } catch {
-      stats = null;
-    } finally {
-      loading = false;
-    }
-  });
+  onMount(() => void publicStats.load());
 </script>
 
 {#if loading || stats}

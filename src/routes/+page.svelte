@@ -22,6 +22,7 @@
 
   import SiteNav from '$lib/sections/SiteNav.svelte';
   import BuildHero from '$lib/sections/BuildHero.svelte';
+  import TrustStrip from '$lib/sections/TrustStrip.svelte';
   import AfterClick from '$lib/sections/AfterClick.svelte';
   import StaffDesk from '$lib/sections/StaffDesk.svelte';
   import Crisis from '$lib/sections/Crisis.svelte';
@@ -87,6 +88,7 @@
   <SiteNav />
   <main>
     <BuildHero />
+    <TrustStrip />
     <AfterClick />
     <StaffDesk />
     <Crisis />
