@@ -12,6 +12,15 @@ const config = {
 		adapter: adapter({
 			fallback: '404.html'
 		}),
+		prerender: {
+			handleHttpError: ({ path, message }) => {
+				// /demo/ est une SPA autonome servie depuis static/demo/index.html
+				if (path.startsWith('/demo')) {
+					return;
+				}
+				throw new Error(message);
+			}
+		},
 		paths: {
 			base: process.env.BASE_PATH ?? ''
 		}

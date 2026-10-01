@@ -28,6 +28,7 @@
         { href: '#carte', label: 'Carte de rang' },
         { href: '#comparatif', label: 'Comparatif' },
         { href: '#pricing', label: 'Tarifs' },
+        { href: '/demo/', label: 'Démo Dashboard' },
       ],
     },
     en: {
@@ -42,6 +43,7 @@
         { href: '#carte', label: 'Rank card' },
         { href: '#comparatif', label: 'Comparison' },
         { href: '#pricing', label: 'Pricing' },
+        { href: '/demo/', label: 'Dashboard Demo' },
       ],
     },
   };
@@ -115,6 +117,10 @@
    * qu'un lien copié mène au même endroit.
    */
   function goTo(event: MouseEvent, href: string): void {
+    if (!href.startsWith('#')) {
+      open = false;
+      return;
+    }
     const target = document.getElementById(href.slice(1));
     if (!target) return;
     event.preventDefault();
@@ -160,14 +166,24 @@
       <ul bind:this={list} class="relative flex gap-7 text-sm font-semibold text-gray-700">
         {#each t.links as link (link.href)}
           <li>
-            <a
-              href={link.href}
-              onclick={(e) => goTo(e, link.href)}
-              aria-current={current === link.href ? 'location' : undefined}
-              class="inline-flex min-h-10 items-center transition-colors hover:text-gray-900 {current === link.href ? 'text-gray-900' : ''}"
-            >
-              {link.label}
-            </a>
+            {#if link.href.startsWith('#')}
+              <a
+                href={link.href}
+                onclick={(e) => goTo(e, link.href)}
+                aria-current={current === link.href ? 'location' : undefined}
+                class="inline-flex min-h-10 items-center transition-colors hover:text-gray-900 {current === link.href ? 'text-gray-900' : ''}"
+              >
+                {link.label}
+              </a>
+            {:else}
+              <a
+                href={link.href}
+                class="inline-flex min-h-10 items-center gap-1.5 font-bold text-indigo-600 transition-colors hover:text-indigo-800"
+              >
+                <span>{link.label}</span>
+                <span class="rounded-full bg-indigo-100 px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-indigo-700">Live</span>
+              </a>
+            {/if}
           </li>
         {/each}
         {#if bar}
@@ -200,9 +216,16 @@
       <ul class="mx-auto max-w-360 px-4 py-2 sm:px-8">
         {#each t.links as link (link.href)}
           <li>
-            <a href={link.href} onclick={(e) => goTo(e, link.href)} class="flex min-h-12 items-center text-base font-semibold text-gray-900">
-              {link.label}
-            </a>
+            {#if link.href.startsWith('#')}
+              <a href={link.href} onclick={(e) => goTo(e, link.href)} class="flex min-h-12 items-center text-base font-semibold text-gray-900">
+                {link.label}
+              </a>
+            {:else}
+              <a href={link.href} onclick={() => (open = false)} class="flex min-h-12 items-center justify-between text-base font-bold text-indigo-600">
+                <span>{link.label}</span>
+                <span class="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-extrabold uppercase tracking-wider text-indigo-700">Live</span>
+              </a>
+            {/if}
           </li>
         {/each}
       </ul>

@@ -1,0 +1,1 @@
+function e(e,t){return!!e&&t.length>0&&!t.some(t=>t.id===e)}export{e as t};

@@ -36,6 +36,12 @@
         title: 'Des sanctions qui ont un dossier',
         body: 'Chaque sanction garde son motif, son auteur et ses preuves (captures, transcriptions). Six mois plus tard, la question « pourquoi il a été ban ? » a une réponse.',
       },
+      cta: {
+        badge: 'Démo interactive',
+        title: 'Teste le vrai dashboard toi-même',
+        desc: 'Fiches membres, gestion des sanctions, tickets en direct, classements et modules : tout fonctionne dans ton navigateur, sans compte et sans carte bancaire.',
+        button: 'Ouvrir la démo du dashboard',
+      },
       demo: 'Écrans du dashboard, données de démonstration.',
     },
     en: {
@@ -51,6 +57,12 @@
       sanctions: {
         title: 'Sanctions that come with a file',
         body: 'Every sanction keeps its reason, its author and its evidence (screenshots, transcripts). Six months later, “why was he banned?” has an answer.',
+      },
+      cta: {
+        badge: 'Interactive Demo',
+        title: 'Try the real dashboard yourself',
+        desc: 'Member profiles, sanctions management, live tickets, leaderboards and modules: explore everything in your browser, no account or credit card needed.',
+        button: 'Open the dashboard demo',
       },
       demo: 'Dashboard screens, demo data.',
     },
@@ -110,6 +122,30 @@
           <img src={ktb('shield')} alt="" width="28" height="28" class="h-7 w-7" />{t.sanctions.title}
         </h3>
         <p class="mt-2 max-w-xl leading-relaxed text-gray-700">{t.sanctions.body}</p>
+      </div>
+    </div>
+
+    <div use:reveal={{ direction: 'up', delay: 150 }} class="mt-16 rounded-3xl border-2 border-indigo-100 bg-linear-to-b from-indigo-50/60 to-white p-8 text-center sm:p-12 shadow-sm">
+      <div class="inline-flex items-center gap-2 rounded-full bg-indigo-100/80 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-indigo-700">
+        <span class="h-2 w-2 rounded-full bg-indigo-500 animate-pulse"></span>
+        {t.cta.badge}
+      </div>
+      <h3 class="mt-4 font-headline text-2xl font-extrabold text-gray-900 sm:text-3xl">
+        {t.cta.title}
+      </h3>
+      <p class="mx-auto mt-2 max-w-xl text-base leading-relaxed text-gray-600">
+        {t.cta.desc}
+      </p>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-4">
+        <a
+          href="/demo/"
+          class="inline-flex items-center gap-2.5 rounded-xl bg-gray-900 px-6 py-3.5 text-base font-bold text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-black hover:shadow-lg"
+        >
+          <span>{t.cta.button}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
       </div>
     </div>
 

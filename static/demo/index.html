@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/demo/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Kotbo Dashboard</title>
+    <link rel="manifest" href="/demo/manifest.webmanifest" />
+    <meta name="theme-color" content="#001A33" />
+    <!-- Apercu de lien par defaut.
+         Les robots sociaux reconnus sont aiguilles par nginx vers
+         /api/og/preview de l'API, qui rend les balises reelles de la page
+         demandee (cf. apps/dashboard/nginx.conf). Ces balises-ci sont le filet :
+         elles servent aux clients hors de cette liste, et aux deploiements ou
+         l'aiguillage n'est pas configure. L'icone carree est volontaire - sans
+         connaitre la page, une grande banniere ne promettrait rien de juste. -->
+    <meta name="description" content="Kotbo : gestion de communauté Discord - modération, économie, tickets et analytique dans un seul dashboard." />
+    <meta property="og:site_name" content="Kotbo" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Kotbo Dashboard" />
+    <meta property="og:description" content="Kotbo : gestion de communauté Discord - modération, économie, tickets et analytique dans un seul dashboard." />
+    <meta property="og:image" content="/demo/icons/icon-512.png" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Kotbo Dashboard" />
+    <meta name="twitter:description" content="Kotbo : gestion de communauté Discord - modération, économie, tickets et analytique dans un seul dashboard." />
+    <link rel="apple-touch-icon" href="/demo/icons/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://cdn.discordapp.com" crossorigin />
+    <link rel="dns-prefetch" href="//cdn.discordapp.com" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Kotbo" />
+    <!-- Les polices sont servies localement via @fontsource (cf. src/app.css).
+         Recharger ces memes polices
+         depuis fonts.googleapis.com ajoutait deux requetes bloquantes vers un
+         tiers pour un resultat identique. Material Symbols n'etait utilise
+         nulle part dans src/. -->
+    <script type="module" crossorigin src="/demo/assets/index-ByJEORpe.js"></script>
+    <link rel="modulepreload" crossorigin href="/demo/assets/vendor-icons-CtgSWkus.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/Papicon-luiYqyE5.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/i18n-B5iabLPd.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/api_ok_save_rpg_clan_tower_layout-D8E9NBJs.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/auth.svelte-oUDTXfMX.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/transition-NSIZEB9F.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/common_loading-B01E0ReZ.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/common_close-DAgLvIYY.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/backend_down_retry-CQx2S9Mf.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/nav_starboard-CyPjDWjM.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/nav_my_profile-eCD6i-6u.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/nav_group_config-agiwDl1f.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/notif_view_history-BuLE4kbX.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/d7_type_to_confirm_post-75mUFWxf.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/onb_mcp_scope_full_detail-Ck-c7Yyx.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/notifications.svelte-CygRF0Lj.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/nav_inbox-5r4WgJ3S.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/nav_members-B79NQ-wV.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/nav_user_settings-DsR4dwV5.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/pages-BGkvUs-F.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/dashboard.svelte-BKSPwwjB.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/navigation.svelte-Bz93tkvV.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/portal-Cw3JI9lF.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/discordMedia-C_6J1OnR.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/stp_setup_backups_desc-CWNrzR3y.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/tutorial.svelte-BMmUu7BV.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/feedbackModal.svelte-B20aS3dG.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/us_tab_widget-DRaLe9oX.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/pf_tab_rank_card-DYGRPLEV.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/anx_tab_formatting-BWzljQDK.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/inbox_tab_system-CMXuOB1r.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/commands_tab_structure-DX0dBK5F.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/pageTabs-DcFcegM4.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/CommandPalette-BtNK0jc_.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/realtime.svelte-BQC6jTXV.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/navbar_change_theme-DI9-UozM.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/permissions.svelte-CKPw36WE.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/media.svelte-CudBcIb3.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/ServerSwitcherModal-Bc4Rnw9C.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/unsavedChanges.svelte-DtvyUjfy.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/guide.svelte-CzOOv6OE.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/Button-D5IPhRg_.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/confirmDialog.svelte-DYsSmzhs.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/inviteDetailsModal.svelte-jZc7IOP-.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/channelDetailsModal.svelte-DWIfDG8l.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/ConfirmModal-BBwUVTnM.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/Skeleton-B3M4qIVS.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/onboardingWizard.svelte-l2t-Y04C.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/d1_cookies_link-CTfY7rUd.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/PrivacyNotice-DNAnvZ9n.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/src-q2z7gnRt.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/presets-C3P22q1g.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/errors-7BpwKxCr.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/KotboMark-Bdf9YdeD.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/RecoveredContent-KgJUm9uf.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/emojiParser-D22uWxYe.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/EmojiText-CQfAuCGg.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/d1_emoji_upload_forbidden-B_GB4NG5.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/floatingPanel-BcH1flk-.js">
+    <link rel="modulepreload" crossorigin href="/demo/assets/EmojiPicker-yhJ5jo9u.js">
+    <link rel="stylesheet" crossorigin href="/demo/assets/KotboMark-CfhLMkUH.css">
+    <link rel="stylesheet" crossorigin href="/demo/assets/index-_aGE24s_.css">
+  </head>
+  <body>
+    <script>
+      /*
+       * Le theme est applique par le store, donc apres le premier rendu : entre
+       * la peinture de la feuille de style et l'execution du bundle, une page
+       * sombre s'affichait en clair. Sur un rechargement - changer de langue en
+       * declenche un - cela donnait un eclair blanc. Ce script est volontairement
+       * en ligne et bloquant : il doit passer avant la premiere peinture.
+       */
+      (function () {
+        try {
+          // Doit rester aligne sur les presets de mode 'light' de
+          // src/lib/stores/theme.svelte.ts : un preset clair oublie ici
+          // reprendrait un eclair sombre au chargement.
+          var LIGHT = { light: 1, lavender: 1, ocean: 1 };
+          var id = localStorage.getItem('kotbo_theme') || 'dark';
+          var light = id === 'custom'
+            ? JSON.parse(localStorage.getItem('kotbo_custom_theme') || '{}').mode === 'light'
+            : LIGHT[id] === 1;
+          if (!light) document.documentElement.classList.add('dark');
+
+          // Mode démo : présélectionne le serveur Atelier Nova avant que l'App ne monte
+          if (location.pathname.startsWith('/demo') || location.port === '5199') {
+            localStorage.setItem('kotbo_guild_id', '900000000000000001');
+          }
+        } catch (err) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+    <div id="app"></div>
+  </body>
+</html>

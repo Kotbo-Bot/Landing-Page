@@ -1,0 +1,1 @@
+import{r as e}from"./i18n-B5iabLPd.js";var t=()=>`Brouillon`,n=()=>`Draft`,r=((r={},i={})=>(i.locale??e())===`fr`?t(r):n(r)),i=()=>`Terminé`,a=()=>`Completed`,o=((t={},n={})=>(n.locale??e())===`fr`?i(t):a(t)),s=()=>`Annulé`,c=()=>`Cancelled`,l=((t={},n={})=>(n.locale??e())===`fr`?s(t):c(t));export{o as n,r,l as t};

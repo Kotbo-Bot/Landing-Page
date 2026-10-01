@@ -1,0 +1,1 @@
+function e(e){switch(e.type){case`voice`:return`🔊 ${e.name}`;case`forum`:return`💬 ${e.name}`;case`media`:return`📷 ${e.name}`;case`thread`:return`🧵 ${e.name}`;case`announcement`:return`📢 ${e.name}`;default:return`# ${e.name}`}}export{e as t};

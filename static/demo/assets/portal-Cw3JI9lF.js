@@ -1,0 +1,1 @@
+function e(e,t=document.body){let n;return n=typeof t==`string`?document.querySelector(t)??document.body:t,n.appendChild(e),{update(t){n=typeof t==`string`?document.querySelector(t)??document.body:t,n.appendChild(e)},destroy(){e.parentNode&&e.parentNode.removeChild(e)}}}export{e as t};

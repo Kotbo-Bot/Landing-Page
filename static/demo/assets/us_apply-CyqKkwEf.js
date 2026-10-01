@@ -1,0 +1,1 @@
+import{r as e}from"./i18n-B5iabLPd.js";var t=()=>`Exporter`,n=()=>`Export`,r=((r={},i={})=>(i.locale??e())===`fr`?t(r):n(r)),i=()=>`Importer`,a=()=>`Import`,o=((t={},n={})=>(n.locale??e())===`fr`?i(t):a(t)),s=()=>`Appliquer`,c=()=>`Apply`,l=((t={},n={})=>(n.locale??e())===`fr`?s(t):c(t));export{o as n,r,l as t};
