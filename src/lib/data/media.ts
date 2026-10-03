@@ -65,3 +65,19 @@ export const MEDIA = {
 } satisfies Record<string, MediaSlot>;
 
 export type MediaKey = keyof typeof MEDIA;
+
+/**
+ * Le film de présentation (fin de la zone dashboard), rendu par `motion/` :
+ * `cd motion && bun run render` écrit ces fichiers dans `static/media/`.
+ * `music` passe à `true` quand le film a été rendu avec `motion/public/music.mp3` :
+ * le bouton son n'apparaît qu'à ce moment-là.
+ */
+export const FILM = {
+  width: 1920,
+  height: 1080,
+  music: false,
+  files: {
+    fr: { mp4: '/media/kotbo-film-fr.mp4', poster: '/media/kotbo-film-fr-poster.jpg' },
+    en: { mp4: '/media/kotbo-film-en.mp4', poster: '/media/kotbo-film-en-poster.jpg' },
+  },
+} as const;

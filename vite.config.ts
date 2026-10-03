@@ -58,6 +58,7 @@ function demoSpaPlugin(): Plugin {
 
 export default defineConfig({
 	plugins: [demoSpaPlugin(), tailwindcss(), sveltekit()],
-	server: { proxy: apiProxy },
+	// `motion/` est le projet du film (Remotion), hors du site.
+	server: { proxy: apiProxy, watch: { ignored: ['**/motion/**'] } },
 	preview: { proxy: apiProxy }
 });

@@ -10,6 +10,7 @@
 @import '@fontsource/manrope/latin-700.css';
 @import '@fontsource/manrope/latin-800.css';
 @import "tailwindcss";
+@source not "../motion";
 @import "./routes/layout.css";
 
 @variant dark (&:where(.dark, .dark *));

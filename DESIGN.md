@@ -40,6 +40,9 @@ fort, et le reste de la page au calme.
   s'efface quand on le règle, la barre d'XP se remplit. Rien ne flotte ni ne
   pulse en boucle. `prefers-reduced-motion` coupe les déplacements, les
   changements d'état restent visibles.
+  Exception validée : le film de présentation (`KotboFilm`, fin de la zone
+  dashboard, rendu par `motion/`) boucle. Il se met en pause hors écran ou sur
+  son bouton Pause, et ne démarre jamais seul en mouvement réduit.
 
 ## Palette
 
