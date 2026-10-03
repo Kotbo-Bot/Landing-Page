@@ -16,6 +16,7 @@
    * le nom du serveur monté dans le héros et en emporte les réglages.
    */
   import { onMount } from 'svelte';
+  import homeJsonLd from '$lib/seo/home-jsonld.json';
   import { track, trackOnView, inviteUrl } from '$lib/funnel';
   import { SALES_URL } from '$lib/product';
   import { builder, encodeKit } from '$lib/playground/kit.svelte';
@@ -70,17 +71,9 @@
     content="Modération, tickets, staff, niveaux et économie dans un seul bot. Essaie-le sur la page avant de l'ajouter."
   />
   <meta property="og:url" content="https://kotbo.fr/" />
-  {@html `<script type="application/ld+json">${JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'Kotbo',
-    url: 'https://kotbo.fr/',
-    applicationCategory: 'BusinessApplication',
-    operatingSystem: 'Discord, Web',
-    inLanguage: 'fr-FR',
-    description:
-      'Bot et dashboard Discord pour gérer une communauté : modération, tickets, staff, niveaux, économie et événements.',
-  })}</script>`}
+  <!-- Son empreinte est autorisée par la CSP (svelte.config.js) : le contenu
+       vit dans le JSON pour que les deux restent identiques. -->
+  {@html `<script type="application/ld+json">${JSON.stringify(homeJsonLd)}</script>`}
 </svelte:head>
 
 <div id="top" class="relative min-h-screen text-gray-900">

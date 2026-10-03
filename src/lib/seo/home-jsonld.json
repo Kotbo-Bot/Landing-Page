@@ -1,0 +1,10 @@
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Kotbo",
+  "url": "https://kotbo.fr/",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Discord, Web",
+  "inLanguage": "fr-FR",
+  "description": "Bot et dashboard Discord pour gérer une communauté : modération, tickets, staff, niveaux, économie et événements."
+}

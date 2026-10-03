@@ -1,5 +1,13 @@
 import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+
+// Empreinte du JSON-LD de l'accueil, injecté en ligne (src/routes/+page.svelte).
+// Calculée sur le même `JSON.stringify` que la page : un texte modifié reste
+// autorisé, une ligne ajoutée à la main ailleurs ne l'est pas.
+const homeJsonLd = JSON.stringify(JSON.parse(readFileSync('src/lib/seo/home-jsonld.json', 'utf8')));
+const homeJsonLdHash = `sha256-${createHash('sha256').update(homeJsonLd).digest('base64')}`;
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -34,7 +42,7 @@ const config = {
 			mode: 'hash',
 			directives: {
 				'default-src': ['self'],
-				'script-src': ['self'],
+				'script-src': ['self', homeJsonLdHash],
 				// Les transitions de Svelte posent des <style> en ligne.
 				'style-src': ['self', 'unsafe-inline'],
 				// data: et blob: : l'image du serveur monté et la photo de la carte

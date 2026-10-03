@@ -10,6 +10,7 @@
  * qu'une absence de preuve.
  */
 import { browser } from '$app/environment';
+import { base } from '$app/paths';
 import { STATS_ENDPOINT } from '$lib/product';
 
 export interface ServerStats {
@@ -52,15 +53,25 @@ function endpoint(): string {
 }
 
 /**
+ * Serveurs dont une copie de l'icône est servie par le site
+ * (`static/communities/<id>.webp`). Elle prend le relais tant que l'API
+ * renvoie encore l'adresse du CDN de Discord. Zenode n'y est pas : l'icône
+ * connue de l'API n'existe plus chez Discord.
+ */
+const LOCAL_ICONS = new Set(['506029988680695818', '913791560615854120', '1477350874740424986']);
+
+/**
  * L'API relaie les icônes des serveurs et les renvoie en chemin relatif
- * (`/api/public/stats/icons/<id>`). Une URL absolue vers un autre domaine,
- * typiquement `cdn.discordapp.com`, est écartée : chargée par la page, elle
- * donnerait l'adresse IP du visiteur à Discord et le laisserait poser un cookie.
- * Le bandeau affiche alors son repli.
+ * (`/api/public/stats/icons/<id>`). Une URL du CDN de Discord n'est jamais
+ * chargée telle quelle : elle donnerait l'adresse IP du visiteur à Discord et
+ * le laisserait poser un cookie. Elle est remplacée par la copie locale quand
+ * elle existe, sinon le bandeau affiche les initiales.
  */
 function apiIcon(url: unknown): string {
-  if (typeof url !== 'string' || !url.startsWith('/api/')) return '';
-  return endpoint().replace(/\/api\/public\/stats$/, '') + url;
+  if (typeof url !== 'string') return '';
+  if (url.startsWith('/api/')) return endpoint().replace(/\/api\/public\/stats$/, '') + url;
+  const id = url.match(/^https:\/\/cdn\.discordapp\.com\/icons\/(\d+)\//)?.[1];
+  return id && LOCAL_ICONS.has(id) ? `${base}/communities/${id}.webp` : '';
 }
 
 async function fetchStats(): Promise<void> {
