@@ -51,6 +51,18 @@ function endpoint(): string {
   return local ? STATS_ENDPOINT.replace('https://api.kotbo.fr', '/__kotbo-api') : STATS_ENDPOINT;
 }
 
+/**
+ * L'API relaie les icônes des serveurs et les renvoie en chemin relatif
+ * (`/api/public/stats/icons/<id>`). Une URL absolue vers un autre domaine,
+ * typiquement `cdn.discordapp.com`, est écartée : chargée par la page, elle
+ * donnerait l'adresse IP du visiteur à Discord et le laisserait poser un cookie.
+ * Le bandeau affiche alors son repli.
+ */
+function apiIcon(url: unknown): string {
+  if (typeof url !== 'string' || !url.startsWith('/api/')) return '';
+  return endpoint().replace(/\/api\/public\/stats$/, '') + url;
+}
+
 async function fetchStats(): Promise<void> {
   try {
     const res = await fetch(endpoint());
@@ -60,7 +72,9 @@ async function fetchStats(): Promise<void> {
       totalGuilds: Number(json.totalGuilds) || 0,
       totalUsers: Number(json.totalUsers) || 0,
       bots: Array.isArray(json.bots) ? json.bots : [],
-      servers: Array.isArray(json.servers) ? json.servers : [],
+      servers: Array.isArray(json.servers)
+        ? json.servers.map((s: ServerStats) => ({ ...s, iconUrl: apiIcon(s.iconUrl) }))
+        : [],
     };
     // « 0 communauté » prouverait surtout le contraire : traité comme une absence.
     if (next.totalGuilds === 0) throw new Error('empty');
