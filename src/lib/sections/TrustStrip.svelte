@@ -29,7 +29,6 @@
       loading: 'Loading communities…',
       serversLabel: 'Servers using Kotbo',
       members: (n: string) => `${n} members`,
-      more: 'See the communities',
     },
   };
 
@@ -96,12 +95,6 @@
             </li>
           {/each}
         </ul>
-      {/if}
-
-      {#if stats}
-        <a href="#communautes" class="inline-flex min-h-11 shrink-0 items-center self-start text-sm font-bold text-gray-900 underline underline-offset-4 lg:ml-auto lg:self-center">
-          {t.more}
-        </a>
       {/if}
     </div>
   </section>
