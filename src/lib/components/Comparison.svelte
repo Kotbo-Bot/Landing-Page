@@ -64,7 +64,6 @@
       toolDisclaimer:
         "Tarifs premium d'entrée de gamme, ordres de grandeur vérifiés sur les pages publiques de chaque bot en septembre 2026 (conversion approximative pour les prix en dollars). Ils changent sans préavis, et Kotbo n'est affilié à aucun des bots listés.",
       cta: 'Ajouter Kotbo à mon serveur',
-      ctaDisclaimer: 'Tarifs concurrents donnés en ordre de grandeur, à titre indicatif.',
       columns: [
         { key: 'mod', label: 'Bot de modération' },
         { key: 'ticket', label: 'Bot de tickets' },
@@ -155,7 +154,6 @@
       toolDisclaimer:
         "Entry-level premium pricing, order-of-magnitude figures checked against each bot's public pricing page in September 2026 (approximate conversion for prices in dollars). They change without notice, and Kotbo isn't affiliated with any of the bots listed.",
       cta: 'Add Kotbo to my server',
-      ctaDisclaimer: 'Competitor pricing given as an order of magnitude, for illustration only.',
       columns: [
         { key: 'mod', label: 'Moderation bot' },
         { key: 'ticket', label: 'Ticket bot' },
@@ -708,9 +706,6 @@
       >
         {t.cta}
       </a>
-      <p class="mt-4 text-sm font-bold text-gray-400">
-        {t.ctaDisclaimer}
-      </p>
     </div>
   </div>
 </section>

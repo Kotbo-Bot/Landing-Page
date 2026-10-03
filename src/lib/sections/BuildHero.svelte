@@ -22,24 +22,19 @@
   import BuilderSteps from '$lib/playground/builder/BuilderSteps.svelte';
   import BuilderPreview from '$lib/playground/builder/BuilderPreview.svelte';
   import MarkerCircle from '$lib/components/ui/MarkerCircle.svelte';
-  import HandDrawnArrow from '$lib/components/ui/HandDrawnArrow.svelte';
 
   const TEXT = {
     fr: {
       titleStart: 'Monte ton',
       titleWord: 'serveur',
       titleEnd: 'Discord ici. Ajoute Kotbo après.',
-      demoNote: 'Aperçu de démonstration : les membres qui y passent sont fictifs.',
       welcomeBack: (name: string) => `Content de te revoir. ${name} est resté comme tu l’as laissé.`,
-      annotation: 'il se monte en direct',
     },
     en: {
       titleStart: 'Build your',
       titleWord: 'server',
       titleEnd: 'here. Add Kotbo after.',
-      demoNote: 'Demo preview: the members you see are fictional.',
       welcomeBack: (name: string) => `Welcome back. ${name} is just as you left it.`,
-      annotation: 'it builds live',
     },
   };
 
@@ -73,13 +68,7 @@
       <BuilderSteps bind:this={steps} onstep={(next) => (step = next)} />
 
       <div class="relative {step === 'name' ? 'hidden lg:block' : ''}">
-        <!-- Annotation du visiteur : elle commente, elle n'informe pas. -->
-        <div aria-hidden="true" class="pointer-events-none absolute -top-9 right-10 hidden items-end gap-1 xl:flex">
-          <span class="-rotate-3 font-hand text-2xl text-indigo-700">{t.annotation}</span>
-          <HandDrawnArrow direction="down-right" class="h-10 w-10 text-indigo-700" />
-        </div>
         <BuilderPreview />
-        <p class="mt-2 text-sm text-gray-600">{t.demoNote}</p>
       </div>
     </div>
   </div>

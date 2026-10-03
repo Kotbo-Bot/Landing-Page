@@ -42,11 +42,10 @@
       photoLabel: 'Photo',
       photoButton: 'Choisir une image',
       photoRemove: 'Retirer la photo',
-      photoNote: 'Ta photo reste dans ton navigateur : elle n’est envoyée nulle part.',
       bgLabel: 'Fond',
       fontLabel: 'Police du pseudo',
       badgesLabel: (n: number) => `Succès affichés (${n}/${MAX_BADGES})`,
-      badgesHint: 'Les mêmes que dans le bot. Ceux de niveau suivent le curseur plus bas.',
+      badgesHint: 'Les succès de niveau suivent le curseur plus bas.',
       needsLevel: (n: number) => `Niveau ${n} requis`,
       titleLabel: 'Titre sous le pseudo',
       noTitle: 'Aucun, afficher le @pseudo',
@@ -69,11 +68,10 @@
       photoLabel: 'Photo',
       photoButton: 'Choose an image',
       photoRemove: 'Remove photo',
-      photoNote: 'Your photo stays in your browser: it is not sent anywhere.',
       bgLabel: 'Background',
       fontLabel: 'Username font',
       badgesLabel: (n: number) => `Achievements shown (${n}/${MAX_BADGES})`,
-      badgesHint: 'The same as in the bot. Level ones follow the slider below.',
+      badgesHint: 'Level ones follow the slider below.',
       needsLevel: (n: number) => `Requires level ${n}`,
       titleLabel: 'Title under the username',
       noTitle: 'None, show the @username',
@@ -262,7 +260,6 @@
           {#if fileError}
             <p class="mt-2 text-sm font-semibold text-red-700" role="alert">{t.badFile}</p>
           {/if}
-          <p class="mt-2 text-sm text-gray-600">{t.photoNote}</p>
         </div>
 
         <fieldset>
