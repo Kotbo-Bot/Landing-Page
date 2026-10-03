@@ -1,1 +1,0 @@
-import{uf as e}from"./auth.svelte-oUDTXfMX.js";function t(e,t,n,r=window.location.pathname){let i=e+`/`;if(r.startsWith(i)){let e=r.slice(i.length).split(`/`)[0];if(e){let r;try{r=decodeURIComponent(e)}catch{return n}if(t.includes(r))return r}}return n}function n(t,n,r){e.goto(n===r?t:`${t}/${encodeURIComponent(n)}`)}export{t as n,n as t};

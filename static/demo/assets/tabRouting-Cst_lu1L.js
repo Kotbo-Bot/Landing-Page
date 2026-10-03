@@ -1,0 +1,1 @@
+import{uf as e}from"./auth.svelte-oUDTXfMX.js";import{o as t}from"./mode-BHyte6aW.js";function n(e,n,r,i=t()){let a=e+`/`;if(i.startsWith(a)){let e=i.slice(a.length).split(`/`)[0];if(e){let t;try{t=decodeURIComponent(e)}catch{return r}if(n.includes(t))return t}}return r}function r(t,n,r){e.goto(n===r?t:`${t}/${encodeURIComponent(n)}`)}export{n,r as t};

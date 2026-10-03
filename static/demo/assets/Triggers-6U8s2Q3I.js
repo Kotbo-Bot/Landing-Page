@@ -1,1 +1,0 @@
-import"./vendor-icons-CtgSWkus.js";import{t as e}from"./Workflows-BpsUz7_f.js";function t(t){e(t,{})}export{t as default};
