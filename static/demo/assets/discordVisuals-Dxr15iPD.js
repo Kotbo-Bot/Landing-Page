@@ -1,0 +1,1 @@
+var e={voice:`volume-2`,forum:`message-square`,media:`image`,thread:`git-branch`,announcement:`megaphone`};function t(t){return e[t??``]??`hash`}function n(e){return!e||e===`#000000`?`var(--outline)`:e}export{n,t};

@@ -1,0 +1,1 @@
+var e=`/demo/`.replace(/\/$/,``);function t(){let t=window.location.pathname;return!e||!t.startsWith(e)?t:t.slice(e.length)||`/`}var n=`900000000000000001`,r=`Atelier Nova`,i=`900000000000000101`,a=`https://api.kotbo.fr/api/public/invite?utm_source=landing&utm_content=demo`;export{i as a,a as i,n,t as o,r,e as t};

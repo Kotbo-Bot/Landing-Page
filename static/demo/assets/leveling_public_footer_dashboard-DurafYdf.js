@@ -1,0 +1,1 @@
+import{r as e}from"./i18n-B5iabLPd.js";var t=()=>`Propulsé par le bot Discord`,n=()=>`Powered by the Discord bot`,r=((r={},i={})=>(i.locale??e())===`fr`?t(r):n(r)),i=()=>`Données synchronisées`,a=()=>`Synced data`,o=((t={},n={})=>(n.locale??e())===`fr`?i(t):a(t)),s=()=>`Dashboard`,c=()=>`Dashboard`,l=((t={},n={})=>(n.locale??e())===`fr`?s(t):c(t));export{o as n,r,l as t};

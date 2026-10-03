@@ -175,6 +175,12 @@
         e1: ': message d\'erreur, stack trace, source. Peuvent incidemment contenir des identifiants.',
         e2Strong: 'Métriques de modules',
         e2: ': compteurs d\'activation, d\'utilisation et de performance — agrégés, sans identifiant personnel direct.',
+        h3_10: 'Visiteurs du site kotbo.fr',
+        v1: "Le site mesure son audience sans cookie et sans outil tiers. À chaque étape, il envoie à l'API de Kotbo ce qui a été franchi (visite, tarifs lus, zone jouable essayée, clic sur « Ajouter Kotbo »), l'emplacement du clic, la catégorie de provenance (moteur de recherche, Discord, accès direct : jamais l'adresse complète) et un identifiant aléatoire propre à l'onglet.",
+        v2: "Finalité : comprendre ce qui est lu et ce qui mène à une installation. Base légale : l'intérêt légitime de Kotbo (art. 6.1.f RGPD), dans les conditions d'exemption de consentement fixées par la CNIL pour la mesure d'audience. L'adresse IP n'est pas enregistrée. L'identifiant de visite est effacé au bout de 30 jours et n'est jamais rapproché d'un compte Discord ni d'un serveur. Les événements sont supprimés au bout de 13 mois.",
+        v3: "Les icônes des communautés affichées sur l'accueil sont servies par l'API de Kotbo : votre navigateur ne contacte pas Discord.",
+        v4a: 'Do Not Track et Global Privacy Control coupent la mesure. Vous pouvez aussi la refuser sur la',
+        v4link: 'page cookies',
       },
       messages: {
         h2: 'Journalisation complète des messages',
@@ -656,6 +662,12 @@
         e1: ': error message, stack trace, source. May incidentally contain identifiers.',
         e2Strong: 'Module metrics',
         e2: ': activation, usage and performance counters — aggregated, with no direct personal identifier.',
+        h3_10: 'Visitors of kotbo.fr',
+        v1: 'The site measures its audience without cookies and without third-party tools. At each step, it sends the Kotbo API what was reached (visit, pricing read, playable area tried, click on “Add Kotbo”), where the click happened, the referrer category (search engine, Discord, direct: never the full address) and a random identifier tied to the browser tab.',
+        v2: "Purpose: understand what gets read and what leads to an installation. Legal basis: Kotbo's legitimate interest (Art. 6(1)(f) GDPR), within the consent exemption the CNIL sets for audience measurement. The IP address is not recorded. The visit identifier is erased after 30 days and is never linked to a Discord account or a server. Events are deleted after 13 months.",
+        v3: 'The community icons shown on the home page are served by the Kotbo API: your browser does not contact Discord.',
+        v4a: 'Do Not Track and Global Privacy Control switch measurement off. You can also refuse it on the',
+        v4link: 'cookies page',
       },
       messages: {
         h2: 'Full message logging',
@@ -1176,6 +1188,12 @@
       <li><strong>{t.collecte.e1Strong}</strong> (<code>BotErrorLog</code>){t.collecte.e1}</li>
       <li><strong>{t.collecte.e2Strong}</strong>{t.collecte.e2}</li>
     </ul>
+
+    <h3 id="visiteurs">2.10 {t.collecte.h3_10}</h3>
+    <p>{t.collecte.v1}</p>
+    <p>{t.collecte.v2}</p>
+    <p>{t.collecte.v3}</p>
+    <p>{t.collecte.v4a} <a href="{base}/cookies">{t.collecte.v4link}</a>.</p>
   </section>
 
   <!-- Section 3 : Journalisation complète des messages -->

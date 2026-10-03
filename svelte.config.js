@@ -12,8 +12,42 @@ const config = {
 		adapter: adapter({
 			fallback: '404.html'
 		}),
+		prerender: {
+			handleHttpError: ({ path, message }) => {
+				// /demo/ est une SPA autonome servie depuis static/demo/index.html
+				if (path.startsWith('/demo')) {
+					return;
+				}
+				throw new Error(message);
+			}
+		},
 		paths: {
 			base: process.env.BASE_PATH ?? ''
+		},
+		// La promesse « aucun script tiers » (lib/funnel.ts, page /cookies),
+		// tenue par le navigateur et plus seulement par la relecture. En mode
+		// hash, chaque page pré-rendue reçoit une balise <meta> qui autorise son
+		// script de démarrage et rien d'autre. `frame-ancestors` ne vaut pas en
+		// <meta> : il reste dans static/_headers. /demo, servie telle quelle
+		// depuis static/, n'est pas concernée.
+		csp: {
+			mode: 'hash',
+			directives: {
+				'default-src': ['self'],
+				'script-src': ['self'],
+				// Les transitions de Svelte posent des <style> en ligne.
+				'style-src': ['self', 'unsafe-inline'],
+				// data: et blob: : l'image du serveur monté et la photo de la carte
+				// de rang restent dans le navigateur. L'API sert les icônes des
+				// communautés.
+				'img-src': ['self', 'data:', 'blob:', 'https://api.kotbo.fr'],
+				'font-src': ['self'],
+				'media-src': ['self'],
+				'connect-src': ['self', 'https://api.kotbo.fr'],
+				'object-src': ['none'],
+				'base-uri': ['self'],
+				'form-action': ['self']
+			}
 		}
 	}
 };

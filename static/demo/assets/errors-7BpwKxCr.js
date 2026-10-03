@@ -1,0 +1,1 @@
+function e(e){return e instanceof Error?e.message:typeof e==`string`?e:e&&typeof e==`object`&&`message`in e?String(e.message):String(e)}function t(e){if(e&&typeof e==`object`&&`status`in e){let t=e.status;if(typeof t==`number`)return t}}export{t as n,e as t};

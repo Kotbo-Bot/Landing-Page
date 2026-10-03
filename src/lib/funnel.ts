@@ -49,6 +49,14 @@ export type FunnelStep =
   | 'comparison_viewed'
   | 'faq_opened'
   | 'sales_clicked'
+  /**
+   * Premier geste dans une zone jouable (`content` : `builder`, `crisis`,
+   * `commands`, `rankcard`). Sans elle, on saurait combien invitent le bot,
+   * jamais combien ont joué avant.
+   */
+  | 'playground_started'
+  /** La zone jouable menée au bout : serveur monté, soirée réglée, carte téléchargée. */
+  | 'playground_completed'
   | 'invite_clicked';
 
 /**
@@ -250,10 +258,15 @@ export function trackOnView(node: HTMLElement, step: FunnelStep) {
  * L'identifiant de visite voyage dans l'URL parce que c'est le seul moyen de
  * relier ce clic au serveur qui en sortira peut-être : le dashboard est sur un
  * autre domaine, rien de ce que stocke ce site ne lui est lisible.
+ *
+ * `kit` porte les réglages du serveur monté sur la page (voir
+ * `playground/kit.svelte.ts`). Il voyage même quand la mesure est refusée : ce
+ * n'est pas une statistique mais ce que le visiteur a demandé qu'on installe.
  */
-export function inviteUrl(content: string): string {
+export function inviteUrl(content: string, kit: string | null = null): string {
   const params = new URLSearchParams({ utm_source: 'landing', utm_content: content });
   const vid = visitorId();
   if (vid) params.set('vid', vid);
+  if (kit) params.set('kit', kit);
   return `https://api.kotbo.fr/api/public/invite?${params.toString()}`;
 }

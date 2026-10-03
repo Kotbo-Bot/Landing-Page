@@ -1,0 +1,1 @@
+import"./i18n-B5iabLPd.js";import{t as e}from"./_index-AZ48O3Nc.js";function t(t,n=``){return t?e[`mod_${t}_name`]?.()??(n||t):n}function n(t,n=``){return t?e[`mod_${t}_desc`]?.()??n:n}export{t as n,n as t};

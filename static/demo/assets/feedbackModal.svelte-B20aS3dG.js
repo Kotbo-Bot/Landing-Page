@@ -1,0 +1,1 @@
+import{$a as e,Ia as t,eo as n}from"./vendor-icons-CtgSWkus.js";var r=new class{#e=n(!1);get open(){return t(this.#e)}set open(t){e(this.#e,t,!0)}show(){this.open=!0}close(){this.open=!1}};export{r as t};

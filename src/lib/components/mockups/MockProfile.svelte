@@ -1040,17 +1040,8 @@
   }
 </script>
 
-<div class="flex flex-col h-full w-full bg-surface-container-lowest text-on-surface font-body rounded-2xl overflow-hidden border border-outline-variant/10 shadow-lg select-none relative">
+<div class="isolate flex flex-col h-full w-full bg-surface-container-lowest text-on-surface font-body rounded-2xl overflow-hidden border border-outline-variant/10 shadow-lg select-none relative">
   
-  <!-- Close button -->
-  <button
-    type="button"
-    class="absolute top-4 right-4 z-50 flex h-9 w-9 items-center justify-center rounded-xl bg-black/25 text-white/80 backdrop-blur-lg transition-all hover:bg-black/40 hover:text-white hover:scale-110 active:scale-95 shadow-lg cursor-pointer"
-    aria-label={t.close}
-  >
-    <Papicon icon="x" size={18} />
-  </button>
-
   <!-- ── Hero Section (Banner + Avatar + Username) ────────────────── -->
   <div class="relative overflow-hidden shrink-0" style="height: 165px;">
     {#if caseData.profile?.bannerUrl}
