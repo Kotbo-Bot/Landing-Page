@@ -5,7 +5,8 @@
   "scripts": {
     "capture": "node scripts/capture.mjs",
     "studio": "remotion studio src/index.ts",
-    "render": "node scripts/render.mjs"
+    "render": "node scripts/render.mjs",
+    "render:topgg": "node scripts/render-topgg.mjs"
   },
   "dependencies": {
     "@remotion/cli": "4.0.532",
