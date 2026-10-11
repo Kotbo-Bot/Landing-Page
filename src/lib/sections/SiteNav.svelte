@@ -28,7 +28,8 @@
         { href: '#carte', label: 'Carte de rang' },
         { href: '#comparatif', label: 'Comparatif' },
         { href: '#pricing', label: 'Tarifs' },
-        { href: '/demo/', label: 'Démo Dashboard' },
+        { href: '/fonctionnalites', label: 'Fonctionnalités' },
+        { href: '/demo/', label: 'Démo Dashboard', live: true },
       ],
     },
     en: {
@@ -43,7 +44,8 @@
         { href: '#carte', label: 'Rank card' },
         { href: '#comparatif', label: 'Comparison' },
         { href: '#pricing', label: 'Pricing' },
-        { href: '/demo/', label: 'Dashboard Demo' },
+        { href: '/en/features', label: 'Features' },
+        { href: '/demo/', label: 'Dashboard Demo', live: true },
       ],
     },
   };
@@ -175,6 +177,10 @@
               >
                 {link.label}
               </a>
+            {:else if !('live' in link)}
+              <a href="{base}{link.href}" class="inline-flex min-h-10 items-center transition-colors hover:text-gray-900">
+                {link.label}
+              </a>
             {:else}
               <a
                 href={link.href}
@@ -218,6 +224,10 @@
           <li>
             {#if link.href.startsWith('#')}
               <a href={link.href} onclick={(e) => goTo(e, link.href)} class="flex min-h-12 items-center text-base font-semibold text-gray-900">
+                {link.label}
+              </a>
+            {:else if !('live' in link)}
+              <a href="{base}{link.href}" onclick={() => (open = false)} class="flex min-h-12 items-center text-base font-semibold text-gray-900">
                 {link.label}
               </a>
             {:else}

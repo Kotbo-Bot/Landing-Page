@@ -19,6 +19,9 @@
   import { reveal } from '$lib/actions/reveal';
   import Emph from '$lib/components/ui/Emph.svelte';
   import { getLocale } from '$lib/i18n/state.svelte';
+  import { base } from '$app/paths';
+  import { featurePath } from '$lib/i18n/routes';
+  import { featureOfModule } from '$lib/data/features';
 
   interface Props {
     inviteUrl: string;
@@ -228,9 +231,16 @@
           </div>
           <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-x-4 gap-y-2">
             {#each group.modules as module (module)}
+              {@const page = featureOfModule(module)}
               <li class="flex items-center gap-2 text-sm font-bold text-gray-600 leading-tight">
                 <Check class="w-3.5 h-3.5 text-gray-300 shrink-0" strokeWidth={4} />
-                {module}
+                <!-- Les modules qui ont leur page y mènent : c'est le lien
+                     interne le plus fort vers elles. -->
+                {#if page}
+                  <a href="{base}{featurePath(page.slug, getLocale())}" class="underline decoration-gray-300 underline-offset-4 hover:text-gray-900 hover:decoration-gray-900">{module}</a>
+                {:else}
+                  {module}
+                {/if}
               </li>
             {/each}
           </ul>

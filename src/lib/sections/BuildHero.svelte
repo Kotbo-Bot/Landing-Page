@@ -25,12 +25,14 @@
 
   const TEXT = {
     fr: {
+      kicker: 'Kotbo, le bot Discord tout-en-un',
       titleStart: 'Monte ton',
       titleWord: 'serveur',
       titleEnd: 'Discord ici. Ajoute Kotbo après.',
       welcomeBack: (name: string) => `Content de te revoir. ${name} est resté comme tu l’as laissé.`,
     },
     en: {
+      kicker: 'Kotbo, the all-in-one Discord bot',
       titleStart: 'Build your',
       titleWord: 'server',
       titleEnd: 'here. Add Kotbo after.',
@@ -53,7 +55,10 @@
 
 <section id="monter" aria-labelledby="hero-title" class="relative">
   <div class="mx-auto flex max-w-360 flex-col px-4 pb-14 pt-6 sm:px-8 lg:min-h-[calc(100svh-4.5rem)] lg:pb-12 lg:pt-8">
+    <!-- L'accroche fait partie du titre : c'est le H1 que lit Google, et
+         « bot Discord » est la requête de tête. Elle reste discrète à l'œil. -->
     <h1 id="hero-title" class="hero-enter max-w-4xl font-headline text-4xl font-extrabold leading-[1.05] tracking-tight text-gray-900 sm:text-5xl xl:text-6xl">
+      <span class="mb-3 block font-sans text-sm font-semibold tracking-normal text-gray-500 sm:text-base">{t.kicker}</span>
       {t.titleStart}
       <MarkerCircle color="blue" class="text-indigo-600" animated>{t.titleWord}</MarkerCircle>
       {t.titleEnd}

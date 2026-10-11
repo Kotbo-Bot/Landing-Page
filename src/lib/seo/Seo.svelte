@@ -11,7 +11,8 @@
    * L'image est rendue par `motion/` (`bun run render:og`) : ses dimensions
    * sont annoncées ici pour que les réseaux la placent sans la télécharger.
    */
-  import { getLocale } from '$lib/i18n/state.svelte';
+  import { getLocale, type Locale } from '$lib/i18n/state.svelte';
+  import { pairOf } from '$lib/i18n/routes';
   import { SITE_URL } from '$lib/product';
 
   interface Props {
@@ -35,6 +36,11 @@
 
   const t = $derived(TEXT[getLocale()]);
   const url = $derived(`${SITE_URL}${path}`);
+  /** Une page bilingue annonce ses deux URL ; le français sert de défaut. */
+  const pair = $derived(pairOf(path));
+  const OG_LOCALE: Record<Locale, string> = { fr: 'fr_FR', en: 'en_US' };
+  const ogLocale = $derived(OG_LOCALE[getLocale()]);
+  const ogAlternate = $derived(OG_LOCALE[getLocale() === 'fr' ? 'en' : 'fr']);
 </script>
 
 <svelte:head>
@@ -42,12 +48,17 @@
   <meta name="description" content={description} />
   <meta name="robots" content={robots} />
   <link rel="canonical" href={url} />
+  {#if pair}
+    <link rel="alternate" hreflang="fr" href="{SITE_URL}{pair.fr}" />
+    <link rel="alternate" hreflang="en" href="{SITE_URL}{pair.en}" />
+    <link rel="alternate" hreflang="x-default" href="{SITE_URL}{pair.fr}" />
+  {/if}
   <meta name="theme-color" content={THEME_COLOR} />
 
   <meta property="og:site_name" content="Kotbo" />
   <meta property="og:type" content="website" />
-  <meta property="og:locale" content="fr_FR" />
-  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale" content={ogLocale} />
+  <meta property="og:locale:alternate" content={ogAlternate} />
   <meta property="og:url" content={url} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />

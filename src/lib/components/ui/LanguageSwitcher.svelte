@@ -1,5 +1,8 @@
 <script lang="ts">
+  import { base } from '$app/paths';
+  import { page } from '$app/state';
   import { getLocale, setLocale } from '$lib/i18n/state.svelte';
+  import { pairOf, routePath } from '$lib/i18n/routes';
 
   interface Props {
     class?: string;
@@ -7,8 +10,12 @@
 
   const { class: className = '' }: Props = $props();
 
+  /** Sur une page bilingue, changer de langue, c'est changer d'URL. */
   function toggle() {
-    setLocale(getLocale() === 'fr' ? 'en' : 'fr');
+    const next = getLocale() === 'fr' ? 'en' : 'fr';
+    setLocale(next);
+    const pair = pairOf(routePath(page.url.pathname, base));
+    if (pair) location.assign(`${base}${pair[next]}${location.search}${location.hash}`);
   }
 </script>
 
