@@ -20,6 +20,8 @@ export const STATS_ENDPOINT = 'https://api.kotbo.fr/api/public/stats';
 export const SITE_URL = 'https://kotbo.fr';
 
 export const TOPGG_URL = 'https://top.gg/bot/1481651387317354598';
+/** Un vote compte toutes les 12 h et fait monter Kotbo dans le classement Top.gg. */
+export const TOPGG_VOTE_URL = `${TOPGG_URL}/vote`;
 /**
  * Moyenne des avis sur Top.gg, relevée à la main le 2026-10-11 : Top.gg n'offre
  * pas d'API publique pour la lire. À revérifier quand des avis arrivent.

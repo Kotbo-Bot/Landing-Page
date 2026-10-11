@@ -27,9 +27,10 @@ bun run check      # svelte-check
   Exception : les FAQ vivent dans `src/lib/seo/faq.js`, parce que le même texte
   nourrit le JSON-LD `FAQPage`.
 - **Une URL par langue** pour les pages listées dans `src/lib/i18n/routes.ts`
-  (accueil `/` et `/en/`, page staff). Sur ces pages, l'URL décide de la langue,
-  jamais le navigateur : Googlebot rend le JS en `en-US`. Une nouvelle page
-  bilingue s'ajoute là, dans `PATHS` de `seo/jsonld.js` et dans `static/sitemap.xml`.
+  (accueil `/` et `/en`, page staff, pages fonctionnalités). Sur ces pages, l'URL décide de la langue,
+  jamais le navigateur des robots : Googlebot rend le JS en `en-US`. Une nouvelle
+  page bilingue s'ajoute là et dans `static/sitemap.xml` ; si elle porte du
+  JSON-LD, aussi dans `PATHS` de `seo/jsonld.js`.
 - **JSON-LD sous CSP.** Il est injecté en ligne et autorisé par empreinte :
   tout son contenu vient de `src/lib/seo/jsonld.js`, que `svelte.config.js`
   importe au build. Pas de JSON-LD construit ailleurs.
@@ -38,8 +39,8 @@ bun run check      # svelte-check
 
 | Dossier | Contenu |
 | --- | --- |
-| `src/routes/` | Les routes : accueil (`/`, `/en/`), page staff (`/gestion-staff-discord`, `/en/discord-staff-management`), pages légales. |
-| `src/lib/pages/` | L'accueil et la page staff, rendus par leurs deux routes. |
+| `src/routes/` | Les routes : accueil (`/`, `/en`), page staff (`/gestion-staff-discord`, `/en/discord-staff-management`), fonctionnalités (`/fonctionnalites`, `/en/features`), pages légales. |
+| `src/lib/pages/` | L'accueil, la page staff et les pages fonctionnalités, rendus par leurs deux routes. |
 | `src/lib/seo/` | `Seo.svelte` (balises, `hreflang`), `jsonld.js`, `faq.js`. |
 | `src/lib/sections/` | Les zones de l'accueil, une par fichier. |
 | `src/lib/playground/` | Les zones jouables : le serveur monté (`kit.svelte.ts`), l'onboarding du héros, les aperçus Discord, la carte de rang. |

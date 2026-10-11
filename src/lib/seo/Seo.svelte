@@ -11,13 +11,12 @@
    * L'image est rendue par `motion/` (`bun run render:og`) : ses dimensions
    * sont annoncées ici pour que les réseaux la placent sans la télécharger.
    *
-   * Une page bilingue (`i18n/routes.ts`) annonce ses deux versions en
-   * `hreflang`, le français servant de version par défaut. Son JSON-LD vient
-   * de `jsonld.js`, seul contenu en ligne que la CSP autorise.
+   * Le JSON-LD d'une page vient de `jsonld.js`, seul contenu en ligne que la
+   * CSP autorise (empreintes calculées par `svelte.config.js`).
    */
-  import { getLocale } from '$lib/i18n/state.svelte';
+  import { getLocale, type Locale } from '$lib/i18n/state.svelte';
+  import { pairOf } from '$lib/i18n/routes';
   import { SITE_URL } from '$lib/product';
-  import { alternatesOf } from '$lib/i18n/routes';
   import { jsonLdString } from './jsonld.js';
 
   interface Props {
@@ -41,12 +40,13 @@
   const THEME_COLOR = '#4f46e5';
   const IMAGE = `${SITE_URL}/og-image.png`;
 
-  const OG_LOCALE = { fr: 'fr_FR', en: 'en_US' } as const;
-
-  const locale = $derived(getLocale());
-  const t = $derived(TEXT[locale]);
+  const t = $derived(TEXT[getLocale()]);
   const url = $derived(`${SITE_URL}${path}`);
-  const alternates = $derived(alternatesOf(path));
+  /** Une page bilingue annonce ses deux URL ; le français sert de défaut. */
+  const pair = $derived(pairOf(path));
+  const OG_LOCALE: Record<Locale, string> = { fr: 'fr_FR', en: 'en_US' };
+  const ogLocale = $derived(OG_LOCALE[getLocale()]);
+  const ogAlternate = $derived(OG_LOCALE[getLocale() === 'fr' ? 'en' : 'fr']);
 </script>
 
 <svelte:head>
@@ -54,17 +54,17 @@
   <meta name="description" content={description} />
   <meta name="robots" content={robots} />
   <link rel="canonical" href={url} />
-  <meta name="theme-color" content={THEME_COLOR} />
-  {#if alternates}
-    <link rel="alternate" hreflang="fr" href="{SITE_URL}{alternates.fr}" />
-    <link rel="alternate" hreflang="en" href="{SITE_URL}{alternates.en}" />
-    <link rel="alternate" hreflang="x-default" href="{SITE_URL}{alternates.fr}" />
+  {#if pair}
+    <link rel="alternate" hreflang="fr" href="{SITE_URL}{pair.fr}" />
+    <link rel="alternate" hreflang="en" href="{SITE_URL}{pair.en}" />
+    <link rel="alternate" hreflang="x-default" href="{SITE_URL}{pair.fr}" />
   {/if}
+  <meta name="theme-color" content={THEME_COLOR} />
 
   <meta property="og:site_name" content="Kotbo" />
   <meta property="og:type" content="website" />
-  <meta property="og:locale" content={OG_LOCALE[locale]} />
-  <meta property="og:locale:alternate" content={OG_LOCALE[locale === 'fr' ? 'en' : 'fr']} />
+  <meta property="og:locale" content={ogLocale} />
+  <meta property="og:locale:alternate" content={ogAlternate} />
   <meta property="og:url" content={url} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />

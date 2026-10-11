@@ -1,41 +1,63 @@
 /**
  * Les pages qui existent dans les deux langues, chacune à sa propre URL.
  *
- * Sur ces pages, c'est l'URL qui décide de la langue, pas le navigateur :
- * Googlebot exécute le JavaScript avec un navigateur réglé en `en-US`, et
- * l'ancienne bascule automatique lui faisait indexer l'accueil français en
- * anglais. Chaque version est prérendue dans sa langue, et les deux se citent
- * en `hreflang` (`Seo.svelte`, `static/sitemap.xml`).
- *
- * Les pages absentes d'ici (les pages légales) n'existent qu'en français et
- * gardent la bascule dans le navigateur.
+ * Ailleurs, la langue se choisit côté client sur une URL unique (voir
+ * `state.svelte.ts`). Ici l'URL la fixe : Google n'indexe qu'une langue par
+ * URL, et sans adresse anglaise propre, les recherches en anglais (« discord
+ * automod setup », « alt account checker »...) ne trouvaient que du français.
  */
 import type { Locale } from './state.svelte';
+import { FEATURES } from '$lib/data/features';
 
-// `/en/` avec sa barre finale : voir `routes/en/+page.ts`.
-export const HOME_ROUTE = { fr: '/', en: '/en/' } as const;
-export const STAFF_ROUTE = { fr: '/gestion-staff-discord', en: '/en/discord-staff-management' } as const;
+type Pair = Record<Locale, string>;
 
-export const LOCALIZED_ROUTES: ReadonlyArray<Readonly<Record<Locale, string>>> = [HOME_ROUTE, STAFF_ROUTE];
+export const HOME_ROUTE: Pair = { fr: '/', en: '/en' };
+
+/**
+ * La page « gestion du staff », hors du gabarit des fonctionnalités : elle a
+ * ses propres écrans du dashboard (`pages/StaffPage.svelte`).
+ */
+export const STAFF_ROUTE: Pair = { fr: '/gestion-staff-discord', en: '/en/discord-staff-management' };
+
+/** Chemins sans `base` ni barre finale, comme SvelteKit les sert. */
+export const BILINGUAL: Pair[] = [
+	HOME_ROUTE,
+	STAFF_ROUTE,
+	{ fr: '/fonctionnalites', en: '/en/features' },
+	...FEATURES.map((f) => ({ fr: featurePath(f.slug, 'fr'), en: featurePath(f.slug, 'en') })),
+];
+
+/**
+ * Le chemin de la page sans `base`. Au prérendu, `base` est relatif (« . »,
+ * « .. », `paths.relative`) : il ne préfixe alors pas `url.pathname`.
+ */
+export function routePath(pathname: string, base: string): string {
+	const stripped = base.startsWith('/') && pathname.startsWith(base) ? pathname.slice(base.length) : pathname;
+	return stripped || '/';
+}
 
 function normalize(path: string): string {
-	return path.length > 1 ? path.replace(/\/+$/, '') : path;
+	return path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path;
 }
 
-/** Les deux versions de la page, ou `null` si elle n'existe qu'en français. */
-export function alternatesOf(path: string): Readonly<Record<Locale, string>> | null {
-	const clean = normalize(path);
-	return LOCALIZED_ROUTES.find((route) => normalize(route.fr) === clean || normalize(route.en) === clean) ?? null;
+/** La paire de la page, si elle existe dans les deux langues. */
+export function pairOf(path: string): Pair | null {
+	const p = normalize(path);
+	return BILINGUAL.find((pair) => pair.fr === p || pair.en === p) ?? null;
 }
 
-/** La langue imposée par l'URL, ou `null` pour une page sans version anglaise. */
+/** La langue imposée par l'URL, ou `null` sur une page à URL unique. */
 export function localeOfPath(path: string): Locale | null {
-	const route = alternatesOf(path);
-	if (!route) return null;
-	return normalize(route.en) === normalize(path) ? 'en' : 'fr';
+	const pair = pairOf(path);
+	if (!pair) return null;
+	return pair.en === normalize(path) ? 'en' : 'fr';
 }
 
 /** L'accueil dans une langue : les ancres de la barre du haut y renvoient. */
 export function homeOf(locale: Locale): string {
 	return HOME_ROUTE[locale];
+}
+
+export function featurePath(slug: Record<Locale, string>, locale: Locale): string {
+	return locale === 'en' ? `/en/features/${slug.en}` : `/fonctionnalites/${slug.fr}`;
 }

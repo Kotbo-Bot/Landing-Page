@@ -2,18 +2,22 @@
  * Le site est intégralement prérendu (adapter-static) : il n'y a pas de
  * serveur par requête pour lire l'en-tête Accept-Language.
  *
- * Deux cas (voir `routes.ts`) :
- *
- * - une page qui existe dans les deux langues est prérendue dans la langue de
- *   son URL, et la garde. Un visiteur qui avait choisi l'autre langue est
- *   renvoyé vers l'autre URL ;
- * - une page qui n'existe qu'en français (les pages légales) bascule dans le
- *   navigateur, après hydratation, d'après le choix enregistré ou la langue
- *   du navigateur. D'où le bref instant en français avant l'anglais.
+ * Deux cas :
+ * - les pages bilingues (`routes.ts`) ont une URL par langue, et l'URL fait
+ *   foi. Un visiteur dont la langue préférée diffère est envoyé vers l'autre
+ *   URL ; les robots, eux, restent sur celle qu'ils ont demandée, pour que
+ *   chaque version soit indexée telle quelle ;
+ * - les autres pages (légales) n'ont qu'une URL : la langue s'y choisit côté
+ *   client, après hydratation, d'où le bref instant en français.
  */
+import { localeOfPath, pairOf, routePath } from './routes';
+
 export type Locale = 'fr' | 'en';
 
 const STORAGE_KEY = 'kotbo-locale';
+
+/** Les robots ne suivent pas les préférences : chaque URL garde sa langue. */
+const BOT_UA = /bot|crawl|spider|slurp|lighthouse|inspectiontool|headless|preview/i;
 
 let locale = $state<Locale>('fr');
 
@@ -21,25 +25,11 @@ export function getLocale(): Locale {
 	return locale;
 }
 
-/**
- * Pose la langue d'affichage sans rien enregistrer. Le layout l'appelle à
- * chaque rendu : au prérendu, toutes les pages partagent ce module, et une
- * page légale rendue après `/en` sortirait sinon en anglais.
- */
+/** Change la langue affichée sans la retenir comme préférence. */
 export function applyLocale(next: Locale): void {
 	locale = next;
 	if (typeof document !== 'undefined') {
 		document.documentElement.lang = next;
-	}
-}
-
-/** Enregistre un choix explicite du visiteur, pour ses visites suivantes. */
-export function rememberLocale(next: Locale): void {
-	if (typeof localStorage === 'undefined') return;
-	try {
-		localStorage.setItem(STORAGE_KEY, next);
-	} catch {
-		// Stockage indisponible (navigation privée, quota) : pas bloquant.
 	}
 }
 
@@ -48,37 +38,47 @@ export function setLocale(next: Locale): void {
 	rememberLocale(next);
 }
 
-function storedLocale(): Locale | null {
-	try {
-		const stored = localStorage.getItem(STORAGE_KEY);
-		return stored === 'fr' || stored === 'en' ? stored : null;
-	} catch {
-		// Stockage indisponible : aucun choix connu.
-		return null;
+/**
+ * Retient la langue choisie sans changer l'affichage : le sélecteur l'appelle
+ * juste avant de suivre le lien vers l'autre version de la page.
+ */
+export function rememberLocale(next: Locale): void {
+	if (typeof localStorage !== 'undefined') {
+		try {
+			localStorage.setItem(STORAGE_KEY, next);
+		} catch {
+			// Stockage indisponible (navigation privée, quota) : pas bloquant.
+		}
 	}
 }
 
-/**
- * À appeler une fois, côté client, depuis le layout racine.
- *
- * Renvoie la langue que le visiteur a choisie quand elle diffère de celle de
- * la page bilingue où il arrive : au layout de l'emmener à l'autre URL. Sur
- * ces pages, la langue du navigateur ne compte pas, seul un choix explicite :
- * c'est ce qui garde Googlebot (`en-US`) sur la version française.
- */
-export function initLocale(pageLocale: Locale | null): Locale | null {
-	if (typeof window === 'undefined') return null;
-	const stored = storedLocale();
+function preferredLocale(): Locale | null {
+	try {
+		const stored = localStorage.getItem(STORAGE_KEY);
+		if (stored === 'fr' || stored === 'en') return stored;
+	} catch {
+		// Stockage indisponible : on retombe sur la langue du navigateur.
+	}
+	if (BOT_UA.test(navigator.userAgent)) return null;
+	return navigator.language?.toLowerCase().startsWith('en') ? 'en' : 'fr';
+}
 
-	if (pageLocale) {
-		return stored && stored !== pageLocale ? stored : null;
+/** À appeler une fois, côté client, depuis le layout racine. */
+export function initLocale(base = ''): void {
+	if (typeof window === 'undefined') return;
+
+	const path = routePath(location.pathname, base);
+	const fixed = localeOfPath(path);
+	const wanted = preferredLocale();
+
+	if (fixed) {
+		applyLocale(fixed);
+		const pair = pairOf(path);
+		if (wanted && wanted !== fixed && pair) {
+			location.replace(`${base}${pair[wanted]}${location.search}${location.hash}`);
+		}
+		return;
 	}
 
-	if (stored) {
-		applyLocale(stored);
-		return null;
-	}
-	const browserLang = navigator.language?.toLowerCase() ?? '';
-	applyLocale(browserLang.startsWith('en') ? 'en' : 'fr');
-	return null;
+	applyLocale(wanted ?? 'fr');
 }

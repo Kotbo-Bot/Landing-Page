@@ -1,15 +1,12 @@
 import type { Handle } from '@sveltejs/kit';
-import { base } from '$app/paths';
 import { localeOfPath } from '$lib/i18n/routes';
 
 /**
- * L'attribut `lang` de `<html>` suit l'URL dès le HTML prérendu : c'est lui
- * que lisent les moteurs et les lecteurs d'écran, avant tout JavaScript.
+ * La langue du document au prérendu : `en` sur les pages anglaises (`/en`...),
+ * `fr` partout ailleurs. Google lit cet attribut avant d'exécuter le moindre
+ * script.
  */
 export const handle: Handle = ({ event, resolve }) => {
-	const path = event.url.pathname.slice(base.length) || '/';
-	const lang = localeOfPath(path) ?? 'fr';
-	return resolve(event, {
-		transformPageChunk: ({ html }) => html.replace('%lang%', lang),
-	});
+	const lang = localeOfPath(event.url.pathname) ?? 'fr';
+	return resolve(event, { transformPageChunk: ({ html }) => html.replace('%lang%', lang) });
 };

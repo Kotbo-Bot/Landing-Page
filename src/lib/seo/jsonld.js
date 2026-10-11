@@ -24,16 +24,19 @@ const APP_ID = `${SITE}/#software`;
 
 /** Les URL de chaque page, alignées sur `LOCALIZED_ROUTES` (`i18n/routes.ts`). */
 const PATHS = {
-  home: { fr: '/', en: '/en/' },
+  home: { fr: '/', en: '/en' },
   staff: { fr: '/gestion-staff-discord', en: '/en/discord-staff-management' },
 };
 
 const LANG = { fr: 'fr-FR', en: 'en-US' };
 
+/** Les graphies sous lesquelles on cherche Kotbo sans le connaître. */
+const ALTERNATE_NAMES = ['Kotbot', 'Kot bot', 'Kotbo bot'];
+
 const TEXT = {
   fr: {
     appDescription:
-      "Bot Discord français et dashboard web pour gérer une communauté et son équipe : gestion du staff (hiérarchies, absences, réunions, évaluations, recrutement), modération avec historique des sanctions, doubles comptes, tickets, niveaux et économie.",
+      "Bot Discord français tout-en-un et dashboard web pour gérer une communauté et son équipe : modération, AutoMod, anti-raid, logs, détection des doubles comptes, tickets, gestion du staff (hiérarchies, absences, réunions, évaluations, recrutement), niveaux et économie.",
     features: [
       'Gestion du staff : hiérarchies, grades, annuaire',
       'Absences du staff avec validation par un supérieur',
@@ -42,9 +45,10 @@ const TEXT = {
       'Recrutement par formulaire de candidature',
       'Discipline staff et notes du manager',
       'Sanctions avec motif, auteur et preuves',
-      'Doubles comptes',
+      'Détection des doubles comptes',
       'Appels de bannissement',
-      'AutoMod et protection anti-raid',
+      'AutoMod, protection anti-raid et captcha',
+      'Logs Discord',
       'Tickets support',
       'Niveaux, économie et événements',
       'Serveur MCP pour agents IA',
@@ -56,7 +60,7 @@ const TEXT = {
   },
   en: {
     appDescription:
-      'French Discord bot and web dashboard to run a community and its team: staff management (hierarchies, absences, meetings, reviews, recruitment), moderation with sanction history, alt accounts, tickets, levels and economy.',
+      'All-in-one French Discord bot and web dashboard to run a community and its team: moderation, AutoMod, anti-raid, logs, alt account detection, tickets, staff management (hierarchies, absences, meetings, reviews, recruitment), levels and economy.',
     features: [
       'Staff management: hierarchies, ranks, directory',
       'Staff absences approved by a superior',
@@ -65,9 +69,10 @@ const TEXT = {
       'Recruitment through application forms',
       'Staff discipline and manager notes',
       'Sanctions with reason, author and evidence',
-      'Alt accounts',
+      'Alt account detection',
       'Ban appeals',
-      'AutoMod and anti-raid protection',
+      'AutoMod, anti-raid protection and captcha',
+      'Discord logs',
       'Support tickets',
       'Levels, economy and events',
       'MCP server for AI agents',
@@ -91,6 +96,7 @@ function organization(locale) {
     areaServed: 'FR',
     knowsLanguage: [LANG.fr, LANG.en],
     sameAs: ['https://top.gg/bot/1481651387317354598', 'https://docs.kotbo.fr/'],
+    alternateName: ALTERNATE_NAMES,
     inLanguage: LANG[locale],
   };
 }
@@ -121,6 +127,7 @@ function software(locale) {
       url: `${SITE}${PATHS.home[locale]}#pricing`,
     },
     publisher: { '@id': ORG_ID },
+    alternateName: ALTERNATE_NAMES,
   };
 }
 

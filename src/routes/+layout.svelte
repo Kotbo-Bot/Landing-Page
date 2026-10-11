@@ -2,30 +2,25 @@
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { base } from '$app/paths';
-	import { goto } from '$app/navigation';
-	import { onMount, untrack } from 'svelte';
+	import { page } from '$app/state';
+	import { onMount } from 'svelte';
 	import { applyLocale, initLocale } from '$lib/i18n/state.svelte';
-	import { alternatesOf } from '$lib/i18n/routes';
+	import { localeOfPath, routePath } from '$lib/i18n/routes';
 
-	let { children, data } = $props();
+	let { children } = $props();
 
-	// Au prérendu comme à l'hydratation, la page se rend dans la langue de son
-	// URL. Une page seulement française repart du français : le module de
-	// langue est partagé par toutes les pages prérendues.
-	applyLocale(untrack(() => data.pageLocale) ?? 'fr');
+	const pathLocale = () => localeOfPath(routePath(page.url.pathname, base));
 
-	// Navigation interne entre `/` et `/en` : la langue suit l'URL.
+	// Sur une page bilingue, l'URL fixe la langue dès le prérendu : /en sort en
+	// anglais dans le HTML, celui que Google indexe. Suivi aussi lors des
+	// navigations internes, où le layout reste monté.
+	applyLocale(pathLocale() ?? 'fr');
 	$effect.pre(() => {
-		if (data.pageLocale) applyLocale(data.pageLocale);
+		const fixed = pathLocale();
+		if (fixed) applyLocale(fixed);
 	});
 
-	onMount(() => {
-		const wanted = initLocale(data.pageLocale);
-		const route = alternatesOf(data.path);
-		if (wanted && route) {
-			goto(`${base}${route[wanted]}${location.hash}`, { replaceState: true });
-		}
-	});
+	onMount(() => initLocale(base));
 </script>
 
 <svelte:head>

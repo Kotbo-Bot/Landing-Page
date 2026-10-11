@@ -14,14 +14,11 @@
    *
    * Chaque zone jouable se termine sur le même bouton d'invitation, qui reprend
    * le nom du serveur monté dans le héros et en emporte les réglages.
-   *
-   * Rendue par `/` en français et par `/en` en anglais (`i18n/routes.ts`).
    */
   import { onMount } from 'svelte';
   import { homeJsonLd } from '$lib/seo/jsonld.js';
-  import { homeOf } from '$lib/i18n/routes';
   import { track, trackOnView, inviteUrl } from '$lib/funnel';
-  import { SALES_URL, TRIAL_DAYS } from '$lib/product';
+  import { SALES_URL } from '$lib/product';
   import { getLocale } from '$lib/i18n/state.svelte';
   import Seo from '$lib/seo/Seo.svelte';
   import { builder, encodeKit } from '$lib/playground/kit.svelte';
@@ -43,22 +40,25 @@
   import Pricing from '$lib/components/Pricing.svelte';
   import TrialCta from '$lib/components/TrialCta.svelte';
 
-  // Le titre porte « bot Discord » et « staff » : c'est ce que tapent ceux qui
-  // cherchent un outil pour leur équipe sans connaître Kotbo, et ce qui le
-  // distingue des bots de modération. Il est aussi le titre bleu de l'embed
-  // Discord. La description reste sous 160 signes pour ne pas être coupée.
+  // Le titre porte « bot Discord » et ses déclinaisons (tout-en-un, français,
+  // dashboard) : c'est ce que tapent ceux qui cherchent Kotbo sans le
+  // connaître. Il est aussi le titre bleu de l'embed Discord. Servi en français
+  // sur `/` et en anglais sur `/en` (lib/i18n/routes.ts).
   const TEXT = {
     fr: {
-      title: 'Kotbo : bot Discord de gestion du staff et de modération',
-      description: `Bot Discord français et dashboard web : staff (absences, évaluations, recrutement), sanctions, tickets et niveaux au même endroit. ${TRIAL_DAYS} jours d'essai.`,
+      title: 'Kotbo, bot Discord français tout-en-un avec dashboard',
+      description:
+        "Bot Discord tout-en-un : modération, AutoMod, anti-raid, logs, tickets, niveaux et staff, réglés depuis un dashboard web. Essaie-le ici, puis ajoute-le.",
+      path: '/',
     },
     en: {
-      title: 'Kotbo: Discord bot for staff management and moderation',
-      description: `French Discord bot with a web dashboard: staff (absences, reviews, recruitment), sanctions, tickets and levels in one place. ${TRIAL_DAYS}-day trial.`,
+      title: 'Kotbo, the all-in-one Discord bot with a dashboard',
+      description:
+        'All-in-one Discord bot: moderation, AutoMod, anti-raid, logs, tickets, levels and staff, set up from a web dashboard. Try it here, then add it.',
+      path: '/en',
     },
   };
-  const locale = $derived(getLocale());
-  const t = $derived(TEXT[locale]);
+  const t = $derived(TEXT[getLocale()]);
 
   /** Les zones reprises de la v1 reçoivent leur lien tout fait, réglages compris. */
   const kit = $derived(encodeKit(builder.kit));
@@ -76,7 +76,8 @@
   });
 </script>
 
-<Seo title={t.title} description={t.description} path={homeOf(locale)} jsonLd={homeJsonLd(locale)} />
+<Seo title={t.title} description={t.description} path={t.path} jsonLd={homeJsonLd(getLocale())} />
+
 
 <div id="top" class="relative min-h-screen text-gray-900">
   <SiteNav />

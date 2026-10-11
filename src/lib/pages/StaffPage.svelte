@@ -102,6 +102,7 @@
         title: 'Chaque membre a un dossier.',
         intro: 'La gestion du staff ne s’arrête pas à l’équipe : les décisions qu’elle prend sur les membres sont gardées, avec leurs preuves.',
         caption: 'Aperçu de démonstration : une sanction et son dossier.',
+        more: 'Comment la détection fonctionne',
         items: [
           {
             title: 'Casier des sanctions',
@@ -109,7 +110,8 @@
           },
           {
             title: 'Doubles comptes',
-            body: 'Le staff relie un compte principal à ses doubles comptes, avec le motif. Un membre sanctionné qui revient sous un autre pseudo ne repart pas de zéro.',
+            body: 'Kotbo compare chaque arrivant aux membres présents et signale les ressemblances. Le staff lie les comptes ou écarte l’alerte : un membre sanctionné qui revient sous un autre pseudo ne repart pas de zéro.',
+            link: '/fonctionnalites/detection-doubles-comptes',
           },
           {
             title: 'Appels de bannissement',
@@ -199,6 +201,7 @@
         title: 'Every member has a file.',
         intro: "Staff management doesn't stop at the team: the decisions it makes about members are kept, with their evidence.",
         caption: 'Demo preview: a sanction and its file.',
+        more: 'How detection works',
         items: [
           {
             title: 'Sanction records',
@@ -206,7 +209,8 @@
           },
           {
             title: 'Alt accounts',
-            body: 'Staff link a main account to its alts, with the reason. A sanctioned member who comes back under another name does not start from scratch.',
+            body: 'Kotbo compares each newcomer with current members and flags resemblances. Staff link the accounts or dismiss the alert: a sanctioned member who comes back under another name does not start from scratch.',
+            link: '/en/features/alt-account-detection',
           },
           {
             title: 'Ban appeals',
@@ -326,6 +330,14 @@
               <li use:reveal={{ direction: 'up' }}>
                 <h3 class="font-headline text-xl font-extrabold text-gray-900">{item.title}</h3>
                 <p class="mt-2 leading-relaxed text-gray-700">{item.body}</p>
+                {#if 'link' in item}
+                  <a
+                    href="{base}{item.link}"
+                    class="mt-2 inline-flex min-h-11 items-center gap-1.5 font-bold text-indigo-600 underline decoration-indigo-200 underline-offset-4 hover:decoration-indigo-600"
+                  >
+                    {t.security.more}<span aria-hidden="true">→</span>
+                  </a>
+                {/if}
               </li>
             {/each}
           </ul>

@@ -105,7 +105,7 @@ export const STAFF_FAQ = {
     },
     {
       q: 'Kotbo gère-t-il les doubles comptes ?',
-      a: "Oui, avec le module Doubles comptes. Le staff relie un compte principal à ses doubles comptes, avec le motif de la liaison, et retrouve à tout moment tous les comptes liés d'un membre. Un membre sanctionné qui revient sous un autre pseudo n'efface plus son passé.",
+      a: "Oui. Kotbo compare chaque nouvel arrivant aux membres déjà présents (profil, invitations, style d'écriture, horaires, vocal, et appareil avec la vérification par lien) et signale les ressemblances au staff. Le staff tranche : il lie les comptes ou écarte l'alerte, et les comptes liés se consultent ensemble. Un membre sanctionné qui revient sous un autre pseudo n'efface plus son passé.",
     },
     {
       q: 'Combien coûte la gestion du staff avec Kotbo ?',
@@ -135,7 +135,7 @@ export const STAFF_FAQ = {
     },
     {
       q: 'Does Kotbo handle alt accounts?',
-      a: "Yes, with the Alt accounts module. Staff link a main account to its alts, with the reason for the link, and can see every account linked to a member at any time. A sanctioned member who comes back under another name no longer starts with a clean slate.",
+      a: "Yes. Kotbo compares every newcomer with the members already there (profile, invites, writing style, activity hours, voice, and device with link verification) and flags resemblances to staff. Staff decide: they link the accounts or dismiss the alert, and linked accounts are reviewed together. A sanctioned member who comes back under another name no longer starts with a clean slate.",
     },
     {
       q: 'How much does staff management with Kotbo cost?',
