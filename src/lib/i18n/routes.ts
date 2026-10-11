@@ -1,0 +1,49 @@
+/**
+ * Les pages qui existent dans les deux langues, chacune à sa propre URL.
+ *
+ * Ailleurs, la langue se choisit côté client sur une URL unique (voir
+ * `state.svelte.ts`). Ici l'URL la fixe : Google n'indexe qu'une langue par
+ * URL, et sans adresse anglaise propre, les recherches en anglais (« discord
+ * automod setup », « alt account checker »...) ne trouvaient que du français.
+ */
+import type { Locale } from './state.svelte';
+import { FEATURES } from '$lib/data/features';
+
+type Pair = Record<Locale, string>;
+
+/** Chemins sans `base` ni barre finale, comme SvelteKit les sert. */
+export const BILINGUAL: Pair[] = [
+	{ fr: '/', en: '/en' },
+	{ fr: '/fonctionnalites', en: '/en/features' },
+	...FEATURES.map((f) => ({ fr: featurePath(f.slug, 'fr'), en: featurePath(f.slug, 'en') })),
+];
+
+/**
+ * Le chemin de la page sans `base`. Au prérendu, `base` est relatif (« . »,
+ * « .. », `paths.relative`) : il ne préfixe alors pas `url.pathname`.
+ */
+export function routePath(pathname: string, base: string): string {
+	const stripped = base.startsWith('/') && pathname.startsWith(base) ? pathname.slice(base.length) : pathname;
+	return stripped || '/';
+}
+
+function normalize(path: string): string {
+	return path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path;
+}
+
+/** La paire de la page, si elle existe dans les deux langues. */
+export function pairOf(path: string): Pair | null {
+	const p = normalize(path);
+	return BILINGUAL.find((pair) => pair.fr === p || pair.en === p) ?? null;
+}
+
+/** La langue imposée par l'URL, ou `null` sur une page à URL unique. */
+export function localeOfPath(path: string): Locale | null {
+	const pair = pairOf(path);
+	if (!pair) return null;
+	return pair.en === normalize(path) ? 'en' : 'fr';
+}
+
+export function featurePath(slug: Record<Locale, string>, locale: Locale): string {
+	return locale === 'en' ? `/en/features/${slug.en}` : `/fonctionnalites/${slug.fr}`;
+}
