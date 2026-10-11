@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Seo from '$lib/seo/Seo.svelte';
   /**
    * Cookies et stockage local.
    *
@@ -307,11 +308,7 @@
   ]);
 </script>
 
-<svelte:head>
-  <title>Cookies et stockage local | Kotbo</title>
-  <meta name="description" content={t.metaDescription} />
-  <meta name="robots" content="index, follow" />
-</svelte:head>
+<Seo title="Cookies et stockage local | Kotbo" description={t.metaDescription} path="/cookies" />
 
 <LegalPageLayout
   title={t.title}

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Seo from '$lib/seo/Seo.svelte';
   /**
    * Mentions légales.
    *
@@ -225,12 +226,7 @@
   ]);
 </script>
 
-<svelte:head>
-  <title>Mentions légales | Kotbo</title>
-  <meta name="description" content={t.metaDescription} />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://kotbo.fr/mentions-legales" />
-</svelte:head>
+<Seo title="Mentions légales | Kotbo" description={t.metaDescription} path="/mentions-legales" />
 
 <LegalPageLayout
   title={t.title}

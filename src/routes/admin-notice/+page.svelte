@@ -1,10 +1,13 @@
 <script lang="ts">
+  import Seo from '$lib/seo/Seo.svelte';
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
 
   const TEXT = {
     fr: {
       pageTitle: "Modèle d'information des membres | Kotbo",
+      metaDescription:
+        "Modèle de texte à publier sur ton serveur Discord pour informer les membres des données que Kotbo traite, selon les modules activés.",
       back: '← Retour à Kotbo',
       h1: "Modèle d'information des membres",
       intro: "Ce modèle doit être adapté aux modules réellement activés, aux durées retenues par le serveur et à l'identité de son administrateur.",
@@ -32,6 +35,8 @@
     },
     en: {
       pageTitle: 'Member Information Template | Kotbo',
+      metaDescription:
+        'Template to post on your Discord server so members know which data Kotbo processes, depending on the modules you enabled.',
       back: '← Back to Kotbo',
       h1: 'Member information template',
       intro: 'This template must be adapted to the modules actually enabled, the retention periods chosen by the server, and the identity of its administrator.',
@@ -62,7 +67,7 @@
   const t = $derived(TEXT[getLocale()]);
 </script>
 
-<svelte:head><title>{t.pageTitle}</title></svelte:head>
+<Seo title={t.pageTitle} description={t.metaDescription} path="/admin-notice" />
 
 <main class="min-h-screen bg-gray-50 text-gray-800 py-14 px-6">
   <article class="max-w-3xl mx-auto bg-white border border-gray-200 rounded-3xl p-7 md:p-12 shadow-sm prose-legal">
