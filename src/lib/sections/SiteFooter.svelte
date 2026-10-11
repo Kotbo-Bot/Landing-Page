@@ -6,12 +6,17 @@
    */
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
-  import { CONTACT_EMAIL, DISCORD_URL, DOCS_URL, STATUS_URL } from '$lib/product';
+  import { featurePath } from '$lib/i18n/routes';
+  import { FEATURES } from '$lib/data/features';
+  import { CONTACT_EMAIL, DISCORD_URL, DOCS_URL, STATUS_URL, TOPGG_VOTE_URL } from '$lib/product';
 
   const TEXT = {
     fr: {
       tagline: 'Le centre de contrôle des communautés Discord.',
       product: 'Le produit',
+      features: 'Fonctionnalités',
+      allFeatures: 'Le bot Discord tout-en-un',
+      vote: 'Voter pour Kotbo sur Top.gg',
       legal: 'Le légal',
       discord: 'Serveur Discord',
       docs: 'Documentation',
@@ -39,6 +44,9 @@
     en: {
       tagline: 'The control center for Discord communities.',
       product: 'Product',
+      features: 'Features',
+      allFeatures: 'The all-in-one Discord bot',
+      vote: 'Vote for Kotbo on Top.gg',
       legal: 'Legal',
       discord: 'Discord server',
       docs: 'Documentation',
@@ -65,6 +73,7 @@
   };
 
   const t = $derived(TEXT[getLocale()]);
+  const locale = $derived(getLocale());
 
   /**
    * Chaque badge renvoie à la page qui le prouve. « Conforme » est une
@@ -96,7 +105,7 @@
 <!-- Aplat encre, comme la soirée qui dérape : la page finit sur un registre
      franc, et le nom de Kotbo en très gros corps la signe. -->
 <footer class="bg-gray-950 text-white">
-  <div class="mx-auto grid max-w-360 gap-10 px-4 pt-16 pb-14 sm:px-8 md:grid-cols-[1.4fr_1fr_1fr]">
+  <div class="mx-auto grid max-w-360 gap-10 px-4 pt-16 pb-14 sm:px-8 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
     <div>
       <p class="flex items-center gap-2.5">
         <img src="{base}/favicon.svg" alt="" width="36" height="36" class="h-9 w-9" />
@@ -111,6 +120,16 @@
         <li><a class="inline-flex min-h-9 items-center hover:text-indigo-200" href={DISCORD_URL} target="_blank" rel="noopener">{t.discord}</a></li>
         <li><a class="inline-flex min-h-9 items-center hover:text-indigo-200" href={DOCS_URL} target="_blank" rel="noopener">{t.docs}</a></li>
         <li><a class="inline-flex min-h-9 items-center hover:text-indigo-200" href={STATUS_URL} target="_blank" rel="noopener">{t.status}</a></li>
+        <li><a class="inline-flex min-h-9 items-center hover:text-indigo-200" href={TOPGG_VOTE_URL} target="_blank" rel="noopener">{t.vote}</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-sm font-semibold text-gray-400">{t.features}</p>
+      <ul class="mt-3 space-y-1 text-sm font-medium text-gray-100">
+        <li><a class="inline-flex min-h-9 items-center hover:text-indigo-200" href="{base}{locale === 'en' ? '/en/features' : '/fonctionnalites'}">{t.allFeatures}</a></li>
+        {#each FEATURES as feature (feature.key)}
+          <li><a class="inline-flex min-h-9 items-center hover:text-indigo-200" href="{base}{featurePath(feature.slug, locale)}">{feature.text[locale].name}</a></li>
+        {/each}
       </ul>
     </div>
     <div>
