@@ -101,7 +101,8 @@
       disclaimer:
         "jours d'essai, une fois par serveur. Configurez tout avant de payer : les modules se mettent en place dès l'installation et s'activent quand vous choisissez une offre. Prix hors taxes.",
       // Le prix mensuel le plus bas et le plus haut sont recopiés dans
-      // `offers` de src/lib/seo/home-jsonld.json : les modifier ensemble.
+      // `offers` de src/lib/seo/jsonld.js, et tous les montants dans
+      // static/llms.txt : les modifier ensemble.
       tiers: [
         {
           key: 'STARTER',

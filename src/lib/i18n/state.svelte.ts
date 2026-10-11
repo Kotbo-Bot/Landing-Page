@@ -35,6 +35,14 @@ export function applyLocale(next: Locale): void {
 
 export function setLocale(next: Locale): void {
 	applyLocale(next);
+	rememberLocale(next);
+}
+
+/**
+ * Retient la langue choisie sans changer l'affichage : le sélecteur l'appelle
+ * juste avant de suivre le lien vers l'autre version de la page.
+ */
+export function rememberLocale(next: Locale): void {
 	if (typeof localStorage !== 'undefined') {
 		try {
 			localStorage.setItem(STORAGE_KEY, next);

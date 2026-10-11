@@ -16,7 +16,7 @@
    * le nom du serveur monté dans le héros et en emporte les réglages.
    */
   import { onMount } from 'svelte';
-  import homeJsonLd from '$lib/seo/home-jsonld.json';
+  import { homeJsonLd } from '$lib/seo/jsonld.js';
   import { track, trackOnView, inviteUrl } from '$lib/funnel';
   import { SALES_URL } from '$lib/product';
   import { getLocale } from '$lib/i18n/state.svelte';
@@ -76,13 +76,8 @@
   });
 </script>
 
-<Seo title={t.title} description={t.description} path={t.path} />
+<Seo title={t.title} description={t.description} path={t.path} jsonLd={homeJsonLd(getLocale())} />
 
-<svelte:head>
-  <!-- Son empreinte est autorisée par la CSP (svelte.config.js) : le contenu
-       vit dans le JSON pour que les deux restent identiques. -->
-  {@html `<script type="application/ld+json">${JSON.stringify(homeJsonLd)}</script>`}
-</svelte:head>
 
 <div id="top" class="relative min-h-screen text-gray-900">
   <SiteNav />

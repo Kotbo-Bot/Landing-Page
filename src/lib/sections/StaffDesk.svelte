@@ -13,7 +13,9 @@
    * deux colonnes. La hiérarchie des tailles est celle de l'usage.
    */
   import { reveal } from '$lib/actions/reveal';
+  import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
+  import { STAFF_ROUTE } from '$lib/i18n/routes';
   import { ktb } from '$lib/playground/discord/theme';
   import MockProfile from '$lib/components/mockups/MockProfile.svelte';
   import MockStaff from '$lib/components/mockups/MockStaff.svelte';
@@ -32,6 +34,7 @@
       staff: {
         title: 'Une équipe qu’on voit travailler',
         body: 'Grades, activité, périodes de test et avertissements des modérateurs, dans la même vue. Plus besoin de demander qui fait quoi.',
+        more: 'Absences, recrutement, évaluations : toute la gestion du staff',
       },
       sanctions: {
         title: 'Des sanctions qui ont un dossier',
@@ -51,6 +54,7 @@
       staff: {
         title: 'A team you can see working',
         body: 'Ranks, activity, trial periods and warnings for your moderators, in one view. No more asking who does what.',
+        more: 'Absences, recruitment, reviews: all of staff management',
       },
       sanctions: {
         title: 'Sanctions that come with a file',
@@ -104,6 +108,12 @@
           <img src={ktb('mod')} alt="" width="28" height="28" class="h-7 w-7" />{t.staff.title}
         </h3>
         <p class="mt-2 max-w-xl leading-relaxed text-gray-700">{t.staff.body}</p>
+        <a
+          href="{base}{STAFF_ROUTE[getLocale()]}"
+          class="mt-3 inline-flex min-h-11 items-center gap-1.5 font-bold text-indigo-600 underline decoration-indigo-200 underline-offset-4 hover:decoration-indigo-600"
+        >
+          {t.staff.more}<span aria-hidden="true">→</span>
+        </a>
       </div>
       <div use:reveal={{ direction: 'up', delay: 120 }} class="lg:mt-24">
         <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white">

@@ -11,9 +11,18 @@ import { FEATURES } from '$lib/data/features';
 
 type Pair = Record<Locale, string>;
 
+export const HOME_ROUTE: Pair = { fr: '/', en: '/en' };
+
+/**
+ * La page « gestion du staff », hors du gabarit des fonctionnalités : elle a
+ * ses propres écrans du dashboard (`pages/StaffPage.svelte`).
+ */
+export const STAFF_ROUTE: Pair = { fr: '/gestion-staff-discord', en: '/en/discord-staff-management' };
+
 /** Chemins sans `base` ni barre finale, comme SvelteKit les sert. */
 export const BILINGUAL: Pair[] = [
-	{ fr: '/', en: '/en' },
+	HOME_ROUTE,
+	STAFF_ROUTE,
 	{ fr: '/fonctionnalites', en: '/en/features' },
 	...FEATURES.map((f) => ({ fr: featurePath(f.slug, 'fr'), en: featurePath(f.slug, 'en') })),
 ];
@@ -42,6 +51,11 @@ export function localeOfPath(path: string): Locale | null {
 	const pair = pairOf(path);
 	if (!pair) return null;
 	return pair.en === normalize(path) ? 'en' : 'fr';
+}
+
+/** L'accueil dans une langue : les ancres de la barre du haut y renvoient. */
+export function homeOf(locale: Locale): string {
+	return HOME_ROUTE[locale];
 }
 
 export function featurePath(slug: Record<Locale, string>, locale: Locale): string {

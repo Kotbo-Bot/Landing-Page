@@ -10,10 +10,14 @@
    *
    * L'image est rendue par `motion/` (`bun run render:og`) : ses dimensions
    * sont annoncées ici pour que les réseaux la placent sans la télécharger.
+   *
+   * Le JSON-LD d'une page vient de `jsonld.js`, seul contenu en ligne que la
+   * CSP autorise (empreintes calculées par `svelte.config.js`).
    */
   import { getLocale, type Locale } from '$lib/i18n/state.svelte';
   import { pairOf } from '$lib/i18n/routes';
   import { SITE_URL } from '$lib/product';
+  import { jsonLdString } from './jsonld.js';
 
   interface Props {
     title: string;
@@ -21,9 +25,11 @@
     /** Chemin de la page, `/` pour l'accueil. Sert à l'URL canonique. */
     path: string;
     robots?: string;
+    /** Données structurées de la page, construites par `jsonld.js`. */
+    jsonLd?: object;
   }
 
-  let { title, description, path, robots = 'index, follow, max-image-preview:large' }: Props = $props();
+  let { title, description, path, robots = 'index, follow, max-image-preview:large', jsonLd }: Props = $props();
 
   const TEXT = {
     fr: { imageAlt: 'Kotbo : ton serveur Discord, géré au même endroit. Aperçu du dashboard.' },
@@ -74,4 +80,8 @@
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={IMAGE} />
   <meta name="twitter:image:alt" content={t.imageAlt} />
+
+  {#if jsonLd}
+    {@html `<script type="application/ld+json">${jsonLdString(jsonLd)}</script>`}
+  {/if}
 </svelte:head>

@@ -6,7 +6,7 @@
    */
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
-  import { featurePath } from '$lib/i18n/routes';
+  import { STAFF_ROUTE, featurePath } from '$lib/i18n/routes';
   import { FEATURES } from '$lib/data/features';
   import { CONTACT_EMAIL, DISCORD_URL, DOCS_URL, STATUS_URL, TOPGG_VOTE_URL } from '$lib/product';
 
@@ -18,6 +18,7 @@
       allFeatures: 'Le bot Discord tout-en-un',
       vote: 'Voter pour Kotbo sur Top.gg',
       legal: 'Le légal',
+      staff: 'Gestion du staff Discord',
       discord: 'Serveur Discord',
       docs: 'Documentation',
       status: 'État des services',
@@ -48,6 +49,7 @@
       allFeatures: 'The all-in-one Discord bot',
       vote: 'Vote for Kotbo on Top.gg',
       legal: 'Legal',
+      staff: 'Discord staff management',
       discord: 'Discord server',
       docs: 'Documentation',
       status: 'Service status',
@@ -127,6 +129,7 @@
       <p class="text-sm font-semibold text-gray-400">{t.features}</p>
       <ul class="mt-3 space-y-1 text-sm font-medium text-gray-100">
         <li><a class="inline-flex min-h-9 items-center hover:text-indigo-200" href="{base}{locale === 'en' ? '/en/features' : '/fonctionnalites'}">{t.allFeatures}</a></li>
+        <li><a class="inline-flex min-h-9 items-center hover:text-indigo-200" href="{base}{STAFF_ROUTE[locale]}">{t.staff}</a></li>
         {#each FEATURES as feature (feature.key)}
           <li><a class="inline-flex min-h-9 items-center hover:text-indigo-200" href="{base}{featurePath(feature.slug, locale)}">{feature.text[locale].name}</a></li>
         {/each}
