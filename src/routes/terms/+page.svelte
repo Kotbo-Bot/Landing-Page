@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Seo from '$lib/seo/Seo.svelte';
   import { base } from '$app/paths';
   import LegalPageLayout from '$lib/components/LegalPageLayout.svelte';
   import { getLocale } from '$lib/i18n/state.svelte';
@@ -270,11 +271,7 @@
   ]);
 </script>
 
-<svelte:head>
-  <title>Conditions Générales d'Utilisation | Kotbo</title>
-  <meta name="description" content={t.metaDescription} />
-  <meta name="robots" content="index, follow" />
-</svelte:head>
+<Seo title="Conditions Générales d'Utilisation | Kotbo" description={t.metaDescription} path="/terms" />
 
 <LegalPageLayout
   title={t.title}

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Seo from '$lib/seo/Seo.svelte';
   import { base } from '$app/paths';
   import LegalPageLayout from '$lib/components/LegalPageLayout.svelte';
   import { getLocale } from '$lib/i18n/state.svelte';
@@ -1000,11 +1001,7 @@
   ]);
 </script>
 
-<svelte:head>
-  <title>Politique de Confidentialité | Kotbo</title>
-  <meta name="description" content="Politique de confidentialité et protection des données personnelles du bot Discord Kotbo : données collectées, journalisation des messages, vérification de sécurité, durées de conservation et droits RGPD." />
-  <meta name="robots" content="index, follow" />
-</svelte:head>
+<Seo title="Politique de Confidentialité | Kotbo" description="Politique de confidentialité et protection des données personnelles du bot Discord Kotbo : données collectées, journalisation des messages, vérification de sécurité, durées de conservation et droits RGPD." path="/privacy" />
 
 <LegalPageLayout
   title={t.title}

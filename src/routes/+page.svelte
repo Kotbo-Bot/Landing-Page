@@ -19,6 +19,8 @@
   import homeJsonLd from '$lib/seo/home-jsonld.json';
   import { track, trackOnView, inviteUrl } from '$lib/funnel';
   import { SALES_URL } from '$lib/product';
+  import { getLocale } from '$lib/i18n/state.svelte';
+  import Seo from '$lib/seo/Seo.svelte';
   import { builder, encodeKit } from '$lib/playground/kit.svelte';
 
   import SiteNav from '$lib/sections/SiteNav.svelte';
@@ -38,6 +40,22 @@
   import Pricing from '$lib/components/Pricing.svelte';
   import TrialCta from '$lib/components/TrialCta.svelte';
 
+  // Le titre porte « bot Discord » : c'est ce que tapent ceux qui cherchent
+  // Kotbo sans le connaître. Il est aussi le titre bleu de l'embed Discord.
+  const TEXT = {
+    fr: {
+      title: 'Kotbo, le bot Discord pour gérer ton serveur depuis un dashboard',
+      description:
+        'Modération, tickets, staff, niveaux et économie : un bot Discord piloté depuis un dashboard web. Essaie-le sur la page, puis ajoute-le à ton serveur.',
+    },
+    en: {
+      title: 'Kotbo, the Discord bot to run your server from a dashboard',
+      description:
+        'Moderation, tickets, staff, levels and economy: one Discord bot, run from a web dashboard. Try it on the page, then add it to your server.',
+    },
+  };
+  const t = $derived(TEXT[getLocale()]);
+
   /** Les zones reprises de la v1 reçoivent leur lien tout fait, réglages compris. */
   const kit = $derived(encodeKit(builder.kit));
   const links = $derived({
@@ -54,23 +72,9 @@
   });
 </script>
 
+<Seo title={t.title} description={t.description} path="/" />
+
 <svelte:head>
-  <title>Kotbo, monte ton serveur Discord et gère-le au même endroit</title>
-  <meta
-    name="description"
-    content="Monte ton serveur Discord directement sur la page, règle une soirée qui dérape, tape les commandes de Kotbo et fabrique ta carte de rang. Puis ajoute le bot : l'installation reprend tes choix."
-  />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
-  <link rel="canonical" href="https://kotbo.fr/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:locale" content="fr_FR" />
-  <meta property="og:site_name" content="Kotbo" />
-  <meta property="og:title" content="Kotbo, monte ton serveur Discord et gère-le au même endroit" />
-  <meta
-    property="og:description"
-    content="Modération, tickets, staff, niveaux et économie dans un seul bot. Essaie-le sur la page avant de l'ajouter."
-  />
-  <meta property="og:url" content="https://kotbo.fr/" />
   <!-- Son empreinte est autorisée par la CSP (svelte.config.js) : le contenu
        vit dans le JSON pour que les deux restent identiques. -->
   {@html `<script type="application/ld+json">${JSON.stringify(homeJsonLd)}</script>`}

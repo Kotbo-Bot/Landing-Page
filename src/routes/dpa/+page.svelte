@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Seo from '$lib/seo/Seo.svelte';
   import { base } from '$app/paths';
   import LegalPageLayout from '$lib/components/LegalPageLayout.svelte';
   import { getLocale } from '$lib/i18n/state.svelte';
@@ -405,11 +406,7 @@
   ]);
 </script>
 
-<svelte:head>
-  <title>Accord de sous-traitance RGPD | Kotbo</title>
-  <meta name="description" content={t.metaDescription} />
-  <meta name="robots" content="index, follow" />
-</svelte:head>
+<Seo title="Accord de sous-traitance RGPD | Kotbo" description={t.metaDescription} path="/dpa" />
 
 <LegalPageLayout
   title={t.title}

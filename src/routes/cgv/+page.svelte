@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Seo from '$lib/seo/Seo.svelte';
   /**
    * Conditions Générales de Vente.
    *
@@ -672,12 +673,7 @@
   ]);
 </script>
 
-<svelte:head>
-  <title>Conditions Générales de Vente | Kotbo</title>
-  <meta name="description" content="Conditions générales de vente des abonnements Kotbo : offres, prix, TVA, essai gratuit, reconduction, résiliation, rétractation et garanties." />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://kotbo.fr/cgv" />
-</svelte:head>
+<Seo title="Conditions Générales de Vente | Kotbo" description="Conditions générales de vente des abonnements Kotbo : offres, prix, TVA, essai gratuit, reconduction, résiliation, rétractation et garanties." path="/cgv" />
 
 <LegalPageLayout
   title={t.title}
