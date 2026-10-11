@@ -10,9 +10,15 @@
    *
    * L'image est rendue par `motion/` (`bun run render:og`) : ses dimensions
    * sont annoncées ici pour que les réseaux la placent sans la télécharger.
+   *
+   * Une page bilingue (`i18n/routes.ts`) annonce ses deux versions en
+   * `hreflang`, le français servant de version par défaut. Son JSON-LD vient
+   * de `jsonld.js`, seul contenu en ligne que la CSP autorise.
    */
   import { getLocale } from '$lib/i18n/state.svelte';
   import { SITE_URL } from '$lib/product';
+  import { alternatesOf } from '$lib/i18n/routes';
+  import { jsonLdString } from './jsonld.js';
 
   interface Props {
     title: string;
@@ -20,9 +26,11 @@
     /** Chemin de la page, `/` pour l'accueil. Sert à l'URL canonique. */
     path: string;
     robots?: string;
+    /** Données structurées de la page, construites par `jsonld.js`. */
+    jsonLd?: object;
   }
 
-  let { title, description, path, robots = 'index, follow, max-image-preview:large' }: Props = $props();
+  let { title, description, path, robots = 'index, follow, max-image-preview:large', jsonLd }: Props = $props();
 
   const TEXT = {
     fr: { imageAlt: 'Kotbo : ton serveur Discord, géré au même endroit. Aperçu du dashboard.' },
@@ -33,8 +41,12 @@
   const THEME_COLOR = '#4f46e5';
   const IMAGE = `${SITE_URL}/og-image.png`;
 
-  const t = $derived(TEXT[getLocale()]);
+  const OG_LOCALE = { fr: 'fr_FR', en: 'en_US' } as const;
+
+  const locale = $derived(getLocale());
+  const t = $derived(TEXT[locale]);
   const url = $derived(`${SITE_URL}${path}`);
+  const alternates = $derived(alternatesOf(path));
 </script>
 
 <svelte:head>
@@ -43,11 +55,16 @@
   <meta name="robots" content={robots} />
   <link rel="canonical" href={url} />
   <meta name="theme-color" content={THEME_COLOR} />
+  {#if alternates}
+    <link rel="alternate" hreflang="fr" href="{SITE_URL}{alternates.fr}" />
+    <link rel="alternate" hreflang="en" href="{SITE_URL}{alternates.en}" />
+    <link rel="alternate" hreflang="x-default" href="{SITE_URL}{alternates.fr}" />
+  {/if}
 
   <meta property="og:site_name" content="Kotbo" />
   <meta property="og:type" content="website" />
-  <meta property="og:locale" content="fr_FR" />
-  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale" content={OG_LOCALE[locale]} />
+  <meta property="og:locale:alternate" content={OG_LOCALE[locale === 'fr' ? 'en' : 'fr']} />
   <meta property="og:url" content={url} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
@@ -63,4 +80,8 @@
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={IMAGE} />
   <meta name="twitter:image:alt" content={t.imageAlt} />
+
+  {#if jsonLd}
+    {@html `<script type="application/ld+json">${jsonLdString(jsonLd)}</script>`}
+  {/if}
 </svelte:head>

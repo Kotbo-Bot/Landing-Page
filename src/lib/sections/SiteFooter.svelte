@@ -7,12 +7,14 @@
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
   import { CONTACT_EMAIL, DISCORD_URL, DOCS_URL, STATUS_URL } from '$lib/product';
+  import { STAFF_ROUTE } from '$lib/i18n/routes';
 
   const TEXT = {
     fr: {
       tagline: 'Le centre de contrôle des communautés Discord.',
       product: 'Le produit',
       legal: 'Le légal',
+      staff: 'Gestion du staff Discord',
       discord: 'Serveur Discord',
       docs: 'Documentation',
       status: 'État des services',
@@ -40,6 +42,7 @@
       tagline: 'The control center for Discord communities.',
       product: 'Product',
       legal: 'Legal',
+      staff: 'Discord staff management',
       discord: 'Discord server',
       docs: 'Documentation',
       status: 'Service status',
@@ -108,6 +111,7 @@
     <div>
       <p class="text-sm font-semibold text-gray-400">{t.product}</p>
       <ul class="mt-3 space-y-1 text-sm font-medium text-gray-100">
+        <li><a class="inline-flex min-h-9 items-center hover:text-indigo-200" href="{base}{STAFF_ROUTE[getLocale()]}">{t.staff}</a></li>
         <li><a class="inline-flex min-h-9 items-center hover:text-indigo-200" href={DISCORD_URL} target="_blank" rel="noopener">{t.discord}</a></li>
         <li><a class="inline-flex min-h-9 items-center hover:text-indigo-200" href={DOCS_URL} target="_blank" rel="noopener">{t.docs}</a></li>
         <li><a class="inline-flex min-h-9 items-center hover:text-indigo-200" href={STATUS_URL} target="_blank" rel="noopener">{t.status}</a></li>

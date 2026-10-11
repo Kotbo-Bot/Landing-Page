@@ -8,10 +8,15 @@
    *
    * Sur téléphone, les ancres passent dans un menu déroulant ; le bouton
    * d'invitation, lui, reste visible.
+   *
+   * Hors de l'accueil (la page staff), les ancres renvoient aux zones de
+   * l'accueil dans la même langue.
    */
   import { onMount } from 'svelte';
   import { base } from '$app/paths';
+  import { page } from '$app/state';
   import { getLocale } from '$lib/i18n/state.svelte';
+  import { homeOf } from '$lib/i18n/routes';
   import LanguageSwitcher from '$lib/components/ui/LanguageSwitcher.svelte';
   import InviteButton from '$lib/playground/InviteButton.svelte';
 
@@ -49,6 +54,15 @@
   };
 
   const t = $derived(TEXT[getLocale()]);
+  const home = $derived(homeOf(getLocale()));
+  const onHome = $derived((page.url.pathname.slice(base.length) || '/') === home);
+
+  /** Une ancre de l'accueil, préfixée par son URL quand on est ailleurs. */
+  function anchor(href: string): string {
+    if (onHome || !href.startsWith('#')) return href;
+    return `${base}${home}${href}`;
+  }
+
   let open = $state(false);
   let scrolled = $state(false);
 
@@ -117,7 +131,7 @@
    * qu'un lien copié mène au même endroit.
    */
   function goTo(event: MouseEvent, href: string): void {
-    if (!href.startsWith('#')) {
+    if (!href.startsWith('#') || !onHome) {
       open = false;
       return;
     }
@@ -157,7 +171,7 @@
 
 <header class="sticky top-0 z-50 border-b transition-colors {scrolled ? 'border-gray-200 bg-[#f8f9fa]' : 'border-transparent'}">
   <div class="mx-auto flex max-w-360 items-center justify-between gap-4 px-4 py-3 sm:px-8">
-    <a href="#top" aria-label={t.home} class="flex items-center gap-2.5 rounded-lg">
+    <a href={anchor('#top')} aria-label={t.home} class="flex items-center gap-2.5 rounded-lg">
       <img src="{base}/favicon.svg" alt="" width="36" height="36" class="h-9 w-9 rounded-xl" />
       <span class="font-headline text-xl font-extrabold text-gray-900">Kotbo</span>
     </a>
@@ -168,7 +182,7 @@
           <li>
             {#if link.href.startsWith('#')}
               <a
-                href={link.href}
+                href={anchor(link.href)}
                 onclick={(e) => goTo(e, link.href)}
                 aria-current={current === link.href ? 'location' : undefined}
                 class="inline-flex min-h-10 items-center transition-colors hover:text-gray-900 {current === link.href ? 'text-gray-900' : ''}"
@@ -217,7 +231,7 @@
         {#each t.links as link (link.href)}
           <li>
             {#if link.href.startsWith('#')}
-              <a href={link.href} onclick={(e) => goTo(e, link.href)} class="flex min-h-12 items-center text-base font-semibold text-gray-900">
+              <a href={anchor(link.href)} onclick={(e) => goTo(e, link.href)} class="flex min-h-12 items-center text-base font-semibold text-gray-900">
                 {link.label}
               </a>
             {:else}

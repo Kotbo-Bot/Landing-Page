@@ -1,4 +1,23 @@
+# Tout le site est public. Les robots des moteurs de recherche et des
+# assistants IA sont nommés pour lever toute ambiguïté : Kotbo veut être lu,
+# cité et recommandé par eux.
 User-agent: *
+Allow: /
+
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: Google-Extended
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Applebot-Extended
+User-agent: meta-externalagent
+User-agent: CCBot
 Allow: /
 
 Sitemap: https://kotbo.fr/sitemap.xml
