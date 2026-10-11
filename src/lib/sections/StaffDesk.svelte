@@ -88,7 +88,7 @@
         <Media name="dashboardProfile">
           {#snippet fallback()}
             <div class="relative h-140 overflow-hidden md:h-160">
-              <MockProfile user="Arka" role="Fondateur" avatar="Arka" />
+              <MockProfile />
             </div>
           {/snippet}
         </Media>

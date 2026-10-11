@@ -1,255 +1,261 @@
+<!--
+  Dossier membre du dashboard, reconstitué avec de fausses données : la même
+  fenêtre que `MemberCaseModal.svelte` dans le dépôt produit (en-tête sobre,
+  onglets, cartes de section, colonne de modération), ouverte comme depuis la
+  gestion du staff, donc sur l'onglet Staff.
+
+  Les jetons de couleur du dashboard sont recopiés sur la racine `.mpx` : la
+  maquette garde l'indigo du produit au milieu de la palette du site.
+
+  Aucune commande morte : chaque bouton change l'aperçu (sanction ajoutée,
+  grade décalé, avertissement compté, note enregistrée). Ce qui ouvrirait une
+  autre page du dashboard est affiché sans être cliquable.
+-->
 <script lang="ts">
   import Papicon from '../Papicon.svelte';
   import { mockAvatar, mockBanner } from '$lib/mockMedia';
   import { getLocale } from '$lib/i18n/state.svelte';
 
-  let { user = 'Arka', role = 'Fondateur', avatar = 'Arka' }: {
-    user?: string;
-    role?: string;
-    avatar?: string;
-  } = $props();
+  type Tx = { fr: string; en: string };
+  const x = (fr: string, en: string): Tx => ({ fr, en });
 
   const TEXT = {
     fr: {
-      close: 'Fermer',
-      bot: 'Bot',
-      tutorBadge: 'Tuteur',
-      profileButton: 'Profil',
+      avatarAlt: 'Avatar du membre',
+      tutor: 'Tuteur',
+      verifPending: 'Vérification en cours',
+      requestVerification: 'Demander vérification',
+      tabsLabel: 'Membres',
       tabs: {
+        staff: 'Staff',
         resume: 'Résumé',
         identite: 'Identité',
         activite: 'Activité',
         analytics: 'Analytiques',
         messages: 'Messages',
-        logs: 'Logs',
+        logs: 'Journal',
         sanctions: 'Sanctions',
         candidatures: 'Candidats',
         invites: 'Invitations',
         notes: 'Notes'
       },
-      common: {
-        unknown: 'Inconnu'
-      },
-      time: { d: 'j', h: 'h', m: 'm', s: 's' },
+      presence: { online: 'En ligne', idle: 'Absent', dnd: 'Ne pas déranger', offline: 'Hors ligne', left: 'A quitté le serveur' },
       relative: {
         never: 'Jamais',
         justNow: "À l'instant",
-        minutesAgo: (n: number) => `Il y a ${n}m`,
-        hoursAgo: (n: number) => `Il y a ${n}h`,
-        daysAgo: (n: number) => `Il y a ${n}j`
+        minutes: (n: number) => `Il y a ${n}m`,
+        hours: (n: number) => `Il y a ${n}h`,
+        days: (n: number) => `Il y a ${n}j`,
+        inDays: (n: number) => `dans ${n} j`
       },
       duration: {
         years: (n: number) => `${n} an${n > 1 ? 's' : ''}`,
         months: (n: number) => `${n} mois`,
-        today: 'Auj.',
-        daysShort: (n: number) => `${n} j`
+        days: (n: number) => `${n} jour${n > 1 ? 's' : ''}`,
+        today: "Aujourd'hui",
+        d: 'j'
       },
-      presence: {
-        offline: 'Hors ligne',
-        left: 'A quitté le serveur',
-        online: 'En ligne',
-        idle: 'Absent',
-        dnd: 'Ne pas déranger'
-      },
-      altWarning: {
-        title: 'Suspicion de Double Compte',
-        description: 'Ce compte a été identifié comme un potentiel double compte automatique lors de son arrivée.',
-        badge: 'Suspect'
+      units: { min: (n: string) => `${n} min`, hour: (n: string) => `${n} h` },
+      staff: {
+        joined: 'Entré dans le staff',
+        gradeSince: 'Grade actuel depuis',
+        demote: 'Rétrograder',
+        promote: 'Promouvoir',
+        gradeMin: 'Grade minimum atteint',
+        gradeMax: 'Grade maximum atteint',
+        brief: 'En bref',
+        messages: 'Messages',
+        voice: 'Vocal',
+        sanctionsGiven: 'Sanctions données',
+        progression: 'Score progression',
+        pace: 'Rythme (7 j)',
+        vsMonth: (avg: number, trend: string) => `${avg}/j sur le mois · ${trend}`,
+        tenure: 'Ancienneté',
+        hierarchies: 'Hiérarchies',
+        timeline: 'Parcours',
+        tenureSentence: (d: string) => `Dans le staff depuis ${d}`,
+        tenureDays: (n: number) => `${n} j`,
+        tenureMonths: (n: number) => `${n} mois`,
+        tenureYears: (n: number) => `${n} an(s)`,
+        tlWarning: 'Avertissement',
+        tlWarningExpired: 'Avertissement expiré',
+        tlJoinedHierarchy: (name: string) => `Rejoint ${name}`,
+        tlGrade: (grade: string) => `Passe ${grade}`,
+        tlJoined: 'Entre dans le staff',
+        by: (name: string) => `par ${name}`,
+        discipline: 'Discipline',
+        warnNone: 'aucun avertissement actif',
+        warnReached: 'seuil de rétrogradation atteint',
+        warnLeft: (n: number) => `encore ${n} avant rétrogradation`,
+        threshold: (demote: number, blacklist: number) =>
+          `Rétrogradation à ${demote} avertissements actifs, liste noire à ${blacklist}.`,
+        validationHint: 'La sanction attend une validation.',
+        expires: (when: string) => `expire ${when}`,
+        warn: 'Avertir',
+        demoWarnReason: 'Deux tickets laissés sans réponse ce week-end',
+        you: 'toi'
       },
       resume: {
-        accountInfo: {
-          sectionLabel: 'Informations Compte',
-          title: 'Identité & Ancienneté',
-          accountAge: 'Âge du compte',
-          createdOn: (date: string) => `Créé le ${date}`,
-          serverPresence: 'Présence Serveur',
-          joinedOn: (date: string) => `Arrivé le ${date}`,
-          invitedBy: 'Invité par',
-          unknownOrigin: 'Origine inconnue',
-          inviteCode: "Code d'invitation"
-        },
-        sanctionsCard: {
-          badge: 'Casier',
-          title: 'Sanctions',
-          total: 'Total',
-          activeCount: (n: number) => `${n} active(s)`
-        },
-        activitySummary: {
-          sectionLabel: 'Activité',
-          title: 'Engagement',
-          messages: 'Messages',
-          voice: 'Vocal',
-          lastSeen: 'Dernier passage'
-        },
-        activityChart: {
-          sectionLabel: 'Statistiques',
-          title: "Tendance d'activité (30j)",
-          messages: 'Messages',
-          voiceTime: 'Temps vocal'
-        },
-        rolesPermissions: {
-          sectionLabel: 'Autorisations',
-          title: 'Rôles & Accès',
-          mainRoles: 'Rôles Principaux',
-          keyPermissions: 'Permissions Clés'
-        },
-        recentActivity: {
-          sectionLabel: 'Timeline',
-          title: 'Activités récentes',
-          viewAllLogs: 'Voir tous les logs',
-          recentMessages: 'Derniers Messages',
-          emptyContent: 'Contenu vide',
-          noRecentMessages: 'Aucun message récent détecté.',
-          recentLogs: 'Derniers Logs'
-        },
-        discordProfile: {
-          sectionLabel: 'Profil Discord',
-          username: "Nom d'utilisateur",
-          unknown: 'Inconnu',
-          globalName: 'Nom global',
-          serverDisplay: 'Affichage serveur',
-          language: 'Langue',
-          unknownLang: 'Inconnue',
-          pronouns: 'Pronoms',
-          notSpecified: 'Non spécifiés'
-        },
-        visuals: {
-          sectionLabel: 'Visuels',
-          customAvatar: 'Avatar personnalisé',
-          profileBanner: 'Bannière profil',
-          bannerAlt: 'Bannière'
-        }
+        serverPresence: 'Présence serveur',
+        joinedOn: (d: string) => `Arrivé le ${d}`,
+        accountAge: 'Âge du compte',
+        createdOn: (d: string) => `Créé le ${d}`,
+        messages: 'Messages',
+        voice: 'Vocal',
+        sanctions: 'Sanctions',
+        activeSanctions: (n: number) => `${n} sanction(s) active(s)`,
+        trend: "Tendance d'activité (30j)",
+        trendDesc: "30 derniers jours, comparés aux 30 jours d'avant en pointillés.",
+        arrival: 'Arrivée sur le serveur',
+        invitedBy: 'Invité par',
+        inviteCode: "Code d'invitation",
+        lastPass: 'Dernier passage',
+        roles: (n: number) => `Rôles (${n})`,
+        keyPermissions: 'Permissions clés',
+        lastMessages: 'Derniers messages',
+        lastLogs: 'Dernières entrées du journal',
+        seeAllLogs: 'Voir tout le journal',
+        discordProfile: 'Profil Discord',
+        username: "Nom d'utilisateur",
+        globalName: 'Nom global',
+        serverDisplay: 'Affichage serveur',
+        language: 'Langue',
+        pronouns: 'Pronoms',
+        bannerAlt: 'Bannière',
+        accent: (hex: string) => `Couleur d'accent : #${hex}`
+      },
+      chart: {
+        previous: "Période d'avant",
+        vsPrevious: "vs période d'avant"
       },
       identite: {
-        fullProfile: {
-          sectionLabel: 'Données Compte',
-          title: 'Profil Complet',
-          discordId: 'ID Discord',
-          username: "Nom d'utilisateur",
-          globalName: 'Nom global',
-          serverNickname: 'Surnom Serveur',
-          localeLabel: 'Langue (Locale)',
-          pronouns: 'Pronoms',
-          notSpecified: 'Non spécifiés'
-        },
-        staffStatus: {
-          sectionLabel: 'Administration',
-          title: 'Statut Staff',
-          currentGrade: 'Grade Actuel:',
-          tutorStatus: 'Statut Tuteur:',
-          yesActive: 'Oui (Actif)',
-          no: 'Non'
-        },
-        keyDates: {
-          sectionLabel: 'Chronologie',
-          title: 'Dates Clés',
-          accountCreation: 'Création compte:',
-          serverArrival: 'Arrivée serveur:',
-          lastDeparture: 'Dernier départ:',
-          firstSeen: 'Première observation:',
-          lastSeen: 'Dernière observation:'
-        },
-        roles: {
-          sectionLabel: 'Autorisations',
-          title: (n: number) => `Rôles (${n})`,
-          noRole: 'Aucun rôle attribué'
-        }
+        fullProfile: 'Profil complet',
+        discordId: 'ID Discord',
+        serverNickname: 'Surnom serveur',
+        locale: 'Langue (locale)',
+        keyDates: 'Dates clés',
+        accountCreation: 'Création compte',
+        serverJoin: 'Arrivée serveur',
+        firstSeen: 'Première vue',
+        lastSeen: 'Dernière vue',
+        verifTitle: 'Vérifications',
+        verifCount: (n: number) => `${n} demande(s)`,
+        verifEmpty: "Aucune vérification demandée pour l'instant.",
+        verifLastRequest: 'Dernière demande',
+        verifRequestedOn: (d: string) => `Demandée le ${d}`,
+        staffStatus: 'Statut staff',
+        currentGrade: 'Grade actuel',
+        tutorStatus: 'Statut tuteur',
+        yes: 'Oui (actif)',
+        no: 'Non'
       },
       activite: {
-        messages: 'Messages',
         voiceTime: 'Temps vocal',
         lastActivity: 'Dernière activité',
-        channelBreakdown: 'Répartition par salon',
-        messagesCount: (n: number) => `${n} messages`
+        byChannel: 'Répartition par salon'
       },
       analytics: {
-        loading: 'Analyse du comportement...',
-        messageVolume: {
-          sectionLabel: 'Activité',
-          title: 'Volume Messages',
-          last30Days: '30 derniers jours'
-        },
-        voiceActivity: {
-          sectionLabel: 'Engagement',
-          title: 'Activité Vocal',
-          minutesPerDay: 'Minutes / jour'
-        },
-        empty: {
-          title: 'Aucune donnée analytique',
-          description: "Nous n'avons pas encore assez de données d'activité pour générer des graphiques pour ce membre sur les 30 derniers jours."
-        }
+        messageVolume: 'Volume messages',
+        last30: '30 derniers jours',
+        voiceActivity: 'Activité vocal',
+        minutesPerDay: 'Minutes / jour'
       },
-      messagesTab: {
-        msgCount: (n: number) => `${n} msg`,
-        viewOnDiscord: 'Voir sur Discord',
-        emptyContent: 'Contenu vide',
-        empty: {
-          title: 'Silence radio',
-          description: "Aucun message récent n'a été indexé pour ce membre dans les salons surveillés."
-        }
+      messages: {
+        search: 'Rechercher dans les messages…',
+        allChannels: 'Tous les salons',
+        showDeleted: 'Afficher supprimés',
+        edited: 'Modifié',
+        deleted: 'Supprimé',
+        emptyTitle: 'Aucun message trouvé',
+        emptyDesc: 'Aucun message enregistré pour ce membre ne correspond à tes filtres.',
+        clear: 'Effacer les filtres'
       },
-      logsTab: {
-        empty: 'Aucun log disponible'
+      logs: {
+        search: 'Rechercher dans le journal…',
+        allModules: 'Tous les modules',
+        newest: 'Plus récents',
+        oldest: 'Plus anciens',
+        shown: (shown: number, total: number) => `${shown} entrée(s) sur ${total}`,
+        noMatch: 'Aucune entrée ne correspond aux filtres'
       },
-      sanctionsTab: {
-        headers: { date: 'Date', action: 'Action', status: 'Statut', reason: 'Raison', report: 'Rapport' },
-        statusActive: 'Active',
-        statusResolved: 'Résolue',
-        viewMore: 'Voir plus',
-        empty: 'Dossier vierge'
+      sanctions: {
+        date: 'Date',
+        action: 'Action',
+        status: 'Statut',
+        reason: 'Raison',
+        report: 'Rapport',
+        byModerator: (name: string) => `par @${name}`,
+        active: 'Active',
+        resolved: 'Résolue',
+        noReport: 'Aucun rapport',
+        clean: 'Dossier vierge',
+        types: { WARN: 'Avertissement', TIMEOUT: 'Exclusion temporaire', KICK: 'Expulsion', BAN: 'Bannissement' }
       },
-      candidaturesTab: {
-        statusAccepted: 'Acceptée',
-        statusRejected: 'Rejetée',
-        oralResult: 'Résultat Oral',
-        empty: 'Aucune candidature archivée'
-      },
-      invitesTab: {
-        source: {
-          sectionLabel: "Source d'invitation",
-          codeUsed: 'Code utilisé:',
-          unknown: 'Inconnu',
-          creator: 'Créateur:',
-          usageDate: "Date d'utilisation:"
-        },
-        movements: {
-          sectionLabel: 'Mouvements Serveur',
-          firstSeen: 'Première observation:',
-          lastArrival: 'Dernière arrivée:',
-          lastDeparture: 'Dernier départ:',
-          none: 'Aucun',
-          lastSeen: 'Dernière observation:'
-        }
-      },
-      notesTab: {
-        sectionLabel: 'Modération',
-        title: 'Notes Modérateur',
-        disclaimer: "Ces notes sont strictement confidentielles et ne sont visibles que par l'équipe d'administration et de modération.",
-        placeholder: 'Ajouter des notes internes sur ce membre...',
-        saving: 'Enregistrement...',
-        save: 'Sauvegarder',
-        savedSuccess: 'Note enregistrée avec succès.'
-      },
-      sanctionReport: {
-        sectionLabel: 'Rapport de Sanction',
-        title: (id: string, type: string) => `Sanction #${id} · ${type}`,
-        incidentDate: "Date de l'incident",
-        referringModerator: 'Modérateur référent',
+      report: {
+        appliedOn: (date: string, mod: string) => `Appliquée le ${date} par @${mod}`,
+        incident: 'Incident',
+        duration: 'Durée',
         brokenRules: 'Règles enfreintes',
-        ruleText: 'Règle 2.1 - Respect & Courtoisie',
         detailedReason: 'Raison détaillée',
-        reasonSuffix: '. Comportement inapproprié persistant.',
-        attachments: 'Pièces jointes / Preuves',
-        evidenceFile: 'capture_de_l_abus.png',
-        close: 'Fermer'
+        evidence: 'Preuves',
+        evidenceLink: (n: number) => `Lien de preuve ${n}`,
+        extraNotes: 'Notes complémentaires',
+        by: (author: string) => `Rapport créé par @${author}`,
+        close: 'Fermer les détails'
+      },
+      candidatures: {
+        accepted: 'Acceptée',
+        rejected: 'Refusée',
+        oral: 'Résultat oral'
+      },
+      invites: {
+        source: "Source d'invitation",
+        codeUsed: 'Code utilisé',
+        creator: 'Créateur',
+        useDate: "Date d'utilisation",
+        moves: 'Mouvements serveur',
+        lastJoin: 'Dernière arrivée',
+        lastLeave: 'Dernier départ',
+        firstObservation: 'Première observation',
+        none: '-'
+      },
+      notes: {
+        title: 'Notes modérateur',
+        desc: "Ces notes sont conservées et visibles uniquement par l'équipe de modération. Utilise cet espace pour laisser des informations importantes sur le comportement de l'utilisateur.",
+        placeholder: 'Ajouter une note sur cet utilisateur…',
+        save: 'Sauvegarder',
+        saving: 'Enregistrement…',
+        saved: 'Note enregistrée.'
+      },
+      aside: {
+        risk: 'Score de risque',
+        riskLow: 'Risque faible',
+        riskHigh: 'Risque élevé',
+        riskCritical: 'Risque critique',
+        riskDesc: 'Basé sur les sanctions actives/passées et suspicions de DC.',
+        seniority: { veteran: 'Vétéran (1 an+)', old: 'Ancien (6 mois+)', regular: 'Régulier (1 mois+)', recent: 'Récents (1 semaine+)', newcomer: 'Nouveau venu' },
+        topChannels: 'Top salons',
+        actions: 'Actions de modération',
+        reason: 'Raison de la sanction',
+        reasonPlaceholder: 'Saisis un motif (obligatoire)…',
+        duration: 'Durée (exclusion temporaire uniquement)',
+        durations: { '30m': '30 minutes', '1h': '1 heure', '1d': '1 jour', '7d': '7 jours', '28d': '28 jours (max)' },
+        warn: 'Avertir',
+        timeout: 'Exclure temporairement',
+        kick: 'Expulser',
+        ban: 'Bannir',
+        defaultReason: 'Action lancée depuis le profil membre.',
+        done: (action: string) => `L'action ${action} a été exécutée.`
       }
     },
     en: {
-      close: 'Close',
-      bot: 'Bot',
-      tutorBadge: 'Tutor',
-      profileButton: 'Profile',
+      avatarAlt: 'Member avatar',
+      tutor: 'Tutor',
+      verifPending: 'Verification pending',
+      requestVerification: 'Request verification',
+      tabsLabel: 'Members',
       tabs: {
+        staff: 'Staff',
         resume: 'Summary',
         identite: 'Identity',
         activite: 'Activity',
@@ -257,1924 +263,1928 @@
         messages: 'Messages',
         logs: 'Logs',
         sanctions: 'Sanctions',
-        candidatures: 'Candidates',
+        candidatures: 'Applicants',
         invites: 'Invites',
         notes: 'Notes'
       },
-      common: {
-        unknown: 'Unknown'
-      },
-      time: { d: 'd', h: 'h', m: 'm', s: 's' },
+      presence: { online: 'Online', idle: 'Idle', dnd: 'Do not disturb', offline: 'Offline', left: 'Left the server' },
       relative: {
         never: 'Never',
         justNow: 'Just now',
-        minutesAgo: (n: number) => `${n}m ago`,
-        hoursAgo: (n: number) => `${n}h ago`,
-        daysAgo: (n: number) => `${n}d ago`
+        minutes: (n: number) => `${n}m ago`,
+        hours: (n: number) => `${n}h ago`,
+        days: (n: number) => `${n}d ago`,
+        inDays: (n: number) => `in ${n} d`
       },
       duration: {
         years: (n: number) => `${n} year${n > 1 ? 's' : ''}`,
         months: (n: number) => `${n} month${n > 1 ? 's' : ''}`,
+        days: (n: number) => `${n} day${n > 1 ? 's' : ''}`,
         today: 'Today',
-        daysShort: (n: number) => `${n}d`
+        d: 'd'
       },
-      presence: {
-        offline: 'Offline',
-        left: 'Left the server',
-        online: 'Online',
-        idle: 'Away',
-        dnd: 'Do Not Disturb'
-      },
-      altWarning: {
-        title: 'Suspected Duplicate Account',
-        description: 'This account was automatically flagged as a potential duplicate account upon arrival.',
-        badge: 'Suspect'
+      units: { min: (n: string) => `${n} min`, hour: (n: string) => `${n} h` },
+      staff: {
+        joined: 'Joined staff',
+        gradeSince: 'Current grade since',
+        demote: 'Demote',
+        promote: 'Promote',
+        gradeMin: 'Minimum grade reached',
+        gradeMax: 'Maximum grade reached',
+        brief: 'At a glance',
+        messages: 'Messages',
+        voice: 'Voice',
+        sanctionsGiven: 'Sanctions issued',
+        progression: 'Progression score',
+        pace: 'Pace (7 d)',
+        vsMonth: (avg: number, trend: string) => `${avg}/d over the month · ${trend}`,
+        tenure: 'Tenure',
+        hierarchies: 'Hierarchies',
+        timeline: 'History',
+        tenureSentence: (d: string) => `On staff for ${d}`,
+        tenureDays: (n: number) => `${n} d`,
+        tenureMonths: (n: number) => `${n} mo`,
+        tenureYears: (n: number) => `${n} yr`,
+        tlWarning: 'Warning',
+        tlWarningExpired: 'Expired warning',
+        tlJoinedHierarchy: (name: string) => `Joins ${name}`,
+        tlGrade: (grade: string) => `Becomes ${grade}`,
+        tlJoined: 'Joins the staff',
+        by: (name: string) => `by ${name}`,
+        discipline: 'Discipline',
+        warnNone: 'no active warning',
+        warnReached: 'demotion threshold reached',
+        warnLeft: (n: number) => `${n} left before demotion`,
+        threshold: (demote: number, blacklist: number) =>
+          `Demotion at ${demote} active warnings, blacklist at ${blacklist}.`,
+        validationHint: 'The sanction waits for approval.',
+        expires: (when: string) => `expires ${when}`,
+        warn: 'Warn',
+        demoWarnReason: 'Two tickets left unanswered over the weekend',
+        you: 'you'
       },
       resume: {
-        accountInfo: {
-          sectionLabel: 'Account Info',
-          title: 'Identity & Tenure',
-          accountAge: 'Account age',
-          createdOn: (date: string) => `Created on ${date}`,
-          serverPresence: 'Server Presence',
-          joinedOn: (date: string) => `Joined on ${date}`,
-          invitedBy: 'Invited by',
-          unknownOrigin: 'Unknown origin',
-          inviteCode: 'Invite code'
-        },
-        sanctionsCard: {
-          badge: 'Record',
-          title: 'Sanctions',
-          total: 'Total',
-          activeCount: (n: number) => `${n} active`
-        },
-        activitySummary: {
-          sectionLabel: 'Activity',
-          title: 'Engagement',
-          messages: 'Messages',
-          voice: 'Voice',
-          lastSeen: 'Last seen'
-        },
-        activityChart: {
-          sectionLabel: 'Stats',
-          title: 'Activity Trend (30d)',
-          messages: 'Messages',
-          voiceTime: 'Voice time'
-        },
-        rolesPermissions: {
-          sectionLabel: 'Permissions',
-          title: 'Roles & Access',
-          mainRoles: 'Main Roles',
-          keyPermissions: 'Key Permissions'
-        },
-        recentActivity: {
-          sectionLabel: 'Timeline',
-          title: 'Recent Activity',
-          viewAllLogs: 'View all logs',
-          recentMessages: 'Latest Messages',
-          emptyContent: 'Empty content',
-          noRecentMessages: 'No recent messages detected.',
-          recentLogs: 'Latest Logs'
-        },
-        discordProfile: {
-          sectionLabel: 'Discord Profile',
-          username: 'Username',
-          unknown: 'Unknown',
-          globalName: 'Global Name',
-          serverDisplay: 'Server display name',
-          language: 'Language',
-          unknownLang: 'Unknown',
-          pronouns: 'Pronouns',
-          notSpecified: 'Not specified'
-        },
-        visuals: {
-          sectionLabel: 'Visuals',
-          customAvatar: 'Custom avatar',
-          profileBanner: 'Profile banner',
-          bannerAlt: 'Banner'
-        }
+        serverPresence: 'Server presence',
+        joinedOn: (d: string) => `Joined on ${d}`,
+        accountAge: 'Account age',
+        createdOn: (d: string) => `Created on ${d}`,
+        messages: 'Messages',
+        voice: 'Voice',
+        sanctions: 'Sanctions',
+        activeSanctions: (n: number) => `${n} active sanction(s)`,
+        trend: 'Activity trend (30d)',
+        trendDesc: 'Last 30 days, compared with the 30 days before (dotted).',
+        arrival: 'Arrival on the server',
+        invitedBy: 'Invited by',
+        inviteCode: 'Invite code',
+        lastPass: 'Last seen',
+        roles: (n: number) => `Roles (${n})`,
+        keyPermissions: 'Key permissions',
+        lastMessages: 'Latest messages',
+        lastLogs: 'Latest logs',
+        seeAllLogs: 'See all the logs',
+        discordProfile: 'Discord profile',
+        username: 'Username',
+        globalName: 'Global name',
+        serverDisplay: 'Server display name',
+        language: 'Language',
+        pronouns: 'Pronouns',
+        bannerAlt: 'Banner',
+        accent: (hex: string) => `Accent colour: #${hex}`
+      },
+      chart: {
+        previous: 'Previous period',
+        vsPrevious: 'vs previous period'
       },
       identite: {
-        fullProfile: {
-          sectionLabel: 'Account Data',
-          title: 'Full Profile',
-          discordId: 'Discord ID',
-          username: 'Username',
-          globalName: 'Global Name',
-          serverNickname: 'Server Nickname',
-          localeLabel: 'Language (Locale)',
-          pronouns: 'Pronouns',
-          notSpecified: 'Not specified'
-        },
-        staffStatus: {
-          sectionLabel: 'Administration',
-          title: 'Staff Status',
-          currentGrade: 'Current Grade:',
-          tutorStatus: 'Tutor Status:',
-          yesActive: 'Yes (Active)',
-          no: 'No'
-        },
-        keyDates: {
-          sectionLabel: 'Timeline',
-          title: 'Key Dates',
-          accountCreation: 'Account creation:',
-          serverArrival: 'Server arrival:',
-          lastDeparture: 'Last departure:',
-          firstSeen: 'First seen:',
-          lastSeen: 'Last seen:'
-        },
-        roles: {
-          sectionLabel: 'Permissions',
-          title: (n: number) => `Roles (${n})`,
-          noRole: 'No roles assigned'
-        }
+        fullProfile: 'Full profile',
+        discordId: 'Discord ID',
+        serverNickname: 'Server nickname',
+        locale: 'Language (locale)',
+        keyDates: 'Key dates',
+        accountCreation: 'Account created',
+        serverJoin: 'Server join',
+        firstSeen: 'First seen',
+        lastSeen: 'Last seen',
+        verifTitle: 'Verifications',
+        verifCount: (n: number) => `${n} request(s)`,
+        verifEmpty: 'No verification requested yet.',
+        verifLastRequest: 'Last request',
+        verifRequestedOn: (d: string) => `Requested on ${d}`,
+        staffStatus: 'Staff status',
+        currentGrade: 'Current grade',
+        tutorStatus: 'Tutor status',
+        yes: 'Yes (active)',
+        no: 'No'
       },
       activite: {
-        messages: 'Messages',
         voiceTime: 'Voice time',
         lastActivity: 'Last activity',
-        channelBreakdown: 'Breakdown by channel',
-        messagesCount: (n: number) => `${n} messages`
+        byChannel: 'Breakdown per channel'
       },
       analytics: {
-        loading: 'Analyzing behavior...',
-        messageVolume: {
-          sectionLabel: 'Activity',
-          title: 'Message Volume',
-          last30Days: 'Last 30 days'
-        },
-        voiceActivity: {
-          sectionLabel: 'Engagement',
-          title: 'Voice Activity',
-          minutesPerDay: 'Minutes / day'
-        },
-        empty: {
-          title: 'No analytics data yet',
-          description: "We don't have enough activity data yet to generate charts for this member over the last 30 days."
-        }
+        messageVolume: 'Message volume',
+        last30: 'Last 30 days',
+        voiceActivity: 'Voice activity',
+        minutesPerDay: 'Minutes / day'
       },
-      messagesTab: {
-        msgCount: (n: number) => `${n} msg`,
-        viewOnDiscord: 'View on Discord',
-        emptyContent: 'Empty content',
-        empty: {
-          title: 'Radio silence',
-          description: 'No recent messages have been indexed for this member in the monitored channels.'
-        }
+      messages: {
+        search: 'Search in the messages…',
+        allChannels: 'All channels',
+        showDeleted: 'Show deleted',
+        edited: 'Edited',
+        deleted: 'Deleted',
+        emptyTitle: 'No message found',
+        emptyDesc: 'No recorded message for this member matches your filters.',
+        clear: 'Clear filters'
       },
-      logsTab: {
-        empty: 'No logs available'
+      logs: {
+        search: 'Search in the logs…',
+        allModules: 'All modules',
+        newest: 'Newest first',
+        oldest: 'Oldest first',
+        shown: (shown: number, total: number) => `${shown} of ${total} log(s)`,
+        noMatch: 'No log matches the filters'
       },
-      sanctionsTab: {
-        headers: { date: 'Date', action: 'Action', status: 'Status', reason: 'Reason', report: 'Report' },
-        statusActive: 'Active',
-        statusResolved: 'Resolved',
-        viewMore: 'View more',
-        empty: 'Clean record'
+      sanctions: {
+        date: 'Date',
+        action: 'Action',
+        status: 'Status',
+        reason: 'Reason',
+        report: 'Report',
+        byModerator: (name: string) => `by @${name}`,
+        active: 'Active',
+        resolved: 'Resolved',
+        noReport: 'No report',
+        clean: 'Clean record',
+        types: { WARN: 'Warning', TIMEOUT: 'Timeout', KICK: 'Kick', BAN: 'Ban' }
       },
-      candidaturesTab: {
-        statusAccepted: 'Accepted',
-        statusRejected: 'Rejected',
-        oralResult: 'Interview Result',
-        empty: 'No archived applications'
-      },
-      invitesTab: {
-        source: {
-          sectionLabel: 'Invite Source',
-          codeUsed: 'Code used:',
-          unknown: 'Unknown',
-          creator: 'Creator:',
-          usageDate: 'Date used:'
-        },
-        movements: {
-          sectionLabel: 'Server Movements',
-          firstSeen: 'First seen:',
-          lastArrival: 'Last arrival:',
-          lastDeparture: 'Last departure:',
-          none: 'None',
-          lastSeen: 'Last seen:'
-        }
-      },
-      notesTab: {
-        sectionLabel: 'Moderation',
-        title: 'Moderator Notes',
-        disclaimer: 'These notes are strictly confidential and only visible to the administration and moderation team.',
-        placeholder: 'Add internal notes about this member...',
-        saving: 'Saving...',
-        save: 'Save',
-        savedSuccess: 'Note saved successfully.'
-      },
-      sanctionReport: {
-        sectionLabel: 'Sanction Report',
-        title: (id: string, type: string) => `Sanction #${id} · ${type}`,
-        incidentDate: 'Incident date',
-        referringModerator: 'Referring moderator',
+      report: {
+        appliedOn: (date: string, mod: string) => `Applied on ${date} by @${mod}`,
+        incident: 'Incident',
+        duration: 'Duration',
         brokenRules: 'Rules broken',
-        ruleText: 'Rule 2.1 - Respect & Courtesy',
         detailedReason: 'Detailed reason',
-        reasonSuffix: '. Persistent inappropriate behavior.',
-        attachments: 'Attachments / Evidence',
-        evidenceFile: 'abuse_screenshot.png',
-        close: 'Close'
+        evidence: 'Evidence',
+        evidenceLink: (n: number) => `Evidence link ${n}`,
+        extraNotes: 'Additional notes',
+        by: (author: string) => `Report created by @${author}`,
+        close: 'Close the details'
+      },
+      candidatures: {
+        accepted: 'Accepted',
+        rejected: 'Rejected',
+        oral: 'Interview result'
+      },
+      invites: {
+        source: 'Invite source',
+        codeUsed: 'Code used',
+        creator: 'Creator',
+        useDate: 'Date used',
+        moves: 'Server movements',
+        lastJoin: 'Last join',
+        lastLeave: 'Last leave',
+        firstObservation: 'First observed',
+        none: '-'
+      },
+      notes: {
+        title: 'Moderator notes',
+        desc: "These notes are permanent and visible only to the moderation team. Use this space to leave important information about the user's behaviour.",
+        placeholder: 'Add a note about this user…',
+        save: 'Save',
+        saving: 'Saving…',
+        saved: 'Note saved.'
+      },
+      aside: {
+        risk: 'Risk score',
+        riskLow: 'Low risk',
+        riskHigh: 'High risk',
+        riskCritical: 'Critical risk',
+        riskDesc: 'Based on active/past sanctions and alt-account suspicions.',
+        seniority: { veteran: 'Veteran (1 year+)', old: 'Long-timer (6 months+)', regular: 'Regular (1 month+)', recent: 'Recent (1 week+)', newcomer: 'Newcomer' },
+        topChannels: 'Top channels',
+        actions: 'Moderation actions',
+        reason: 'Reason for the sanction',
+        reasonPlaceholder: 'Enter a reason (required)…',
+        duration: 'Duration (timeout only)',
+        durations: { '30m': '30 minutes', '1h': '1 hour', '1d': '1 day', '7d': '7 days', '28d': '28 days (max)' },
+        warn: 'Warn',
+        timeout: 'Timeout',
+        kick: 'Kick',
+        ban: 'Ban',
+        defaultReason: 'Action started from the member profile.',
+        done: (action: string) => `The ${action} action has been carried out.`
       }
     }
   };
 
-  const t = $derived(TEXT[getLocale()]);
+  const locale = $derived(getLocale());
+  const t = $derived(TEXT[locale]);
+  const tr = (value: Tx) => value[locale];
+  const intl = $derived(locale === 'en' ? 'en-GB' : 'fr-FR');
 
-  let activeInnerTab = $state('resume');
-  let viewingReportId = $state<string | null>(null);
-  let analyticsLoading = $state(false);
+  // ── Fausses données ───────────────────────────────────────────────────
+  // Un « maintenant » figé : la page est prérendue, une date calculée au
+  // build et une autre dans le navigateur ne s'accorderaient pas.
+  const NOW = new Date('2026-10-09T18:40:00+02:00').getTime();
+  const TZ = 'Europe/Paris';
+  const ago = (minutes: number) => new Date(NOW - minutes * 60_000).toISOString();
+  const DAY = 1440;
 
-  // Notes state
-  let moderatorNoteInput = $state('');
-  let noteFeedback = $state('');
-  let noteBusy = $state(false);
-
-  // Link accounts state
-  let targetAccountId = $state('');
-  let linkReason = $state('');
-  let linkFeedback = $state('');
-  let linkIsError = $state(false);
-  let linkBusy = $state(false);
-
-  // Mutable state for lists to make them functional
-  let linkedAccountsList = $state<any[]>([]);
-  let sanctionsList = $state<any[]>([]);
-
-  type DailyTrendPoint = {
-    dateKey: string;
-    messages: number;
-    voiceMinutes: number;
+  const PROFILE = {
+    userId: '982349823492834',
+    username: 'arka',
+    globalName: 'Arka',
+    displayName: 'Arka',
+    locale: 'fr',
+    pronouns: x('il/lui', 'he/him'),
+    accentColor: 0x6366f1,
+    avatarUrl: mockAvatar('Arka'),
+    bannerUrl: mockBanner('Arka'),
+    accountCreatedAt: '2023-03-12T14:23:00.000Z',
+    guildJoinedAt: '2024-05-04T09:15:00.000Z',
+    firstSeenAt: '2024-05-04T09:15:00.000Z',
+    lastSeenAt: ago(7),
+    messageCount: 3452,
+    voiceTimeSeconds: 448_200
   };
 
-  // Daily Trend generator helper to generate realistic, seed-based mock trend lines
-  function getDailyTrend(seed: string, totalMessages: number, totalVoiceSeconds: number): DailyTrendPoint[] {
-    const trend: DailyTrendPoint[] = [];
-    const totalVoiceMinutes = Math.round(totalVoiceSeconds / 60);
-    const avgMsg = totalMessages / 30;
-    const avgVoc = totalVoiceMinutes / 30;
-    
-    // Simple hash for seed
-    let hash = 0;
-    for (let i = 0; i < seed.length; i++) {
-      hash = seed.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    
-    for (let day = 30; day >= 1; day--) {
-      const d = new Date("2026-06-14T13:52:26+02:00");
-      d.setDate(d.getDate() - day);
-      const dateKey = d.toISOString().split('T')[0];
-      
-      const factor1 = Math.abs(Math.sin(hash + day) * 1.3 + 0.3);
-      const factor2 = Math.abs(Math.cos(hash - day) * 1.3 + 0.3);
-      
-      const messages = Math.round(avgMsg * factor1);
-      const voiceMinutes = Math.round(avgVoc * factor2);
-      
-      trend.push({
-        dateKey,
-        messages,
-        voiceMinutes
-      });
-    }
-    return trend;
-  }
+  const INVITE = { code: 'KOTBO', inviterTag: 'lena', inviterAvatarUrl: mockAvatar('Lena'), joinedAt: '2024-05-04T09:15:00.000Z' };
 
-  // Derived mock data depending on target username
-  let caseData = $derived.by(() => {
-    const u = user.toLowerCase();
-    let data: any;
-    if (u === 'arka') {
-      data = {
-        profile: {
-          userId: '982349823492834',
-          userTag: 'arka_boss',
-          username: 'arka_boss',
-          globalName: 'Arka',
-          displayName: 'Arka',
-          avatarUrl: mockAvatar('Arka'),
-          bannerUrl: mockBanner('Arka'),
-          locale: 'fr',
-          isBot: false,
-          accountCreatedAt: '2023-03-12T14:23:00.000Z',
-          guildJoinedAt: '2024-05-04T09:15:00.000Z',
-          guildLeftAt: null,
-          firstSeenAt: '2024-05-04T09:15:00.000Z',
-          lastSeenAt: '2026-06-14T13:45:00.000Z',
-          messageCount: 3452,
-          voiceTimeSeconds: 124500,
-          rolesSnapshot: ['Fondateur', 'Tuteur', 'Staff'],
-          presenceStatus: 'online',
-          pronouns: 'He/Him',
-          isTutor: true,
-          staffGrade: 'Fondateur',
-          moderatorNote: 'Fondateur historique du serveur.'
-        },
-        invite: {
-          code: 'KOTBO',
-          inviterId: 'lena',
-          inviterTag: 'Lena',
-          inviterAvatarUrl: mockAvatar('Lena'),
-          joinedAt: '2024-05-04T09:15:00.000Z'
-        },
-        roles: [
-          { id: 'r1', name: 'Fondateur', color: '#f59e0b' },
-          { id: 'r2', name: 'Tuteur', color: '#6366f1' },
-          { id: 'r3', name: 'Staff', color: '#10b981' }
-        ],
-        effectivePermissions: ['ADMINISTRATOR', 'MANAGE_GUILD', 'MANAGE_ROLES', 'KICK_MEMBERS', 'BAN_MEMBERS'],
-        sanctions: [
-          { id: 's1', type: 'WARN', status: 'RESOLVED', targetUserId: '982349823492834', targetTag: 'Arka', moderatorUserId: 'lena_id', moderatorTag: 'Lena', reason: 'Spam de mentions', createdAt: '2026-04-12T14:20:00.000Z', resolvedAt: '2026-04-12T15:20:00.000Z', resolutionNote: 'Excuses présentées' }
-        ],
-        logs: [
-          { id: 'l1', user: 'Arka', action: 'Connexion au dashboard', module: 'Auth', source: 'dashboard', details: 'Connexion depuis l’IP 192.168.1.1 (France)', dateIso: '2026-06-14T13:40:00.000Z' },
-          { id: 'l2', user: 'Arka', action: 'Modification de salon vocal', module: 'Channels', source: 'discord', details: 'Salon #Vocal-1 modifié', dateIso: '2026-06-14T12:15:00.000Z' },
-          { id: 'l3', user: 'Arka', action: 'Ticket #104 fermé', module: 'Tickets', source: 'dashboard', details: 'Ticket résolu par Arka', dateIso: '2026-06-14T10:30:00.000Z' }
-        ],
-        messagesByChannel: [
-          {
-            channelId: 'c1',
-            channelName: 'général',
-            count: 1845,
-            lastMessageAt: '2026-06-14T13:35:00.000Z',
-            recentMessages: [
-              { id: 'm1', content: 'Je pense qu\'on devrait automatiser l\'accueil des nouveaux.', dateIso: '2026-06-14T13:35:00.000Z', channelName: 'général' },
-              { id: 'm1_2', content: 'Surtout avec le pic de membres ce weekend.', dateIso: '2026-06-14T13:34:00.000Z', channelName: 'général' }
-            ]
-          },
-          {
-            channelId: 'c2',
-            channelName: 'développement',
-            count: 1202,
-            lastMessageAt: '2026-06-14T12:20:00.000Z',
-            recentMessages: [
-              { id: 'm2', content: 'Le bot Kotbo est prêt à être déployé sur le serveur principal.', dateIso: '2026-06-14T12:20:00.000Z', channelName: 'développement' }
-            ]
-          }
-        ],
-        recentMessageCount: 15,
-        recentLogCount: 8,
-        connections: [
-          { name: 'arka_github', type: 'github', visible: true },
-          { name: 'arka_spotify', type: 'spotify', visible: true }
-        ],
-        candidatures: [
-          { id: 'cand1', status: 'APPROVED', notes: 'Excellent profil technique, motivé et dispo.', createdAt: '2024-05-01T00:00:00.000Z', oralResult: 'Validé' }
-        ],
-        linkedAccounts: [
-          { userId: '98273498234', userTag: 'ArkaAlt', type: 'Alt Account', status: 'VALIDATED' }
-        ],
-        isSuspectedDC: false,
-        interactionGraph: {
-          nodes: [
-            { id: 'arka', label: 'Arka', type: 'user' },
-            { id: 'lena', label: 'Lena', type: 'target' },
-            { id: 'zenox', label: 'Zenox', type: 'target' }
-          ],
-          edges: [
-            { from: 'arka', to: 'lena', type: 'mention', count: 42 },
-            { from: 'arka', to: 'zenox', type: 'reply', count: 15 }
-          ]
-        }
-      };
-    } else if (u === 'zenox') {
-      data = {
-        profile: {
-          userId: '837492834928349',
-          userTag: 'zenox_admin',
-          username: 'zenox_admin',
-          globalName: 'Zenox',
-          displayName: 'Zenox',
-          avatarUrl: mockAvatar('Zenox'),
-          bannerUrl: mockBanner('Zenox'),
-          locale: 'fr',
-          isBot: false,
-          accountCreatedAt: '2024-01-15T10:11:00.000Z',
-          guildJoinedAt: '2025-02-10T11:20:00.000Z',
-          guildLeftAt: null,
-          firstSeenAt: '2025-02-10T11:20:00.000Z',
-          lastSeenAt: '2026-06-14T13:20:00.000Z',
-          messageCount: 1892,
-          voiceTimeSeconds: 55200,
-          rolesSnapshot: ['Administrateur', 'Staff'],
-          presenceStatus: 'idle',
-          pronouns: 'He/Him',
-          isTutor: false,
-          staffGrade: 'Administrateur',
-          moderatorNote: 'Administrateur rigoureux, gère le pôle sanctions.'
-        },
-        invite: {
-          code: 'ZEN',
-          inviterId: 'arka',
-          inviterTag: 'Arka',
-          inviterAvatarUrl: mockAvatar('Arka'),
-          joinedAt: '2025-02-10T11:20:00.000Z'
-        },
-        roles: [
-          { id: 'r4', name: 'Administrateur', color: '#10b981' },
-          { id: 'r3', name: 'Staff', color: '#10b981' }
-        ],
-        effectivePermissions: ['ADMINISTRATOR', 'MANAGE_GUILD', 'MANAGE_ROLES', 'KICK_MEMBERS', 'BAN_MEMBERS'],
-        sanctions: [],
-        logs: [
-          { id: 'l4', user: 'Zenox', action: 'Ban appliqué', module: 'Sanctions', source: 'dashboard', details: 'A banni @InsulteurPro pour Propos injurieux', dateIso: '2026-06-14T13:20:00.000Z' },
-          { id: 'l5', user: 'Zenox', action: 'Vocal rejoint', module: 'Voice', source: 'discord', details: 'Rejoint le salon vocal #Général', dateIso: '2026-06-14T13:15:00.000Z' }
-        ],
-        messagesByChannel: [
-          {
-            channelId: 'c1',
-            channelName: 'général',
-            count: 1205,
-            lastMessageAt: '2026-06-14T11:40:00.000Z',
-            recentMessages: [
-              { id: 'm3', content: 'Le problème de spam a été réglé.', dateIso: '2026-06-14T11:40:00.000Z', channelName: 'général' }
-            ]
-          },
-          {
-            channelId: 'c3',
-            channelName: 'aide-modération',
-            count: 687,
-            lastMessageAt: '2026-06-14T10:10:00.000Z',
-            recentMessages: [
-              { id: 'm4', content: 'Je vais traiter la candidature en attente.', dateIso: '2026-06-14T10:10:00.000Z', channelName: 'aide-modération' }
-            ]
-          }
-        ],
-        recentMessageCount: 8,
-        recentLogCount: 5,
-        connections: [
-          { name: 'zenox_twitch', type: 'twitch', visible: true }
-        ],
-        candidatures: [
-          { id: 'cand2', status: 'APPROVED', notes: 'Bonne expérience de modération sur d’autres serveurs.', createdAt: '2025-02-05T00:00:00.000Z', oralResult: 'Validé' }
-        ],
-        linkedAccounts: [],
-        isSuspectedDC: false,
-        interactionGraph: {
-          nodes: [
-            { id: 'zenox', label: 'Zenox', type: 'user' },
-            { id: 'arka', label: 'Arka', type: 'target' }
-          ],
-          edges: [
-            { from: 'zenox', to: 'arka', type: 'reply', count: 28 }
-          ]
-        }
-      };
-    } else if (u === 'lena') {
-      data = {
-        profile: {
-          userId: '723849283492834',
-          userTag: 'admin_lena',
-          username: 'admin_lena',
-          globalName: 'Lena',
-          displayName: 'Lena',
-          avatarUrl: mockAvatar('Lena'),
-          bannerUrl: mockBanner('Lena'),
-          locale: 'fr',
-          isBot: false,
-          accountCreatedAt: '2022-08-20T17:40:00.000Z',
-          guildJoinedAt: '2023-10-10T12:00:00.000Z',
-          guildLeftAt: null,
-          firstSeenAt: '2023-10-10T12:00:00.000Z',
-          lastSeenAt: '2026-06-14T13:48:00.000Z',
-          messageCount: 5231,
-          voiceTimeSeconds: 234000,
-          rolesSnapshot: ['Responsable Staff', 'Tuteur', 'Staff'],
-          presenceStatus: 'dnd',
-          pronouns: 'She/Her',
-          isTutor: true,
-          staffGrade: 'Responsable Staff',
-          moderatorNote: 'Responsable de l’animation de l’équipe et du tutorat.'
-        },
-        invite: {
-          code: 'STAFF',
-          inviterId: 'arka',
-          inviterTag: 'Arka',
-          inviterAvatarUrl: mockAvatar('Arka'),
-          joinedAt: '2023-10-10T12:00:00.000Z'
-        },
-        roles: [
-          { id: 'r5', name: 'Responsable Staff', color: '#ec4899' },
-          { id: 'r2', name: 'Tuteur', color: '#6366f1' },
-          { id: 'r3', name: 'Staff', color: '#10b981' }
-        ],
-        effectivePermissions: ['MANAGE_GUILD', 'MANAGE_ROLES', 'KICK_MEMBERS', 'BAN_MEMBERS', 'MANAGE_MESSAGES', 'MUTE_MEMBERS'],
-        sanctions: [],
-        logs: [
-          { id: 'l6', user: 'Lena', action: 'Rôle attribué', module: 'Roles', source: 'dashboard', details: 'A attribué le rôle Modérateur à Aiden', dateIso: '2026-06-14T13:10:00.000Z' },
-          { id: 'l7', user: 'Lena', action: 'Ticket #103 fermé', module: 'Tickets', source: 'dashboard', details: 'Résolu', dateIso: '2026-06-14T11:15:00.000Z' }
-        ],
-        messagesByChannel: [
-          {
-            channelId: 'c1',
-            channelName: 'général',
-            count: 3200,
-            lastMessageAt: '2026-06-14T13:30:00.000Z',
-            recentMessages: [
-              { id: 'm5', content: 'N’hésitez pas à postuler dans le salon recrutement.', dateIso: '2026-06-14T13:30:00.000Z', channelName: 'général' }
-            ]
-          },
-          {
-            channelId: 'c4',
-            channelName: 'candidatures',
-            count: 2031,
-            lastMessageAt: '2026-06-14T11:00:00.000Z',
-            recentMessages: [
-              { id: 'm6', content: 'Le profil de Zenox est très intéressant.', dateIso: '2026-06-14T11:00:00.000Z', channelName: 'candidatures' }
-            ]
-          }
-        ],
-        recentMessageCount: 22,
-        recentLogCount: 14,
-        connections: [
-          { name: 'lena_twitter', type: 'twitter', visible: true }
-        ],
-        candidatures: [
-          { id: 'cand3', status: 'APPROVED', notes: 'Très motivée, bon relationnel.', createdAt: '2023-10-01T00:00:00.000Z', oralResult: 'Validé' }
-        ],
-        linkedAccounts: [],
-        isSuspectedDC: false,
-        interactionGraph: {
-          nodes: [
-            { id: 'lena', label: 'Lena', type: 'user' },
-            { id: 'arka', label: 'Arka', type: 'target' },
-            { id: 'aiden', label: 'Aiden', type: 'target' }
-          ],
-          edges: [
-            { from: 'lena', to: 'arka', type: 'mention', count: 87 },
-            { from: 'lena', to: 'aiden', type: 'reply', count: 34 }
-          ]
-        }
-      };
-    } else {
-      // default / Aiden
-      data = {
-        profile: {
-          userId: '827364827364827',
-          userTag: 'aiden_mod',
-          username: 'aiden_mod',
-          globalName: 'Aiden',
-          displayName: 'Aiden',
-          avatarUrl: mockAvatar('Aiden'),
-          bannerUrl: mockBanner('Aiden'),
-          locale: 'fr',
-          isBot: false,
-          accountCreatedAt: '2024-06-10T08:30:00.000Z',
-          guildJoinedAt: '2025-03-01T14:40:00.000Z',
-          guildLeftAt: null,
-          firstSeenAt: '2025-03-01T14:40:00.000Z',
-          lastSeenAt: '2026-06-14T13:46:00.000Z',
-          messageCount: 451,
-          voiceTimeSeconds: 9000,
-          rolesSnapshot: ['Modérateur', 'Staff'],
-          presenceStatus: 'online',
-          pronouns: 'He/They',
-          isTutor: false,
-          staffGrade: 'Modérateur',
-          moderatorNote: 'Modérateur fraîchement promu, en période de validation.'
-        },
-        invite: {
-          code: 'A10',
-          inviterId: 'lena',
-          inviterTag: 'Lena',
-          inviterAvatarUrl: mockAvatar('Lena'),
-          joinedAt: '2025-03-01T14:40:00.000Z'
-        },
-        roles: [
-          { id: 'r6', name: 'Modérateur', color: '#3b82f6' },
-          { id: 'r3', name: 'Staff', color: '#10b981' }
-        ],
-        effectivePermissions: ['KICK_MEMBERS', 'BAN_MEMBERS', 'MANAGE_MESSAGES', 'MUTE_MEMBERS'],
-        sanctions: [
-          { id: 's2', type: 'WARN', status: 'ACTIVE', targetUserId: '827364827364827', targetTag: 'Aiden', moderatorUserId: 'lena_id', moderatorTag: 'Lena', reason: 'Spam vocal répété', createdAt: '2026-05-18T10:00:00.000Z', resolvedAt: null, resolutionNote: null }
-        ],
-        logs: [
-          { id: 'l8', user: 'Aiden', action: 'Message supprimé', module: 'Moderation', source: 'discord', details: 'A supprimé un message de @ToxicGuy dans #général', dateIso: '2026-06-14T13:40:00.000Z' },
-          { id: 'l9', user: 'Aiden', action: 'Salon vocal rejoint', module: 'Voice', source: 'discord', details: 'A rejoint #Aide', dateIso: '2026-06-14T12:00:00.000Z' }
-        ],
-        messagesByChannel: [
-          {
-            channelId: 'c1',
-            channelName: 'général',
-            count: 320,
-            lastMessageAt: '2026-06-14T13:20:00.000Z',
-            recentMessages: [
-              { id: 'm7', content: 'Bonjour, bienvenue sur le serveur !', dateIso: '2026-06-14T13:20:00.000Z', channelName: 'général' }
-            ]
-          },
-          {
-            channelId: 'c3',
-            channelName: 'aide-modération',
-            count: 131,
-            lastMessageAt: '2026-06-14T11:45:00.000Z',
-            recentMessages: [
-              { id: 'm8', content: 'Le salon vocal est calme pour l’instant.', dateIso: '2026-06-14T11:45:00.000Z', channelName: 'aide-modération' }
-            ]
-          }
-        ],
-        recentMessageCount: 4,
-        recentLogCount: 3,
-        connections: [],
-        candidatures: [
-          { id: 'cand4', status: 'APPROVED', notes: 'Candidature acceptée après entretien.', createdAt: '2025-02-20T00:00:00.000Z', oralResult: 'Validé' }
-        ],
-        linkedAccounts: [
-          { userId: '827364827364', userTag: 'AidenAlt', type: 'Linked Account', status: 'PENDING' }
-        ],
-        isSuspectedDC: true,
-        interactionGraph: {
-          nodes: [
-            { id: 'aiden', label: 'Aiden', type: 'user' },
-            { id: 'lena', label: 'Lena', type: 'target' }
-          ],
-          edges: [
-            { from: 'aiden', to: 'lena', type: 'mention', count: 12 }
-          ]
-        }
-      };
-    }
-    data.dailyTrend = getDailyTrend(user, data.profile.messageCount, data.profile.voiceTimeSeconds);
-    return data;
-  });
+  const ROLES = [
+    { name: x('Modérateur', 'Moderator'), color: '#3b82f6' },
+    { name: x('Tuteur', 'Tutor'), color: '#6366f1' },
+    { name: x('Staff', 'Staff'), color: '#10b981' },
+    { name: x('Pôle Événements', 'Events team'), color: '#f59e0b' },
+    { name: x('Vérifié', 'Verified'), color: '#64748b' },
+    { name: x('Niveau 30', 'Level 30'), color: '#ec4899' }
+  ];
+  const PERMISSIONS = ['KICK_MEMBERS', 'BAN_MEMBERS', 'MANAGE_MESSAGES', 'MODERATE_MEMBERS', 'MUTE_MEMBERS'];
 
-  $effect(() => {
-    // Sync interactive states on user change
-    moderatorNoteInput = caseData.profile?.moderatorNote ?? '';
-    noteFeedback = '';
-    linkedAccountsList = [...caseData.linkedAccounts];
-    sanctionsList = [...caseData.sanctions];
-    viewingReportId = null;
-  });
-
-  const tabDefs = [
-    { id: 'resume', icon: 'layout' },
-    { id: 'identite', icon: 'user' },
-    { id: 'activite', icon: 'trending-up' },
-    { id: 'analytics', icon: 'bar-chart-2' },
-    { id: 'messages', icon: 'message-square' },
-    { id: 'logs', icon: 'history' },
-    { id: 'sanctions', icon: 'hammer' },
-    { id: 'candidatures', icon: 'user-check' },
-    { id: 'invites', icon: 'mail' },
-    { id: 'notes', icon: 'edit-3' }
+  const CHANNELS = [
+    { channelId: 'c1', channelName: x('général', 'general'), count: 1845 },
+    { channelId: 'c2', channelName: x('aide-modération', 'mod-help'), count: 902 },
+    { channelId: 'c3', channelName: x('événements', 'events'), count: 486 },
+    { channelId: 'c4', channelName: x('tickets-staff', 'staff-tickets'), count: 219 }
   ];
 
-  let tabs = $derived(tabDefs.map((td) => ({ ...td, label: t.tabs[td.id as keyof typeof t.tabs] })));
+  type Message = { id: string; channelId: string; content: Tx; at: string; editedAt?: string; deletedAt?: string };
+  const MESSAGES: Message[] = [
+    { id: 'm1', channelId: 'c1', content: x("Bienvenue à tous les nouveaux ! Passez par #règles avant d'écrire, ça évite les surprises.", 'Welcome to all the newcomers! Read #rules before posting, it saves surprises.'), at: ago(9) },
+    { id: 'm2', channelId: 'c3', content: x('Le tournoi de samedi est complet, je prépare les poules ce soir.', "Saturday's tournament is full, I'm drawing up the groups tonight."), at: ago(52), editedAt: ago(48) },
+    { id: 'm3', channelId: 'c2', content: x("J'ai pris le ticket #214, le membre attend une réponse depuis hier.", "I took ticket #214, the member has been waiting since yesterday."), at: ago(130) },
+    { id: 'm4', channelId: 'c1', content: x('Merci de garder le vocal calme, il y a une session de révision en cours.', 'Please keep the voice channel calm, there is a study session going on.'), at: ago(310) },
+    { id: 'm5', channelId: 'c4', content: x('Je passe en revue les candidatures helper demain matin.', "I'm going through the helper applications tomorrow morning."), at: ago(DAY + 40) },
+    { id: 'm6', channelId: 'c1', content: x('mauvais salon, désolé', 'wrong channel, sorry'), at: ago(DAY + 200), deletedAt: ago(DAY + 198) },
+    { id: 'm7', channelId: 'c2', content: x('Quelqu’un peut vérifier le compte de Nora ? Il a moins de trois jours.', 'Can someone check Nora’s account? It is less than three days old.'), at: ago(2 * DAY + 90) }
+  ];
 
+  type Log = { id: string; action: Tx; module: string; source: string; details: Tx; at: string };
+  const LOGS: Log[] = [
+    { id: 'l1', action: x('Message supprimé', 'Message deleted'), module: 'Moderation', source: 'discord', details: x('A supprimé un lien d’invitation publié dans #général', 'Removed an invite link posted in #general'), at: ago(25) },
+    { id: 'l2', action: x('Ticket #214 fermé', 'Ticket #214 closed'), module: 'Tickets', source: 'dashboard', details: x('Résolu : accès au salon vocal rétabli', 'Resolved: voice channel access restored'), at: ago(95) },
+    { id: 'l3', action: x('Vocal rejoint', 'Joined voice'), module: 'Voice', source: 'discord', details: x('A rejoint #Révisions', 'Joined #Study-room'), at: ago(180) },
+    { id: 'l4', action: x('Rôle attribué', 'Role given'), module: 'Roles', source: 'dashboard', details: x('A donné le rôle Vérifié à @nora', 'Gave the Verified role to @nora'), at: ago(DAY + 60) },
+    { id: 'l5', action: x('Exclusion temporaire', 'Timeout'), module: 'Sanctions', source: 'discord', details: x('A exclu @spamlord 1 h pour spam de liens', 'Timed out @spamlord for 1 h for link spam'), at: ago(3 * DAY) }
+  ];
+
+  type Report = { incidentAt: string; duration: Tx; rules: Tx[]; reason: Tx; evidence: number; notes?: Tx; author: string };
+  type Sanction = { id: string; type: SanctionType; status: 'ACTIVE' | 'RESOLVED'; moderator: string; reason: Tx; createdAt: string; report?: Report };
+  type SanctionType = 'WARN' | 'TIMEOUT' | 'KICK' | 'BAN';
+
+  const INITIAL_SANCTIONS: Sanction[] = [
+    {
+      id: 's1',
+      type: 'WARN',
+      status: 'RESOLVED',
+      moderator: 'lena',
+      reason: x('Spam de mentions', 'Mention spam'),
+      createdAt: '2025-11-03T20:12:00.000Z',
+      report: {
+        incidentAt: '2025-11-03T20:05:00.000Z',
+        duration: x('Avertissement', 'Warning'),
+        rules: [x('2.1 Respect et courtoisie', '2.1 Respect and courtesy'), x('3.4 Mentions abusives', '3.4 Excessive mentions')],
+        reason: x(
+          'Six mentions du rôle @Événements en deux minutes pendant le tournoi. Excuses présentées en privé, pas de récidive.',
+          'Six pings of the @Events role in two minutes during the tournament. Apologised in private, no repeat.'
+        ),
+        evidence: 2,
+        notes: x('Avant son entrée dans le staff.', 'Before joining the staff.'),
+        author: 'lena'
+      }
+    }
+  ];
+
+  const CANDIDATURES = [
+    { createdAt: '2025-01-08T10:00:00.000Z', status: 'APPROVED', oral: x('Validé', 'Passed'), notes: x('Très présent en vocal, bonne écoute, déjà modérateur sur un serveur de 2 000 membres.', 'Very present in voice, a good listener, already a moderator on a 2,000-member server.') }
+  ];
+
+  const INITIAL_NOTE = x(
+    'Référent des événements du samedi. Préfère être prévenu en privé avant toute décision sur un membre de son pôle.',
+    'Point of contact for Saturday events. Prefers a private heads-up before any decision on a member of his team.'
+  );
+
+  // Échelle des grades : celle de la maquette de l'équipe (`MockStaff`).
+  const GRADES = [x('Helper Test', 'Trial Helper'), x('Helper', 'Helper'), x('Modérateur', 'Moderator'), x('Administrateur', 'Administrator'), x('Responsable', 'Manager')];
+  const GRADE_COLORS = ['#64748b', '#d97706', '#059669', '#4f46e5', '#e11d48'];
+
+  const STAFF = {
+    joinedStaffAt: '2025-01-12T18:00:00.000Z',
+    stats: { messages: 2118, voiceMinutes: 5310, sanctionsIssued: 64 },
+    progression: 78,
+    avg7d: 31,
+    avg30d: 26,
+    demoteAt: 3,
+    blacklistAt: 5,
+    hierarchies: [
+      { name: x('Pôle Événements', 'Events team'), grade: x('Référent', 'Lead'), icon: '🎉', color: '#f59e0b', joinedAt: '2025-06-02T18:00:00.000Z' },
+      { name: x('Tutorat', 'Mentoring'), grade: x('Tuteur', 'Tutor'), icon: 'user-check', color: '#6366f1', joinedAt: '2025-09-15T18:00:00.000Z' }
+    ]
+  };
+
+  type StaffWarning = { id: string; reason: Tx; by: string; createdAt: string; expiresAt: string | null; active: boolean };
+  type GradeEvent = { at: string; grade: number };
+
+  // ── État de l'aperçu ──────────────────────────────────────────────────
+  type TabId = 'staff' | 'resume' | 'identite' | 'activite' | 'analytics' | 'messages' | 'logs' | 'sanctions' | 'candidatures' | 'invites' | 'notes';
+  let activeTab = $state<TabId>('staff');
+
+  let sanctions = $state<Sanction[]>([...INITIAL_SANCTIONS]);
+  let presence = $state<'online' | 'left'>('online');
+  let verificationRequestedAt = $state<string | null>(null);
+
+  let gradeIndex = $state(2);
+  let gradeEvents = $state<GradeEvent[]>([{ at: '2025-09-15T18:00:00.000Z', grade: 2 }]);
+  let staffWarnings = $state<StaffWarning[]>([
+    { id: 'w1', reason: x('Absence non signalée pendant la soirée quiz', 'Unannounced absence during quiz night'), by: 'lena', createdAt: ago(18 * DAY), expiresAt: ago(-12 * DAY), active: true },
+    { id: 'w2', reason: x('Sanction appliquée sans rapport', 'Sanction applied without a report'), by: 'zenox', createdAt: '2025-03-02T19:00:00.000Z', expiresAt: '2025-04-01T19:00:00.000Z', active: false }
+  ]);
+
+  let actionReason = $state('');
+  let actionDuration = $state<keyof typeof TEXT.fr.aside.durations>('30m');
+  let actionFeedback = $state('');
+
+  let moderatorNote = $state(tr(INITIAL_NOTE));
+  let noteBusy = $state(false);
+  let noteFeedback = $state('');
+
+  let trendMetric = $state<'messages' | 'voice'>('messages');
+  let viewingReportId = $state<string | null>(null);
+
+  let messageQuery = $state('');
+  let messageChannelId = $state('');
+  let messageIncludeDeleted = $state(true);
+
+  let logQuery = $state('');
+  let logModule = $state('');
+  let logOrder = $state<'desc' | 'asc'>('desc');
+
+  // ── Formats ───────────────────────────────────────────────────────────
+  function fmtNumber(n: number) {
+    return n.toLocaleString(intl);
+  }
+  function fmtMinutes(minutes: number) {
+    return minutes < 60 ? t.units.min(fmtNumber(Math.round(minutes))) : t.units.hour(fmtNumber(Math.round(minutes / 60)));
+  }
   function formatDateTime(value: string | null | undefined) {
-    if (!value) return t.common.unknown;
-    return new Date(value).toLocaleString(getLocale() === 'en' ? 'en-US' : 'fr-FR');
+    if (!value) return '-';
+    return new Date(value).toLocaleString(intl, { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: TZ });
   }
-
   function formatDateShort(value: string | null | undefined) {
-    if (!value) return '';
-    return new Date(value).toLocaleDateString(getLocale() === 'en' ? 'en-US' : 'fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+    if (!value) return '-';
+    return new Date(value).toLocaleDateString(intl, { day: '2-digit', month: 'short', year: 'numeric', timeZone: TZ });
   }
-
-  function formatDurationFromSeconds(seconds: number | null | undefined) {
-    if (!seconds || seconds <= 0) return `0${t.time.s}`;
-    const totalSeconds = Math.floor(seconds);
-    const days = Math.floor(totalSeconds / 86400);
-    const hours = Math.floor((totalSeconds % 86400) / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const parts: string[] = [];
-    if (days) parts.push(`${days}${t.time.d}`);
-    if (hours) parts.push(`${hours}${t.time.h}`);
-    if (minutes) parts.push(`${minutes}${t.time.m}`);
-    if (parts.length === 0) parts.push(`${totalSeconds}${t.time.s}`);
-    return parts.join(' ');
+  function shortDate(value: number) {
+    return new Date(value).toLocaleDateString(intl, { day: 'numeric', month: 'short', timeZone: TZ });
   }
-
+  function formatDuration(seconds: number) {
+    const days = Math.floor(seconds / 86400);
+    const hours = Math.floor((seconds % 86400) / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return [days && `${days}${t.duration.d}`, hours && `${hours}h`, minutes && `${minutes}m`].filter(Boolean).join(' ') || '0s';
+  }
   function formatRelative(value: string | null | undefined) {
     if (!value) return t.relative.never;
-    const date = new Date(value);
-    const now = new Date("2026-06-14T13:52:26+02:00");
-    const diff = now.getTime() - date.getTime();
-    const seconds = Math.floor(diff / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-
-    if (seconds < 60) return t.relative.justNow;
-    if (minutes < 60) return t.relative.minutesAgo(minutes);
-    if (hours < 24) return t.relative.hoursAgo(hours);
-    if (days < 7) return t.relative.daysAgo(days);
-    return date.toLocaleDateString(getLocale() === 'en' ? 'en-US' : 'fr-FR', { day: '2-digit', month: 'short' });
+    const diff = NOW - new Date(value).getTime();
+    const minutes = Math.floor(diff / 60_000);
+    if (minutes < 0) return t.relative.inDays(Math.ceil(-minutes / DAY));
+    if (minutes < 1) return t.relative.justNow;
+    if (minutes < 60) return t.relative.minutes(minutes);
+    if (minutes < DAY) return t.relative.hours(Math.floor(minutes / 60));
+    if (minutes < 7 * DAY) return t.relative.days(Math.floor(minutes / DAY));
+    return new Date(value).toLocaleDateString(intl, { day: '2-digit', month: 'short', timeZone: TZ });
   }
-
-  function getDurationSince(value: string | null | undefined) {
-    if (!value) return t.common.unknown;
+  function durationSince(value: string) {
     const start = new Date(value);
-    const now = new Date("2026-06-14T13:52:26+02:00");
+    const now = new Date(NOW);
     let years = now.getFullYear() - start.getFullYear();
     let months = now.getMonth() - start.getMonth();
-
     if (months < 0) {
       years--;
       months += 12;
     }
-
     const parts: string[] = [];
     if (years > 0) parts.push(t.duration.years(years));
     if (months > 0) parts.push(t.duration.months(months));
-
-    if (parts.length === 0) {
-       const days = Math.floor((now.getTime() - start.getTime()) / 86400000);
-       if (days <= 0) return t.duration.today;
-       return t.duration.daysShort(days);
-    }
-
-    return parts.join(', ');
+    if (parts.length) return parts.join(', ');
+    const days = Math.floor((NOW - start.getTime()) / 86_400_000);
+    return days <= 0 ? t.duration.today : t.duration.days(days);
+  }
+  function formatTenure(value: string) {
+    const days = Math.max(0, Math.floor((NOW - new Date(value).getTime()) / 86_400_000));
+    if (days < 31) return t.staff.tenureDays(days);
+    if (days < 365) return t.staff.tenureMonths(Math.floor(days / 30.4));
+    return t.staff.tenureYears(Math.floor(days / 365));
   }
 
-  function getPresenceColor(status: string | null | undefined) {
-    if (!status) return 'bg-slate-400';
-    const s = status.toLowerCase();
-    if (s === 'left') return 'bg-rose-500';
-    if (s === 'online') return 'bg-emerald-500';
-    if (s === 'idle') return 'bg-amber-500';
-    if (s === 'dnd') return 'bg-red-500';
-    return 'bg-slate-400';
-  }
-
-  function getPresenceLabel(status: string | null | undefined) {
-    if (!status) return t.presence.offline;
-    const s = status.toLowerCase();
-    if (s === 'left') return t.presence.left;
-    if (s === 'online') return t.presence.online;
-    if (s === 'idle') return t.presence.idle;
-    if (s === 'dnd') return t.presence.dnd;
-    return t.presence.offline;
-  }
-
-  function getConnectionIcon(type: string) {
-    const t = type.toLowerCase();
-    if (t === 'youtube') return 'video';
-    if (t === 'twitch') return 'tv';
-    if (t === 'twitter' || t === 'x') return 'twitter';
-    if (t === 'spotify') return 'music';
-    if (t === 'github') return 'github';
-    return 'link';
-  }
-
-  // Reactive SVG Line Chart calculations
-  let dailyTrend: DailyTrendPoint[] = $derived(caseData?.dailyTrend || []);
-  let maxMsg = $derived(Math.max(...dailyTrend.map(d => d.messages), 1));
-  let maxVoc = $derived(Math.max(...dailyTrend.map(d => d.voiceMinutes), 1));
-
-  function generatePath(values: number[], max: number, width = 760, height = 180) {
-    if (values.length === 0) return '';
-    const points = values.map((val, i) => {
-      const x = (i / (values.length - 1)) * width;
-      const y = height - 15 - (val / max) * (height - 30);
-      return `${x},${y}`;
+  // ── Tendance d'activité : 30 jours et les 30 d'avant ──────────────────
+  function series(seed: number, base: number, swing: number, days = 30) {
+    let state = seed;
+    const random = () => {
+      state = (state * 1664525 + 1013904223) % 4294967296;
+      return state / 4294967296;
+    };
+    return Array.from({ length: days }, (_, i) => {
+      const weekday = new Date(NOW - (days - 1 - i) * 86_400_000).getDay();
+      const weekend = weekday === 0 || weekday === 6 ? 1.35 : 1;
+      return Math.max(0, Math.round(base * weekend * (1 - swing / 2 + random() * swing)));
     });
-    return `M ${points.join(' L ')}`;
+  }
+  const DAYS = Array.from({ length: 30 }, (_, i) => NOW - (29 - i) * 86_400_000);
+  const TREND = {
+    messages: series(7, 27, 0.9),
+    prevMessages: series(19, 23, 0.9),
+    voice: series(3, 78, 1.1),
+    prevVoice: series(41, 86, 1.1)
+  };
+  const sum = (values: number[]) => values.reduce((total, v) => total + v, 0);
+  const delta = (cur: number[], prev: number[]) => ((sum(cur) - sum(prev)) / (sum(prev) || 1)) * 100;
+
+  const metrics = $derived([
+    { id: 'messages' as const, label: t.resume.messages, color: 'var(--series-1)', unit: 1, format: fmtNumber, value: fmtNumber(sum(TREND.messages)), delta: delta(TREND.messages, TREND.prevMessages), daily: TREND.messages, prevDaily: TREND.prevMessages },
+    { id: 'voice' as const, label: t.resume.voice, color: 'var(--series-3)', unit: 60, format: fmtMinutes, value: fmtMinutes(sum(TREND.voice)), delta: delta(TREND.voice, TREND.prevVoice), daily: TREND.voice, prevDaily: TREND.prevVoice }
+  ]);
+  const selectedMetric = $derived(metrics.find((metric) => metric.id === trendMetric) ?? metrics[0]);
+  const xLabels = $derived([0, 7, 14, 22, 29].map((i) => shortDate(DAYS[i])));
+
+  const CHART_W = 600;
+  function niceMax(value: number) {
+    const power = 10 ** Math.floor(Math.log10(Math.max(value, 1)));
+    const step = [1, 2, 2.5, 5, 10].find((s) => s * power >= value / 4) ?? 10;
+    return step * power * 4;
+  }
+  /** `unit` : le pas de l'axe, 60 pour que le vocal tombe sur des heures rondes. */
+  function chartGeometry(values: number[], previous: number[], height: number, unit = 1) {
+    const max = niceMax(Math.max(...values, ...previous, 1) / unit) * unit;
+    const point = (v: number, i: number) => `${((i / (values.length - 1)) * CHART_W).toFixed(1)},${(height - (v / max) * (height - 6)).toFixed(1)}`;
+    const line = values.map(point).join(' L');
+    return {
+      ticks: [4, 3, 2, 1, 0].map((k) => (max / 4) * k),
+      main: `M${line}`,
+      area: `M0,${height} L${line} L${CHART_W},${height} Z`,
+      previous: `M${previous.map(point).join(' L')}`
+    };
   }
 
-  function generateAreaPath(values: number[], max: number, width = 760, height = 180) {
-    const p = generatePath(values, max, width, height);
-    if (!p) return '';
-    return `${p} L ${width},${height} L 0,${height} Z`;
+  // ── Calculs du dossier ────────────────────────────────────────────────
+  const activeSanctionCount = $derived(sanctions.filter((s) => s.status === 'ACTIVE').length);
+  const riskScore = $derived(
+    Math.min(100, activeSanctionCount * 25 + (sanctions.length - activeSanctionCount) * 10)
+  );
+  const riskTone = $derived(riskScore < 30 ? 'success' : riskScore < 70 ? 'warning' : 'danger');
+  const seniority = $derived.by(() => {
+    const days = (NOW - new Date(PROFILE.guildJoinedAt).getTime()) / 86_400_000;
+    const s = t.aside.seniority;
+    return days > 365 ? s.veteran : days > 180 ? s.old : days > 30 ? s.regular : days > 7 ? s.recent : s.newcomer;
+  });
+
+  const channelName = (id: string) => tr(CHANNELS.find((c) => c.channelId === id)?.channelName ?? x('', ''));
+  const recentMessages = $derived(
+    CHANNELS.slice(0, 3)
+      .map((c) => MESSAGES.find((msg) => msg.channelId === c.channelId && !msg.deletedAt))
+      .filter((msg): msg is Message => !!msg)
+  );
+
+  const filteredMessages = $derived.by(() => {
+    const query = messageQuery.trim().toLowerCase();
+    return MESSAGES.filter((msg) => {
+      if (messageChannelId && msg.channelId !== messageChannelId) return false;
+      if (!messageIncludeDeleted && msg.deletedAt) return false;
+      return !query || tr(msg.content).toLowerCase().includes(query);
+    });
+  });
+
+  const logModules = [...new Set(LOGS.map((log) => log.module))].sort();
+  const filteredLogs = $derived.by(() => {
+    const query = logQuery.trim().toLowerCase();
+    const rows = LOGS.filter((log) => {
+      if (logModule && log.module !== logModule) return false;
+      return !query || `${tr(log.action)} ${tr(log.details)} ${log.module}`.toLowerCase().includes(query);
+    });
+    return logOrder === 'asc' ? rows.reverse() : rows;
+  });
+
+  const grade = $derived(tr(GRADES[gradeIndex]));
+  const gradeColor = $derived(GRADE_COLORS[gradeIndex]);
+  const gradeSince = $derived(gradeEvents[gradeEvents.length - 1].at);
+  const activeWarnings = $derived(staffWarnings.filter((w) => w.active));
+  const warnTone = $derived(
+    activeWarnings.length === 0 ? 'idle' : activeWarnings.length >= STAFF.demoteAt ? 'danger' : 'warning'
+  );
+  const weekTrend = Math.round(((STAFF.avg7d - STAFF.avg30d) / STAFF.avg30d) * 100);
+
+  type TimelineEvent = { at: string; icon: string; tone: 'neutral' | 'warning' | 'danger' | 'primary'; title: string; detail?: string };
+  const timeline = $derived.by((): TimelineEvent[] => {
+    const events: TimelineEvent[] = staffWarnings.map((w) => ({
+      at: w.createdAt,
+      icon: 'alert-triangle',
+      tone: w.active ? 'warning' : 'neutral',
+      title: w.active ? t.staff.tlWarning : t.staff.tlWarningExpired,
+      detail: `${tr(w.reason)} · ${t.staff.by(w.by)}`
+    }));
+    for (const h of STAFF.hierarchies) {
+      events.push({ at: h.joinedAt, icon: 'git-branch', tone: 'neutral', title: t.staff.tlJoinedHierarchy(tr(h.name)), detail: tr(h.grade) });
+    }
+    for (const event of gradeEvents) {
+      events.push({ at: event.at, icon: 'chevrons-up', tone: 'primary', title: t.staff.tlGrade(tr(GRADES[event.grade])) });
+    }
+    events.push({ at: STAFF.joinedStaffAt, icon: 'user-plus', tone: 'primary', title: t.staff.tlJoined });
+    return events.sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
+  });
+
+  const tabs = $derived(
+    ([
+      ['staff', 'shield', undefined],
+      ['resume', 'layout', undefined],
+      ['identite', 'user', undefined],
+      ['activite', 'trending-up', undefined],
+      ['analytics', 'bar-chart-2', undefined],
+      ['messages', 'message-square', MESSAGES.length],
+      ['logs', 'history', LOGS.length],
+      ['sanctions', 'hammer', sanctions.length],
+      ['candidatures', 'user-check', CANDIDATURES.length],
+      ['invites', 'mail', undefined],
+      ['notes', 'edit-3', undefined]
+    ] as const).map(([id, icon, badge]) => ({ id, icon, label: t.tabs[id], badge: badge || undefined }))
+  );
+
+  const SANCTION_STYLE: Record<SanctionType, { icon: string; tone: string }> = {
+    WARN: { icon: 'alert-triangle', tone: 'warning' },
+    TIMEOUT: { icon: 'clock', tone: 'primary' },
+    KICK: { icon: 'log-out', tone: 'warning' },
+    BAN: { icon: 'gavel', tone: 'danger' }
+  };
+
+  const selectedSanction = $derived(sanctions.find((s) => s.id === viewingReportId && s.report) ?? null);
+
+  // ── Actions ───────────────────────────────────────────────────────────
+  function moderate(type: SanctionType) {
+    const labels = { WARN: t.aside.warn, TIMEOUT: t.aside.timeout, KICK: t.aside.kick, BAN: t.aside.ban };
+    const reason = actionReason.trim();
+    sanctions = [
+      {
+        id: `demo-${sanctions.length + 1}`,
+        type,
+        status: type === 'KICK' ? 'RESOLVED' : 'ACTIVE',
+        moderator: t.staff.you,
+        reason: reason ? x(reason, reason) : x(TEXT.fr.aside.defaultReason, TEXT.en.aside.defaultReason),
+        createdAt: new Date(NOW).toISOString()
+      },
+      ...sanctions
+    ];
+    if (type === 'KICK' || type === 'BAN') presence = 'left';
+    actionFeedback = t.aside.done(labels[type]);
+    actionReason = '';
+  }
+
+  function shiftGrade(direction: 1 | -1) {
+    const next = gradeIndex + direction;
+    if (next < 0 || next >= GRADES.length) return;
+    gradeIndex = next;
+    gradeEvents = [...gradeEvents, { at: new Date(NOW).toISOString(), grade: next }];
+  }
+
+  function warnStaff() {
+    staffWarnings = [
+      { id: `w${staffWarnings.length + 1}`, reason: x(TEXT.fr.staff.demoWarnReason, TEXT.en.staff.demoWarnReason), by: t.staff.you, createdAt: new Date(NOW).toISOString(), expiresAt: ago(-30 * DAY), active: true },
+      ...staffWarnings
+    ];
+  }
+
+  async function saveNote() {
+    noteBusy = true;
+    noteFeedback = '';
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    noteBusy = false;
+    noteFeedback = t.notes.saved;
+  }
+
+  function presenceTone(status: string) {
+    return status === 'online' ? 'success' : 'danger';
   }
 </script>
 
-<div class="isolate flex flex-col h-full w-full bg-surface-container-lowest text-on-surface font-body rounded-2xl overflow-hidden border border-outline-variant/10 shadow-lg select-none relative">
-  
-  <!-- ── Hero Section (Banner + Avatar + Username) ────────────────── -->
-  <div class="relative overflow-hidden shrink-0" style="height: 165px;">
-    {#if caseData.profile?.bannerUrl}
-      <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{caseData.profile.bannerUrl}');"></div>
-    {:else}
-      <div class="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500"></div>
-    {/if}
-    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-surface-container-lowest"></div>
-  </div>
-
-  <div class="relative z-10 flex items-end gap-5 px-6 pb-4 -mt-16 shrink-0">
-    <div class="relative shrink-0">
-      <div class="absolute -inset-1.5 rounded-3xl bg-white/20 blur-md animate-pulse"></div>
-      <img
-        src={caseData.profile?.avatarUrl}
-        alt="Avatar"
-        class="relative h-20 w-20 rounded-2xl border-4 border-surface-container-lowest object-cover shadow-2xl bg-surface-container-high"
-      />
-      <div class="absolute -bottom-1 -right-1 h-5 w-5 rounded-full border-3 border-surface-container-lowest {getPresenceColor(caseData.profile?.presenceStatus)}" title={getPresenceLabel(caseData.profile?.presenceStatus)}></div>
-    </div>
-
-    <div class="min-w-0 pb-1 flex-1 flex flex-col md:flex-row md:items-center justify-between gap-4">
+{#snippet facts(rows: Array<{ label: string; value: string; tone?: string }>)}
+  <dl class="mc-facts">
+    {#each rows as row (row.label)}
       <div>
-        <h3 class="text-2xl font-black text-on-surface tracking-tight truncate leading-none font-headline flex items-center gap-2">
-          {caseData.profile?.displayName}
-          {#if caseData.profile?.isBot}
-            <span class="badge bg-primary/20 text-primary border border-primary/30 px-2 py-0.5 text-xs font-black uppercase">{t.bot}</span>
-          {/if}
-        </h3>
-        <div class="mt-1.5 flex flex-wrap items-center gap-2">
-          <span class="text-sm font-semibold text-on-surface-variant/80">
-            @{caseData.profile?.username}
-          </span>
-          {#if caseData.profile?.pronouns}
-            <span class="badge bg-surface-container text-on-surface-variant px-2 py-0.5 text-xs font-bold">{caseData.profile.pronouns}</span>
-          {/if}
-          <span class="badge bg-surface-container text-on-surface-variant px-2 py-0.5 text-xs font-bold flex items-center gap-1">
-            <span class="h-2 w-2 rounded-full {getPresenceColor(caseData.profile?.presenceStatus)}"></span>
-            {getPresenceLabel(caseData.profile?.presenceStatus)}
-          </span>
-          {#if caseData.profile?.isTutor}
-            <span class="badge bg-indigo-500/15 text-indigo-400 border border-indigo-500/30 px-2 py-0.5 text-xs font-black uppercase flex items-center gap-1">
-              <Papicon icon="shield" size={11} />
-              {t.tutorBadge}
-            </span>
-          {/if}
-          {#if caseData.profile?.staffGrade}
-            <span class="badge bg-amber-500/15 text-amber-500 border border-amber-500/30 px-2 py-0.5 text-xs font-black uppercase flex items-center gap-1">
-              <Papicon icon="star" size={11} />
-              {caseData.profile.staffGrade}
-            </span>
-          {/if}
-        </div>
+        <dt>{row.label}</dt>
+        <dd class={row.tone ?? ''}>{row.value}</dd>
       </div>
-      
-      {#if caseData.profile?.userId}
-        <button
-          type="button"
-          class="inline-flex items-center gap-1.5 rounded-lg bg-white/15 backdrop-blur-md px-3 py-1.5 text-[10px] font-black text-white/80 uppercase tracking-widest transition-all hover:bg-white/25 hover:text-white hover:scale-[1.02] active:scale-[0.98] shadow-sm md:ml-auto cursor-pointer"
-        >
-          <Papicon icon="external-link" size={12} />
-          {t.profileButton}
-        </button>
-      {/if}
+    {/each}
+  </dl>
+{/snippet}
+
+{#snippet card(title: string, body: import('svelte').Snippet, options: { description?: string; flush?: boolean; actions?: import('svelte').Snippet } = {})}
+  <section class="section-card {options.flush ? 'overflow-hidden' : ''}">
+    <header class="flex items-start justify-between gap-4 px-5 pt-5 {options.flush ? 'border-b border-outline-variant pb-4' : 'pb-1'}">
+      <div class="min-w-0">
+        <h3 class="text-sm font-semibold leading-tight text-on-surface">{title}</h3>
+        {#if options.description}<p class="mt-0.5 text-[0.8125rem] leading-relaxed text-on-surface-variant">{options.description}</p>{/if}
+      </div>
+      {#if options.actions}<div class="flex shrink-0 items-center gap-2">{@render options.actions()}</div>{/if}
+    </header>
+    <div class={options.flush ? '' : 'p-5'}>{@render body()}</div>
+  </section>
+{/snippet}
+
+{#snippet inviter()}
+  <span class="mc-person">
+    <img src={INVITE.inviterAvatarUrl} alt="" class="h-5 w-5 rounded-full object-cover" />
+    <span class="truncate">@{INVITE.inviterTag}</span>
+  </span>
+{/snippet}
+
+{#snippet roleChip(role: { name: Tx; color: string })}
+  <span class="mc-role">
+    <span class="h-2 w-2 shrink-0 rounded-full" style="background: {role.color}"></span>
+    {tr(role.name)}
+  </span>
+{/snippet}
+
+{#snippet chart(metric: (typeof metrics)[number], height: number)}
+  {@const geo = chartGeometry(metric.daily, metric.prevDaily, height, metric.unit)}
+  <div class="mc-chart">
+    <div class="mc-chart__y" style="height: {height}px">
+      {#each geo.ticks as tick (tick)}<span>{metric.format(tick)}</span>{/each}
+    </div>
+    <div class="min-w-0">
+      <svg class="mc-chart__plot" viewBox="0 0 {CHART_W} {height}" preserveAspectRatio="none" style="height: {height}px" aria-hidden="true">
+        {#each geo.ticks as tick, i (tick)}
+          <line x1="0" x2={CHART_W} y1={6 + (i * (height - 6)) / 4} y2={6 + (i * (height - 6)) / 4} class="mc-chart__grid" />
+        {/each}
+        <path d={geo.area} style="fill: {metric.color}; opacity: 0.1" />
+        <path d={geo.previous} class="mc-chart__previous" />
+        <path d={geo.main} class="mc-chart__main" style="stroke: {metric.color}" />
+      </svg>
+      <div class="mc-chart__x">
+        {#each xLabels as label, i (i)}<span>{label}</span>{/each}
+      </div>
     </div>
   </div>
-
-  <!-- ── Tab Navigation ────────────────── -->
-  <div class="px-6 pt-3 pb-3 border-b border-outline-variant/5 shrink-0">
-    <div class="tab-group flex gap-1 overflow-x-auto whitespace-nowrap scrollbar-none">
-      {#each tabs as tab}
-        <button
-          type="button"
-          onclick={() => {
-            activeInnerTab = tab.id;
-            viewingReportId = null;
-            if (tab.id === 'analytics') {
-              analyticsLoading = true;
-              setTimeout(() => {
-                analyticsLoading = false;
-              }, 600);
-            }
-          }}
-          class="tab-button flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-all {activeInnerTab === tab.id ? 'active' : ''}"
-        >
-          <Papicon icon={tab.icon} size={14} />
-          <span>{tab.label}</span>
-          {#if tab.id === 'messages'}
-            {@const c = caseData.messagesByChannel.reduce((sum: number, c: { count: number }) => sum + c.count, 0)}
-            {#if c > 0}
-              <span class="flex h-5 min-w-5 items-center justify-center rounded-full text-[10px] font-black {activeInnerTab === tab.id ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'}">{c}</span>
-            {/if}
-          {:else if tab.id === 'logs'}
-            {#if caseData.logs.length > 0}
-              <span class="flex h-5 min-w-5 items-center justify-center rounded-full text-[10px] font-black {activeInnerTab === tab.id ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'}">{caseData.logs.length}</span>
-            {/if}
-          {:else if tab.id === 'sanctions'}
-            {#if sanctionsList.length > 0}
-              <span class="flex h-5 min-w-5 items-center justify-center rounded-full text-[10px] font-black {activeInnerTab === tab.id ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'}">{sanctionsList.length}</span>
-            {/if}
-          {:else if tab.id === 'candidatures'}
-            {#if caseData.candidatures.length > 0}
-              <span class="flex h-5 min-w-5 items-center justify-center rounded-full text-[10px] font-black {activeInnerTab === tab.id ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'}">{caseData.candidatures.length}</span>
-            {/if}
-          {/if}
-        </button>
-      {/each}
-    </div>
+  <div class="mc-legend">
+    <span><i style="background: {metric.color}"></i>{metric.label}</span>
+    <span><i class="mc-legend__dash"></i>{t.chart.previous}</span>
   </div>
+{/snippet}
 
-  <!-- ── Tab Content Area (Scrollable) ────────────────── -->
-  <div class="flex-1 overflow-y-auto p-6 md:p-8 space-y-6">
-    
-    <!-- Suspected Alt warning -->
-    {#if caseData.isSuspectedDC}
-      <div class="rounded-4xl bg-rose-500/10 border-2 border-rose-500/20 p-6 flex items-center gap-6 animate-in zoom-in-95 duration-500">
-        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-rose-500/20 text-rose-500 shadow-lg shadow-rose-500/20">
-          <Papicon icon="alert-octagon" size={24} />
+<div class="mpx isolate relative flex h-full w-full flex-col overflow-hidden bg-surface font-body text-on-surface">
+  <div class="min-h-0 flex-1 overflow-y-auto">
+    <!-- ── Identité ─────────────────────────────────────── -->
+    <header class="border-b border-outline-variant bg-surface-container-lowest">
+      <div class="h-[5.5rem] bg-cover bg-center" style="background-image: url('{PROFILE.bannerUrl}')" aria-hidden="true"></div>
+      <div class="flex flex-wrap items-center gap-4 px-4 py-5 sm:px-6">
+        <div class="relative shrink-0">
+          <img src={PROFILE.avatarUrl} alt={t.avatarAlt} class="h-14 w-14 rounded-xl bg-surface-container object-cover" />
+          <span class="dot dot--{presenceTone(presence)} absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 border-2 border-surface-container-lowest" title={t.presence[presence]}></span>
         </div>
         <div class="min-w-0 flex-1">
-          <h4 class="text-sm font-black text-rose-600 uppercase tracking-widest">{t.altWarning.title}</h4>
-          <p class="text-xs font-bold text-rose-500/70 mt-1">{t.altWarning.description}</p>
-        </div>
-        <div class="flex gap-2">
-          <span class="badge bg-rose-500/10 text-rose-500 border border-rose-500/20 px-2.5 py-1 text-xs uppercase font-black shrink-0">{t.altWarning.badge}</span>
-        </div>
-      </div>
-    {/if}
-
-    {#if activeInnerTab === 'resume'}
-      <!-- ── Tab: Résumé ── -->
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 animate-in fade-in duration-300">
-        
-        <!-- Account Identity Card (Bento Large) -->
-        <div class="md:col-span-2 rounded-[2rem] bg-surface-container-low/50 p-6 border border-outline-variant/10 shadow-sm transition-all hover:shadow-md hover:bg-surface-container-low duration-500 group">
-           <div class="flex items-center justify-between mb-6">
-             <div class="flex items-center gap-3">
-               <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:scale-105 transition-transform">
-                 <Papicon icon="user" size={20} />
-               </div>
-               <div>
-                 <p class="text-[10px] font-black uppercase tracking-[0.2em] text-primary">{t.resume.accountInfo.sectionLabel}</p>
-                 <p class="text-base font-black text-on-surface">{t.resume.accountInfo.title}</p>
-               </div>
-             </div>
-           </div>
-
-           <div class="grid grid-cols-2 gap-6">
-             <div class="space-y-1">
-               <p class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/40">{t.resume.accountInfo.accountAge}</p>
-               <p class="text-base font-black text-on-surface">{getDurationSince(caseData.profile?.accountCreatedAt)}</p>
-               <p class="text-[10px] font-bold text-on-surface-variant/60">{t.resume.accountInfo.createdOn(formatDateShort(caseData.profile?.accountCreatedAt))}</p>
-             </div>
-             <div class="space-y-1">
-               <p class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/40">{t.resume.accountInfo.serverPresence}</p>
-               <p class="text-base font-black text-on-surface">{getDurationSince(caseData.profile?.guildJoinedAt)}</p>
-               <p class="text-[10px] font-bold text-on-surface-variant/60">{t.resume.accountInfo.joinedOn(formatDateShort(caseData.profile?.guildJoinedAt))}</p>
-             </div>
-             <div class="space-y-1">
-               <p class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/40">{t.resume.accountInfo.invitedBy}</p>
-               {#if caseData.invite?.inviterTag}
-                 <button
-                   type="button"
-                   class="flex items-center gap-2 hover:opacity-80 transition-opacity text-left focus:outline-hidden cursor-pointer"
-                 >
-                   {#if caseData.invite.inviterAvatarUrl}
-                     <img
-                       src={caseData.invite.inviterAvatarUrl}
-                       alt={caseData.invite.inviterTag}
-                       class="h-6 w-6 rounded-full object-cover border border-primary/10"
-                     />
-                   {:else}
-                     <div class="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary">
-                       {caseData.invite.inviterTag.slice(0, 1).toUpperCase()}
-                     </div>
-                   {/if}
-                   <p class="text-sm font-black text-on-surface truncate">@{caseData.invite.inviterTag}</p>
-                 </button>
-               {:else}
-                 <p class="text-sm font-bold text-on-surface-variant/40 italic">{t.resume.accountInfo.unknownOrigin}</p>
-               {/if}
-             </div>
-             <div class="space-y-1">
-               <p class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/40">{t.resume.accountInfo.inviteCode}</p>
-               {#if caseData.invite?.code}
-                 <button
-                   type="button"
-                   class="inline-block text-xs font-black text-primary bg-primary/10 px-2.5 py-0.5 rounded-lg border border-primary/10 hover:bg-primary/20 transition-colors cursor-pointer"
-                 >
-                   {caseData.invite.code}
-                 </button>
-               {:else}
-                 <p class="text-sm font-black text-on-surface"></p>
-               {/if}
-             </div>
-           </div>
-        </div>
-
-        <!-- Sanctions Status Card -->
-        <div class="rounded-[2rem] {sanctionsList.filter(s => s.status === 'ACTIVE').length > 0 ? 'bg-rose-500/5 border-rose-500/20' : 'bg-surface-container-low/50 border-outline-variant/10 shadow-sm'} p-6 border transition-all hover:shadow-md duration-500 group flex flex-col justify-between">
-           <div class="flex items-center gap-3 mb-6">
-             <div class="flex h-10 w-10 items-center justify-center rounded-xl {sanctionsList.filter(s => s.status === 'ACTIVE').length > 0 ? 'bg-rose-500/10 text-rose-500' : 'bg-amber-500/10 text-amber-500'} group-hover:rotate-12 transition-transform">
-               <Papicon icon="hammer" size={20} />
-             </div>
-             <div>
-               <p class="text-[10px] font-black uppercase tracking-[0.2em] {sanctionsList.filter(s => s.status === 'ACTIVE').length > 0 ? 'text-rose-500' : 'text-amber-500'}">{t.resume.sanctionsCard.badge}</p>
-               <p class="text-base font-black text-on-surface">{t.resume.sanctionsCard.title}</p>
-             </div>
-           </div>
-
-           <div class="space-y-3">
-             <div class="flex items-end justify-between">
-                <span class="text-3xl font-black text-on-surface">{sanctionsList.length}</span>
-                <span class="text-[10px] font-black uppercase tracking-widest text-on-surface-variant/40 pb-0.5">{t.resume.sanctionsCard.total}</span>
-             </div>
-             <div class="h-2 w-full rounded-full bg-on-surface/5 overflow-hidden">
-                <div class="h-full bg-rose-500 transition-all duration-1000" style="width: {sanctionsList.length > 0 ? (sanctionsList.filter(s => s.status === 'ACTIVE').length / sanctionsList.length) * 100 : 0}%"></div>
-             </div>
-             <p class="text-xs font-bold {sanctionsList.filter(s => s.status === 'ACTIVE').length > 0 ? 'text-rose-500' : 'text-on-surface-variant/60'}">
-                {t.resume.sanctionsCard.activeCount(sanctionsList.filter(s => s.status === 'ACTIVE').length)}
-             </p>
-           </div>
-        </div>
-
-        <!-- Activity Summary Card -->
-        <div class="rounded-[2rem] bg-surface-container-low/50 p-6 border border-outline-variant/10 shadow-sm transition-all hover:shadow-md duration-500 group flex flex-col justify-between">
-           <div class="flex items-center gap-3 mb-6">
-             <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary/10 text-secondary group-hover:scale-105 transition-transform">
-               <Papicon icon="activity" size={20} />
-             </div>
-             <div>
-               <p class="text-[10px] font-black uppercase tracking-[0.2em] text-secondary">{t.resume.activitySummary.sectionLabel}</p>
-               <p class="text-base font-black text-on-surface">{t.resume.activitySummary.title}</p>
-             </div>
-           </div>
-
-           <div class="grid grid-cols-1 gap-2.5">
-             <div class="flex items-center justify-between text-xs">
-               <span class="font-bold text-on-surface-variant/60">{t.resume.activitySummary.messages}</span>
-               <span class="font-black text-on-surface">{caseData.profile?.messageCount?.toLocaleString(getLocale() === 'en' ? 'en-US' : 'fr-FR') ?? 0}</span>
-             </div>
-             <div class="flex items-center justify-between text-xs">
-               <span class="font-bold text-on-surface-variant/60">{t.resume.activitySummary.voice}</span>
-               <span class="font-black text-on-surface">{formatDurationFromSeconds(caseData.profile?.voiceTimeSeconds)}</span>
-             </div>
-             <div class="flex items-center justify-between text-xs">
-               <span class="font-bold text-on-surface-variant/60">{t.resume.activitySummary.lastSeen}</span>
-               <span class="font-black text-on-surface">{formatRelative(caseData.profile?.lastSeenAt)}</span>
-             </div>
-           </div>
-        </div>
-
-        <!-- Activity Chart (Bento Large) -->
-        <div class="md:col-span-3 rounded-[2.5rem] bg-surface-container-low/30 p-6 border border-outline-variant/10 shadow-sm group">
-          <div class="flex items-center justify-between mb-6">
-             <div class="flex items-center gap-3">
-               <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                 <Papicon icon="trending-up" size={22} />
-               </div>
-               <div>
-                 <p class="text-[10px] font-black uppercase tracking-[0.25em] text-primary">{t.resume.activityChart.sectionLabel}</p>
-                 <h4 class="text-lg font-black text-on-surface font-headline">{t.resume.activityChart.title}</h4>
-               </div>
-             </div>
-             <div class="flex gap-4">
-               <div class="flex flex-col items-end">
-                 <p class="text-lg font-black text-primary leading-none">{caseData.profile?.messageCount.toLocaleString(getLocale() === 'en' ? 'en-US' : 'fr-FR')}</p>
-                 <p class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant/40 mt-1">{t.resume.activityChart.messages}</p>
-               </div>
-               <div class="h-6 w-px bg-outline-variant/20 mx-1"></div>
-               <div class="flex flex-col items-end">
-                 <p class="text-lg font-black text-secondary leading-none">{Math.round((caseData.profile?.voiceTimeSeconds || 0) / 60)}m</p>
-                 <p class="text-[9px] font-bold uppercase tracking-widest text-on-surface-variant/40 mt-1">{t.resume.activityChart.voiceTime}</p>
-               </div>
-             </div>
-          </div>
-          <div class="h-[120px] w-full relative">
-             <svg class="w-full h-full" viewBox="0 0 760 120" preserveAspectRatio="none">
-               <defs>
-                 <linearGradient id="gr-msg-resume" x1="0" y1="0" x2="0" y2="1">
-                   <stop offset="0%" stop-color="#6366f1" stop-opacity="0.25"/>
-                   <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
-                 </linearGradient>
-                 <linearGradient id="gr-voc-resume" x1="0" y1="0" x2="0" y2="1">
-                   <stop offset="0%" stop-color="#ec4899" stop-opacity="0.25"/>
-                   <stop offset="100%" stop-color="#ec4899" stop-opacity="0"/>
-                 </linearGradient>
-               </defs>
-               
-               <!-- dashed grid lines -->
-               <line x1="0" y1="30" x2="760" y2="30" stroke="var(--outline-variant)" stroke-opacity="0.1" stroke-dasharray="4" />
-               <line x1="0" y1="60" x2="760" y2="60" stroke="var(--outline-variant)" stroke-opacity="0.1" stroke-dasharray="4" />
-               <line x1="0" y1="90" x2="760" y2="90" stroke="var(--outline-variant)" stroke-opacity="0.1" stroke-dasharray="4" />
-               
-               <!-- Msg Path Area -->
-               <path d={generateAreaPath(dailyTrend.map(d => d.messages), maxMsg, 760, 120)} fill="url(#gr-msg-resume)" />
-               <!-- Voc Path Area -->
-               <path d={generateAreaPath(dailyTrend.map(d => d.voiceMinutes), maxVoc, 760, 120)} fill="url(#gr-voc-resume)" />
-               
-               <!-- Line strokes -->
-               <path d={generatePath(dailyTrend.map(d => d.messages), maxMsg, 760, 120)} fill="none" stroke="#6366f1" stroke-width="2" />
-               <path d={generatePath(dailyTrend.map(d => d.voiceMinutes), maxVoc, 760, 120)} fill="none" stroke="#ec4899" stroke-width="2" />
-             </svg>
-             
-             <!-- Dates on X Axis -->
-             <div class="flex justify-between text-[9px] font-bold text-on-surface-variant/40 pt-1">
-               <span>{dailyTrend[0]?.dateKey.slice(5)}</span>
-               <span>{dailyTrend[7]?.dateKey.slice(5)}</span>
-               <span>{dailyTrend[15]?.dateKey.slice(5)}</span>
-               <span>{dailyTrend[22]?.dateKey.slice(5)}</span>
-               <span>{dailyTrend[29]?.dateKey.slice(5)}</span>
-             </div>
-          </div>
-        </div>
-
-        <!-- Role & Permissions (Bento Side) -->
-        <div class="rounded-[2rem] bg-surface-container-low/50 p-6 border border-outline-variant/10 shadow-sm transition-all hover:shadow-md duration-500 group overflow-hidden relative flex flex-col justify-between">
-           <div class="absolute -right-6 -bottom-6 opacity-[0.03] rotate-12 pointer-events-none">
-             <Papicon icon="shield" size={120} />
-           </div>
-           <div>
-             <div class="flex items-center gap-3 mb-6">
-               <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-500 group-hover:scale-105 transition-transform">
-                 <Papicon icon="shield" size={20} />
-               </div>
-               <div>
-                 <p class="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-500">{t.resume.rolesPermissions.sectionLabel}</p>
-                 <p class="text-base font-black text-on-surface">{t.resume.rolesPermissions.title}</p>
-               </div>
-             </div>
-
-             <div class="space-y-4">
-               <div>
-                 <p class="text-[9px] font-black uppercase tracking-widest text-on-surface-variant/40 mb-2">{t.resume.rolesPermissions.mainRoles}</p>
-                 <div class="flex flex-wrap gap-1.5">
-                   {#each caseData.roles.slice(0, 4) as role}
-                     <span class="px-2.5 py-1 rounded-lg bg-surface-container-high text-[10px] font-bold text-on-surface border border-outline-variant/20 flex items-center gap-1.5">
-                       {#if role.color && role.color !== '#000000'}
-                         <span class="w-1.5 h-1.5 rounded-full shrink-0" style="background-color: {role.color}"></span>
-                       {/if}
-                       {role.name}
-                     </span>
-                   {/each}
-                   {#if caseData.roles.length > 4}
-                     <span class="px-2 py-1 rounded-lg bg-primary/10 text-[10px] font-black text-primary border border-primary/20">+{caseData.roles.length - 4}</span>
-                   {/if}
-                 </div>
-               </div>
-               <div>
-                 <p class="text-[9px] font-black uppercase tracking-widest text-on-surface-variant/40 mb-2">{t.resume.rolesPermissions.keyPermissions}</p>
-                 <div class="flex flex-wrap gap-x-3 gap-y-1">
-                   {#each caseData.effectivePermissions.slice(0, 3) as perm}
-                     <span class="text-[10px] font-black text-emerald-500 uppercase tracking-tighter flex items-center gap-1">
-                       <Papicon icon="check_circle" size={10} /> {perm}
-                     </span>
-                   {/each}
-                 </div>
-               </div>
-             </div>
-           </div>
-        </div>
-
-        <!-- Recent Activity Feed (Wide Footer) -->
-        <div class="md:col-span-4 rounded-[2.5rem] bg-surface-container-low/20 p-6 md:p-8 border border-outline-variant/10 group">
-          <div class="flex items-center justify-between mb-6">
-             <div class="flex items-center gap-3">
-               <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-on-surface/5 text-on-surface-variant">
-                 <Papicon icon="history" size={22} />
-               </div>
-               <div>
-                 <p class="text-[10px] font-black uppercase tracking-[0.25em] text-on-surface-variant/40">{t.resume.recentActivity.sectionLabel}</p>
-                 <h4 class="text-lg font-black text-on-surface font-headline">{t.resume.recentActivity.title}</h4>
-               </div>
-             </div>
-             <button onclick={() => activeInnerTab = 'logs'} class="group/btn inline-flex items-center gap-1.5 rounded-xl bg-white px-4 py-2 text-xs font-black text-on-surface-variant uppercase tracking-widest border border-outline-variant/25 transition-all hover:bg-surface-container/20 hover:text-on-surface cursor-pointer">
-               {t.resume.recentActivity.viewAllLogs}
-               <Papicon icon="arrow_forward" size={12} class="group-hover/btn:translate-x-0.5 transition-transform" />
-             </button>
-          </div>
-
-          <div class="grid gap-6 md:grid-cols-2">
-            <div class="space-y-3">
-               <p class="text-[10px] font-black uppercase tracking-[0.25em] text-primary px-1 mb-2">{t.resume.recentActivity.recentMessages}</p>
-               {#each caseData.messagesByChannel.slice(0, 3).flatMap((c: { recentMessages: any[] }) => c.recentMessages.slice(0, 1)) as msg}
-                 <div class="rounded-2xl bg-surface-container-low/60 p-4 border border-outline-variant/5 transition-all hover:border-primary/20">
-                    <div class="flex items-center justify-between mb-1.5 text-[10px]">
-                       <span class="font-bold text-primary">#{msg.channelName}</span>
-                       <span class="font-bold text-on-surface-variant/40">{formatRelative(msg.dateIso)}</span>
-                    </div>
-                    <p class="text-xs text-on-surface leading-relaxed italic">"{msg.content || t.resume.recentActivity.emptyContent}"</p>
-                 </div>
-               {/each}
-               {#if caseData.messagesByChannel.length === 0}
-                 <p class="text-xs text-on-surface-variant/40 px-1">{t.resume.recentActivity.noRecentMessages}</p>
-               {/if}
-            </div>
-
-            <div class="space-y-3">
-               <p class="text-[10px] font-black uppercase tracking-[0.25em] text-secondary px-1 mb-2">{t.resume.recentActivity.recentLogs}</p>
-               <div class="space-y-2 relative pl-4 border-l border-outline-variant/20 ml-2">
-                 {#each caseData.logs.slice(0, 3) as log}
-                   <div class="relative pb-3 text-xs">
-                      <div class="absolute -left-[calc(1rem+4.5px)] top-1 h-2 w-2 rounded-full bg-secondary border-2 border-surface-container-lowest"></div>
-                      <p class="font-black text-on-surface">{log.action}</p>
-                      <p class="text-[10px] font-bold text-on-surface-variant/40 mt-0.5">{log.module} · {formatRelative(log.dateIso)}</p>
-                   </div>
-                 {/each}
-               </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Profile Details & Visuels Card (Grid Layout at Bottom of Resume Tab) -->
-        <div class="md:col-span-4 grid gap-6 md:grid-cols-2">
-          <div class="rounded-[2rem] bg-surface-container-low/50 p-6 border border-outline-variant/10">
-            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-6">{t.resume.discordProfile.sectionLabel}</p>
-            <dl class="space-y-4">
-              <div class="flex items-center justify-between border-b border-outline-variant/5 pb-2">
-                <dt class="text-xs font-bold text-on-surface-variant/60">{t.resume.discordProfile.username}</dt>
-                <dd class="text-sm font-black text-on-surface">@{caseData.profile?.username ?? t.resume.discordProfile.unknown}</dd>
-              </div>
-              <div class="flex items-center justify-between border-b border-outline-variant/5 pb-2">
-                <dt class="text-xs font-bold text-on-surface-variant/60">{t.resume.discordProfile.globalName}</dt>
-                <dd class="text-sm font-black text-on-surface">{caseData.profile?.globalName ?? t.resume.discordProfile.unknown}</dd>
-              </div>
-              <div class="flex items-center justify-between border-b border-outline-variant/5 pb-2">
-                <dt class="text-xs font-bold text-on-surface-variant/60">{t.resume.discordProfile.serverDisplay}</dt>
-                <dd class="text-sm font-black text-on-surface">{caseData.profile?.displayName ?? t.resume.discordProfile.unknown}</dd>
-              </div>
-              <div class="flex items-center justify-between border-b border-outline-variant/5 pb-2">
-                <dt class="text-xs font-bold text-on-surface-variant/60">{t.resume.discordProfile.language}</dt>
-                <dd class="text-sm font-black text-on-surface uppercase tracking-widest">{caseData.profile?.locale ?? t.resume.discordProfile.unknownLang}</dd>
-              </div>
-              <div class="flex items-center justify-between pb-1">
-                <dt class="text-xs font-bold text-on-surface-variant/60">{t.resume.discordProfile.pronouns}</dt>
-                <dd class="text-sm font-black text-on-surface">{caseData.profile?.pronouns ?? t.resume.discordProfile.notSpecified}</dd>
-              </div>
-            </dl>
-          </div>
-
-          <div class="rounded-[2rem] bg-surface-container-low/50 p-6 border border-outline-variant/10 space-y-6">
-            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-secondary mb-4">{t.resume.visuals.sectionLabel}</p>
-            {#if caseData.profile?.avatarUrl}
-              <div class="flex items-center gap-4">
-                <img src={caseData.profile?.avatarUrl} alt="Avatar" class="h-16 w-16 rounded-2xl object-cover shadow-lg border-2 border-surface-container-lowest" />
-                <span class="text-xs font-bold text-on-surface-variant/60">{t.resume.visuals.customAvatar}</span>
-              </div>
-            {/if}
-            {#if caseData.profile?.bannerUrl}
-              <div class="space-y-2">
-                <span class="text-xs font-bold text-on-surface-variant/60 block">{t.resume.visuals.profileBanner}</span>
-                <img src={caseData.profile?.bannerUrl} alt={t.resume.visuals.bannerAlt} class="w-full h-24 rounded-2xl object-cover border border-outline-variant/10 shadow-xs" />
-              </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <h2 class="truncate text-xl font-semibold tracking-tight text-on-surface">{PROFILE.displayName}</h2>
+            <span class="badge badge-info"><Papicon icon="star" size={11} />{grade}</span>
+            <span class="badge badge-info"><Papicon icon="user-check" size={11} />{t.tutor}</span>
+            {#if verificationRequestedAt}
+              <span class="badge badge-warning"><Papicon icon="clock" size={11} />{t.verifPending}</span>
             {/if}
           </div>
+          <p class="mt-0.5 flex flex-wrap items-center gap-x-2 text-sm text-on-surface-variant">
+            <span>@{PROFILE.username}</span>
+            <span aria-hidden="true">·</span>
+            <span class="inline-flex items-center gap-1.5"><span class="dot dot--{presenceTone(presence)} h-2 w-2"></span>{t.presence[presence]}</span>
+            <span aria-hidden="true">·</span>
+            <span>{tr(PROFILE.pronouns)}</span>
+          </p>
         </div>
-
-      </div>
-
-    {:else if activeInnerTab === 'identite'}
-      <!-- ── Tab: Identité ── -->
-      <div class="space-y-6 animate-in fade-in duration-300">
-        
-        <!-- Profil Complet Card -->
-        <div class="rounded-[2rem] bg-surface-container-low/50 p-6 border border-outline-variant/10 shadow-sm space-y-4">
-          <div class="flex items-center gap-3">
-            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <Papicon icon="user" size={20} />
-            </div>
-            <div>
-              <p class="text-[10px] font-black uppercase tracking-wider text-primary leading-none">{t.identite.fullProfile.sectionLabel}</p>
-              <h4 class="text-base font-black text-on-surface mt-1">{t.identite.fullProfile.title}</h4>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-4 text-xs md:text-sm">
-            <div>
-              <p class="text-[10px] text-on-surface-variant/40 font-black uppercase leading-none">{t.identite.fullProfile.discordId}</p>
-              <p class="font-black text-on-surface mt-1.5 font-mono select-all">{caseData.profile?.userId}</p>
-            </div>
-            <div>
-              <p class="text-[10px] text-on-surface-variant/40 font-black uppercase leading-none">{t.identite.fullProfile.username}</p>
-              <p class="font-black text-on-surface mt-1.5">@{caseData.profile?.username}</p>
-            </div>
-            <div>
-              <p class="text-[10px] text-on-surface-variant/40 font-black uppercase leading-none">{t.identite.fullProfile.globalName}</p>
-              <p class="font-black text-on-surface mt-1.5">{caseData.profile?.globalName}</p>
-            </div>
-            <div>
-              <p class="text-[10px] text-on-surface-variant/40 font-black uppercase leading-none">{t.identite.fullProfile.serverNickname}</p>
-              <p class="font-black text-on-surface mt-1.5">{caseData.profile?.displayName}</p>
-            </div>
-            <div>
-              <p class="text-[10px] text-on-surface-variant/40 font-black uppercase leading-none">{t.identite.fullProfile.localeLabel}</p>
-              <p class="font-black text-on-surface mt-1.5 uppercase">{caseData.profile?.locale || 'fr'}</p>
-            </div>
-            <div>
-              <p class="text-[10px] text-on-surface-variant/40 font-black uppercase leading-none">{t.identite.fullProfile.pronouns}</p>
-              <p class="font-black text-on-surface mt-1.5">{caseData.profile?.pronouns || t.identite.fullProfile.notSpecified}</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          
-          <!-- Conditional Statut Staff Card -->
-          {#if caseData.profile?.staffGrade}
-            <div class="rounded-[2rem] bg-surface-container-low/50 p-6 border border-outline-variant/10 shadow-sm space-y-4">
-              <div class="flex items-center gap-3">
-                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/10 text-amber-500">
-                  <Papicon icon="star" size={20} />
-                </div>
-                <div>
-                  <p class="text-[10px] font-black uppercase tracking-wider text-amber-500 leading-none">{t.identite.staffStatus.sectionLabel}</p>
-                  <h4 class="text-base font-black text-on-surface mt-1">{t.identite.staffStatus.title}</h4>
-                </div>
-              </div>
-              <div class="space-y-2.5 text-xs">
-                <div class="flex justify-between border-b border-outline-variant/5 pb-2">
-                  <span class="text-on-surface-variant/50 font-bold">{t.identite.staffStatus.currentGrade}</span>
-                  <span class="font-black text-on-surface">{caseData.profile.staffGrade}</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-on-surface-variant/50 font-bold">{t.identite.staffStatus.tutorStatus}</span>
-                  <span class="font-black text-on-surface">{caseData.profile.isTutor ? t.identite.staffStatus.yesActive : t.identite.staffStatus.no}</span>
-                </div>
-              </div>
-            </div>
-          {/if}
-
-          <!-- Dates Clés Card -->
-          <div class="rounded-[2rem] bg-surface-container-low/50 p-6 border border-outline-variant/10 shadow-sm space-y-4">
-            <div class="flex items-center gap-3">
-              <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
-                <Papicon icon="calendar" size={20} />
-              </div>
-              <div>
-                <p class="text-[10px] font-black uppercase tracking-wider text-secondary leading-none">{t.identite.keyDates.sectionLabel}</p>
-                <h4 class="text-base font-black text-on-surface mt-1">{t.identite.keyDates.title}</h4>
-              </div>
-            </div>
-            <div class="space-y-2.5 text-xs">
-              <div class="flex justify-between border-b border-outline-variant/5 pb-1.5">
-                <span class="text-on-surface-variant/50">{t.identite.keyDates.accountCreation}</span>
-                <span class="font-bold text-on-surface">{formatDateShort(caseData.profile?.accountCreatedAt)}</span>
-              </div>
-              <div class="flex justify-between border-b border-outline-variant/5 pb-1.5">
-                <span class="text-on-surface-variant/50">{t.identite.keyDates.serverArrival}</span>
-                <span class="font-bold text-on-surface">{formatDateShort(caseData.profile?.guildJoinedAt)}</span>
-              </div>
-              {#if caseData.profile?.guildLeftAt}
-                <div class="flex justify-between border-b border-outline-variant/5 pb-1.5 text-rose-500 font-bold">
-                  <span>{t.identite.keyDates.lastDeparture}</span>
-                  <span>{formatDateShort(caseData.profile.guildLeftAt)}</span>
-                </div>
-              {/if}
-              <div class="flex justify-between border-b border-outline-variant/5 pb-1.5">
-                <span class="text-on-surface-variant/50">{t.identite.keyDates.firstSeen}</span>
-                <span class="font-bold text-on-surface">{formatDateShort(caseData.profile?.firstSeenAt)}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-on-surface-variant/50">{t.identite.keyDates.lastSeen}</span>
-                <span class="font-bold text-on-surface">{formatDateShort(caseData.profile?.lastSeenAt)}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Rôles Card -->
-          <div class="rounded-[2rem] bg-surface-container-low/50 p-6 border border-outline-variant/10 shadow-sm space-y-4">
-            <div class="flex items-center gap-3">
-              <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-500">
-                <Papicon icon="shield" size={20} />
-              </div>
-              <div>
-                <p class="text-[10px] font-black uppercase tracking-wider text-emerald-500 leading-none">{t.identite.roles.sectionLabel}</p>
-                <h4 class="text-base font-black text-on-surface mt-1">{t.identite.roles.title(caseData.roles.length)}</h4>
-              </div>
-            </div>
-            <div class="flex flex-wrap gap-2">
-              {#each caseData.roles as r}
-                <span class="px-2.5 py-1 rounded-lg bg-surface-container text-xs font-bold flex items-center gap-1.5 border border-outline-variant/5">
-                  {#if r.color}
-                    <span class="size-2 rounded-full" style="background-color: {r.color}"></span>
-                  {/if}
-                  {r.name}
-                </span>
-              {/each}
-              {#if caseData.roles.length === 0}
-                <p class="text-xs text-on-surface-variant/40 italic">{t.identite.roles.noRole}</p>
-              {/if}
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-    {:else if activeInnerTab === 'activite'}
-      <!-- ── Tab: Activité ── -->
-      <div class="space-y-8 animate-in fade-in duration-300">
-        <div class="grid gap-6 md:grid-cols-3">
-          <div class="rounded-4xl bg-primary/5 p-6 border border-primary/10 text-center">
-            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary mx-auto mb-4">
-              <Papicon icon="message-square" size={20} />
-            </div>
-            <p class="text-2xl font-black text-on-surface">{caseData.profile?.messageCount ?? 0}</p>
-            <p class="text-[9px] font-black uppercase tracking-widest text-primary/60 mt-1">{t.activite.messages}</p>
-          </div>
-          <div class="rounded-4xl bg-secondary/5 p-6 border border-secondary/10 text-center">
-            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary/10 text-secondary mx-auto mb-4">
-              <Papicon icon="mic" size={20} />
-            </div>
-            <p class="text-2xl font-black text-on-surface">{formatDurationFromSeconds(caseData.profile?.voiceTimeSeconds)}</p>
-            <p class="text-[9px] font-black uppercase tracking-widest text-secondary/60 mt-1">{t.activite.voiceTime}</p>
-          </div>
-          <div class="rounded-4xl bg-emerald-500/5 p-6 border border-emerald-500/10 text-center">
-            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-500 mx-auto mb-4">
-              <Papicon icon="eye" size={20} />
-            </div>
-            <p class="text-lg font-black text-on-surface">{formatDateShort(caseData.profile?.lastSeenAt)}</p>
-            <p class="text-[9px] font-black uppercase tracking-widest text-emerald-500/60 mt-1">{t.activite.lastActivity}</p>
-          </div>
-        </div>
-
-        <div class="rounded-[2.5rem] bg-surface-container-low/50 p-8 border border-outline-variant/10">
-          <p class="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-8 px-2">{t.activite.channelBreakdown}</p>
-          <div class="space-y-6">
-            {#each caseData.messagesByChannel || [] as channel}
-              {@const max = Math.max(...(caseData.messagesByChannel || []).map((c: { count: number }) => c.count), 1)}
-              <div class="space-y-2">
-                <div class="flex items-center justify-between px-1">
-                  <span class="text-sm font-black text-on-surface">#{channel.channelName}</span>
-                  <span class="text-xs font-bold text-on-surface-variant/60">{t.activite.messagesCount(channel.count)}</span>
-                </div>
-                <div class="h-2 w-full rounded-full bg-surface-container-high overflow-hidden">
-                  <div class="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-1000" style="width: {(channel.count / max) * 100}%"></div>
-                </div>
-              </div>
-            {/each}
-          </div>
-        </div>
-      </div>
-
-    {:else if activeInnerTab === 'analytics'}
-      <!-- ── Tab: Analytiques ── -->
-      <div class="space-y-8 animate-in fade-in duration-300">
-        {#if analyticsLoading}
-          <div class="flex flex-col items-center justify-center py-24 bg-surface-container-low/30 rounded-[3rem] border border-outline-variant/10">
-            <div class="relative mb-6">
-              <div class="absolute -inset-4 rounded-full bg-primary/10 blur-xl animate-pulse"></div>
-              <Papicon icon="loader" size={48} class="animate-spin text-primary" />
-            </div>
-            <p class="text-xs font-black uppercase tracking-[0.3em] text-on-surface-variant/60">{t.analytics.loading}</p>
-          </div>
-        {:else if dailyTrend && dailyTrend.length > 0 && (caseData.profile?.messageCount > 0 || caseData.profile?.voiceTimeSeconds > 0)}
-          <div class="grid gap-6 lg:grid-cols-2">
-             <div class="rounded-[2.5rem] bg-surface-container-low/50 p-8 border border-outline-variant/10 shadow-sm group">
-               <div class="flex items-center justify-between mb-8">
-                  <div>
-                    <p class="text-[10px] font-black uppercase tracking-widest text-primary mb-1">{t.analytics.messageVolume.sectionLabel}</p>
-                    <h4 class="text-sm font-black text-on-surface uppercase tracking-widest font-headline">{t.analytics.messageVolume.title}</h4>
-                  </div>
-                  <span class="text-[10px] font-bold text-on-surface-variant/40 bg-surface-container-high px-3 py-1 rounded-lg">{t.analytics.messageVolume.last30Days}</span>
-               </div>
-               <div class="h-[180px] w-full relative">
-                 <svg class="w-full h-full" viewBox="0 0 360 180" preserveAspectRatio="none">
-                   <defs>
-                     <linearGradient id="gr-msg-analytics" x1="0" y1="0" x2="0" y2="1">
-                       <stop offset="0%" stop-color="#6366f1" stop-opacity="0.2"/>
-                       <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
-                     </linearGradient>
-                   </defs>
-                   <line x1="0" y1="45" x2="360" y2="45" stroke="var(--outline-variant)" stroke-opacity="0.1" stroke-dasharray="4" />
-                   <line x1="0" y1="90" x2="360" y2="90" stroke="var(--outline-variant)" stroke-opacity="0.1" stroke-dasharray="4" />
-                   <line x1="0" y1="135" x2="360" y2="135" stroke="var(--outline-variant)" stroke-opacity="0.1" stroke-dasharray="4" />
-                   
-                   <path d={generateAreaPath(dailyTrend.map(d => d.messages), maxMsg, 360, 180)} fill="url(#gr-msg-analytics)" />
-                   <path d={generatePath(dailyTrend.map(d => d.messages), maxMsg, 360, 180)} fill="none" stroke="#6366f1" stroke-width="2" />
-                 </svg>
-                 <div class="flex justify-between text-[8px] font-bold text-on-surface-variant/40 pt-1">
-                   <span>{dailyTrend[0]?.dateKey.slice(5)}</span>
-                   <span>{dailyTrend[15]?.dateKey.slice(5)}</span>
-                   <span>{dailyTrend[29]?.dateKey.slice(5)}</span>
-                 </div>
-               </div>
-             </div>
-
-             <div class="rounded-[2.5rem] bg-surface-container-low/50 p-8 border border-outline-variant/10 shadow-sm group">
-               <div class="flex items-center justify-between mb-8">
-                  <div>
-                    <p class="text-[10px] font-black uppercase tracking-widest text-secondary mb-1">{t.analytics.voiceActivity.sectionLabel}</p>
-                    <h4 class="text-sm font-black text-on-surface uppercase tracking-widest font-headline">{t.analytics.voiceActivity.title}</h4>
-                  </div>
-                  <span class="text-[10px] font-bold text-on-surface-variant/40 bg-surface-container-high px-3 py-1 rounded-lg">{t.analytics.voiceActivity.minutesPerDay}</span>
-               </div>
-               <div class="h-[180px] w-full relative">
-                 <svg class="w-full h-full" viewBox="0 0 360 180" preserveAspectRatio="none">
-                   <defs>
-                     <linearGradient id="gr-voc-analytics" x1="0" y1="0" x2="0" y2="1">
-                       <stop offset="0%" stop-color="#ec4899" stop-opacity="0.2"/>
-                       <stop offset="100%" stop-color="#ec4899" stop-opacity="0"/>
-                     </linearGradient>
-                   </defs>
-                   <line x1="0" y1="45" x2="360" y2="45" stroke="var(--outline-variant)" stroke-opacity="0.1" stroke-dasharray="4" />
-                   <line x1="0" y1="90" x2="360" y2="90" stroke="var(--outline-variant)" stroke-opacity="0.1" stroke-dasharray="4" />
-                   <line x1="0" y1="135" x2="360" y2="135" stroke="var(--outline-variant)" stroke-opacity="0.1" stroke-dasharray="4" />
-                   
-                   <path d={generateAreaPath(dailyTrend.map(d => d.voiceMinutes), maxVoc, 360, 180)} fill="url(#gr-voc-analytics)" />
-                   <path d={generatePath(dailyTrend.map(d => d.voiceMinutes), maxVoc, 360, 180)} fill="none" stroke="#ec4899" stroke-width="2" />
-                 </svg>
-                 <div class="flex justify-between text-[8px] font-bold text-on-surface-variant/40 pt-1">
-                   <span>{dailyTrend[0]?.dateKey.slice(5)}</span>
-                   <span>{dailyTrend[15]?.dateKey.slice(5)}</span>
-                   <span>{dailyTrend[29]?.dateKey.slice(5)}</span>
-                 </div>
-               </div>
-             </div>
-          </div>
-        {:else}
-          <div class="flex flex-col items-center justify-center py-24 text-center bg-surface-container-low/30 rounded-[3rem] border border-outline-variant/10">
-            <div class="flex h-20 w-20 items-center justify-center rounded-3xl bg-surface-container-high text-on-surface-variant/20 mb-8">
-              <Papicon icon="bar-chart-2" size={40} />
-            </div>
-            <h3 class="text-2xl font-black text-on-surface-variant font-headline">{t.analytics.empty.title}</h3>
-            <p class="mt-2 text-sm text-on-surface-variant/60 max-w-sm mx-auto px-6">
-              {t.analytics.empty.description}
-            </p>
-          </div>
-        {/if}
-      </div>
-
-    {:else if activeInnerTab === 'messages'}
-      <!-- ── Tab: Messages ── -->
-      <div class="space-y-6 animate-in fade-in duration-300">
-        {#each caseData.messagesByChannel as channel}
-          <div class="rounded-4xl bg-surface-container-low/50 p-6 border border-outline-variant/10">
-            <div class="flex items-center gap-3 mb-6 border-b border-outline-variant/10 pb-4">
-              <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Papicon icon="tag" size={16} />
-              </div>
-              <a 
-                href="https://discord.com/channels/123456789012345678/{channel.channelId}" 
-                target="_blank"
-                class="text-sm font-black text-on-surface hover:text-primary transition-colors flex items-center gap-1.5"
-              >
-                {channel.channelName}
-                <Papicon icon="external-link" size={12} class="opacity-30" />
-              </a>
-              <span class="ml-auto text-[10px] font-black bg-primary/5 text-primary px-3 py-1 rounded-full uppercase tracking-widest">{t.messagesTab.msgCount(channel.count)}</span>
-            </div>
-            <div class="space-y-3">
-              {#each channel.recentMessages as msg}
-                <div class="rounded-2xl bg-surface-container-high/30 p-4 border border-outline-variant/5">
-                  <div class="flex items-center justify-between mb-2">
-                     <span class="text-[10px] font-bold text-on-surface-variant/40">{formatDateTime(msg.dateIso)}</span>
-                     <a href="https://discord.com/channels/123456789012345678/{channel.channelId}/{msg.id}" target="_blank" class="text-[9px] font-black text-primary hover:underline uppercase tracking-widest flex items-center gap-1">
-                       {t.messagesTab.viewOnDiscord}
-                       <Papicon icon="arrow-up-right" size={10} />
-                     </a>
-                  </div>
-                  <p class="text-sm text-on-surface leading-relaxed">{@html msg.content || t.messagesTab.emptyContent}</p>
-                </div>
-              {/each}
-            </div>
-          </div>
-        {/each}
-        {#if caseData.messagesByChannel.length === 0}
-          <div class="flex flex-col items-center justify-center py-24 text-center bg-surface-container-low/30 rounded-[3rem] border-2 border-dashed border-outline-variant/20">
-            <div class="flex h-20 w-20 items-center justify-center rounded-3xl bg-surface-container-high text-on-surface-variant/20 mb-8">
-              <Papicon icon="message-square" size={40} />
-            </div>
-            <h3 class="text-2xl font-black text-on-surface-variant font-headline">{t.messagesTab.empty.title}</h3>
-            <p class="mt-2 text-sm text-on-surface-variant/60 max-w-sm mx-auto px-6">
-              {t.messagesTab.empty.description}
-            </p>
-          </div>
-        {/if}
-      </div>
-
-    {:else if activeInnerTab === 'logs'}
-      <!-- ── Tab: Logs ── -->
-      <div class="animate-in fade-in duration-300">
-        <div class="rounded-[2.5rem] bg-surface-container-low/50 p-8 border border-outline-variant/10">
-          <div class="space-y-8 relative pl-6 border-l-2 border-outline-variant/20 ml-4">
-            {#each caseData.logs as log}
-              <div class="relative">
-                <div class="absolute -left-[calc(1.5rem+5px)] top-1.5 h-3 w-3 rounded-full bg-primary border-2 border-surface shadow-sm"></div>
-                <div class="flex items-start justify-between gap-4 mb-2">
-                  <div>
-                    <p class="text-sm font-black text-on-surface tracking-tight">{log.action}</p>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/40 mt-1">{log.module} · {log.source}</p>
-                  </div>
-                  <span class="text-[10px] font-black text-on-surface-variant/30 uppercase tracking-widest">{formatDateTime(log.dateIso)}</span>
-                </div>
-                <div class="rounded-2xl bg-surface-container-high/30 p-4 text-xs text-on-surface-variant/80 italic leading-relaxed">
-                  {@html log.details}
-                </div>
-              </div>
-            {/each}
-            {#if caseData.logs.length === 0}
-              <div class="flex flex-col items-center justify-center py-10 text-on-surface-variant/20">
-                 <Papicon icon="history" size={48} />
-                 <p class="mt-4 text-sm font-black uppercase tracking-widest">{t.logsTab.empty}</p>
-              </div>
-            {/if}
-          </div>
-        </div>
-      </div>
-
-    {:else if activeInnerTab === 'sanctions'}
-      <!-- ── Tab: Sanctions ── -->
-      <div class="animate-in fade-in duration-300">
-        <div class="rounded-[2rem] bg-surface-container-low/50 border border-outline-variant/10 shadow-sm overflow-hidden">
-          <table class="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr class="bg-surface-container-high/30 border-b border-outline-variant/10 text-[10px] font-black uppercase text-on-surface-variant/40">
-                <th class="p-4">{t.sanctionsTab.headers.date}</th>
-                <th class="p-4">{t.sanctionsTab.headers.action}</th>
-                <th class="p-4">{t.sanctionsTab.headers.status}</th>
-                <th class="p-4">{t.sanctionsTab.headers.reason}</th>
-                <th class="p-4 text-right">{t.sanctionsTab.headers.report}</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-outline-variant/10">
-              {#each sanctionsList as s}
-                <tr class="hover:bg-surface-container/30 transition-colors">
-                  <td class="p-4 font-bold text-on-surface-variant/60">{formatDateShort(s.createdAt)}</td>
-                  <td class="p-4">
-                    <span class="font-black text-rose-500 uppercase">{s.type}</span>
-                    <p class="text-[9px] text-on-surface-variant/40 leading-none mt-1">@{s.moderatorTag}</p>
-                  </td>
-                  <td class="p-4">
-                    <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase {s.status === 'ACTIVE' ? 'bg-rose-500/10 text-rose-500' : 'bg-emerald-500/10 text-emerald-500'}">
-                      {s.status === 'ACTIVE' ? t.sanctionsTab.statusActive : t.sanctionsTab.statusResolved}
-                    </span>
-                  </td>
-                  <td class="p-4 text-on-surface-variant truncate max-w-[120px]">{s.reason}</td>
-                  <td class="p-4 text-right">
-                    <button
-                      type="button"
-                      onclick={() => viewingReportId = s.id}
-                      class="bg-primary text-white text-[10px] font-black uppercase px-3 py-1.5 rounded-lg hover:bg-primary/95 transition-colors cursor-pointer flex items-center gap-1.5 ml-auto"
-                    >
-                      <Papicon icon="file-text" size={10} /> {t.sanctionsTab.viewMore}
-                    </button>
-                  </td>
-                </tr>
-              {/each}
-            </tbody>
-          </table>
-          {#if sanctionsList.length === 0}
-            <div class="p-8 text-center text-on-surface-variant/30 flex flex-col items-center justify-center">
-              <Papicon icon="check-circle" size={32} class="text-on-surface-variant/20" />
-              <p class="text-[10px] font-black uppercase tracking-wider mt-2.5">{t.sanctionsTab.empty}</p>
-            </div>
-          {/if}
-        </div>
-      </div>
-
-    {:else if activeInnerTab === 'candidatures'}
-      <!-- ── Tab: Candidats ── -->
-      <div class="space-y-4 animate-in fade-in duration-300">
-        {#each caseData.candidatures as cand}
-          <div class="rounded-[2rem] bg-surface-container-low/50 p-5 border border-outline-variant/10 shadow-xs space-y-3 text-xs">
-            <div class="flex justify-between items-center">
-              <div>
-                <span class="text-[10px] font-black text-on-surface-variant/40 uppercase block leading-none mb-1">{formatDateShort(cand.createdAt)}</span>
-                <span class="px-2.5 py-0.5 rounded-lg text-xs font-black uppercase {cand.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-500 border border-rose-500/20'}">
-                  {cand.status === 'APPROVED' ? t.candidaturesTab.statusAccepted : t.candidaturesTab.statusRejected}
-                </span>
-              </div>
-              {#if cand.oralResult}
-                <div class="text-right">
-                  <span class="text-[10px] text-on-surface-variant/40 font-bold uppercase block leading-none mb-1">{t.candidaturesTab.oralResult}</span>
-                  <span class="font-black text-on-surface text-xs md:text-sm">{cand.oralResult}</span>
-                </div>
-              {/if}
-            </div>
-            <div class="rounded-xl bg-surface-container-high/20 p-4 text-on-surface-variant italic leading-normal border border-outline-variant/5">
-              "{cand.notes}"
-            </div>
-          </div>
-        {/each}
-        {#if caseData.candidatures.length === 0}
-          <div class="p-8 text-center text-on-surface-variant/30 flex flex-col items-center justify-center">
-            <Papicon icon="user-check" size={32} class="text-on-surface-variant/20" />
-            <p class="text-[10px] font-black uppercase tracking-wider mt-2.5">{t.candidaturesTab.empty}</p>
-          </div>
-        {/if}
-      </div>
-
-    {:else if activeInnerTab === 'invites'}
-      <!-- ── Tab: Invitations ── -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in duration-300">
-        
-        <!-- Source d'invitation Card -->
-        <div class="rounded-[2rem] bg-surface-container-low/50 p-5 border border-outline-variant/10 shadow-sm space-y-3">
-          <p class="text-[10px] font-black uppercase tracking-wider text-primary">{t.invitesTab.source.sectionLabel}</p>
-          <div class="space-y-2 text-xs">
-            <div class="flex justify-between items-center">
-              <span class="text-on-surface-variant/50 font-bold">{t.invitesTab.source.codeUsed}</span>
-              {#if caseData.invite.code}
-                <button
-                  type="button"
-                  class="font-black text-primary bg-primary/10 px-2.5 py-0.5 rounded-lg text-xs font-mono border border-primary/10 hover:bg-primary/20 transition-colors cursor-pointer"
-                >
-                  {caseData.invite.code}
-                </button>
-              {:else}
-                <span class="font-bold text-on-surface-variant/40">{t.invitesTab.source.unknown}</span>
-              {/if}
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="text-on-surface-variant/50 font-bold">{t.invitesTab.source.creator}</span>
-              {#if caseData.invite.inviterTag}
-                <button
-                  type="button"
-                  class="flex items-center gap-1.5 hover:opacity-80 transition-opacity cursor-pointer focus:outline-hidden text-left"
-                >
-                  {#if caseData.invite.inviterAvatarUrl}
-                    <img src={caseData.invite.inviterAvatarUrl} alt="" class="w-5 h-5 rounded-full object-cover" />
-                  {/if}
-                  <span class="font-black text-on-surface">@{caseData.invite.inviterTag}</span>
-                </button>
-              {:else}
-                <span class="font-bold text-on-surface-variant/40">{t.invitesTab.source.unknown}</span>
-              {/if}
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="text-on-surface-variant/50">{t.invitesTab.source.usageDate}</span>
-              <span class="font-bold text-on-surface">{formatDateTime(caseData.invite.joinedAt)}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Mouvements Serveur Card -->
-        <div class="rounded-[2rem] bg-surface-container-low/50 p-5 border border-outline-variant/10 shadow-sm space-y-3">
-          <p class="text-[10px] font-black uppercase tracking-wider text-secondary">{t.invitesTab.movements.sectionLabel}</p>
-          <div class="space-y-2 text-xs">
-            <div class="flex justify-between">
-              <span class="text-on-surface-variant/50">{t.invitesTab.movements.firstSeen}</span>
-              <span class="font-bold text-on-surface">{formatDateTime(caseData.profile?.firstSeenAt)}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-on-surface-variant/50 font-bold">{t.invitesTab.movements.lastArrival}</span>
-              <span class="font-bold text-on-surface">{formatDateShort(caseData.profile?.guildJoinedAt)}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-on-surface-variant/50 font-bold">{t.invitesTab.movements.lastDeparture}</span>
-              <span class="font-bold text-on-surface">{caseData.profile?.guildLeftAt ? formatDateShort(caseData.profile.guildLeftAt) : t.invitesTab.movements.none}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-on-surface-variant/50">{t.invitesTab.movements.lastSeen}</span>
-              <span class="font-bold text-on-surface">{formatDateTime(caseData.profile?.lastSeenAt)}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    {:else if activeInnerTab === 'notes'}
-      <!-- ── Tab: Notes ── -->
-      <div class="rounded-[2rem] bg-surface-container-low/50 p-6 border border-outline-variant/10 shadow-sm space-y-4 animate-in fade-in duration-300">
-        <div class="flex items-center gap-3">
-          <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <Papicon icon="edit-3" size={16} />
-          </div>
-          <div>
-            <p class="text-[10px] font-black uppercase text-primary leading-none">{t.notesTab.sectionLabel}</p>
-            <h4 class="text-xs font-black text-on-surface mt-1">{t.notesTab.title}</h4>
-          </div>
-        </div>
-
-        <p class="text-xs text-on-surface-variant/65">
-          {t.notesTab.disclaimer}
-        </p>
-
-        <div class="relative">
-          <textarea 
-            id="moderator-note-textarea"
-            bind:value={moderatorNoteInput}
-            placeholder={t.notesTab.placeholder}
-            rows="4"
-            class="w-full rounded-xl bg-surface-container-high/60 p-4 text-xs text-on-surface border border-outline-variant/10 focus:border-primary/50 outline-hidden resize-none leading-relaxed"
-          ></textarea>
-        </div>
-        {#if noteFeedback}
-          <p class="text-xs font-bold text-emerald-400 leading-none">{noteFeedback}</p>
-        {/if}
-        <div class="flex justify-end">
+        <div class="flex w-full flex-wrap items-center gap-2 sm:ml-auto sm:w-auto">
           <button
             type="button"
-            onclick={async () => {
-              noteBusy = true;
-              noteFeedback = '';
-              await new Promise(r => setTimeout(r, 400));
-              noteBusy = false;
-              noteFeedback = t.notesTab.savedSuccess;
-            }}
-            class="bg-primary text-white text-xs font-black uppercase px-4 py-2 rounded-lg hover:bg-primary/95 transition-colors cursor-pointer flex items-center gap-1.5"
-            disabled={noteBusy}
+            class="btn btn-tonal btn-sm"
+            disabled={!!verificationRequestedAt}
+            title={verificationRequestedAt ? t.verifPending : undefined}
+            onclick={() => (verificationRequestedAt = new Date(NOW).toISOString())}
           >
-            <Papicon icon="check_circle" size={12} />
-            {noteBusy ? t.notesTab.saving : t.notesTab.save}
+            <Papicon icon="shield-alert" size={14} />{t.requestVerification}
           </button>
         </div>
       </div>
-    {/if}
+    </header>
 
+    <!-- ── Onglets ──────────────────────────────────────── -->
+    <div class="mc-tabs">
+      <div role="tablist" aria-label={t.tabsLabel} class="tab-group">
+        {#each tabs as tab (tab.id)}
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === tab.id}
+            class="tab-button {activeTab === tab.id ? 'active' : ''}"
+            onclick={() => (activeTab = tab.id)}
+          >
+            <Papicon icon={tab.icon} size={14} />
+            {tab.label}
+            {#if tab.badge}<span class="tab-badge">{tab.badge}</span>{/if}
+          </button>
+        {/each}
+      </div>
+    </div>
+
+    <!-- ── Contenu ──────────────────────────────────────── -->
+    <div class="px-4 pb-6 pt-5 sm:px-6">
+      <div class="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_18rem]">
+        <div class="min-w-0 space-y-4">
+          {#if activeTab === 'staff'}
+            <section class="section-card flex flex-wrap items-center justify-between gap-4 p-4">
+              <div class="flex min-w-0 flex-wrap items-center gap-x-5 gap-y-2">
+                <span class="sc-chip" style="color: {gradeColor}; background: color-mix(in srgb, {gradeColor} 12%, transparent);">
+                  <Papicon icon="shield" size={13} />{grade}
+                </span>
+                <span class="sc-chip bg-primary/10 text-primary"><Papicon icon="user-check" size={12} />{t.tutor}</span>
+                <dl class="flex flex-wrap gap-x-5 gap-y-1 text-xs">
+                  <div class="flex gap-1"><dt class="text-on-surface-variant">{t.staff.joined}</dt><dd>{formatDateShort(STAFF.joinedStaffAt)}</dd></div>
+                  <div class="flex gap-1"><dt class="text-on-surface-variant">{t.staff.gradeSince}</dt><dd>{formatDateShort(gradeSince)}</dd></div>
+                </dl>
+              </div>
+              <div class="flex flex-wrap items-center gap-2">
+                <button type="button" class="btn btn-tonal btn-sm" disabled={gradeIndex === 0} title={gradeIndex === 0 ? t.staff.gradeMin : undefined} onclick={() => shiftGrade(-1)}>
+                  <Papicon icon="chevrons-down" size={14} />{t.staff.demote}
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" disabled={gradeIndex === GRADES.length - 1} title={gradeIndex === GRADES.length - 1 ? t.staff.gradeMax : undefined} onclick={() => shiftGrade(1)}>
+                  <Papicon icon="chevrons-up" size={14} />{t.staff.promote}
+                </button>
+              </div>
+            </section>
+
+            <div class="grid gap-4 xl:grid-cols-[16rem_minmax(0,1fr)]">
+              <div class="space-y-4">
+                <section class="section-card">
+                  <h4 class="sc-title">{t.staff.brief}</h4>
+                  <dl class="sc-brief">
+                    <div><dt>{t.staff.messages}</dt><dd>{fmtNumber(STAFF.stats.messages)}</dd></div>
+                    <div><dt>{t.staff.voice}</dt><dd>{fmtMinutes(STAFF.stats.voiceMinutes)}</dd></div>
+                    <div><dt>{t.staff.sanctionsGiven}</dt><dd>{fmtNumber(STAFF.stats.sanctionsIssued)}</dd></div>
+                    <div><dt>{t.staff.progression}</dt><dd>{STAFF.progression}/100</dd></div>
+                    <div>
+                      <dt>{t.staff.pace}</dt>
+                      <dd>{STAFF.avg7d}<span>{t.staff.vsMonth(STAFF.avg30d, `${weekTrend > 0 ? '+' : ''}${weekTrend} %`)}</span></dd>
+                    </div>
+                    <div><dt>{t.staff.tenure}</dt><dd>{formatTenure(STAFF.joinedStaffAt)}</dd></div>
+                  </dl>
+                </section>
+
+                <section class="section-card">
+                  <h4 class="sc-title">{t.staff.hierarchies}</h4>
+                  <ul class="space-y-2 px-4 pb-4 pt-1">
+                    {#each STAFF.hierarchies as h (h.icon)}
+                      <li class="flex items-center gap-3">
+                        <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg" style="color: {h.color}; background: color-mix(in srgb, {h.color} 14%, transparent);" aria-hidden="true">
+                          {#if /^[a-z-]+$/.test(h.icon)}<Papicon icon={h.icon} size={14} />{:else}<span class="text-sm leading-none">{h.icon}</span>{/if}
+                        </span>
+                        <span class="min-w-0 flex-1">
+                          <span class="block truncate text-sm font-medium text-on-surface">{tr(h.name)}</span>
+                          <span class="block truncate text-xs text-on-surface-variant">{tr(h.grade)}</span>
+                        </span>
+                      </li>
+                    {/each}
+                  </ul>
+                </section>
+              </div>
+
+              <div class="space-y-4">
+                <section class="section-card">
+                  <h4 class="sc-title">{t.staff.discipline}</h4>
+                  <div class="space-y-3 px-4 pb-4">
+                    <span class="warn-meter warn-meter--{warnTone}">
+                      <span class="warn-meter__track" aria-hidden="true">
+                        {#each Array(STAFF.demoteAt) as _, i (i)}<span class="warn-meter__step" class:on={i < activeWarnings.length}></span>{/each}
+                      </span>
+                      <span class="warn-meter__label tabular-nums">{activeWarnings.length}/{STAFF.demoteAt}</span>
+                      <span class="text-xs text-on-surface-variant">
+                        {activeWarnings.length === 0 ? t.staff.warnNone : activeWarnings.length >= STAFF.demoteAt ? t.staff.warnReached : t.staff.warnLeft(STAFF.demoteAt - activeWarnings.length)}
+                      </span>
+                    </span>
+                    <p class="text-xs text-on-surface-variant">{t.staff.threshold(STAFF.demoteAt, STAFF.blacklistAt)} {t.staff.validationHint}</p>
+                    {#if activeWarnings.length}
+                      <ul class="space-y-2 border-t border-outline-variant pt-3">
+                        {#each activeWarnings as warning (warning.id)}
+                          <li>
+                            <p class="text-sm text-on-surface">{tr(warning.reason)}</p>
+                            {#if warning.expiresAt}<p class="text-xs text-on-surface-variant">{t.staff.expires(formatRelative(warning.expiresAt))}</p>{/if}
+                          </li>
+                        {/each}
+                      </ul>
+                    {/if}
+                    <button type="button" class="btn btn-tonal btn-sm w-full" onclick={warnStaff}><Papicon icon="alert-triangle" size={14} />{t.staff.warn}</button>
+                  </div>
+                </section>
+
+                <section class="section-card min-w-0">
+                  <h4 class="sc-title">{t.staff.timeline}</h4>
+                  <p class="-mt-2 px-4 text-xs text-on-surface-variant">{t.staff.tenureSentence(formatTenure(STAFF.joinedStaffAt))}</p>
+                  <ol class="px-4 pb-2 pt-4">
+                    {#each timeline as event, i (i)}
+                      <li class="sc-event sc-event--{event.tone}">
+                        <span class="sc-event__dot" aria-hidden="true"><Papicon icon={event.icon} size={12} /></span>
+                        <div class="min-w-0 flex-1 pb-4">
+                          <div class="flex flex-wrap items-baseline justify-between gap-x-3">
+                            <span class="text-sm text-on-surface">{event.title}</span>
+                            <time class="text-[0.6875rem] tabular-nums text-on-surface-variant" datetime={event.at} title={formatDateShort(event.at)}>{formatRelative(event.at)}</time>
+                          </div>
+                          {#if event.detail}<p class="mt-0.5 text-sm text-on-surface-variant">{event.detail}</p>{/if}
+                        </div>
+                      </li>
+                    {/each}
+                  </ol>
+                </section>
+              </div>
+            </div>
+
+          {:else if activeTab === 'resume'}
+            <section class="section-card p-5">
+              <dl class="mc-kpis">
+                <div>
+                  <dt><Papicon icon="calendar" size={13} />{t.resume.serverPresence}</dt>
+                  <dd>{durationSince(PROFILE.guildJoinedAt)}</dd>
+                  <span>{t.resume.joinedOn(formatDateShort(PROFILE.guildJoinedAt))}</span>
+                </div>
+                <div>
+                  <dt><Papicon icon="user" size={13} />{t.resume.accountAge}</dt>
+                  <dd>{durationSince(PROFILE.accountCreatedAt)}</dd>
+                  <span>{t.resume.createdOn(formatDateShort(PROFILE.accountCreatedAt))}</span>
+                </div>
+                <div>
+                  <dt><Papicon icon="message-square" size={13} />{t.resume.messages}</dt>
+                  <dd class="tabular-nums">{fmtNumber(PROFILE.messageCount)}</dd>
+                  <span>{t.resume.voice} : {formatDuration(PROFILE.voiceTimeSeconds)}</span>
+                </div>
+                <div>
+                  <dt><Papicon icon="hammer" size={13} />{t.resume.sanctions}</dt>
+                  <dd class="tabular-nums {activeSanctionCount ? 'tone-danger' : ''}">{sanctions.length}</dd>
+                  <span class={activeSanctionCount ? 'tone-danger' : ''}>{t.resume.activeSanctions(activeSanctionCount)}</span>
+                </div>
+              </dl>
+            </section>
+
+            {#snippet trendActions()}
+              <button type="button" class="btn btn-ghost btn-sm" onclick={() => (activeTab = 'analytics')}>{t.tabs.analytics}<Papicon icon="arrow-right" size={14} /></button>
+            {/snippet}
+            {#snippet trendBody()}
+              <div class="space-y-3">
+                <div class="metric-tabs" role="tablist" aria-label={t.resume.trend}>
+                  {#each metrics as metric (metric.id)}
+                    {@const selected = metric.id === selectedMetric.id}
+                    {@const spark = chartGeometry(metric.daily, metric.daily, 22)}
+                    <button type="button" role="tab" class="metric-tab" aria-selected={selected} style="--metric-color: {metric.color}" onclick={() => (trendMetric = metric.id)}>
+                      <span class="metric-tab__label">{metric.label}</span>
+                      <span class="metric-tab__row">
+                        <span class="metric-tab__value">{metric.value}</span>
+                        <svg viewBox="0 0 {CHART_W} 22" preserveAspectRatio="none" width="64" height="22" aria-hidden="true">
+                          <path d={spark.main} style="stroke: {selected ? metric.color : 'var(--series-neutral)'}" class="mc-chart__main" />
+                        </svg>
+                      </span>
+                      <span class="metric-tab__delta {metric.delta >= 0 ? 'tone-success' : 'tone-danger'}">
+                        <Papicon icon={metric.delta >= 0 ? 'trending-up' : 'trending-down'} size={12} />
+                        {metric.delta >= 0 ? '+' : ''}{metric.delta.toLocaleString(intl, { maximumFractionDigits: 1 })} %
+                        <span class="font-normal text-on-surface-variant">{t.chart.vsPrevious}</span>
+                      </span>
+                    </button>
+                  {/each}
+                </div>
+                {@render chart(selectedMetric, 190)}
+              </div>
+            {/snippet}
+            {@render card(t.resume.trend, trendBody, { description: t.resume.trendDesc, actions: trendActions })}
+
+            <div class="grid gap-4 md:grid-cols-2">
+              {#snippet arrivalBody()}
+                <dl class="mc-facts">
+                  <div><dt>{t.resume.invitedBy}</dt><dd>{@render inviter()}</dd></div>
+                  <div><dt>{t.resume.inviteCode}</dt><dd><span class="mc-code">{INVITE.code}</span></dd></div>
+                  <div><dt>{t.resume.lastPass}</dt><dd>{formatRelative(PROFILE.lastSeenAt)}</dd></div>
+                </dl>
+              {/snippet}
+              {@render card(t.resume.arrival, arrivalBody)}
+
+              {#snippet rolesBody()}
+                <div class="flex flex-wrap gap-1.5">
+                  {#each ROLES as role, i (i)}{@render roleChip(role)}{/each}
+                </div>
+                <p class="mt-4 text-xs text-on-surface-variant">{t.resume.keyPermissions}</p>
+                <p class="mt-1 text-sm text-on-surface">{PERMISSIONS.slice(0, 4).join(' · ')}</p>
+              {/snippet}
+              {@render card(t.resume.roles(ROLES.length), rolesBody)}
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-2">
+              {#snippet messagesActions()}
+                <button type="button" class="btn btn-ghost btn-sm" onclick={() => (activeTab = 'messages')}>{t.tabs.messages}<Papicon icon="arrow-right" size={14} /></button>
+              {/snippet}
+              {#snippet lastMessagesBody()}
+                <ul class="divide-y divide-outline-variant">
+                  {#each recentMessages as msg (msg.id)}
+                    <li class="px-5 py-3">
+                      <div class="flex items-center justify-between gap-2 text-xs text-on-surface-variant">
+                        <span class="font-medium text-primary">#{channelName(msg.channelId)}</span>
+                        <span>{formatRelative(msg.at)}</span>
+                      </div>
+                      <p class="mt-1 line-clamp-2 text-sm text-on-surface">{tr(msg.content)}</p>
+                    </li>
+                  {/each}
+                </ul>
+              {/snippet}
+              {@render card(t.resume.lastMessages, lastMessagesBody, { flush: true, actions: messagesActions })}
+
+              {#snippet logsActions()}
+                <button type="button" class="btn btn-ghost btn-sm" onclick={() => (activeTab = 'logs')}>{t.resume.seeAllLogs}<Papicon icon="arrow-right" size={14} /></button>
+              {/snippet}
+              {#snippet lastLogsBody()}
+                <ul class="divide-y divide-outline-variant">
+                  {#each LOGS.slice(0, 4) as log (log.id)}
+                    <li class="px-5 py-3">
+                      <p class="text-sm text-on-surface">{tr(log.action)}</p>
+                      <p class="text-xs text-on-surface-variant">{log.module} · {formatRelative(log.at)}</p>
+                    </li>
+                  {/each}
+                </ul>
+              {/snippet}
+              {@render card(t.resume.lastLogs, lastLogsBody, { flush: true, actions: logsActions })}
+            </div>
+
+            {#snippet discordBody()}
+              <div class="grid gap-6 md:grid-cols-[minmax(0,1fr)_16rem]">
+                {@render facts([
+                  { label: t.resume.username, value: `@${PROFILE.username}` },
+                  { label: t.resume.globalName, value: PROFILE.globalName },
+                  { label: t.resume.serverDisplay, value: PROFILE.displayName },
+                  { label: t.resume.language, value: PROFILE.locale },
+                  { label: t.resume.pronouns, value: tr(PROFILE.pronouns) }
+                ])}
+                <div class="space-y-3">
+                  <img src={PROFILE.bannerUrl} alt={t.resume.bannerAlt} class="h-20 w-full rounded-lg object-cover" />
+                  <p class="flex items-center gap-2 text-xs text-on-surface-variant">
+                    <span class="h-4 w-4 rounded" style="background: #{PROFILE.accentColor.toString(16)}"></span>
+                    {t.resume.accent(PROFILE.accentColor.toString(16))}
+                  </p>
+                </div>
+              </div>
+            {/snippet}
+            {@render card(t.resume.discordProfile, discordBody)}
+
+          {:else if activeTab === 'identite'}
+            <div class="grid gap-4 md:grid-cols-2">
+              {#snippet fullProfileBody()}
+                {@render facts([
+                  { label: t.identite.discordId, value: PROFILE.userId },
+                  { label: t.resume.username, value: `@${PROFILE.username}` },
+                  { label: t.resume.globalName, value: PROFILE.globalName },
+                  { label: t.identite.serverNickname, value: PROFILE.displayName },
+                  { label: t.resume.pronouns, value: tr(PROFILE.pronouns) },
+                  { label: t.identite.locale, value: PROFILE.locale }
+                ])}
+              {/snippet}
+              {@render card(t.identite.fullProfile, fullProfileBody)}
+
+              {#snippet keyDatesBody()}
+                {@render facts([
+                  { label: t.identite.accountCreation, value: formatDateTime(PROFILE.accountCreatedAt) },
+                  { label: t.identite.serverJoin, value: formatDateTime(PROFILE.guildJoinedAt) },
+                  { label: t.identite.firstSeen, value: formatDateTime(PROFILE.firstSeenAt) },
+                  { label: t.identite.lastSeen, value: formatDateTime(PROFILE.lastSeenAt) }
+                ])}
+              {/snippet}
+              {@render card(t.identite.keyDates, keyDatesBody)}
+
+              {#snippet verifBody()}
+                {#if verificationRequestedAt}
+                  {@render facts([{ label: t.identite.verifLastRequest, value: formatDateTime(verificationRequestedAt) }])}
+                  <ul class="mt-4 space-y-2">
+                    <li class="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-surface-container px-3 py-2.5">
+                      <p class="text-sm text-on-surface">{t.identite.verifRequestedOn(formatDateTime(verificationRequestedAt))}</p>
+                      <span class="badge badge-warning">{t.verifPending}</span>
+                    </li>
+                  </ul>
+                {:else}
+                  <p class="text-sm text-on-surface-variant">{t.identite.verifEmpty}</p>
+                {/if}
+              {/snippet}
+              {@render card(t.identite.verifTitle, verifBody, { description: t.identite.verifCount(verificationRequestedAt ? 1 : 0) })}
+
+              {#snippet staffStatusBody()}
+                {@render facts([
+                  { label: t.identite.currentGrade, value: grade },
+                  { label: t.identite.tutorStatus, value: t.identite.yes }
+                ])}
+              {/snippet}
+              {@render card(t.identite.staffStatus, staffStatusBody)}
+
+              <div class="md:col-span-2">
+                {#snippet allRolesBody()}
+                  <div class="flex flex-wrap gap-1.5">
+                    {#each ROLES as role, i (i)}{@render roleChip(role)}{/each}
+                  </div>
+                {/snippet}
+                {@render card(t.resume.roles(ROLES.length), allRolesBody)}
+              </div>
+            </div>
+
+          {:else if activeTab === 'activite'}
+            <section class="section-card p-5">
+              <dl class="mc-kpis mc-kpis--3">
+                <div><dt><Papicon icon="message-square" size={13} />{t.resume.messages}</dt><dd class="tabular-nums">{fmtNumber(PROFILE.messageCount)}</dd></div>
+                <div><dt><Papicon icon="mic" size={13} />{t.activite.voiceTime}</dt><dd>{formatDuration(PROFILE.voiceTimeSeconds)}</dd></div>
+                <div><dt><Papicon icon="eye" size={13} />{t.activite.lastActivity}</dt><dd>{formatDateShort(PROFILE.lastSeenAt)}</dd></div>
+              </dl>
+            </section>
+            {#snippet byChannelBody()}
+              <ul class="space-y-3">
+                {#each CHANNELS as channel (channel.channelId)}
+                  <li>
+                    <span class="flex items-center justify-between gap-3 text-sm">
+                      <span class="truncate text-on-surface">#{tr(channel.channelName)}</span>
+                      <span class="shrink-0 tabular-nums text-on-surface-variant">{fmtNumber(channel.count)}</span>
+                    </span>
+                    <span class="mc-bar"><span style="width: {(channel.count / CHANNELS[0].count) * 100}%"></span></span>
+                  </li>
+                {/each}
+              </ul>
+            {/snippet}
+            {@render card(t.activite.byChannel, byChannelBody)}
+
+          {:else if activeTab === 'analytics'}
+            <div class="grid gap-4 2xl:grid-cols-2">
+              {#each metrics as metric (metric.id)}
+                {#snippet metricActions()}
+                  <span class="text-right">
+                    <span class="block text-lg font-semibold tabular-nums text-on-surface">{metric.value}</span>
+                    <span class="block text-xs {metric.delta >= 0 ? 'tone-success' : 'tone-danger'}">{metric.delta >= 0 ? '+' : ''}{Math.round(metric.delta)} %</span>
+                  </span>
+                {/snippet}
+                {#snippet metricBody()}{@render chart(metric, 200)}{/snippet}
+                {@render card(
+                  metric.id === 'messages' ? t.analytics.messageVolume : t.analytics.voiceActivity,
+                  metricBody,
+                  { description: metric.id === 'messages' ? t.analytics.last30 : t.analytics.minutesPerDay, actions: metricActions }
+                )}
+              {/each}
+            </div>
+
+          {:else if activeTab === 'messages'}
+            <div class="mc-toolbar">
+              <div class="mc-search relative">
+                <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-on-surface-variant/60"><Papicon icon="search" size={15} /></span>
+                <input type="search" class="input" style="padding-left: 2.25rem;" placeholder={t.messages.search} aria-label={t.messages.search} bind:value={messageQuery} />
+              </div>
+              <select class="input mc-select" aria-label={t.messages.allChannels} bind:value={messageChannelId}>
+                <option value="">{t.messages.allChannels}</option>
+                {#each CHANNELS as c (c.channelId)}<option value={c.channelId}>#{tr(c.channelName)} ({c.count})</option>{/each}
+              </select>
+              <label class="inline-flex cursor-pointer select-none items-center gap-2 text-sm text-on-surface-variant">
+                <input type="checkbox" class="h-4 w-4 accent-[var(--primary-color)]" bind:checked={messageIncludeDeleted} />
+                {t.messages.showDeleted}
+              </label>
+            </div>
+            {#if filteredMessages.length === 0}
+              <div class="section-card flex flex-col items-center gap-1.5 px-6 py-12 text-center">
+                <span class="mb-2 flex h-11 w-11 items-center justify-center rounded-full bg-surface-container text-on-surface-variant/60"><Papicon icon="message-square" size={20} /></span>
+                <p class="text-sm font-medium text-on-surface">{t.messages.emptyTitle}</p>
+                <p class="max-w-sm text-sm text-on-surface-variant">{t.messages.emptyDesc}</p>
+                <button type="button" class="btn btn-tonal btn-sm mt-3" onclick={() => { messageQuery = ''; messageChannelId = ''; messageIncludeDeleted = true; }}>{t.messages.clear}</button>
+              </div>
+            {:else}
+              <ul class="section-card divide-y divide-outline-variant overflow-hidden">
+                {#each filteredMessages as msg (msg.id)}
+                  <li class="px-5 py-4 {msg.deletedAt ? 'deleted-row' : ''}">
+                    <div class="flex flex-wrap items-center gap-2 text-xs text-on-surface-variant">
+                      <span class="font-medium text-primary">#{channelName(msg.channelId)}</span>
+                      <span>{formatDateTime(msg.at)}</span>
+                      {#if msg.editedAt}<span class="badge badge-warning">{t.messages.edited}</span>{/if}
+                      {#if msg.deletedAt}<span class="badge badge-danger">{t.messages.deleted}</span>{/if}
+                    </div>
+                    <p class="mt-1.5 whitespace-pre-wrap text-sm leading-relaxed text-on-surface">{tr(msg.content)}</p>
+                  </li>
+                {/each}
+              </ul>
+            {/if}
+
+          {:else if activeTab === 'logs'}
+            <div class="mc-toolbar">
+              <div class="mc-search relative">
+                <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-on-surface-variant/60"><Papicon icon="search" size={15} /></span>
+                <input type="search" class="input" style="padding-left: 2.25rem;" placeholder={t.logs.search} aria-label={t.logs.search} bind:value={logQuery} />
+              </div>
+              <select class="input mc-select" aria-label={t.logs.allModules} bind:value={logModule}>
+                <option value="">{t.logs.allModules}</option>
+                {#each logModules as module (module)}<option value={module}>{module}</option>{/each}
+              </select>
+              <select class="input mc-select" aria-label={t.logs.newest} bind:value={logOrder}>
+                <option value="desc">{t.logs.newest}</option>
+                <option value="asc">{t.logs.oldest}</option>
+              </select>
+            </div>
+            <p class="text-xs text-on-surface-variant">{t.logs.shown(filteredLogs.length, LOGS.length)}</p>
+            {#if filteredLogs.length === 0}
+              <div class="section-card flex flex-col items-center gap-1.5 px-6 py-12 text-center">
+                <span class="mb-2 flex h-11 w-11 items-center justify-center rounded-full bg-surface-container text-on-surface-variant/60"><Papicon icon="search" size={20} /></span>
+                <p class="text-sm font-medium text-on-surface">{t.logs.noMatch}</p>
+                <button type="button" class="btn btn-tonal btn-sm mt-3" onclick={() => { logQuery = ''; logModule = ''; }}>{t.messages.clear}</button>
+              </div>
+            {:else}
+              <ol class="section-card mc-timeline">
+                {#each filteredLogs as log (log.id)}
+                  <li class="mc-event">
+                    <span class="mc-event__dot" aria-hidden="true"></span>
+                    <div class="min-w-0 flex-1">
+                      <div class="flex flex-wrap items-baseline justify-between gap-x-3">
+                        <p class="text-sm font-medium text-on-surface">{tr(log.action)}</p>
+                        <time class="text-xs tabular-nums text-on-surface-variant" datetime={log.at}>{formatDateTime(log.at)}</time>
+                      </div>
+                      <p class="text-xs text-on-surface-variant">{log.module} · {log.source}</p>
+                      <div class="mt-2 rounded-lg bg-surface-container px-3 py-2 text-sm leading-relaxed text-on-surface-variant">{tr(log.details)}</div>
+                    </div>
+                  </li>
+                {/each}
+              </ol>
+            {/if}
+
+          {:else if activeTab === 'sanctions'}
+            <div class="section-card overflow-hidden">
+              <div class="overflow-x-auto">
+                <table class="mc-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">{t.sanctions.date}</th>
+                      <th scope="col">{t.sanctions.action}</th>
+                      <th scope="col">{t.sanctions.status}</th>
+                      <th scope="col">{t.sanctions.reason}</th>
+                      <th scope="col"><span class="sr-only">{t.sanctions.report}</span></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {#each sanctions as sanction (sanction.id)}
+                      {@const style = SANCTION_STYLE[sanction.type]}
+                      <tr>
+                        <td class="whitespace-nowrap text-on-surface-variant">{formatDateShort(sanction.createdAt)}</td>
+                        <td>
+                          <span class="inline-flex items-center gap-2">
+                            <span class="tile tile--{style.tone} flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"><Papicon icon={style.icon} size={13} /></span>
+                            <span>
+                              <span class="block font-medium text-on-surface">{t.sanctions.types[sanction.type]}</span>
+                              <span class="block text-xs text-on-surface-variant">{t.sanctions.byModerator(sanction.moderator)}</span>
+                            </span>
+                          </span>
+                        </td>
+                        <td><span class="badge {sanction.status === 'ACTIVE' ? 'badge-danger' : 'badge-success'}">{sanction.status === 'ACTIVE' ? t.sanctions.active : t.sanctions.resolved}</span></td>
+                        <td class="max-w-xs"><span class="line-clamp-2 text-on-surface-variant">{tr(sanction.reason)}</span></td>
+                        <td class="whitespace-nowrap text-right">
+                          {#if sanction.report}
+                            <button type="button" class="btn btn-tonal btn-sm" onclick={() => (viewingReportId = sanction.id)}><Papicon icon="file-text" size={14} />{t.sanctions.report}</button>
+                          {:else}
+                            <span class="text-xs text-on-surface-variant">{t.sanctions.noReport}</span>
+                          {/if}
+                        </td>
+                      </tr>
+                    {/each}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          {:else if activeTab === 'candidatures'}
+            {#each CANDIDATURES as cand, i (i)}
+              {#snippet candActions()}
+                <span class="badge {cand.status === 'APPROVED' ? 'badge-success' : 'badge-danger'}">{cand.status === 'APPROVED' ? t.candidatures.accepted : t.candidatures.rejected}</span>
+              {/snippet}
+              {#snippet candBody()}
+                {@render facts([{ label: t.candidatures.oral, value: tr(cand.oral) }])}
+                <p class="mt-3 rounded-lg bg-surface-container px-4 py-3 text-sm leading-relaxed text-on-surface-variant">{tr(cand.notes)}</p>
+              {/snippet}
+              {@render card(formatDateShort(cand.createdAt), candBody, { actions: candActions })}
+            {/each}
+
+          {:else if activeTab === 'invites'}
+            <div class="grid gap-4 md:grid-cols-2">
+              {#snippet sourceBody()}
+                <dl class="mc-facts">
+                  <div><dt>{t.invites.codeUsed}</dt><dd><span class="mc-code">{INVITE.code}</span></dd></div>
+                  <div><dt>{t.invites.creator}</dt><dd>{@render inviter()}</dd></div>
+                  <div><dt>{t.invites.useDate}</dt><dd>{formatDateTime(INVITE.joinedAt)}</dd></div>
+                </dl>
+              {/snippet}
+              {@render card(t.invites.source, sourceBody)}
+              {#snippet movesBody()}
+                {@render facts([
+                  { label: t.invites.lastJoin, value: formatDateTime(PROFILE.guildJoinedAt) },
+                  { label: t.invites.lastLeave, value: t.invites.none },
+                  { label: t.invites.firstObservation, value: formatDateTime(PROFILE.firstSeenAt) }
+                ])}
+              {/snippet}
+              {@render card(t.invites.moves, movesBody)}
+            </div>
+
+          {:else if activeTab === 'notes'}
+            {#snippet notesBody()}
+              <label for="mock-moderator-note" class="sr-only">{t.notes.title}</label>
+              <textarea id="mock-moderator-note" class="input min-h-[200px] resize-y" bind:value={moderatorNote} placeholder={t.notes.placeholder}></textarea>
+              <div class="mt-4 flex items-center justify-between gap-3">
+                <span class="text-sm tone-success" aria-live="polite">{noteFeedback}</span>
+                <button type="button" class="btn btn-primary" disabled={noteBusy} onclick={saveNote}><Papicon icon="save" size={14} />{noteBusy ? t.notes.saving : t.notes.save}</button>
+              </div>
+            {/snippet}
+            {@render card(t.notes.title, notesBody, { description: t.notes.desc })}
+          {/if}
+        </div>
+
+        <!-- ── Colonne de modération ──────────────────────── -->
+        <aside class="space-y-4">
+          <section class="section-card p-5">
+            <div class="flex items-baseline justify-between gap-2">
+              <h3 class="text-sm font-semibold text-on-surface">{t.aside.risk}</h3>
+              <span class="text-xs text-on-surface-variant">{seniority}</span>
+            </div>
+            <div class="mt-3 flex items-baseline gap-2">
+              <span class="text-2xl font-semibold tabular-nums tracking-tight tone-{riskTone}">{riskScore}</span>
+              <span class="text-sm text-on-surface-variant">/100</span>
+              <span class="badge badge-{riskTone} ml-auto">{riskScore < 30 ? t.aside.riskLow : riskScore < 70 ? t.aside.riskHigh : t.aside.riskCritical}</span>
+            </div>
+            <div class="mc-meter mt-2" aria-hidden="true"><span class="fill-{riskTone}" style="width: {riskScore}%"></span></div>
+            <p class="mt-2 text-xs leading-relaxed text-on-surface-variant">{t.aside.riskDesc}</p>
+          </section>
+
+          <section class="section-card p-5">
+            <h3 class="text-sm font-semibold text-on-surface">{t.aside.topChannels}</h3>
+            <ul class="mt-3 space-y-3">
+              {#each CHANNELS.slice(0, 3) as chan (chan.channelId)}
+                {@const pct = Math.round((chan.count / PROFILE.messageCount) * 100)}
+                <li>
+                  <span class="flex items-center justify-between gap-2 text-sm">
+                    <span class="truncate text-on-surface">#{tr(chan.channelName)}</span>
+                    <span class="shrink-0 text-xs tabular-nums text-on-surface-variant">{chan.count} · {pct} %</span>
+                  </span>
+                  <span class="mc-bar"><span style="width: {pct}%"></span></span>
+                </li>
+              {/each}
+            </ul>
+          </section>
+
+          <section class="section-card p-5">
+            <h3 class="text-sm font-semibold text-on-surface">{t.aside.actions}</h3>
+            <div class="mt-3 space-y-3">
+              <label class="field">
+                <span class="field-label">{t.aside.reason}</span>
+                <textarea class="input resize-none" rows="3" placeholder={t.aside.reasonPlaceholder} bind:value={actionReason}></textarea>
+              </label>
+              <label class="field">
+                <span class="field-label">{t.aside.duration}</span>
+                <select class="input" bind:value={actionDuration}>
+                  {#each Object.entries(t.aside.durations) as [value, label] (value)}<option {value}>{label}</option>{/each}
+                </select>
+              </label>
+              <div class="space-y-2 pt-1">
+                <button type="button" class="btn btn-tonal w-full" onclick={() => moderate('WARN')}><Papicon icon="alert-triangle" size={14} />{t.aside.warn}</button>
+                <button type="button" class="btn btn-tonal w-full" onclick={() => moderate('TIMEOUT')}><Papicon icon="clock" size={14} />{t.aside.timeout}</button>
+                <div class="grid grid-cols-2 gap-2">
+                  <button type="button" class="btn btn-danger" disabled={presence === 'left'} onclick={() => moderate('KICK')}><Papicon icon="log-out" size={14} />{t.aside.kick}</button>
+                  <button type="button" class="btn btn-danger" disabled={presence === 'left'} onclick={() => moderate('BAN')}><Papicon icon="gavel" size={14} />{t.aside.ban}</button>
+                </div>
+              </div>
+              {#if actionFeedback}
+                <p class="flex items-center gap-2 text-sm tone-success" aria-live="polite"><Papicon icon="check-circle" size={14} />{actionFeedback}</p>
+              {/if}
+            </div>
+          </section>
+        </aside>
+      </div>
+    </div>
   </div>
 
-  <!-- Detailed Sanction Report sub-modal overlay -->
-  {#if viewingReportId}
-    {@const selectedSanction = sanctionsList.find(s => s.id === viewingReportId)}
-    {#if selectedSanction}
-      <div class="absolute inset-0 bg-black/40 backdrop-blur-xs z-50 flex items-center justify-center p-6 animate-in fade-in duration-300">
-        <div class="w-full max-w-2xl bg-surface-container-lowest rounded-[2rem] border border-outline-variant/10 p-6 shadow-2xl space-y-4 text-xs md:text-sm animate-in zoom-in-95 duration-300 relative">
-          <!-- Close button -->
-          <button 
-            type="button"
-            onclick={() => viewingReportId = null}
-            class="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-xl bg-on-surface/5 text-on-surface-variant hover:bg-on-surface/10 hover:text-on-surface transition-colors cursor-pointer"
-          >
-            <Papicon icon="x" size={16} />
-          </button>
-          
-          <div class="flex items-center gap-3 border-b border-outline-variant/10 pb-3">
-            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-500/10 text-rose-500">
-              <Papicon icon="hammer" size={20} />
+  <!-- Rapport de sanction : une fenêtre au-dessus du dossier. -->
+  {#if selectedSanction?.report}
+    {@const report = selectedSanction.report}
+    <div class="absolute inset-0 z-20 flex items-center justify-center bg-black/40 p-4" role="presentation" onclick={() => (viewingReportId = null)}>
+      <div
+        class="flex max-h-full w-full max-w-xl flex-col overflow-hidden rounded-xl border border-outline-variant bg-surface-container-lowest shadow-2xl"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="mock-report-title"
+        tabindex="-1"
+        onclick={(e) => e.stopPropagation()}
+        onkeydown={(e) => e.key === 'Escape' && (viewingReportId = null)}
+      >
+        <header class="flex items-start justify-between gap-4 border-b border-outline-variant px-5 py-4">
+          <div>
+            <h3 id="mock-report-title" class="text-base font-semibold text-on-surface">{t.sanctions.types[selectedSanction.type]}</h3>
+            <p class="text-[0.8125rem] text-on-surface-variant">{t.report.appliedOn(formatDateTime(selectedSanction.createdAt), selectedSanction.moderator)}</p>
+          </div>
+        </header>
+        <div class="space-y-5 overflow-y-auto p-5">
+          {@render facts([
+            { label: t.report.incident, value: formatDateTime(report.incidentAt) },
+            { label: t.report.duration, value: tr(report.duration) }
+          ])}
+          <div>
+            <p class="field-label">{t.report.brokenRules}</p>
+            <div class="flex flex-wrap gap-1.5">
+              {#each report.rules as rule, i (i)}<span class="mc-role">{tr(rule)}</span>{/each}
             </div>
+          </div>
+          <div>
+            <p class="field-label">{t.report.detailedReason}</p>
+            <p class="rounded-lg bg-surface-container px-4 py-3 text-sm leading-relaxed text-on-surface">{tr(report.reason)}</p>
+          </div>
+          <div>
+            <p class="field-label">{t.report.evidence}</p>
+            <div class="flex flex-wrap gap-2">
+              {#each Array(report.evidence) as _, i (i)}
+                <span class="mc-role"><Papicon icon="file-text" size={13} />{t.report.evidenceLink(i + 1)}</span>
+              {/each}
+            </div>
+          </div>
+          {#if report.notes}
             <div>
-              <p class="text-[10px] font-black uppercase tracking-wider text-rose-500">{t.sanctionReport.sectionLabel}</p>
-              <h4 class="text-base font-black text-on-surface">{t.sanctionReport.title(selectedSanction.id, selectedSanction.type)}</h4>
+              <p class="field-label">{t.report.extraNotes}</p>
+              <p class="text-sm leading-relaxed text-on-surface-variant">{tr(report.notes)}</p>
             </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <p class="text-[10px] text-on-surface-variant/40 font-bold uppercase leading-none">{t.sanctionReport.incidentDate}</p>
-              <p class="font-black mt-1.5">{formatDateTime(selectedSanction.createdAt)}</p>
-            </div>
-            <div>
-              <p class="text-[10px] text-on-surface-variant/40 font-bold uppercase leading-none">{t.sanctionReport.referringModerator}</p>
-              <p class="font-black mt-1.5">@{selectedSanction.moderatorTag}</p>
-            </div>
-          </div>
-
-          <div class="space-y-1">
-            <p class="text-[10px] text-on-surface-variant/40 font-bold uppercase leading-none">{t.sanctionReport.brokenRules}</p>
-            <span class="inline-block bg-rose-500/10 text-rose-500 border border-rose-500/20 rounded-lg px-2.5 py-0.5 text-xs font-bold font-sans">{t.sanctionReport.ruleText}</span>
-          </div>
-
-          <div class="space-y-1">
-            <p class="text-[10px] text-on-surface-variant/40 font-bold uppercase leading-none">{t.sanctionReport.detailedReason}</p>
-            <div class="bg-surface-container-high/40 rounded-xl p-4 italic text-on-surface-variant border border-outline-variant/5">
-              "{selectedSanction.reason}{t.sanctionReport.reasonSuffix}"
-            </div>
-          </div>
-
-          <div class="space-y-1">
-            <p class="text-[10px] text-on-surface-variant/40 font-bold uppercase leading-none">{t.sanctionReport.attachments}</p>
-            <div class="flex gap-2">
-              <span class="inline-flex items-center gap-1.5 bg-surface-container rounded-lg px-3 py-1 text-xs font-bold text-primary border border-outline-variant/10">
-                <Papicon icon="link" size={10} /> {t.sanctionReport.evidenceFile}
-              </span>
-            </div>
-          </div>
-
-          <div class="flex justify-end gap-3 pt-2">
-            <button
-              type="button"
-              onclick={() => viewingReportId = null}
-              class="px-4 py-2 bg-surface-container text-on-surface hover:bg-surface-container-high rounded-lg font-bold transition-colors cursor-pointer"
-            >
-              {t.sanctionReport.close}
-            </button>
-          </div>
+          {/if}
+          <p class="text-xs text-on-surface-variant">{t.report.by(report.author)}</p>
         </div>
+        <footer class="flex justify-end border-t border-outline-variant px-5 py-3">
+          <button type="button" class="btn btn-tonal" onclick={() => (viewingReportId = null)}>{t.report.close}</button>
+        </footer>
       </div>
-    {/if}
+    </div>
   {/if}
 </div>
 
 <style>
-  .tab-group {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 0.25rem;
-    padding: 0.25rem;
-    background: var(--surface-container);
-    border-radius: 0.75rem;
-    border: 1px solid var(--outline-variant);
+  /* Jetons du dashboard (`apps/dashboard/src/app.css`, thème clair), recopiés
+     ici : le dépôt de la landing n'a pas accès aux paquets du produit. Les
+     `--color-*` sont redéfinis aussi, sinon les classes Tailwind gardent la
+     palette du site. */
+  .mpx {
+    --surface: #ffffff;
+    --on-surface: #111827;
+    --surface-container-lowest: #ffffff;
+    --surface-container-low: #f9fafb;
+    --surface-container: #f3f4f6;
+    --surface-container-high: #e5e7eb;
+    --on-surface-variant: #374151;
+    --outline-variant: #e5e7eb;
+    --surface-hover: rgba(0, 0, 0, 0.03);
+    --primary-color: #4f46e5;
+    --on-primary-color: #ffffff;
+    --primary-container-color: #eef2ff;
+    --on-primary-container-color: #3730a3;
+    --warning-color: #b45309;
+    --success-color: #15803d;
+    --error-color: #dc2626;
+    --series-1: #2a78d6;
+    --series-3: #1baf7a;
+    --series-neutral: #a1a1aa;
+
+    --color-surface: var(--surface);
+    --color-on-surface: var(--on-surface);
+    --color-surface-container-lowest: var(--surface-container-lowest);
+    --color-surface-container-low: var(--surface-container-low);
+    --color-surface-container: var(--surface-container);
+    --color-surface-container-high: var(--surface-container-high);
+    --color-on-surface-variant: var(--on-surface-variant);
+    --color-outline-variant: var(--outline-variant);
+    --color-primary: var(--primary-color);
+    --color-error: var(--error-color);
   }
 
+  .mpx :global(.section-card) {
+    background: var(--surface-container-lowest);
+    border: 1px solid var(--outline-variant);
+    border-radius: 0.75rem;
+  }
+
+  .mpx :global(.tone-success) { color: var(--success-color); }
+  .mpx :global(.tone-warning) { color: var(--warning-color); }
+  .mpx :global(.tone-danger) { color: var(--error-color); }
+  .mpx :global(.fill-success) { background: var(--success-color); }
+  .mpx :global(.fill-warning) { background: var(--warning-color); }
+  .mpx :global(.fill-danger) { background: var(--error-color); }
+  .mpx :global(.dot) { display: inline-block; border-radius: 9999px; }
+  .mpx :global(.dot--success) { background: var(--success-color); }
+  .mpx :global(.dot--danger) { background: var(--error-color); }
+  .mpx :global(.deleted-row) { background: color-mix(in srgb, var(--error-color) 5%, transparent); }
+  .mpx :global(.tile--warning) { color: var(--warning-color); background: color-mix(in srgb, var(--warning-color) 10%, transparent); }
+  .mpx :global(.tile--danger) { color: var(--error-color); background: color-mix(in srgb, var(--error-color) 10%, transparent); }
+  .mpx :global(.tile--primary) { color: var(--primary-color); background: color-mix(in srgb, var(--primary-color) 10%, transparent); }
+
+  /* Badges */
+  .mpx :global(.badge) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .mpx :global(.badge-success) { background: rgba(16, 185, 129, 0.1); color: rgb(4, 120, 87); }
+  .mpx :global(.badge-warning) { background: rgba(245, 158, 11, 0.1); color: rgb(180, 83, 9); }
+  .mpx :global(.badge-danger) { background: rgba(239, 68, 68, 0.1); color: rgb(185, 28, 28); }
+  .mpx :global(.badge-info) { background: rgba(99, 102, 241, 0.08); color: rgb(67, 56, 202); }
+
+  /* Boutons */
+  .mpx :global(.btn) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid transparent;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.25;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+  }
+  .mpx :global(.btn:active) { transform: scale(0.98); }
+  .mpx :global(.btn:disabled) { opacity: 0.45; cursor: not-allowed; transform: none; }
+  .mpx :global(.btn svg) { max-width: none; flex-shrink: 0; }
+  .mpx :global(.btn-sm) { padding: 0.3125rem 0.75rem; font-size: 0.75rem; }
+  .mpx :global(.btn-primary) { background: var(--primary-color); color: var(--on-primary-color); }
+  .mpx :global(.btn-primary:hover:not(:disabled)) { opacity: 0.92; }
+  .mpx :global(.btn-tonal) { background: var(--surface-container); color: var(--on-surface); border-color: var(--outline-variant); }
+  .mpx :global(.btn-tonal:hover:not(:disabled)) { background: var(--surface-container-high); }
+  .mpx :global(.btn-ghost) { background: transparent; color: var(--on-surface-variant); }
+  .mpx :global(.btn-ghost:hover:not(:disabled)) { background: var(--surface-hover); color: var(--on-surface); }
+  .mpx :global(.btn-danger) {
+    background: transparent;
+    color: var(--error-color);
+    border-color: color-mix(in srgb, var(--error-color) 30%, transparent);
+  }
+  .mpx :global(.btn-danger:hover:not(:disabled)) { background: color-mix(in srgb, var(--error-color) 10%, transparent); }
+
+  /* Onglets */
+  .mc-tabs {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding: 0.75rem 1rem;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--outline-variant);
+  }
+  @media (min-width: 640px) {
+    .mc-tabs { padding: 0.75rem 1.5rem; }
+  }
+  .tab-group {
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    flex-wrap: nowrap;
+    gap: 0.125rem;
+    padding: 0.25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    background: var(--surface-container);
+    border: 1px solid var(--outline-variant);
+    border-radius: 0.5rem;
+  }
+  .tab-group::-webkit-scrollbar { display: none; }
   .tab-button {
     display: inline-flex;
     align-items: center;
     gap: 0.375rem;
-    padding: 0.5rem 0.875rem;
-    border-radius: 0.5rem;
-    font-size: 11px;
-    font-weight: 700;
-    transition: all 0.25s ease;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
     color: var(--on-surface-variant);
-    background: transparent;
-    border: none;
-    cursor: pointer;
     white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .tab-button:hover { background: var(--surface-hover); color: var(--on-surface); }
+  .tab-button.active {
+    background: var(--surface-container-lowest);
+    color: var(--on-surface);
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+  .tab-badge {
+    min-width: 1.125rem;
+    padding: 0 0.3125rem;
+    border-radius: 9999px;
+    background: var(--surface-container-high);
+    color: var(--on-surface-variant);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.125rem;
+    text-align: center;
+  }
+  .tab-button.active .tab-badge {
+    background: var(--primary-container-color);
+    color: var(--on-primary-container-color);
   }
 
-  .tab-button:hover {
-    background: var(--surface-hover);
+  /* Champs */
+  .mpx :global(.input) {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--outline-variant);
+    background: var(--surface-container);
+    color: var(--on-surface);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .mpx :global(.input::placeholder) { color: color-mix(in srgb, var(--on-surface-variant) 60%, transparent); }
+  .mpx :global(.input:focus) {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 18%, transparent);
+  }
+  .field { display: flex; flex-direction: column; min-width: 0; }
+  .mpx :global(.field-label) {
+    display: block;
+    margin-bottom: 0.375rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
     color: var(--on-surface);
   }
 
-  .tab-button.active {
-    background: var(--color-primary);
-    color: var(--color-on-primary);
-    box-shadow: 0 4px 12px rgba(51, 69, 87, 0.2);
+  /* Chiffres alignés, séparés par un filet */
+  .mc-kpis {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 1.5rem;
+  }
+  @media (min-width: 900px) {
+    .mc-kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .mc-kpis--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .mc-kpis > div + div {
+      border-left: 1px solid var(--outline-variant);
+      padding-left: 1.25rem;
+    }
+  }
+  .mc-kpis dt {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.75rem;
+    color: var(--on-surface-variant);
+  }
+  .mc-kpis dd {
+    margin-top: 0.125rem;
+    font-size: 1.375rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--on-surface);
+  }
+  .mc-kpis span {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--on-surface-variant);
   }
 
-  .badge {
+  .mpx :global(.mc-facts) { display: flex; flex-direction: column; }
+  .mpx :global(.mc-facts > div) {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    border-top: 1px solid color-mix(in srgb, var(--outline-variant) 60%, transparent);
+  }
+  .mpx :global(.mc-facts > div:first-child) { border-top: none; padding-top: 0; }
+  .mpx :global(.mc-facts dt) { font-size: 0.8125rem; color: var(--on-surface-variant); }
+  .mpx :global(.mc-facts dd) {
+    min-width: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--on-surface);
+    text-align: right;
+    overflow-wrap: anywhere;
+  }
+
+  .mpx :global(.mc-person) {
     display: inline-flex;
     align-items: center;
-    border-radius: 9999px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    gap: 0.5rem;
+    max-width: 100%;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--on-surface);
+  }
+  .mpx :global(.mc-code) {
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.375rem;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.8125rem;
+    color: var(--primary-color);
+    background: color-mix(in srgb, var(--primary-color) 10%, transparent);
+  }
+  .mpx :global(.mc-role) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.1875rem 0.5rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--outline-variant);
+    font-size: 0.75rem;
+    color: var(--on-surface);
+    background: var(--surface-container-lowest);
   }
 
-  .scrollbar-none::-webkit-scrollbar {
-    display: none;
+  .mc-bar,
+  .mc-meter {
+    display: block;
+    height: 0.375rem;
+    border-radius: 9999px;
+    background: var(--surface-container-high);
+    overflow: hidden;
   }
-  .scrollbar-none {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  .mc-bar { margin-top: 0.375rem; }
+  .mc-bar > span,
+  .mc-meter > span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    transition: width 0.4s ease;
   }
+  .mc-bar > span { background: var(--series-1); }
+
+  /* Tuiles de tendance, comme Analytics */
+  .metric-tabs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+    border: 1px solid var(--outline-variant);
+    border-radius: 0.75rem;
+    background: var(--surface-container-low);
+    overflow: hidden;
+  }
+  .metric-tab {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+    margin: 0 -1px -1px 0;
+    padding: 0.875rem 1rem;
+    text-align: left;
+    border-right: 1px solid var(--outline-variant);
+    border-bottom: 1px solid var(--outline-variant);
+    cursor: pointer;
+    transition: background-color 120ms ease;
+  }
+  .metric-tab::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2px;
+  }
+  .metric-tab:hover,
+  .metric-tab[aria-selected='true'] { background: var(--surface-container); }
+  .metric-tab[aria-selected='true']::before { background: var(--metric-color); }
+  .metric-tab__label { font-size: 0.8125rem; color: var(--on-surface-variant); }
+  .metric-tab__row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .metric-tab__value {
+    font-family: var(--font-headline);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--on-surface);
+    white-space: nowrap;
+  }
+  .metric-tab__delta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* Courbe : la période en trait plein, les 30 jours d'avant en pointillés */
+  .mpx :global(.mc-chart) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  .mpx :global(.mc-chart__y) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 0.6875rem;
+    line-height: 1;
+    text-align: right;
+    color: var(--on-surface-variant);
+    font-variant-numeric: tabular-nums;
+  }
+  .mpx :global(.mc-chart__plot) { display: block; width: 100%; overflow: visible; }
+  .mpx :global(.mc-chart__grid) { stroke: var(--outline-variant); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .mpx :global(.mc-chart__main) {
+    fill: none;
+    stroke-width: 2;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .mpx :global(.mc-chart__previous) {
+    fill: none;
+    stroke: var(--series-neutral);
+    stroke-width: 1.5;
+    stroke-dasharray: 5 4;
+    vector-effect: non-scaling-stroke;
+  }
+  .mpx :global(.mc-chart__x) {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 0.375rem;
+    font-size: 0.6875rem;
+    color: var(--on-surface-variant);
+  }
+  .mpx :global(.mc-legend) {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--on-surface-variant);
+  }
+  .mpx :global(.mc-legend span) { display: inline-flex; align-items: center; gap: 0.375rem; }
+  .mpx :global(.mc-legend i) { display: inline-block; width: 10px; height: 10px; border-radius: 2px; }
+  .mpx :global(.mc-legend .mc-legend__dash) {
+    height: 0;
+    border-top: 2px dashed var(--series-neutral);
+    border-radius: 0;
+  }
+
+  .mc-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .mc-toolbar .mc-select { width: auto; max-width: 14rem; }
+  .mc-search { flex: 1 1 16rem; min-width: 0; }
+
+  .mc-timeline { padding: 1rem 1.25rem; }
+  .mc-event {
+    position: relative;
+    display: flex;
+    gap: 0.875rem;
+    padding-bottom: 1rem;
+  }
+  .mc-event:last-child { padding-bottom: 0; }
+  .mc-event:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 14px;
+    bottom: 0;
+    width: 1px;
+    background: var(--outline-variant);
+  }
+  .mc-event__dot {
+    flex-shrink: 0;
+    width: 9px;
+    height: 9px;
+    margin-top: 6px;
+    border-radius: 9999px;
+    background: var(--primary-color);
+  }
+
+  .mc-table {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.875rem;
+  }
+  .mc-table th {
+    padding: 0.625rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--on-surface-variant);
+    background: var(--surface-container);
+    border-bottom: 1px solid var(--outline-variant);
+  }
+  .mc-table td {
+    padding: 0.625rem 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--outline-variant);
+  }
+  .mc-table tbody tr:last-child td { border-bottom: none; }
+  .mc-table tbody tr:hover { background: var(--surface-hover); }
+
+  /* Onglet Staff (`StaffCaseTab.svelte`) */
+  .sc-title {
+    padding: 1rem 1rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--on-surface);
+  }
+  .sc-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  .sc-brief { display: flex; flex-direction: column; padding-bottom: 0.25rem; }
+  .sc-brief > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.55rem 1rem;
+    border-top: 1px solid color-mix(in srgb, var(--outline-variant) 50%, transparent);
+  }
+  .sc-brief dt { font-size: 0.8125rem; color: var(--on-surface-variant); }
+  .sc-brief dd {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--on-surface);
+    font-variant-numeric: tabular-nums;
+  }
+  .sc-brief dd span { font-size: 0.6875rem; font-weight: 400; color: var(--on-surface-variant); }
+
+  .sc-event {
+    --tone: var(--on-surface-variant);
+    position: relative;
+    display: flex;
+    gap: 0.75rem;
+  }
+  .sc-event--primary { --tone: var(--primary-color); }
+  .sc-event--warning { --tone: var(--warning-color); }
+  .sc-event--danger { --tone: var(--error-color); }
+  .sc-event:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 24px;
+    bottom: 0;
+    width: 1px;
+    background: var(--outline-variant);
+  }
+  .sc-event__dot {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 23px;
+    height: 23px;
+    border-radius: 9999px;
+    color: var(--tone);
+    background: color-mix(in srgb, var(--tone) 12%, var(--surface-container-lowest));
+  }
+
+  .warn-meter {
+    --tone: var(--on-surface-variant);
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .warn-meter--warning { --tone: var(--warning-color); }
+  .warn-meter--danger { --tone: var(--error-color); }
+  .warn-meter__track { display: inline-flex; gap: 3px; }
+  .warn-meter__step {
+    width: 10px;
+    height: 6px;
+    border-radius: 2px;
+    background: var(--surface-container-high);
+    transition: background-color 0.2s ease;
+  }
+  .warn-meter__step.on { background: var(--tone); }
+  .warn-meter__label { font-size: 0.75rem; font-weight: 600; color: var(--tone); }
 </style>

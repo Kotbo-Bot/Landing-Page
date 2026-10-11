@@ -13,6 +13,6 @@ export function mockAvatar(seed: string): string {
 export function mockBanner(seed: string): string {
   const first = colorFor(seed, 17);
   const second = colorFor(seed, 83);
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 240"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${first}"/><stop offset="1" stop-color="${second}"/></linearGradient></defs><rect width="800" height="240" fill="url(%23g)"/><circle cx="650" cy="30" r="170" fill="rgba(255,255,255,.12)"/><circle cx="120" cy="230" r="190" fill="rgba(0,0,0,.12)"/></svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 240"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${first}"/><stop offset="1" stop-color="${second}"/></linearGradient></defs><rect width="800" height="240" fill="url(#g)"/><circle cx="650" cy="30" r="170" fill="rgba(255,255,255,.12)"/><circle cx="120" cy="230" r="190" fill="rgba(0,0,0,.12)"/></svg>`;
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
