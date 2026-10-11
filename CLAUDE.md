@@ -29,7 +29,7 @@ bun run check      # svelte-check
 - **Une URL par langue** pour les pages listées dans `src/lib/i18n/routes.ts`
   (accueil `/` et `/en`, page staff, pages fonctionnalités). Sur ces pages, l'URL décide de la langue,
   jamais le navigateur des robots : Googlebot rend le JS en `en-US`. Une nouvelle
-  page bilingue s'ajoute là et dans `static/sitemap.xml` ; si elle porte du
+  page bilingue s'ajoute là et dans `src/routes/sitemap.xml/+server.ts` ; si elle porte du
   JSON-LD, aussi dans `PATHS` de `seo/jsonld.js`.
 - **JSON-LD sous CSP.** Il est injecté en ligne et autorisé par empreinte :
   tout son contenu vient de `src/lib/seo/jsonld.js`, que `svelte.config.js`
@@ -47,7 +47,18 @@ bun run check      # svelte-check
 | `src/lib/components/` | Zones reprises de la v1 (catalogue, comparatif, tarifs, FAQ) et écrans du dashboard reconstitués (`mockups/`). |
 | `src/lib/data/` | `media.ts` (captures et vidéos à fournir), `proof.ts` (témoignages réels, vide par défaut). |
 | `static/ktb/`, `static/rank/` | Emojis du bot, polices de la carte de rang avec leurs licences. |
-| `static/llms.txt`, `robots.txt`, `sitemap.xml` | Référencement et lecture par les assistants IA. `llms.txt` recopie les tarifs : le tenir aligné sur `Pricing.svelte`. |
+| `static/llms.txt`, `robots.txt` | Référencement et lecture par les assistants IA. `llms.txt` recopie les tarifs : le tenir aligné sur `Pricing.svelte`. Le sitemap est généré (`src/routes/sitemap.xml/`). |
+
+## Pages fonctionnalités
+
+Les pages `/fonctionnalites/<slug>` et `/en/features/<slug>` ne s'écrivent pas
+ici : elles se rédigent et se publient dans la console admin de dash.kotbo.fr
+(`/admin/feature-pages`, dépôt `Kotbo`). Au build, `scripts/fetch-features.mjs`
+lit `api.kotbo.fr/api/public/feature-pages` et écrit
+`src/lib/data/feature-pages.json` ; si l'API ne répond pas ou ne renvoie rien,
+le fichier du dépôt sert tel quel. Publier une page relance le déploiement du
+site (`repository_dispatch` `feature-pages`), et un build quotidien rattrape un
+signal perdu. `bun run build:offline` construit sans appeler l'API.
 
 ## Le principe de la v2
 

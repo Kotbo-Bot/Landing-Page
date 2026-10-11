@@ -76,6 +76,7 @@
 
   const t = $derived(TEXT[getLocale()]);
   const locale = $derived(getLocale());
+  const FOOTER_FEATURES = 6;
 
   /**
    * Chaque badge renvoie à la page qui le prouve. « Conforme » est une
@@ -130,7 +131,9 @@
       <ul class="mt-3 space-y-1 text-sm font-medium text-gray-100">
         <li><a class="inline-flex min-h-9 items-center hover:text-indigo-200" href="{base}{locale === 'en' ? '/en/features' : '/fonctionnalites'}">{t.allFeatures}</a></li>
         <li><a class="inline-flex min-h-9 items-center hover:text-indigo-200" href="{base}{STAFF_ROUTE[locale]}">{t.staff}</a></li>
-        {#each FEATURES as feature (feature.key)}
+        <!-- Les premières pages dans l'ordre choisi dans le dashboard ; les
+             autres sont sur la page d'ensemble, liée juste au-dessus. -->
+        {#each FEATURES.slice(0, FOOTER_FEATURES) as feature (feature.key)}
           <li><a class="inline-flex min-h-9 items-center hover:text-indigo-200" href="{base}{featurePath(feature.slug, locale)}">{feature.text[locale].name}</a></li>
         {/each}
       </ul>
