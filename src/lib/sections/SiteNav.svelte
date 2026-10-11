@@ -11,9 +11,14 @@
    *
    * Huit liens, un sélecteur de langue et un bouton qui reprend le nom du
    * serveur ne tiennent pas sur une ligne d'ordinateur portable. Les ancres
-   * des zones jouables (`wide`) n'apparaissent qu'à partir de 1600 px ; en
-   * dessous, le bouton Menu donne toute la liste. Aucun lien ne passe sur deux
-   * lignes.
+   * des zones jouables (`wide`) n'apparaissent dans la barre qu'à partir de
+   * 1600 px. Aucun lien ne passe sur deux lignes.
+   *
+   * Le menu ne répète pas la barre. Sur ordinateur, « Plus » ouvre un panneau
+   * accroché sous le bouton avec seulement ce que la barre ne montre pas. Sur
+   * tablette et téléphone, il donne tout, rangé en deux groupes (ce qu'on
+   * essaie sur la page, ce qu'on découvre ailleurs), chaque lien avec une
+   * ligne qui dit ce qu'on y trouve.
    *
    * Hors de l'accueil (la page staff), les ancres renvoient aux zones de
    * l'accueil dans la même langue.
@@ -22,7 +27,8 @@
   import { base } from '$app/paths';
   import { page } from '$app/state';
   import { getLocale } from '$lib/i18n/state.svelte';
-  import { homeOf } from '$lib/i18n/routes';
+  import { STAFF_ROUTE, homeOf } from '$lib/i18n/routes';
+  import { ChevronDown, Menu, X } from '@lucide/svelte';
   import LanguageSwitcher from '$lib/components/ui/LanguageSwitcher.svelte';
   import InviteButton from '$lib/playground/InviteButton.svelte';
 
@@ -31,7 +37,31 @@
       home: 'Kotbo, retour en haut',
       nav: 'Sections de la page',
       menu: 'Menu',
-      close: 'Fermer le menu',
+      more: 'Plus',
+      close: 'Fermer',
+      open: 'Ouvrir le menu',
+      closeLabel: 'Fermer le menu',
+      groups: [
+        {
+          title: 'Essayer sur la page',
+          items: [
+            { href: '#monter', label: 'Monter un serveur', desc: 'Trois questions, ton serveur prend forme' },
+            { href: '#crise', label: 'La soirée', desc: 'Une soirée qui dérape, à toi de la régler' },
+            { href: '#commandes', label: 'Commandes', desc: 'Tape les commandes du bot' },
+            { href: '#carte', label: 'Carte de rang', desc: 'Fabrique la tienne, télécharge-la' },
+          ],
+        },
+        {
+          title: 'Découvrir',
+          items: [
+            { href: '#comparatif', label: 'Comparatif', desc: 'Kotbo face aux autres bots', inBar: true },
+            { href: '#pricing', label: 'Tarifs', desc: 'Le prix suit la taille du serveur', inBar: true },
+            { href: '/fonctionnalites', label: 'Fonctionnalités', desc: 'Chaque module, page par page', inBar: true },
+            { href: STAFF_ROUTE.fr, label: 'Gestion du staff', desc: 'Absences, recrutement, évaluations' },
+          ],
+        },
+      ],
+      demo: { label: 'Démo Dashboard', desc: 'Le vrai dashboard, sans compte ni carte bancaire' },
       links: [
         { href: '#monter', label: 'Monter un serveur', wide: true },
         { href: '#crise', label: 'La soirée', wide: true },
@@ -47,7 +77,31 @@
       home: 'Kotbo, back to top',
       nav: 'Page sections',
       menu: 'Menu',
-      close: 'Close menu',
+      more: 'More',
+      close: 'Close',
+      open: 'Open menu',
+      closeLabel: 'Close menu',
+      groups: [
+        {
+          title: 'Try it on the page',
+          items: [
+            { href: '#monter', label: 'Build a server', desc: 'Three questions, your server takes shape' },
+            { href: '#crise', label: 'The night', desc: 'A night going sideways, yours to sort out' },
+            { href: '#commandes', label: 'Commands', desc: "Type the bot's commands" },
+            { href: '#carte', label: 'Rank card', desc: 'Make yours, download it' },
+          ],
+        },
+        {
+          title: 'Discover',
+          items: [
+            { href: '#comparatif', label: 'Comparison', desc: 'Kotbo next to other bots', inBar: true },
+            { href: '#pricing', label: 'Pricing', desc: 'The price follows server size', inBar: true },
+            { href: '/en/features', label: 'Features', desc: 'Every module, page by page', inBar: true },
+            { href: STAFF_ROUTE.en, label: 'Staff management', desc: 'Leave, recruitment, reviews' },
+          ],
+        },
+      ],
+      demo: { label: 'Dashboard Demo', desc: 'The real dashboard, no account or credit card' },
       links: [
         { href: '#monter', label: 'Build a server', wide: true },
         { href: '#crise', label: 'The night', wide: true },
@@ -73,6 +127,8 @@
 
   let open = $state(false);
   let scrolled = $state(false);
+  let menuButton = $state<HTMLButtonElement | null>(null);
+  let menuPanel = $state<HTMLDivElement | null>(null);
 
   /** La zone à l'écran, pour placer l'indicateur sous le bon lien. */
   let current = $state<string | null>(null);
@@ -172,13 +228,28 @@
   }
 
   function onKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Escape') open = false;
+    if (event.key !== 'Escape' || !open) return;
+    open = false;
+    menuButton?.focus();
+  }
+
+  /** Un clic hors du panneau le referme, comme tout menu déroulant. */
+  function onWindowClick(event: MouseEvent): void {
+    if (!open) return;
+    const target = event.target as Node;
+    if (menuPanel?.contains(target) || menuButton?.contains(target)) return;
+    open = false;
+  }
+
+  /** Un lien du menu : ancre de l'accueil ou autre page, préfixée par `base`. */
+  function menuHref(href: string): string {
+    return href.startsWith('#') ? anchor(href) : `${base}${href}`;
   }
 </script>
 
-<svelte:window onkeydown={onKeydown} />
+<svelte:window onkeydown={onKeydown} onclick={onWindowClick} />
 
-<header class="sticky top-0 z-50 border-b transition-colors {scrolled ? 'border-gray-200 bg-[#f8f9fa]' : 'border-transparent'}">
+<header class="sticky top-0 z-50 border-b transition-colors {scrolled || open ? 'border-gray-200 bg-[#f8f9fa]' : 'border-transparent'}">
   <div class="mx-auto flex max-w-[1720px] items-center justify-between gap-4 px-4 py-3 sm:px-8">
     <a href={anchor('#top')} aria-label={t.home} class="flex shrink-0 items-center gap-2.5 rounded-lg">
       <img src="{base}/favicon.svg" alt="" width="36" height="36" class="h-9 w-9 rounded-xl" />
@@ -227,40 +298,71 @@
       <LanguageSwitcher />
       <div class="hidden sm:block"><InviteButton content="header" tone="ink" class="max-w-72" /></div>
       <button
+        bind:this={menuButton}
         type="button"
         onclick={() => (open = !open)}
         aria-expanded={open}
-        aria-controls="mobile-menu"
-        class="min-h-11 rounded-xl border-2 border-gray-900 px-3 text-sm font-bold text-gray-900 min-[1600px]:hidden"
+        aria-controls="site-menu"
+        aria-label={open ? t.closeLabel : t.open}
+        class="inline-flex min-h-11 items-center gap-2 rounded-xl border-2 border-gray-900 px-3.5 text-sm font-bold text-gray-900 transition-colors hover:bg-white min-[1600px]:hidden {open ? 'bg-white' : ''}"
       >
-        {open ? t.close : t.menu}
+        <span class="xl:hidden" aria-hidden="true">
+          {#if open}<X class="h-4 w-4" strokeWidth={3} />{:else}<Menu class="h-4 w-4" strokeWidth={3} />{/if}
+        </span>
+        <span class="xl:hidden">{open ? t.close : t.menu}</span>
+        <span class="hidden xl:inline">{t.more}</span>
+        <ChevronDown class="hidden h-4 w-4 transition-transform xl:block {open ? 'rotate-180' : ''}" strokeWidth={3} aria-hidden="true" />
       </button>
     </div>
   </div>
 
   {#if open}
-    <nav id="mobile-menu" aria-label={t.nav} class="border-t border-gray-200 bg-[#f8f9fa] min-[1600px]:hidden">
-      <ul class="mx-auto max-w-[1720px] px-4 py-2 sm:px-8">
-        {#each t.links as link (link.href)}
-          <li>
-            {#if link.href.startsWith('#')}
-              <a href={anchor(link.href)} onclick={(e) => goTo(e, link.href)} class="flex min-h-12 items-center text-base font-semibold text-gray-900">
-                {link.label}
-              </a>
-            {:else if !('live' in link)}
-              <a href="{base}{link.href}" onclick={() => (open = false)} class="flex min-h-12 items-center text-base font-semibold text-gray-900">
-                {link.label}
-              </a>
-            {:else}
-              <a href={link.href} onclick={() => (open = false)} class="flex min-h-12 items-center justify-between text-base font-bold text-indigo-600">
-                <span>{link.label}</span>
-                <span class="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-extrabold uppercase tracking-wider text-indigo-700">Live</span>
-              </a>
-            {/if}
-          </li>
-        {/each}
-      </ul>
-      <div class="px-4 pb-4 sm:hidden"><InviteButton content="menu" class="w-full" /></div>
-    </nav>
+    <!-- Téléphone et tablette : tout le menu, sous la barre, sur la largeur.
+         Ordinateur : un panneau accroché sous « Plus », avec seulement ce
+         que la barre ne montre pas (`inBar` y est masqué). -->
+    <div
+      bind:this={menuPanel}
+      id="site-menu"
+      class="absolute inset-x-0 top-full max-h-[calc(100svh-4.5rem)] overflow-y-auto border-b border-gray-200 bg-[#f8f9fa] shadow-[0_24px_48px_-24px_rgba(17,24,39,0.35)] xl:inset-x-auto xl:right-8 xl:mt-2 xl:w-[24rem] xl:rounded-2xl xl:border xl:bg-white min-[1600px]:hidden"
+    >
+      <nav aria-label={t.nav} class="mx-auto max-w-[1720px] px-4 py-5 sm:px-8 xl:p-2">
+        <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-1 xl:gap-1">
+          {#each t.groups as group (group.title)}
+            <section>
+              <p class="px-3 pb-1 text-[11px] font-black uppercase tracking-[0.18em] text-gray-500 xl:pt-2">{group.title}</p>
+              <ul>
+                {#each group.items as item (item.href)}
+                  <li class={'inBar' in item ? 'xl:hidden' : ''}>
+                    <a
+                      href={menuHref(item.href)}
+                      onclick={(e) => goTo(e, item.href)}
+                      aria-current={current === item.href ? 'location' : undefined}
+                      class="flex min-h-14 flex-col justify-center rounded-xl px-3 py-2 transition-colors hover:bg-white xl:hover:bg-gray-100 {current === item.href ? 'bg-white xl:bg-gray-100' : ''}"
+                    >
+                      <span class="font-bold text-gray-900">{item.label}</span>
+                      <span class="text-sm text-gray-600">{item.desc}</span>
+                    </a>
+                  </li>
+                {/each}
+              </ul>
+            </section>
+          {/each}
+        </div>
+
+        <a
+          href="/demo/"
+          onclick={() => (open = false)}
+          class="mt-6 flex items-center justify-between gap-4 rounded-2xl border-2 border-indigo-600 bg-white px-4 py-3.5 transition-colors hover:bg-indigo-50 xl:hidden"
+        >
+          <span class="flex flex-col">
+            <span class="font-bold text-indigo-700">{t.demo.label}</span>
+            <span class="text-sm text-gray-600">{t.demo.desc}</span>
+          </span>
+          <span class="shrink-0 rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-extrabold uppercase tracking-wider text-indigo-700">Live</span>
+        </a>
+
+        <div class="mt-4 sm:hidden"><InviteButton content="menu" class="w-full" /></div>
+      </nav>
+    </div>
   {/if}
 </header>
