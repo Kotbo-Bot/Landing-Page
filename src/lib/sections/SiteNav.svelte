@@ -329,7 +329,7 @@
         <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-1 xl:gap-1">
           {#each t.groups as group (group.title)}
             <section>
-              <p class="px-3 pb-1 text-[11px] font-black uppercase tracking-[0.18em] text-gray-500 xl:pt-2">{group.title}</p>
+              <p class="px-3 pb-1 text-sm font-bold text-gray-500 xl:pt-2">{group.title}</p>
               <ul>
                 {#each group.items as item (item.href)}
                   <li class={'inBar' in item ? 'xl:hidden' : ''}>
