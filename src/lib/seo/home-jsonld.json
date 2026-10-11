@@ -13,31 +13,50 @@
         "height": 512
       },
       "email": "contact@kotbo.fr",
-      "sameAs": ["https://top.gg/bot/1481651387317354598", "https://docs.kotbo.fr/"]
+      "sameAs": [
+        "https://top.gg/bot/1481651387317354598",
+        "https://docs.kotbo.fr/"
+      ],
+      "alternateName": [
+        "Kotbot",
+        "Kot bot",
+        "Kotbo bot"
+      ]
     },
     {
       "@type": "WebSite",
       "@id": "https://kotbo.fr/#website",
       "url": "https://kotbo.fr/",
       "name": "Kotbo",
-      "inLanguage": "fr-FR",
-      "publisher": { "@id": "https://kotbo.fr/#organization" }
+      "inLanguage": [
+        "fr-FR",
+        "en-US"
+      ],
+      "publisher": {
+        "@id": "https://kotbo.fr/#organization"
+      }
     },
     {
       "@type": "SoftwareApplication",
       "@id": "https://kotbo.fr/#software",
       "name": "Kotbo",
       "url": "https://kotbo.fr/",
-      "description": "Bot Discord et dashboard web pour gérer une communauté : modération, tickets, staff, niveaux, économie et événements.",
+      "description": "Bot Discord français tout-en-un et dashboard web pour gérer une communauté : modération, AutoMod, anti-raid, logs, tickets, staff, niveaux, économie et événements.",
       "applicationCategory": "BusinessApplication",
       "applicationSubCategory": "Bot Discord",
       "operatingSystem": "Discord, Web",
-      "inLanguage": ["fr-FR", "en-US"],
+      "inLanguage": [
+        "fr-FR",
+        "en-US"
+      ],
       "image": "https://kotbo.fr/og-image.png",
       "featureList": [
-        "Modération et sécurité",
-        "Gestion du staff",
+        "Modération et AutoMod",
+        "Protection anti-raid et captcha",
+        "Détection des doubles comptes",
+        "Logs Discord",
         "Tickets",
+        "Gestion du staff",
         "Niveaux et économie",
         "Communauté et engagement",
         "Contenu et communication",
@@ -53,7 +72,14 @@
         "offerCount": 3,
         "url": "https://kotbo.fr/#pricing"
       },
-      "publisher": { "@id": "https://kotbo.fr/#organization" }
+      "publisher": {
+        "@id": "https://kotbo.fr/#organization"
+      },
+      "alternateName": [
+        "Kotbot",
+        "Kot bot",
+        "Kotbo bot"
+      ]
     }
   ]
 }
