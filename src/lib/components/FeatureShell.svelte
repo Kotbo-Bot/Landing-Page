@@ -65,7 +65,17 @@
   const locale = $derived(getLocale());
   const homePath = $derived(locale === 'en' ? '/en' : '/');
   const hubPath = $derived(locale === 'en' ? '/en/features' : '/fonctionnalites');
-  const related = $derived(FEATURES.filter((f) => f.key !== current));
+  /**
+   * Six autres pages, celles qui suivent dans l'ordre du dashboard (en
+   * reprenant au début) : chaque page en lie d'autres, et toutes finissent
+   * liées, sans aligner soixante liens sous chacune.
+   */
+  const RELATED = 6;
+  const related = $derived.by(() => {
+    const index = FEATURES.findIndex((f) => f.key === current);
+    const others = index < 0 ? FEATURES : [...FEATURES.slice(index + 1), ...FEATURES.slice(0, index)];
+    return others.slice(0, RELATED);
+  });
 
   onMount(() => track('site_visit', { path: location.pathname }));
 </script>

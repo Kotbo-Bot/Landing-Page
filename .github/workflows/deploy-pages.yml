@@ -5,6 +5,14 @@ on:
     branches:
       - main
   workflow_dispatch:
+  # Une page fonctionnalité publiée ou modifiée depuis dash.kotbo.fr
+  # (`/admin/feature-pages`) : le bot envoie ce signal pour que le site la
+  # reprenne (featurePageService.ts, LANDING_DEPLOY_TOKEN).
+  repository_dispatch:
+    types: [feature-pages]
+  # Filet de sécurité si le signal se perd : une reconstruction par jour.
+  schedule:
+    - cron: '17 4 * * *'
 
 permissions:
   contents: read
