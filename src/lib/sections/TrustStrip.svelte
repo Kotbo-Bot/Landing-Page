@@ -7,13 +7,15 @@
    * de vrai : les deux totaux et les serveurs mis en avant, tous lus sur l'API.
    * Il renvoie à la section complète plutôt que de la répéter.
    *
-   * Rien d'écrit en dur : si l'API ne répond pas, le bandeau disparaît avec la
-   * section (voir `data/stats.svelte.ts`).
+   * Les chiffres ne sont jamais écrits en dur : si l'API ne répond pas, ils
+   * disparaissent (voir `data/stats.svelte.ts`). Seule la note Top.gg reste,
+   * relevée à la main dans `product.ts` et liée à sa source.
    */
   import { onMount } from 'svelte';
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
   import { publicStats } from '$lib/data/stats.svelte';
+  import { TOPGG_RATING, TOPGG_URL } from '$lib/product';
 
   const TEXT = {
     fr: {
@@ -22,6 +24,8 @@
       loading: 'Chargement des communautés…',
       serversLabel: 'Serveurs qui utilisent Kotbo',
       members: (n: string) => `${n} membres`,
+      rating: (n: number) => `Noté ${n}/5 sur Top.gg`,
+      ratingLabel: (n: number) => `Noté ${n} sur 5 sur Top.gg, voir les avis (nouvel onglet)`,
     },
     en: {
       title: 'They trust us',
@@ -29,6 +33,8 @@
       loading: 'Loading communities…',
       serversLabel: 'Servers using Kotbo',
       members: (n: string) => `${n} members`,
+      rating: (n: number) => `Rated ${n}/5 on Top.gg`,
+      ratingLabel: (n: number) => `Rated ${n} out of 5 on Top.gg, read the reviews (new tab)`,
     },
   };
 
@@ -46,8 +52,7 @@
   }
 </script>
 
-{#if loading || stats}
-  <section aria-labelledby="trust-strip-title" aria-busy={loading} class="border-y-2 border-gray-200 bg-white">
+<section aria-labelledby="trust-strip-title" aria-busy={loading} class="border-y-2 border-gray-200 bg-white">
     <div class="mx-auto flex max-w-360 flex-col gap-5 px-4 py-7 sm:px-8 lg:flex-row lg:items-center lg:gap-10">
       <div class="shrink-0">
         <h2 id="trust-strip-title" class="font-headline text-xl font-extrabold text-gray-900">{t.title}</h2>
@@ -55,9 +60,19 @@
           <p class="mt-0.5 text-sm font-semibold text-gray-700 tabular-nums">
             {t.totals(format(stats.totalGuilds), format(stats.totalUsers))}
           </p>
-        {:else}
+        {:else if loading}
           <p class="mt-0.5 text-sm text-gray-600">{t.loading}</p>
         {/if}
+        <a
+          href={TOPGG_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={t.ratingLabel(TOPGG_RATING)}
+          class="mt-2 inline-flex items-center gap-1.5 rounded-md text-sm font-semibold text-gray-700 underline-offset-2 hover:text-gray-900 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          <img src="{base}/ktb/ktb_star.png" alt="" width="16" height="16" class="h-4 w-4" />
+          {t.rating(TOPGG_RATING)}
+        </a>
       </div>
 
       {#if loading}
@@ -98,4 +113,3 @@
       {/if}
     </div>
   </section>
-{/if}
