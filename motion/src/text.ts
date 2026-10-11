@@ -78,6 +78,11 @@ export const TEXT = {
   fr: {
     groups: GROUPS.fr,
     intro: { tagline: 'Ton serveur Discord, géré au même endroit.' },
+    banner: {
+      title: 'Ton serveur Discord, géré au même endroit.',
+      line: 'Modération, tickets, staff, niveaux et économie : un bot et son dashboard.',
+      note: 'tout ce qui attend, d’un coup d’œil',
+    },
     moderation: {
       title: 'Ça déraille ? Kotbo règle.',
       note: 'réglé avant que tu le voies',
@@ -130,6 +135,11 @@ export const TEXT = {
   en: {
     groups: GROUPS.en,
     intro: { tagline: 'Your Discord server, run from one place.' },
+    banner: {
+      title: 'Your Discord server, run from one place.',
+      line: 'Moderation, tickets, staff, levels and economy: one bot and its dashboard.',
+      note: 'everything waiting, at a glance',
+    },
     moderation: {
       title: 'Things go sideways? Kotbo sorts it.',
       note: 'sorted before you notice',
