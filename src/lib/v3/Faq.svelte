@@ -17,11 +17,12 @@
   const items = $derived(HOME_FAQ[getLocale()]);
 </script>
 
-<section id="faq" aria-labelledby="faq-title" class="border-t border-line bg-night-2 pb-16 sm:pb-24 lg:pb-32">
+<section id="faq" aria-labelledby="faq-title" class="bg-night-2 pb-16 sm:pb-24 lg:pb-32">
   <div class="sticky top-16 z-20 bg-night-2/95 backdrop-blur-sm">
     <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="faq" /></div>
   </div>
-  <div class="mx-auto max-w-3xl px-4 pt-14 sm:px-6 lg:pt-20">
+  <div class="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:pt-20">
+    <div class="max-w-3xl">
     <div>
       <h2 id="faq-title" class="text-balance font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-white sm:text-5xl">{t.title}</h2>
     </div>
@@ -38,6 +39,7 @@
           <p class="max-w-3xl pb-6 leading-relaxed text-mist">{item.a}</p>
         </details>
       {/each}
+    </div>
     </div>
   </div>
 </section>

@@ -94,11 +94,12 @@
   }
 </script>
 
-<section id="prix" aria-labelledby="price-title" use:trackOnView={'pricing_viewed'} class="border-t border-line bg-night pb-20 lg:pb-32">
+<section id="prix" aria-labelledby="price-title" use:trackOnView={'pricing_viewed'} class="bg-night pb-20 lg:pb-32">
   <div class="sticky top-16 z-20 bg-night/95 backdrop-blur-sm">
     <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="prix" /></div>
   </div>
-  <div class="mx-auto max-w-5xl px-4 pt-14 sm:px-6 lg:pt-20">
+  <div class="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:pt-20">
+    <div class="max-w-5xl">
     <h2 id="price-title" class="text-balance text-lg font-semibold text-mist">{t.title}</h2>
 
     <!-- La phrase est le tarif : elle se relit à chaque cran du curseur. -->
@@ -150,6 +151,7 @@
     <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
       <AddButton content="pricing" size="lg" />
       <p class="max-w-sm text-sm text-fog">{t.trial}</p>
+    </div>
     </div>
   </div>
 </section>

@@ -83,7 +83,7 @@
   const list = $derived(calm ? t.calm : t.chaos);
 </script>
 
-<section id="nuit" aria-labelledby="night-title" class="relative border-t border-line bg-night pb-16 sm:pb-24 lg:pb-32">
+<section id="nuit" aria-labelledby="night-title" class="relative bg-night pb-16 sm:pb-24 lg:pb-32">
   <div class="sticky top-16 z-20 bg-night/95 backdrop-blur-sm">
     <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="nuit" /></div>
   </div>

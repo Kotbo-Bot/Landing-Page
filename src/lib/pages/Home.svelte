@@ -76,9 +76,10 @@
 <div id="top" class="v3 relative min-h-screen bg-night font-sans text-white antialiased">
   <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-night">{t.skip}</a>
   <Nav />
-  <div class="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)]">
-  <Channels />
-  <main id="main" class="min-w-0">
+  <main id="main">
+    <div class="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)]">
+      <Channels />
+      <div class="min-w-0">
     <Hero />
     <Night />
     <StaffHQ />
@@ -88,9 +89,10 @@
     <Trust />
     <Price />
     <Faq />
+      </div>
+    </div>
     <Final />
   </main>
-  </div>
   <Footer />
   <MobileBar />
 </div>

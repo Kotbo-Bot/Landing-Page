@@ -95,7 +95,7 @@
     timers = [];
   }
 
-  function play(delay = 700) {
+  function play(delay = 1400) {
     clear();
     gone = 0;
     finished = false;

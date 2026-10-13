@@ -91,7 +91,7 @@
           {next}
         </a>
       {/if}
-      <AddButton content="header" size="sm" />
+      <AddButton content="header" size="sm" class="hidden sm:inline-flex lg:hidden" />
       <button
         type="button"
         onclick={() => (open = !open)}

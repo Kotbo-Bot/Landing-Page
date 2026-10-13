@@ -175,7 +175,7 @@
   let active = $state<Key>('mod');
 </script>
 
-<section id="modules" aria-labelledby="arsenal-title" class="border-t border-line bg-night-2 pb-16 sm:pb-24 lg:pb-32">
+<section id="modules" aria-labelledby="arsenal-title" class="bg-night-2 pb-16 sm:pb-24 lg:pb-32">
   <div class="sticky top-16 z-20 bg-night-2/95 backdrop-blur-sm">
     <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="modules" /></div>
   </div>
@@ -295,7 +295,7 @@
       <li class="pt-1 text-[10px] uppercase text-fog">{t.sample}</li>
     </ul>
   {:else if key === 'staff'}
-    <div class="overflow-hidden rounded-2xl bg-white">
+    <div class="dash-dark overflow-hidden rounded-2xl border border-line">
       <div class="flex h-[26rem] flex-col"><MockStaff /></div>
     </div>
   {:else}

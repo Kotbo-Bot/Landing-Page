@@ -37,7 +37,7 @@
           if (!seen.includes(id)) seen = [...seen, id];
         }
       },
-      { rootMargin: '-30% 0px -60% 0px' },
+      { rootMargin: '-72px 0px -86% 0px' },
     );
     nodes.forEach((n) => observer.observe(n));
     return () => observer.disconnect();

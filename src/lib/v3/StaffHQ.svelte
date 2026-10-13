@@ -85,7 +85,7 @@
   }
 </script>
 
-<section id="qg" aria-labelledby="hq-title" class="relative border-t border-line bg-night-2 pb-16 sm:pb-24 lg:pb-32">
+<section id="qg" aria-labelledby="hq-title" class="relative bg-night-2 pb-16 sm:pb-24 lg:pb-32">
   <div class="sticky top-16 z-20 bg-night-2/95 backdrop-blur-sm">
     <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="qg" /></div>
   </div>
@@ -119,13 +119,7 @@
 
       <div id="hq-panel" role="tabpanel" aria-labelledby="hq-tab-{active}" class="rounded-b-2xl rounded-tr-2xl border border-line-2 bg-night-3 p-2 sm:p-3">
         <p class="px-2 pb-3 pt-1 text-base text-mist sm:px-3">{t.tabs[active].caption}</p>
-        <div class="overflow-hidden rounded-xl bg-white">
-          <div class="flex items-center gap-2 border-b border-gray-200 bg-gray-50 px-4 py-2.5">
-            <span class="flex gap-1.5" aria-hidden="true">
-              <span class="h-2.5 w-2.5 rounded-full bg-gray-300"></span><span class="h-2.5 w-2.5 rounded-full bg-gray-300"></span><span class="h-2.5 w-2.5 rounded-full bg-gray-300"></span>
-            </span>
-            <span class="mx-auto rounded-md bg-white px-3 py-0.5 font-mono text-xs text-gray-600">dash.kotbo.fr</span>
-          </div>
+        <div class="dash-dark overflow-hidden rounded-xl border border-line">
           <div class="overflow-x-auto">
             <div class="min-w-[56rem]">
               {#key active}
