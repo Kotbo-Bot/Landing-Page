@@ -68,6 +68,16 @@ body {
   --color-alarm: #f87171;
   --color-ok: #4ade80;
   --color-amber: #fbbf24;
+
+  /* Entrées du `@theme` de dash.kotbo.fr que `app.css` n'avait pas, sous le
+     même nom, pour que les classes recopiées des écrans du dashboard
+     (`text-warning`, `bg-success/10`, `text-2xs`…) existent ici. Leurs valeurs
+     sombres sont posées par `.dash` (`lib/dash/dash.css`) ; hors de `.dash`,
+     elles retombent sur les valeurs claires du dashboard. */
+  --color-warning: var(--warning-color, #b45309);
+  --color-success: var(--success-color, #15803d);
+  --text-2xs: 0.6875rem;
+  --text-body-sm: 0.8125rem;
 }
 
 html.v3,

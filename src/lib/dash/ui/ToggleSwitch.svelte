@@ -1,0 +1,56 @@
+<!--
+  Interrupteur du dashboard (activer un module, un réglage).
+
+  Recopie de `Kotbo/apps/dashboard/src/lib/components/ToggleSwitch.svelte`
+  (branche `recette`). Seul le nom accessible par défaut change : il passe par
+  `TEXT` au lieu du catalogue de traductions du dashboard.
+-->
+<script lang="ts">
+  import { getLocale } from '$lib/i18n/state.svelte';
+
+  const TEXT = {
+    fr: { toggle: 'Bouton de basculement' },
+    en: { toggle: 'Toggle button' },
+  };
+
+  const {
+    checked = false,
+    disabled = false,
+    onToggle = (_v: boolean) => {},
+    size = 'md',
+    activeClass = '',
+    id = undefined,
+    ariaLabel = undefined,
+  }: {
+    checked?: boolean;
+    disabled?: boolean;
+    onToggle?: (checked: boolean) => void;
+    size?: 'sm' | 'md' | 'lg';
+    activeClass?: string;
+    id?: string | undefined;
+    ariaLabel?: string | undefined;
+  } = $props();
+
+  const sizeClasses = {
+    sm: { track: 'w-8 h-[18px]', knob: 'h-3.5 w-3.5', offset: 'top-[2px] left-[2px]', translate: 'translate-x-[14px]' },
+    md: { track: 'w-10 h-[22px]', knob: 'h-4 w-4', offset: 'top-[3px] left-[3px]', translate: 'translate-x-[18px]' },
+    lg: { track: 'w-12 h-[26px]', knob: 'h-5 w-5', offset: 'top-[3px] left-[3px]', translate: 'translate-x-[22px]' },
+  };
+
+  const s = $derived(sizeClasses[size] || sizeClasses.md);
+</script>
+
+<button
+  type="button"
+  role="switch"
+  aria-checked={checked}
+  aria-label={ariaLabel ?? TEXT[getLocale()].toggle}
+  {id}
+  {disabled}
+  onclick={() => { if (!disabled) onToggle(!checked); }}
+  class="relative inline-flex shrink-0 {s.track} rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-surface {disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'} {checked ? (activeClass || 'bg-primary') : 'bg-on-surface-variant/70'}"
+>
+  <span
+    class="pointer-events-none absolute {s.offset} {s.knob} rounded-full bg-white shadow-sm transition-transform duration-200 {checked ? s.translate : 'translate-x-0'}"
+  ></span>
+</button>
