@@ -3,17 +3,17 @@
    * Le problème, dit comme le fondateur le vit : son téléphone à 2 h 47.
    *
    * À droite, un écran verrouillé d'iPhone le plus fidèle possible (barre
-   * d'état, notifications groupées, raccourcis du bas). Quand la zone arrive à
-   * l'écran, la nuit se joue : les notifications tombent une à une et le
+   * d'état, notifications groupées, raccourcis du bas). Les notifications
+   * suivent le défilement : chacune tombe quand le visiteur descend, et le
    * téléphone vibre, comme chez lui. Les phrases reprennent la façon dont les
    * admins l'écrivent sous les tutos Discord.
    *
-   * À gauche, le bilan de la même nuit, ligne par ligne : chaque galère, puis
-   * ce que Kotbo en a fait quand le visiteur bascule « Avec Kotbo ». Chaque
-   * ligne nomme le module qui l'a réglée, et chaque module existe dans le bot
-   * (anti-raid, appels de ban, prise en charge des tickets, absences et
-   * planning du staff). Le téléphone passe en mode Sommeil et ne garde que le
-   * compte rendu de Kotbo.
+   * À gauche, le salon du staff, dans Discord : sans Kotbo, les modos pingent
+   * le fondateur et personne ne répond ; avec Kotbo, le rapport de la nuit que
+   * Kotbo poste dans #staff-logs. Chaque ligne du rapport vient d'un module
+   * qui existe dans le bot (anti-raid, appels de ban, prise en charge des
+   * tickets, absences et planning du staff). Le téléphone passe en mode
+   * Sommeil et ne garde que le compte rendu de Kotbo.
    *
    * C'est une scène, annoncée comme telle : les pseudos sont fictifs et aucun
    * bot concurrent n'y est nommé. Avec moins de mouvement demandé, tout est
@@ -23,10 +23,14 @@
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
   import ChannelHeader from './ChannelHeader.svelte';
+  import Message from '$lib/playground/discord/Message.svelte';
+  import Embed from '$lib/playground/discord/Embed.svelte';
+  import { KOTBO_AVATAR, ktb } from '$lib/playground/discord/theme';
 
   type App = 'discord' | 'tickets' | 'sheet' | 'kotbo';
   type Notif = { app: App; title: string; sub?: string; body: string; time: string };
-  type Row = { problem: string; fix: string; module: string; at: string };
+  type Chat = { author: string; time: string; text: string; ping?: boolean };
+  type Line = { icon: string; module: string; text: string };
 
   const TEXT = {
     fr: {
@@ -36,8 +40,9 @@
       without: 'Sans Kotbo',
       with: 'Avec Kotbo',
       switchLabel: 'Comparer la nuit sans et avec Kotbo',
-      chaosHead: 'Ta nuit, sans Kotbo',
-      calmHead: 'La même nuit, avec Kotbo',
+      staffChannel: 'staff',
+      logsChannel: 'staff-logs',
+      fonda: '@Fonda',
       lockDate: 'samedi 13 juin',
       focus: 'Sommeil',
       scene: 'Scène fictive',
@@ -45,13 +50,23 @@
       sceneCalm: 'Scène fictive : le même écran, avec Kotbo.',
       more: (n: number) => `${n} autres notifications`,
       sleep: 'Rendors-toi.',
-      rows: [
-        { problem: 'Un raid tombe sur #général', fix: 'Raid bloqué à 02:13, 38 comptes sortis', module: 'Anti-raid', at: '02:47' },
-        { problem: 'Maxou conteste son ban en MP', fix: 'Maxou a fait appel, tu tranches demain', module: 'Appels de ban', at: '02:44' },
-        { problem: 'Le ticket #148 attend depuis 3 h', fix: 'Ticket #148 pris par Lena à 01:52', module: 'Tickets', at: '02:38' },
-        { problem: 'Enzo annonce son absence en MP', fix: 'Absence d’Enzo posée, à valider', module: 'Absences', at: '02:26' },
-        { problem: 'Le planning vit dans un tableur', fix: 'Planning du staff généré tout seul', module: 'Planning', at: '02:09' },
-      ] as Row[],
+      staffChat: [
+        { author: 'Inès (modo)', time: '02:11', text: 'j’ai refait le planning sur le sheet, checkez svp' },
+        { author: 'Enzo (modo)', time: '02:26', text: 'jsuis pas là ce we, qqn me remplace ?' },
+        { author: 'Inès (modo)', time: '02:38', text: 'qqn peut prendre le ticket 148 ?? il attend depuis 3h' },
+        { author: 'Lucas (modo)', time: '02:47', text: 'RAID SUR #général', ping: true },
+        { author: 'Lucas (modo)', time: '02:47', text: 'allô ???', ping: true },
+      ] as Chat[],
+      reportTitle: 'Rapport de la nuit',
+      report: [
+        { icon: 'shield', module: 'Anti-raid', text: 'raid bloqué à 02:13, 38 comptes sortis' },
+        { icon: 'ban', module: 'Appels de ban', text: 'Maxou a fait appel, à trancher' },
+        { icon: 'ticket', module: 'Tickets', text: '#148 pris par Lena à 01:52' },
+        { icon: 'cal', module: 'Absences', text: 'Enzo absent ce week-end, à valider' },
+        { icon: 'clock', module: 'Planning', text: 'planning du staff régénéré' },
+      ] as Line[],
+      reportFooter: '2 choses à valider dans le dashboard',
+      after: { author: 'Lucas (modo)', time: '02:48', text: 'ah bah c’est géré. bonne nuit' } as Chat,
       chaos: [
         { app: 'discord', title: 'Lucas (modo)', sub: '#général', body: 'frr y’a un raid là je fais quoi ?? @Fonda', time: 'maintenant' },
         { app: 'discord', title: 'Maxou', sub: 'Message privé', body: 'pk j’suis ban ?? j’ai rien fait, c’est un abus de pouvoir', time: 'il y a 3 min' },
@@ -71,8 +86,9 @@
       without: 'Without Kotbo',
       with: 'With Kotbo',
       switchLabel: 'Compare the night without and with Kotbo',
-      chaosHead: 'Your night, without Kotbo',
-      calmHead: 'The same night, with Kotbo',
+      staffChannel: 'staff',
+      logsChannel: 'staff-logs',
+      fonda: '@Owner',
       lockDate: 'Saturday, June 13',
       focus: 'Sleep',
       scene: 'Fictional scene',
@@ -80,13 +96,23 @@
       sceneCalm: 'Fictional scene: the same screen, with Kotbo.',
       more: (n: number) => `${n} more notifications`,
       sleep: 'Go back to sleep.',
-      rows: [
-        { problem: 'A raid hits #general', fix: 'Raid blocked at 02:13, 38 accounts removed', module: 'Anti-raid', at: '02:47' },
-        { problem: 'Maxou disputes his ban in DMs', fix: 'Maxou filed an appeal, you decide tomorrow', module: 'Ban appeals', at: '02:44' },
-        { problem: 'Ticket #148 has waited 3 hours', fix: 'Ticket #148 claimed by Lena at 01:52', module: 'Tickets', at: '02:38' },
-        { problem: 'Enzo announces time off in DMs', fix: 'Enzo’s time off logged, to approve', module: 'Time off', at: '02:26' },
-        { problem: 'The schedule lives in a spreadsheet', fix: 'Staff schedule generated on its own', module: 'Schedule', at: '02:09' },
-      ] as Row[],
+      staffChat: [
+        { author: 'Inès (mod)', time: '02:11', text: 'redid the schedule in the sheet, pls check' },
+        { author: 'Enzo (mod)', time: '02:26', text: 'i’m out this weekend, can someone cover?' },
+        { author: 'Inès (mod)', time: '02:38', text: 'can someone take ticket 148?? it’s been waiting 3h' },
+        { author: 'Lucas (mod)', time: '02:47', text: 'RAID IN #general', ping: true },
+        { author: 'Lucas (mod)', time: '02:47', text: 'hello???', ping: true },
+      ] as Chat[],
+      reportTitle: 'Night report',
+      report: [
+        { icon: 'shield', module: 'Anti-raid', text: 'raid blocked at 02:13, 38 accounts removed' },
+        { icon: 'ban', module: 'Ban appeals', text: 'Maxou filed an appeal, your call' },
+        { icon: 'ticket', module: 'Tickets', text: '#148 claimed by Lena at 01:52' },
+        { icon: 'cal', module: 'Time off', text: 'Enzo is out this weekend, to approve' },
+        { icon: 'clock', module: 'Schedule', text: 'staff schedule regenerated' },
+      ] as Line[],
+      reportFooter: '2 things to approve in the dashboard',
+      after: { author: 'Lucas (mod)', time: '02:48', text: 'oh it’s handled. good night' } as Chat,
       chaos: [
         { app: 'discord', title: 'Lucas (mod)', sub: '#general', body: 'bro we’re getting raided what do i do?? @Owner', time: 'now' },
         { app: 'discord', title: 'Maxou', sub: 'Direct message', body: 'why am i banned?? i did nothing, this is power abuse', time: '3m ago' },
@@ -109,7 +135,7 @@
   // plus ancienne à la plus récente, la plus récente en haut.
   let arrived = $state(0);
   let buzz = $state(0);
-  let section = $state<HTMLElement | null>(null);
+  let phone = $state<HTMLElement | null>(null);
   let frame = $state<HTMLElement | null>(null);
 
   // Chaque notification fait vibrer le téléphone, comme posé sur une table.
@@ -132,36 +158,50 @@
   const list = $derived(calm ? t.calm : chaosShown);
   const night = $derived(!calm && arrived === t.chaos.length);
 
-  function play() {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      arrived = t.chaos.length;
-      return;
-    }
-    const timer = setInterval(() => {
-      if (calm || arrived >= t.chaos.length) return clearInterval(timer);
-      arrived += 1;
-      buzz += 1;
-    }, 900);
+  // Les notifications suivent le défilement : elles tombent pendant que le
+  // téléphone traverse l'écran, et remontent si le visiteur remonte.
+  function target(): number {
+    if (!phone) return 0;
+    const rect = phone.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const progress = (vh * 0.95 - rect.top) / (vh * 0.75);
+    return Math.max(0, Math.min(t.chaos.length, Math.floor(progress * t.chaos.length)));
   }
+
+  function sync() {
+    if (calm) return;
+    const next = target();
+    if (next > arrived) buzz += 1;
+    arrived = next;
+  }
+
+  // Moins de mouvement demandé : toute la nuit d'un coup, sans vibration.
+  let still = false;
 
   function choose(next: boolean) {
     calm = next;
-    // Retour à la nuit : tout est déjà tombé, pas de nouvelle attente.
-    if (!next) arrived = t.chaos.length;
+    if (!next) arrived = still ? t.chaos.length : target();
   }
 
   onMount(() => {
-    if (!section) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        observer.disconnect();
-        play();
-      },
-      { threshold: 0.35 },
-    );
-    observer.observe(section);
-    return () => observer.disconnect();
+    still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (still) {
+      arrived = t.chaos.length;
+      return;
+    }
+    let frame = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(sync);
+    };
+    sync();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
   });
 </script>
 
@@ -183,7 +223,7 @@
   {/if}
 {/snippet}
 
-<section bind:this={section} id="nuit" aria-labelledby="night-title" class="relative overflow-hidden bg-night pb-16 sm:pb-24 lg:pb-32">
+<section id="nuit" aria-labelledby="night-title" class="relative overflow-hidden bg-night pb-16 sm:pb-24 lg:pb-32">
   <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="nuit" /></div>
 
   <div class="mx-auto grid max-w-7xl gap-10 px-4 pt-14 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:gap-x-20 lg:gap-y-8 lg:pt-20">
@@ -206,7 +246,7 @@
 
     <div class="mx-auto w-full max-w-[20rem] sm:max-w-[22.5rem] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">
       <!-- Le téléphone : une scène, annoncée comme telle avant son contenu. -->
-      <figure aria-labelledby="night-scene" class="relative">
+      <figure bind:this={phone} aria-labelledby="night-scene" class="relative">
         <figcaption id="night-scene" class="sr-only">{calm ? t.sceneCalm : t.sceneChaos}</figcaption>
 
         <!-- Les boutons de la tranche. -->
@@ -299,33 +339,41 @@
       <p class="mt-4 text-center text-xs text-fog" aria-hidden="true">{t.scene}</p>
     </div>
 
+    <!-- Le salon du staff, dans Discord : la même nuit, vue de l'intérieur. -->
     <div class="lg:col-start-1 lg:row-start-2 lg:self-start">
-      <!-- Le bilan de la nuit : la même liste, avant puis après. -->
-      <div class="max-w-xl overflow-hidden rounded-2xl border border-line bg-night-2">
-        <p class="border-b border-line px-5 py-3 text-xs font-semibold uppercase tracking-wide {calm ? 'text-glow' : 'text-alarm'}">
-          {calm ? t.calmHead : t.chaosHead}
+      <div class="max-w-xl overflow-hidden rounded-lg bg-[#313338] shadow-[0_24px_60px_-30px_rgba(0,0,0,0.9)]">
+        <p class="flex h-12 items-center gap-2 border-b border-black/30 px-4 text-[15px] font-semibold text-[#f2f3f5]">
+          <span aria-hidden="true" class="text-xl font-normal text-[#80848e]">#</span>
+          <span translate="no">{calm ? t.logsChannel : t.staffChannel}</span>
         </p>
-        <ul class="divide-y divide-line">
-          {#each t.rows as row, i (row.module)}
-            <li class="flex items-center gap-3.5 px-5 py-3.5">
-              {#if calm}
-                <span class="mark grid h-6 w-6 shrink-0 place-items-center rounded-full bg-ok/15 text-ok" style="--i: {i}" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" class="h-3.5 w-3.5"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5" /></svg>
-                </span>
-              {:else}
-                <span class="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-alarm/15" aria-hidden="true"><span class="h-2 w-2 rounded-full bg-alarm"></span></span>
-              {/if}
-              {#key calm}
-                <span class="line min-w-0 flex-1 text-[15px] {calm ? 'text-white' : 'text-mist'}" style="--i: {i}">{calm ? row.fix : row.problem}</span>
-              {/key}
-              {#if calm}
-                <span class="hidden shrink-0 rounded-md bg-[#4f46e5]/20 px-2 py-0.5 text-xs font-semibold text-glow sm:block">{row.module}</span>
-              {:else}
-                <span class="shrink-0 text-xs tabular-nums text-fog">{row.at}</span>
-              {/if}
-            </li>
-          {/each}
-        </ul>
+        {#key calm}
+          <div class="chat flex min-h-[22rem] flex-col justify-end py-3">
+            {#if calm}
+              <Message author="Kotbo" bot avatar={KOTBO_AVATAR} time="02:40" color="#a5b4fc">
+                <Embed color="#5865f2" title={t.reportTitle} icon={ktb('stats')} footer={t.reportFooter}>
+                  <ul class="space-y-1">
+                    {#each t.report as line (line.module)}
+                      <li class="flex items-start gap-2">
+                        <img src={ktb(line.icon)} alt="" width="18" height="18" class="mt-0.5 h-[18px] w-[18px] shrink-0" />
+                        <span><strong class="font-semibold text-[#f2f3f5]">{line.module}</strong> · {line.text}</span>
+                      </li>
+                    {/each}
+                  </ul>
+                </Embed>
+              </Message>
+              <Message author={t.after.author} time={t.after.time} color="#f8a491">{t.after.text}</Message>
+            {:else}
+              {#each t.staffChat as msg, i (i)}
+                <!-- Comme dans Discord : un message qui te mentionne est surligné. -->
+                <div class={msg.ping ? 'ping border-l-2 border-[#f0b232] bg-[#f0b232]/[0.06]' : 'border-l-2 border-transparent'}>
+                  <Message author={msg.author} time={msg.time} color="#f8a491">
+                    {#if msg.ping}<span class="rounded bg-[#5865f2]/30 px-0.5 font-medium text-[#c9cdfb]">{t.fonda}</span>{' '}{/if}{msg.text}
+                  </Message>
+                </div>
+              {/each}
+            {/if}
+          </div>
+        {/key}
       </div>
     </div>
   </div>
@@ -340,10 +388,13 @@
   .notif {
     animation: notif-in 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
-  .line,
-  .mark {
-    animation: line-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: calc(var(--i) * 80ms);
+  /* Sur la surbrillance d'une mention, l'heure grise de Discord passe sous
+     4,5:1 : on l'éclaircit d'un cran. */
+  .ping :global(.dc-message .text-xs) {
+    color: #a3a9b1;
+  }
+  .chat {
+    animation: line-in 380ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
   .stack,
   .focus,
@@ -364,8 +415,7 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .notif,
-    .line,
-    .mark,
+    .chat,
     .stack,
     .focus,
     .sleep {
