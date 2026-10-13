@@ -19,7 +19,7 @@
 
 <script lang="ts">
   import { tick } from 'svelte';
-  import Papicon from '$lib/components/Papicon.svelte';
+  import Papicon from '$lib/dash/Papicon.svelte';
 
   const {
     tabs,

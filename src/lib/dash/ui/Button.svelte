@@ -15,7 +15,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLButtonAttributes } from 'svelte/elements';
-  import Papicon from '$lib/components/Papicon.svelte';
+  import Papicon from '$lib/dash/Papicon.svelte';
 
   type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
 

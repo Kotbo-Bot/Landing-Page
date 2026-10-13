@@ -21,4 +21,4 @@ export { default as EmptyState } from './EmptyState.svelte';
 export { default as ModulePage } from './ModulePage.svelte';
 export { default as RefreshButton } from './RefreshButton.svelte';
 export { default as FormInput } from './FormInput.svelte';
-export { default as Papicon } from '$lib/components/Papicon.svelte';
+export { default as Papicon } from '../Papicon.svelte';
