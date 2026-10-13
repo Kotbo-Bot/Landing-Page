@@ -140,7 +140,7 @@
     </div>
 
     <div class="px-3 pb-3 pt-4">
-      <p class="px-2 text-xs font-semibold uppercase tracking-wide text-[#949ba4]" aria-live="polite">
+      <p class="px-2 text-xs font-semibold uppercase tracking-wide text-[#949ba4]">
         {t.bots} — <span class="tabular-nums">{remaining}</span>
       </p>
 
@@ -162,7 +162,7 @@
               <span class="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border-[3px] border-[#2b2d31] {isGone ? 'bg-[#80848e]' : 'bg-[#23a55a]'}"></span>
             </span>
             <span class="min-w-0 flex-1">
-              <span class="flex items-center gap-1.5">
+              <span class="flex min-w-0 items-center gap-1.5">
                 <span class="purge-name truncate text-[15px] font-medium {bot.key === 'sheet' ? 'font-mono text-[13px]' : ''} text-[#f2f3f5]">{nameOf(bot.key, bot.name)}</span>
                 {#if bot.key !== 'sheet'}
                   <span class="shrink-0 rounded bg-blurple px-1 text-[10px] font-semibold leading-4 text-white">APP</span>
@@ -216,6 +216,8 @@
       {/if}
     </div>
   </div>
+  <!-- Une seule annonce, à la fin : pas un décompte de sept messages. -->
+  <p class="sr-only" role="status">{finished ? t.done : ''}</p>
 </figure>
 
 <style>
@@ -225,12 +227,22 @@
       transform 380ms cubic-bezier(0.4, 0, 0.2, 1),
       filter 380ms ease;
   }
+  /* Le texte reste lisible une fois barré (4,9:1) : seuls l'avatar et le
+     badge s'éteignent. */
   .purge-row.is-gone {
-    opacity: 0.32;
     transform: translateX(10px);
+  }
+  .purge-row.is-gone img,
+  .purge-row.is-gone .grid {
+    opacity: 0.4;
     filter: grayscale(1);
   }
+  /* Le badge passe au gris plein, pas en transparence : il reste lisible. */
+  .purge-row.is-gone .bg-blurple {
+    background: #4e5058;
+  }
   .purge-row.is-gone .purge-name {
+    color: #949ba4;
     text-decoration: line-through;
     text-decoration-color: #f87171;
     text-decoration-thickness: 2px;

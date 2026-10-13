@@ -31,6 +31,7 @@
       demo: 'Voir le dashboard en live',
       reassure: `${TRIAL_DAYS} jours offerts, sans carte bancaire. Kotbo ne demande pas les droits admin.`,
       proof: 'Ils tournent déjà avec Kotbo',
+      newTab: '(nouvel onglet)',
       memberCount: (n: string) => `${n} membres`,
       rating: (n: number) => `Noté ${n}/5 sur Top.gg`,
     },
@@ -41,6 +42,7 @@
       demo: 'See the live dashboard',
       reassure: `${TRIAL_DAYS} days free, no credit card. Kotbo doesn’t ask for admin.`,
       proof: 'Already running on Kotbo',
+      newTab: '(new tab)',
       memberCount: (n: string) => `${n} members`,
       rating: (n: number) => `Rated ${n}/5 on Top.gg`,
     },
@@ -58,7 +60,7 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="bienvenue" /></div>
   </div>
 
-  <div class="mx-auto grid max-w-7xl items-center gap-12 px-4 pb-20 pt-10 sm:px-6 lg:pb-28 lg:pt-16 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] xl:gap-14">
+  <div class="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)] items-center gap-12 px-4 pb-20 pt-10 sm:px-6 lg:pb-28 lg:pt-16 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] xl:gap-14">
     <div>
       <h1 id="hero-title" class="font-display text-[2.6rem] font-black leading-[0.98] tracking-[-0.03em] text-balance text-white sm:text-6xl 2xl:text-[5rem]">
         {t.h1a}
@@ -90,13 +92,13 @@
                 <span aria-hidden="true" class="grid h-9 w-9 place-items-center rounded-xl bg-night-4 text-xs font-bold text-mist">{server.name.slice(0, 2)}</span>
               {/if}
               <span>
-                <span class="block max-w-40 truncate text-sm font-semibold text-white">{server.name}</span>
+                <span class="line-clamp-2 block max-w-44 text-sm font-semibold text-white">{server.name}</span>
                 <span class="block text-xs tabular-nums text-fog">{t.memberCount(fmt(server.memberCount))}</span>
               </span>
             </li>
           {/each}
           <li>
-            <a href={TOPGG_URL} target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-white underline decoration-line-2 underline-offset-4 hover:decoration-white">{t.rating(TOPGG_RATING)}</a>
+            <a href={TOPGG_URL} target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-white underline decoration-line-2 underline-offset-4 hover:decoration-white">{t.rating(TOPGG_RATING)}<span class="sr-only"> {t.newTab}</span></a>
           </li>
         </ul>
       </div>

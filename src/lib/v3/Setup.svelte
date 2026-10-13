@@ -148,6 +148,24 @@
 
   onMount(() => builder.hydrate());
 
+  /** Flèches, Début et Fin déplacent le choix, comme un groupe de boutons radio natif. */
+  let radioEls: HTMLButtonElement[] = [];
+  function onRadioKey(e: KeyboardEvent, i: number) {
+    const n = PROFILES.length;
+    const moves: Record<string, number> = {
+      ArrowDown: (i + 1) % n,
+      ArrowRight: (i + 1) % n,
+      ArrowUp: (i - 1 + n) % n,
+      ArrowLeft: (i - 1 + n) % n,
+      Home: 0,
+      End: n - 1,
+    };
+    if (!(e.key in moves)) return;
+    e.preventDefault();
+    choose(PROFILES[moves[e.key]]);
+    radioEls[moves[e.key]]?.focus();
+  }
+
   const kit = $derived(KITS[profile]);
   const p = $derived(t.profiles[profile]);
 </script>
@@ -164,20 +182,24 @@
 
     <div class="mt-14 grid gap-6 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-10">
       <div role="radiogroup" aria-label={t.pickLabel} class="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
-        {#each PROFILES as key (key)}
+        {#each PROFILES as key, i (key)}
           {@const on = profile === key}
           <button
+            bind:this={radioEls[i]}
             type="button"
             role="radio"
             aria-checked={on}
+            aria-describedby={on ? `pitch-${key}` : undefined}
+            tabindex={on ? 0 : -1}
             onclick={() => choose(key)}
+            onkeydown={(e) => onRadioKey(e, i)}
             class="group flex min-h-16 items-center gap-4 rounded-2xl border px-4 py-3 text-left transition-colors {on
               ? 'border-glow/60 bg-[#4f46e5]/15'
               : 'border-line-2 bg-night-2 hover:border-fog'}"
           >
             <span>
               <span class="block font-display text-lg font-bold text-white">{t.profiles[key].label}</span>
-              {#if on}<span class="block text-sm text-mist">{t.profiles[key].pitch}</span>{/if}
+              {#if on}<span id="pitch-{key}" class="block text-sm text-mist">{t.profiles[key].pitch}</span>{/if}
             </span>
           </button>
         {/each}

@@ -30,6 +30,7 @@
       sentenceB: ', Kotbo te coûte',
       sentenceC: 'par mois.',
       billing: 'Facturation',
+      valueText: (n: string, price: string) => `${n} membres, ${price} par mois`,
       slider: 'Nombre de membres sur ton serveur',
       members: 'membres',
       monthly: 'Au mois',
@@ -54,6 +55,7 @@
       sentenceB: ', Kotbo costs you',
       sentenceC: 'a month.',
       billing: 'Billing',
+      valueText: (n: string, price: string) => `${n} members, ${price} a month`,
             slider: 'Members on your server',
       members: 'members',
       monthly: 'Monthly',
@@ -103,7 +105,7 @@
     <h2 id="price-title" class="text-balance text-lg font-semibold text-mist">{t.title}</h2>
 
     <!-- La phrase est le tarif : elle se relit à chaque cran du curseur. -->
-    <p class="mt-6 font-display text-4xl font-extrabold leading-[1.1] tracking-[-0.02em] text-fog sm:text-6xl" aria-live="polite">
+    <p class="mt-6 font-display text-4xl font-extrabold leading-[1.1] tracking-[-0.02em] text-fog sm:text-6xl">
       {#if tier}
         {t.sentenceA}
         <span class="whitespace-nowrap text-white tabular-nums">{fmt(shown)}{members >= 1_000_000 ? '+' : ''} {t.members}</span>{t.sentenceB}
@@ -123,7 +125,8 @@
       step="1"
       bind:value={slider}
       oninput={onSlide}
-      class="price-range mt-10 w-full"
+      aria-valuetext={tier ? t.valueText(`${fmt(shown)}${members >= 1_000_000 ? '+' : ''}`, t.euro(monthCents)) : t.custom}
+      class="price-range mt-8 w-full"
       style="--p: {slider}%"
     />
     <div class="mt-2 flex justify-between text-xs tabular-nums text-fog" aria-hidden="true">
@@ -132,9 +135,9 @@
 
     <div class="mt-10 flex flex-col gap-6 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between">
       <div role="group" aria-label={t.billing} class="inline-grid grid-cols-2 rounded-xl border border-line-2 p-1 text-sm font-semibold">
-        <button type="button" aria-pressed={!yearly} onclick={() => (yearly = false)} class="min-h-10 rounded-lg px-4 transition-colors {!yearly ? 'bg-night-4 text-white' : 'text-fog hover:text-white'}">{t.monthly}</button>
-        <button type="button" aria-pressed={yearly} onclick={() => (yearly = true)} class="min-h-10 rounded-lg px-4 transition-colors {yearly ? 'bg-night-4 text-white' : 'text-fog hover:text-white'}">
-          {t.yearly} <span class="ml-1 text-ok">{t.yearlyHint}</span>
+        <button type="button" aria-pressed={!yearly} onclick={() => (yearly = false)} class="min-h-10 rounded-lg px-4 transition-colors {!yearly ? 'bg-white text-night' : 'text-fog hover:text-white'}">{t.monthly}</button>
+        <button type="button" aria-pressed={yearly} onclick={() => (yearly = true)} class="min-h-10 rounded-lg px-4 transition-colors {yearly ? 'bg-white text-night' : 'text-fog hover:text-white'}">
+          {t.yearly} <span class="ml-1 {yearly ? 'text-[#15803d]' : 'text-ok'}">{t.yearlyHint}</span>
         </button>
       </div>
       <p class="text-sm text-fog">
@@ -157,21 +160,36 @@
 </section>
 
 <style>
+  /* L'input fait 28 px de haut pour le doigt ; la piste dessinée en fait 8. */
   .price-range {
     appearance: none;
+    height: 28px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .price-range::-webkit-slider-runnable-track {
     height: 8px;
     border-radius: 999px;
-    background: linear-gradient(to right, #818cf8 var(--p), #27272a var(--p));
-    cursor: pointer;
+    background: linear-gradient(to right, #818cf8 var(--p), #71717a var(--p));
+  }
+  .price-range::-moz-range-track {
+    height: 8px;
+    border-radius: 999px;
+    background: #71717a;
+  }
+  .price-range::-moz-range-progress {
+    height: 8px;
+    border-radius: 999px;
+    background: #818cf8;
   }
   .price-range::-webkit-slider-thumb {
     appearance: none;
     width: 26px;
     height: 26px;
+    margin-top: -9px;
     border-radius: 999px;
     background: #fff;
     border: 6px solid #4f46e5;
-    box-shadow: 0 4px 16px rgba(79, 70, 229, 0.6);
   }
   .price-range::-moz-range-thumb {
     width: 18px;

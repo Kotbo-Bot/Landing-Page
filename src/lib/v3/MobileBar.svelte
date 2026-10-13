@@ -5,6 +5,10 @@
    */
   import { onMount } from 'svelte';
   import AddButton from './AddButton.svelte';
+  import { getLocale } from '$lib/i18n/state.svelte';
+
+  const TEXT = { fr: { label: 'Ajouter Kotbo' }, en: { label: 'Add Kotbo' } };
+  const t = $derived(TEXT[getLocale()]);
 
   let show = $state(false);
 
@@ -21,7 +25,8 @@
   });
 </script>
 
-<div
+<aside
+  aria-label={t.label}
   class="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-night/95 px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur-md transition-transform duration-300 sm:hidden {show
     ? 'translate-y-0'
     : 'translate-y-full'}"
@@ -29,4 +34,4 @@
   inert={!show}
 >
   <AddButton content="sticky-mobile" class="w-full" />
-</div>
+</aside>

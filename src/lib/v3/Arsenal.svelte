@@ -75,6 +75,7 @@
         title: 'Staff',
         text: 'Recrutement, absences, réunions, évaluations et hiérarchie. C’est le module qui fait de Kotbo un vrai outil de gestion d’équipe.',
         link: 'La gestion du staff',
+        shot: 'Capture du dashboard : la liste du staff avec grades et avertissements, membres fictifs.',
       },
       rest: {
         title: 'Et 45 autres',
@@ -134,6 +135,7 @@
         title: 'Staff',
         text: 'Recruitment, time off, meetings, reviews and hierarchy. This is the module that turns Kotbo into a real team tool.',
         link: 'Staff management',
+        shot: 'Dashboard screenshot: the staff list with ranks and warnings, fictional members.',
       },
       rest: {
         title: 'And 45 more',
@@ -185,7 +187,7 @@
       <p class="mt-6 text-lg text-mist text-pretty">{t.intro}</p>
     </div>
 
-    <div class="mt-14 grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-14">
+    <div class="mt-14 grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-14">
       <ul class="border-t border-line">
         {#each KEYS as key (key)}
           {@const on = active === key}
@@ -193,6 +195,7 @@
             <button
               type="button"
               aria-expanded={on}
+              aria-controls="mod-{key}"
               onclick={() => (active = key)}
               class="group flex w-full items-center justify-between gap-4 py-5 text-left"
             >
@@ -200,7 +203,7 @@
               <img src={ktb(ICONS[key])} alt="" width="28" height="28" class="h-7 w-7 shrink-0 transition-opacity {on ? 'opacity-100' : 'opacity-40 group-hover:opacity-70'}" />
             </button>
             {#if on}
-              <div class="pb-6">
+              <div id="mod-{key}" class="pb-6">
                 <p class="max-w-lg leading-relaxed text-mist">{t[key].text}</p>
                 <div class="mt-5 lg:hidden">{@render preview(key)}</div>
                 {@render links(key)}
@@ -243,9 +246,9 @@
 
 {#snippet preview(key: Key)}
   {#if key === 'mod'}
-    <div class="overflow-x-auto rounded-2xl bg-black p-5 font-mono text-[12.5px] leading-6 sm:text-sm">
+    <div class="rounded-2xl bg-black p-5 font-mono text-[12.5px] leading-6 sm:text-sm">
       {#each t.mod.log as [time, text, tone] (time)}
-        <p class="flex gap-3 whitespace-nowrap"><span class="shrink-0 text-fog">[{time}]</span><span class={TONE[tone]}>{text}</span></p>
+        <p class="flex gap-3"><span class="shrink-0 text-fog">[{time}]</span><span class="min-w-0 break-words {TONE[tone]}">{text}</span></p>
       {/each}
       <p class="mt-3 text-[10px] uppercase text-fog">{t.sample}</p>
     </div>
@@ -283,6 +286,7 @@
           label={t.levels.cardLabel(level)}
         />
       </div>
+      <p class="sr-only" role="status">{t.levels.cardLabel(level)}</p>
       <button type="button" onclick={addXp} class="mt-4 min-h-11 rounded-lg bg-night-4 px-5 font-mono text-sm font-bold text-white transition-colors hover:bg-[#4f46e5]">
         {t.levels.xp}
       </button>
@@ -295,8 +299,8 @@
       <li class="pt-1 text-[10px] uppercase text-fog">{t.sample}</li>
     </ul>
   {:else if key === 'staff'}
-    <div class="dash-dark overflow-hidden rounded-2xl border border-line">
-      <div class="flex h-[26rem] flex-col"><MockStaff /></div>
+    <div class="dash-dark overflow-hidden rounded-2xl border border-line" role="img" aria-label={t.staff.shot}>
+      <div class="flex h-[26rem] flex-col" inert aria-hidden="true"><MockStaff /></div>
     </div>
   {:else}
     <ul class="flex flex-wrap gap-2">

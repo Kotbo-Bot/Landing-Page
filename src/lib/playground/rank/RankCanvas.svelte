@@ -92,10 +92,13 @@
   });
 </script>
 
-<canvas
-  bind:this={canvas}
-  width={CARD_WIDTH}
-  height={CARD_HEIGHT}
-  aria-label={label}
-  class="block h-auto w-full rounded-2xl">{label}</canvas
->
+<!-- Le nom de la carte porte sur le conteneur : un <canvas> ne peut pas être une image ARIA. -->
+<div role="img" aria-label={label}>
+  <canvas
+    bind:this={canvas}
+    width={CARD_WIDTH}
+    height={CARD_HEIGHT}
+    aria-hidden="true"
+    class="block h-auto w-full rounded-2xl"
+  ></canvas>
+</div>

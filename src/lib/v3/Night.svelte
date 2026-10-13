@@ -28,6 +28,8 @@
       switchLabel: 'Comparer la nuit sans et avec Kotbo',
       lockDate: 'samedi 14 juin',
       scene: 'scène fictive',
+      sceneChaos: 'Scène fictive : l’écran verrouillé d’un fondateur à 2 h 47, sans Kotbo.',
+      sceneCalm: 'Scène fictive : le même écran, avec Kotbo.',
       sleep: 'Rendors-toi.',
       now: 'maintenant',
       ago: (m: number) => `il y a ${m} min`,
@@ -53,6 +55,8 @@
       switchLabel: 'Compare the night without and with Kotbo',
       lockDate: 'Saturday, June 14',
       scene: 'fictional scene',
+      sceneChaos: 'Fictional scene: a server owner’s lock screen at 2:47 a.m., without Kotbo.',
+      sceneCalm: 'Fictional scene: the same screen, with Kotbo.',
       sleep: 'Go back to sleep.',
       now: 'now',
       ago: (m: number) => `${m}m ago`,
@@ -106,10 +110,11 @@
 
     <div class="mx-auto w-full max-w-[24rem]">
 
-      <!-- Le téléphone -->
-      <div class="relative rounded-[2.75rem] border border-line-2 bg-black p-2.5">
+      <!-- Le téléphone : une scène, annoncée comme telle avant son contenu. -->
+      <figure aria-labelledby="night-scene" class="relative rounded-[2.75rem] border border-line-2 bg-black p-2.5">
+        <figcaption id="night-scene" class="sr-only">{calm ? t.sceneCalm : t.sceneChaos}</figcaption>
         <div
-          class="relative h-[40rem] overflow-hidden rounded-[2.25rem] transition-[background] duration-700"
+          class="relative min-h-[40rem] overflow-hidden rounded-[2.25rem] pb-20 transition-[background] duration-700"
           style="background: {calm ? '#14132b' : '#1f0e0e'}"
         >
           <div aria-hidden="true" class="mx-auto mt-2.5 h-6 w-24 rounded-full bg-black"></div>
@@ -118,7 +123,7 @@
             <p class="font-display text-7xl font-semibold tabular-nums tracking-tight">2:47</p>
           </div>
 
-          <ul class="mt-5 space-y-2 px-3" aria-live="polite">
+          <ul class="mt-5 space-y-2 px-3">
             {#each list as n, i (n.title)}
               <li
                 class="notif rounded-2xl bg-white/10 px-3.5 py-2.5 backdrop-blur-md"
@@ -142,8 +147,8 @@
             <p class="sleep absolute inset-x-0 bottom-10 text-center font-display text-3xl font-extrabold text-white">{t.sleep}</p>
           {/if}
         </div>
-      </div>
-      <p class="mt-3 text-center text-xs text-fog">{t.scene}</p>
+      </figure>
+      <p class="mt-3 text-center text-xs text-fog" aria-hidden="true">{t.scene}</p>
     </div>
   </div>
 </section>

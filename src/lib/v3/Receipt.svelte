@@ -127,7 +127,7 @@
               </span>
               <span
                 aria-hidden="true"
-                class="grid h-5 w-5 place-items-center rounded-md border {on ? 'border-glow bg-glow text-night' : 'border-line-2'}"
+                class="grid h-5 w-5 place-items-center rounded-md border {on ? 'border-glow bg-glow text-night' : 'border-[#71717a]'}"
               >
                 {#if on}<svg viewBox="0 0 16 16" class="h-3.5 w-3.5"><path fill="none" stroke="currentColor" stroke-width="2.5" d="m3.5 8.5 3 3 6-7" /></svg>{/if}
               </span>
@@ -146,18 +146,19 @@
               <span class="block text-sm font-semibold text-white">{t.sheet}</span>
               <span class="block text-xs text-fog">{t.sheetBot}</span>
             </span>
-            <span aria-hidden="true" class="grid h-5 w-5 place-items-center rounded-md border {sheet ? 'border-glow bg-glow text-night' : 'border-line-2'}">
+            <span aria-hidden="true" class="grid h-5 w-5 place-items-center rounded-md border {sheet ? 'border-glow bg-glow text-night' : 'border-[#71717a]'}">
               {#if sheet}<svg viewBox="0 0 16 16" class="h-3.5 w-3.5"><path fill="none" stroke="currentColor" stroke-width="2.5" d="m3.5 8.5 3 3 6-7" /></svg>{/if}
             </span>
           </label>
         </div>
       </fieldset>
       <p class="mt-8 max-w-xl text-xs leading-relaxed text-fog">{t.note}</p>
+      <p class="sr-only" role="status">{t.subtotal} ≈ {t.priceFmt(total)}{t.perMonth}. {saved > 0 ? t.saved(t.priceFmt(saved)) : t.same}</p>
     </div>
 
     <!-- Le ticket -->
     <div class="relative mx-auto w-full max-w-sm lg:order-first lg:mt-2">
-      <div class="receipt relative -rotate-1 bg-[#fbfaf7] px-6 pb-8 pt-7 font-mono text-[13px] text-[#1c1917] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)]" aria-live="polite">
+      <div class="receipt relative -rotate-1 bg-[#fbfaf7] px-6 pb-8 pt-7 font-mono text-[13px] text-[#1c1917] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)]">
         <p class="text-center font-bold tracking-widest">{t.shop}</p>
         <p class="text-center text-[11px] text-[#57534e]">{t.address}</p>
         <div class="my-4 border-t-2 border-dashed border-[#d6d3d1]" aria-hidden="true"></div>

@@ -13,7 +13,8 @@
   const TEXT = {
     fr: {
       tagline: 'Le bot Discord qui gère ton serveur et ton staff.',
-      product: 'Kotbo',
+      product: 'Produit',
+      newTab: '(nouvel onglet)',
       features: 'Fonctionnalités',
       legal: 'Légal',
       all: 'Toutes les fonctionnalités',
@@ -33,7 +34,8 @@
     },
     en: {
       tagline: 'The Discord bot that runs your server and your staff.',
-      product: 'Kotbo',
+      product: 'Product',
+      newTab: '(new tab)',
       features: 'Features',
       legal: 'Legal',
       all: 'All features',
@@ -72,10 +74,10 @@
       <p class="text-sm font-semibold text-white">{t.product}</p>
       <ul class="mt-3 text-sm">
         <li><a class={link} href="/demo/">{t.demo}</a></li>
-        <li><a class={link} href={DOCS_URL} target="_blank" rel="noopener">{t.docs}</a></li>
-        <li><a class={link} href={STATUS_URL} target="_blank" rel="noopener">{t.status}</a></li>
-        <li><a class={link} href={DISCORD_URL} target="_blank" rel="noopener">{t.discord}</a></li>
-        <li><a class={link} href={TOPGG_VOTE_URL} target="_blank" rel="noopener">{t.vote}</a></li>
+        <li><a class={link} href={DOCS_URL} target="_blank" rel="noopener">{t.docs}<span class="sr-only"> {t.newTab}</span></a></li>
+        <li><a class={link} href={STATUS_URL} target="_blank" rel="noopener">{t.status}<span class="sr-only"> {t.newTab}</span></a></li>
+        <li><a class={link} href={DISCORD_URL} target="_blank" rel="noopener">{t.discord}<span class="sr-only"> {t.newTab}</span></a></li>
+        <li><a class={link} href={TOPGG_VOTE_URL} target="_blank" rel="noopener">{t.vote}<span class="sr-only"> {t.newTab}</span></a></li>
       </ul>
     </nav>
     <nav aria-label={t.features}>

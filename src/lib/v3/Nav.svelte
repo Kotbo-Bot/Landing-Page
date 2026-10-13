@@ -27,7 +27,7 @@
       demo: 'Démo live',
       menu: 'Menu',
       close: 'Fermer',
-      switchTo: 'Switch to English',
+      switchTo: 'EN, English version',
     },
     en: {
       home: 'Kotbo, home',
@@ -42,7 +42,7 @@
       demo: 'Live demo',
       menu: 'Menu',
       close: 'Close',
-      switchTo: 'Passer en français',
+      switchTo: 'FR, version française',
     },
   };
 
@@ -53,9 +53,16 @@
   const featuresHref = $derived(`${base}${locale === 'fr' ? '/fonctionnalites' : '/en/features'}`);
 
   let open = $state(false);
+  let menuButton = $state<HTMLButtonElement | null>(null);
 </script>
 
-<svelte:window onkeydown={(e) => e.key === 'Escape' && (open = false)} />
+<svelte:window
+  onkeydown={(e) => {
+    if (e.key !== 'Escape' || !open) return;
+    open = false;
+    menuButton?.focus();
+  }}
+/>
 
 <header
   class="sticky top-0 z-50 border-b border-line bg-night"
@@ -79,20 +86,22 @@
       </ul>
     </nav>
 
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1 min-[360px]:gap-2">
       {#if pair}
         <a
           href="{base}{pair[next]}"
           hreflang={next}
-          aria-label={t.switchTo}
+          lang={next}
           onclick={() => rememberLocale(next)}
           class="inline-flex min-h-10 items-center rounded-lg px-2.5 text-sm font-semibold uppercase text-fog transition-colors hover:bg-night-3 hover:text-white"
         >
-          {next}
+          <span aria-hidden="true">{next}</span>
+          <span class="sr-only">{t.switchTo}</span>
         </a>
       {/if}
       <AddButton content="header" size="sm" class="hidden sm:inline-flex lg:hidden" />
       <button
+        bind:this={menuButton}
         type="button"
         onclick={() => (open = !open)}
         aria-expanded={open}

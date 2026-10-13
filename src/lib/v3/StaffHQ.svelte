@@ -77,9 +77,15 @@
   let tabEls: HTMLButtonElement[] = [];
 
   function onKey(e: KeyboardEvent, i: number) {
-    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    const moves: Record<string, number> = {
+      ArrowRight: (i + 1) % TABS.length,
+      ArrowLeft: (i - 1 + TABS.length) % TABS.length,
+      Home: 0,
+      End: TABS.length - 1,
+    };
+    if (!(e.key in moves)) return;
     e.preventDefault();
-    const n = (i + (e.key === 'ArrowRight' ? 1 : -1) + TABS.length) % TABS.length;
+    const n = moves[e.key];
     active = TABS[n];
     tabEls[n]?.focus();
   }
@@ -109,7 +115,7 @@
             onclick={() => (active = tab)}
             onkeydown={(e) => onKey(e, i)}
             class="min-h-11 shrink-0 rounded-t-xl border border-b-0 px-4 text-sm font-semibold transition-colors {active === tab
-              ? 'border-line-2 bg-night-3 text-white'
+              ? 'border-line-2 bg-night-3 text-white shadow-[inset_0_2px_0_#a5b4fc]'
               : 'border-transparent text-fog hover:text-white'}"
           >
             {t.tabs[tab].label}
@@ -118,10 +124,14 @@
       </div>
 
       <div id="hq-panel" role="tabpanel" aria-labelledby="hq-tab-{active}" class="rounded-b-2xl rounded-tr-2xl border border-line-2 bg-night-3 p-2 sm:p-3">
-        <p class="px-2 pb-3 pt-1 text-base text-mist sm:px-3">{t.tabs[active].caption}</p>
+        <p id="hq-cap" class="px-2 pb-3 pt-1 text-base text-mist sm:px-3">{t.tabs[active].caption}</p>
+        <!-- Une capture, pas une interface : `inert` retire ses faux contrôles du
+             clavier et ses titres du plan, la légende la décrit. -->
         <div class="dash-dark overflow-hidden rounded-xl border border-line">
-          <div class="overflow-x-auto">
-            <div class="min-w-[56rem]">
+          <!-- Zone défilable : focusable pour défiler au clavier (WCAG 2.1.1). -->
+          <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+          <div class="overflow-x-auto" tabindex="0" role="region" aria-labelledby="hq-cap hq-fict">
+            <div class="min-w-[56rem]" inert aria-hidden="true">
               {#key active}
                 <div class="hq-screen">
                   {#if active === 'profile'}
@@ -138,7 +148,7 @@
             </div>
           </div>
         </div>
-        <p class="px-3 pb-1 pt-3 text-xs text-fog">{t.fictive}</p>
+        <p id="hq-fict" class="px-3 pb-1 pt-3 text-xs text-fog">{t.fictive}</p>
       </div>
     </div>
 
@@ -154,17 +164,17 @@
           </a>
         </div>
       </div>
-      <dl class="grid gap-x-10 sm:grid-cols-2">
+      <ul class="grid gap-x-10 sm:grid-cols-2">
         {#each t.erp as item (item.title)}
-          <div class="flex gap-4 border-t border-line py-5">
+          <li class="flex gap-4 border-t border-line py-5">
             <img src={ktb(item.icon)} alt="" width="22" height="22" class="mt-0.5 h-5.5 w-5.5 shrink-0" />
             <div>
-              <dt class="font-display text-lg font-bold text-white">{item.title}</dt>
-              <dd class="mt-1 leading-relaxed text-fog">{item.text}</dd>
+              <p class="font-display text-lg font-bold text-white">{item.title}</p>
+              <p class="mt-1 leading-relaxed text-fog">{item.text}</p>
             </div>
-          </div>
+          </li>
         {/each}
-      </dl>
+      </ul>
     </div>
   </div>
 </section>

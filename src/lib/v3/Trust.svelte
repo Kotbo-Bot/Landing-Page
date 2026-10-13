@@ -26,6 +26,7 @@
       you: 'toi',
       today: (m: number) => `Aujourd’hui à 21:${String(14 + m).padStart(2, '0')}`,
       fictive: 'conversation fictive',
+      fictiveLong: 'Conversation fictive entre toi et ta co-fondatrice, Inès.',
       lines: [
         { who: 'ines', text: 'attends avant d’ajouter un énième bot. il demande les droits admin ?' },
         { who: 'you', text: 'non. discord affiche chaque permission une par une et y’a pas la case administrateur. chaque perm sert un module' },
@@ -45,6 +46,7 @@
       you: 'you',
       today: (m: number) => `Today at 9:${String(14 + m).padStart(2, '0')} PM`,
       fictive: 'fictional conversation',
+      fictiveLong: 'Fictional conversation between you and your co-founder, Inès.',
       lines: [
         { who: 'ines', text: 'wait before we add yet another bot. does it ask for admin?' },
         { who: 'you', text: 'no. discord lists every permission one by one and there’s no administrator box. each perm powers a module' },
@@ -75,6 +77,8 @@
     <h2 id="trust-title" class="max-w-3xl font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-balance text-white sm:text-5xl">{t.title}</h2>
 
     <div class="mt-12 max-w-3xl">
+      <figure aria-labelledby="trust-fict">
+      <figcaption id="trust-fict" class="sr-only">{t.fictiveLong}</figcaption>
       <ol class="space-y-0.5">
         {#each grouped as line, i (i)}
           <li class="flex gap-4 rounded-md px-2 py-0.5 hover:bg-white/[0.02] {line.head ? 'mt-5 first:mt-0' : ''}">
@@ -82,7 +86,7 @@
               {#if line.head}
                 <span
                   aria-hidden="true"
-                  class="mt-0.5 grid h-10 w-10 place-items-center rounded-full text-sm font-bold {line.who === 'ines' ? 'bg-[#eb459e] text-white' : 'bg-[#4f46e5] text-white'}"
+                  class="mt-0.5 grid h-10 w-10 place-items-center rounded-full text-sm font-bold {line.who === 'ines' ? 'bg-[#be185d] text-white' : 'bg-[#4f46e5] text-white'}"
                 >{line.who === 'ines' ? 'IN' : t.you.slice(0, 2).toUpperCase()}</span>
               {/if}
             </span>
@@ -97,14 +101,15 @@
               <p class="text-[16px] leading-relaxed text-[#dbdee1]">
                 {line.text}
                 {#if line.link}
-                  · <a href="{base}{line.link.href}" class="text-[#00a8fc] hover:underline">{line.link.label}</a>
+                  · <a href="{base}{line.link.href}" class="text-[#00a8fc] underline underline-offset-2">{line.link.label}</a>
                 {/if}
               </p>
             </div>
           </li>
         {/each}
       </ol>
-      <p class="mt-6 pl-16 text-xs text-fog">{t.fictive}</p>
+      </figure>
+      <p class="mt-6 pl-16 text-xs text-fog" aria-hidden="true">{t.fictive}</p>
     </div>
   </div>
 </section>
