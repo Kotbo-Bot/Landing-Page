@@ -10,12 +10,12 @@
 
   const TEXT = {
     fr: {
-      title: 'Allez. Kick les six autres.',
+      title: 'Allez, kick les six autres.',
       sub: `${TRIAL_DAYS} jours offerts, sans carte bancaire. Ton serveur est prêt avant que t’aies fini ton kebab.`,
       demo: 'Ou fouille d’abord la démo du dashboard',
     },
     en: {
-      title: 'Go on. Kick the other six.',
+      title: 'Go on, kick the other six.',
       sub: `${TRIAL_DAYS} days free, no credit card. Your server is ready before your food gets cold.`,
       demo: 'Or dig through the dashboard demo first',
     },
@@ -24,7 +24,6 @@
 </script>
 
 <section aria-labelledby="final-title" class="relative overflow-hidden bg-[#4f46e5]">
-  <div aria-hidden="true" class="v3-grid absolute inset-0 opacity-60"></div>
   <div class="relative mx-auto max-w-7xl px-4 py-24 text-center sm:px-6 lg:py-36">
     <h2 id="final-title" class="mx-auto max-w-5xl font-display text-5xl font-black leading-[0.95] tracking-[-0.03em] text-white sm:text-7xl lg:text-8xl">{t.title}</h2>
     <p class="mx-auto mt-6 max-w-xl text-lg text-indigo-100 sm:text-xl">{t.sub}</p>

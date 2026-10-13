@@ -1,102 +1,143 @@
 <script lang="ts">
   /**
-   * La confiance : ce qu'un co-fondateur demande avant d'ajouter un bot.
+   * La confiance, sous forme de conversation : ta co-fondatrice pose les
+   * questions qu'on se pose avant d'ajouter un bot de plus, tu réponds.
    *
-   * Les quatre peurs qui reviennent chez les admins (le bot qui nuke le
-   * serveur, les données, le support en anglais, les niveaux perdus) avec la
-   * réponse vérifiable : la liste des permissions de l'invitation
+   * Les quatre peurs viennent des commentaires d'admins sous les tutos de bots
+   * (le bot qui nuke le serveur, les données, le support, les niveaux perdus).
+   * Chaque réponse est vérifiable : la liste des permissions de l'invitation
    * (`api/hono/routes/public/invite.ts` côté bot, sans Administrateur),
-   * l'hébergement et le DPA, l'import des niveaux (voir `faq.js`).
+   * l'hébergement et le DPA, l'import des niveaux (voir `faq.js`). La
+   * conversation est annoncée fictive.
    *
    * Les serveurs qui utilisent Kotbo viennent de l'API, avec leur nombre de
-   * membres à jour. L'API muette, la liste disparaît : jamais de chiffre écrit
-   * à la main.
+   * membres à jour. L'API muette, la liste disparaît.
    */
   import { onMount } from 'svelte';
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
-  import { reveal } from '$lib/actions/reveal';
   import { publicStats } from '$lib/data/stats.svelte';
-  import { ktb } from '$lib/playground/discord/theme';
+  import ChannelHeader from './ChannelHeader.svelte';
+
+  type Line = { who: 'ines' | 'you'; text: string; link?: { href: string; label: string } };
 
   const TEXT = {
     fr: {
-      kicker: 'checklist du co-fonda',
-      title: 'Les questions que ton co-fonda va poser. Avec les réponses.',
-      items: [
-        { icon: 'lock', q: '« Il demande les droits admin ? »', a: 'Non. Discord t’affiche chaque permission une par une, et chacune sert un module. Pas de case Administrateur.' },
-        { icon: 'shield', q: '« Nos données partent où ? »', a: 'Hébergées en Union européenne, RGPD, accord de sous-traitance dispo. Et ce site ne pose aucun traceur.', href: '/dpa', link: 'Lire le DPA' },
-        { icon: 'msg', q: '« Si ça bug, on parle à qui ? »', a: 'À l’équipe qui code le bot, en français, sur Discord. Le dashboard est en français aussi, pas traduit à l’arrache.' },
-        { icon: 'level', q: '« On perd les niveaux de MEE6 ? »', a: 'Non. Tu importes le classement de ton ancien bot, et Kotbo peut caler sa courbe d’XP sur celle de MEE6.' },
-      ],
-      servers: 'Ils tournent déjà avec Kotbo',
+      title: 'Ta co-fonda va te poser ces questions. Voilà quoi répondre.',
+      ines: 'Inès',
+      inesRole: 'co-fonda',
+      you: 'toi',
+      today: 'Aujourd’hui à 21:14',
+      fictive: 'conversation fictive',
+      lines: [
+        { who: 'ines', text: 'attends avant d’ajouter un énième bot. il demande les droits admin ?' },
+        { who: 'you', text: 'non. discord affiche chaque permission une par une et y’a pas la case administrateur. chaque perm sert un module' },
+        { who: 'ines', text: 'et nos données elles partent où' },
+        { who: 'you', text: 'hébergées en UE, RGPD, ils ont un accord de sous-traitance. et leur site pose aucun traceur', link: { href: '/dpa', label: 'le DPA' } },
+        { who: 'ines', text: 'si ça bug on parle à qui ? encore un support en anglais qui répond dans 3 jours ?' },
+        { who: 'you', text: 'non, c’est l’équipe qui code le bot, en français, sur leur discord' },
+        { who: 'ines', text: 'dernier truc. les membres perdent leurs niveaux mee6 ?' },
+        { who: 'you', text: 'non on importe le classement. et la courbe d’xp peut être calée sur celle de mee6, les paliers bougent pas' },
+        { who: 'ines', text: 'ok vas-y ajoute-le' },
+      ] as Line[],
+      servers: 'Des serveurs qui tournent déjà avec Kotbo',
       members: (n: string) => `${n} membres`,
     },
     en: {
-      kicker: 'co-founder checklist',
-      title: 'The questions your co-founder is going to ask. With the answers.',
-      items: [
-        { icon: 'lock', q: '“Does it ask for admin?”', a: 'No. Discord shows you every permission one by one, and each one powers a module. No Administrator box.' },
-        { icon: 'shield', q: '“Where does our data go?”', a: 'Hosted in the European Union, GDPR, data processing agreement available. And this site sets zero trackers.', href: '/dpa', link: 'Read the DPA' },
-        { icon: 'msg', q: '“If it breaks, who do we talk to?”', a: 'The team that builds the bot, on Discord. The whole thing is French-made, with an English dashboard too.' },
-        { icon: 'level', q: '“Do we lose our MEE6 levels?”', a: 'No. Import your old bot’s leaderboard, and Kotbo can match its XP curve to MEE6’s.' },
-      ],
-      servers: 'Already running on Kotbo',
+      title: 'Your co-founder will ask you these. Here’s what to answer.',
+      ines: 'Inès',
+      inesRole: 'co-founder',
+      you: 'you',
+      today: 'Today at 9:14 PM',
+      fictive: 'fictional conversation',
+      lines: [
+        { who: 'ines', text: 'wait before we add yet another bot. does it ask for admin?' },
+        { who: 'you', text: 'no. discord lists every permission one by one and there’s no administrator box. each perm powers a module' },
+        { who: 'ines', text: 'and where does our data go' },
+        { who: 'you', text: 'hosted in the EU, GDPR, they have a data processing agreement. and their site runs zero trackers', link: { href: '/dpa', label: 'the DPA' } },
+        { who: 'ines', text: 'if it breaks who do we talk to? another english support that answers in 3 days?' },
+        { who: 'you', text: 'nah, it’s the team that builds the bot, on their discord' },
+        { who: 'ines', text: 'last thing. do members lose their mee6 levels?' },
+        { who: 'you', text: 'no we import the leaderboard. and the xp curve can match mee6’s so the tiers don’t move' },
+        { who: 'ines', text: 'ok go add it' },
+      ] as Line[],
+      servers: 'Servers already running on Kotbo',
       members: (n: string) => `${n} members`,
     },
   };
 
   const t = $derived(TEXT[getLocale()]);
   const servers = $derived((publicStats.data?.servers ?? []).slice(0, 8));
-  const fmt = (n: number) => n.toLocaleString(getLocale() === 'fr' ? 'fr-FR' : 'en-US').replace(/\u202f/g, '\u00a0');
+  const fmt = (n: number) => n.toLocaleString(getLocale() === 'fr' ? 'fr-FR' : 'en-US').replace(/ /g, ' ');
+
+  /** Deux messages d'affilée du même auteur se regroupent, comme dans Discord. */
+  const grouped = $derived(t.lines.map((line, i) => ({ ...line, head: i === 0 || t.lines[i - 1].who !== line.who })));
 
   onMount(() => void publicStats.load());
 </script>
 
-<section id="confiance" aria-labelledby="trust-title" class="border-t border-line bg-night-2 py-24 lg:py-32">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6">
-    <div use:reveal={{ direction: 'up' }} class="max-w-3xl">
-      <p class="font-mono text-sm text-glow">{t.kicker}</p>
-      <h2 id="trust-title" class="mt-4 font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-white sm:text-5xl">{t.title}</h2>
+<section id="confiance" aria-labelledby="trust-title" class="relative border-t border-line bg-night-2 pb-16 sm:pb-24 lg:pb-32">
+  <div class="sticky top-16 z-20 bg-night-2/95 backdrop-blur-sm">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="confiance" /></div>
+  </div>
+  <div class="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:pt-20">
+    <h2 id="trust-title" class="max-w-3xl font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-balance text-white sm:text-5xl">{t.title}</h2>
+
+    <div class="mt-12 max-w-3xl">
+      <ol class="space-y-0.5">
+        {#each grouped as line, i (i)}
+          <li class="flex gap-4 rounded-md px-2 py-0.5 hover:bg-white/[0.02] {line.head ? 'mt-5 first:mt-0' : ''}">
+            <span class="w-10 shrink-0">
+              {#if line.head}
+                <span
+                  aria-hidden="true"
+                  class="mt-0.5 grid h-10 w-10 place-items-center rounded-full text-sm font-bold {line.who === 'ines' ? 'bg-[#eb459e] text-white' : 'bg-[#4f46e5] text-white'}"
+                >{line.who === 'ines' ? 'IN' : t.you.slice(0, 2).toUpperCase()}</span>
+              {/if}
+            </span>
+            <div class="min-w-0">
+              {#if line.head}
+                <p class="flex flex-wrap items-baseline gap-x-2">
+                  <span class="font-semibold {line.who === 'ines' ? 'text-[#f9a8d4]' : 'text-glow'}">{line.who === 'ines' ? t.ines : t.you}</span>
+                  {#if line.who === 'ines'}<span class="rounded bg-night-4 px-1 text-[11px] font-medium text-mist">{t.inesRole}</span>{/if}
+                  <span class="text-xs text-fog">{t.today}</span>
+                </p>
+              {/if}
+              <p class="text-[16px] leading-relaxed text-[#dbdee1]">
+                {line.text}
+                {#if line.link}
+                  · <a href="{base}{line.link.href}" class="text-[#00a8fc] hover:underline">{line.link.label}</a>
+                {/if}
+              </p>
+            </div>
+          </li>
+        {/each}
+      </ol>
+      <p class="mt-6 pl-16 text-xs text-fog">{t.fictive}</p>
     </div>
 
-    <ul class="mt-14 grid gap-4 md:grid-cols-2">
-      {#each t.items as item, i (item.q)}
-        <li use:reveal={{ direction: 'up', delay: i * 60 }} class="flex gap-5 rounded-3xl border border-line bg-night p-6 sm:p-8">
-          <img src={ktb(item.icon)} alt="" width="32" height="32" class="h-8 w-8 shrink-0" />
-          <div>
-            <p class="font-display text-xl font-bold text-white">{item.q}</p>
-            <p class="mt-2 leading-relaxed text-fog">{item.a}</p>
-            {#if item.href}
-              <a href="{base}{item.href}" class="mt-3 inline-block text-sm font-semibold text-glow underline decoration-glow/30 underline-offset-4 hover:decoration-glow">{item.link}</a>
-            {/if}
-          </div>
-        </li>
-      {/each}
-    </ul>
-
     {#if servers.length > 0}
-      <div use:reveal={{ direction: 'up' }} class="mt-16">
+      <div class="mt-16 border-t border-line pt-10">
         <h3 class="text-sm font-semibold text-fog">{t.servers}</h3>
-        <ul class="mt-5 flex flex-wrap gap-3">
+        <ul class="mt-5 flex flex-wrap gap-x-8 gap-y-5">
           {#each servers as server (server.name)}
-            <li class="flex items-center gap-3 rounded-2xl border border-line bg-night py-2.5 pl-2.5 pr-5">
+            <li class="flex items-center gap-3">
               {#if server.iconUrl}
                 <img
                   src={server.iconUrl}
                   alt=""
-                  width="40"
-                  height="40"
+                  width="44"
+                  height="44"
                   loading="lazy"
-                  class="h-10 w-10 rounded-xl bg-night-3 object-cover"
+                  class="h-11 w-11 rounded-2xl bg-night-3 object-cover"
                   onerror={(e) => ((e.currentTarget as HTMLImageElement).src = `${base}/favicon.svg`)}
                 />
               {:else}
-                <span aria-hidden="true" class="grid h-10 w-10 place-items-center rounded-xl bg-[#4f46e5]/20 text-sm font-bold text-glow">{server.name.slice(0, 2)}</span>
+                <span aria-hidden="true" class="grid h-11 w-11 place-items-center rounded-2xl bg-night-4 text-sm font-bold text-mist">{server.name.slice(0, 2)}</span>
               {/if}
               <span>
-                <span class="block max-w-48 truncate font-semibold text-white">{server.name}</span>
-                <span class="block text-xs tabular-nums text-fog">{t.members(fmt(server.memberCount))}</span>
+                <span class="block max-w-52 truncate font-semibold text-white">{server.name}</span>
+                <span class="block text-sm tabular-nums text-fog">{t.members(fmt(server.memberCount))}</span>
               </span>
             </li>
           {/each}

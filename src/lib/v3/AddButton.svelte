@@ -34,7 +34,7 @@
     lg: 'min-h-14 gap-3 px-7 text-lg',
   } as const;
   const TONES = {
-    primary: 'bg-[#4f46e5] text-white hover:bg-[#4338ca] shadow-[0_10px_40px_-10px_rgba(99,102,241,0.8)]',
+    primary: 'bg-[#4f46e5] text-white hover:bg-[#4338ca]',
     white: 'bg-white text-night hover:bg-indigo-100',
   } as const;
 </script>

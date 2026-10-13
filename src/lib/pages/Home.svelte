@@ -37,6 +37,7 @@
   import Final from '$lib/v3/Final.svelte';
   import Footer from '$lib/v3/Footer.svelte';
   import MobileBar from '$lib/v3/MobileBar.svelte';
+  import Channels from '$lib/v3/Channels.svelte';
 
   // Requête en tête, marque en fin : c'est ce que tapent ceux qui cherchent un
   // bot sans connaître Kotbo. Le titre est aussi le titre bleu de l'embed
@@ -47,12 +48,14 @@
       description:
         'Kotbo, le bot Discord français tout-en-un : modération, anti-raid, tickets, niveaux et gestion du staff, réglés depuis un dashboard web. 15 jours offerts, sans CB.',
       path: '/',
+      skip: 'Aller au contenu',
     },
     en: {
       title: 'All-in-One Discord Bot: Moderation, Tickets, Staff | Kotbo',
       description:
         'Kotbo is an all-in-one Discord bot with a web dashboard: moderation, anti-raid, tickets, levels and full staff management. 15 days free, no credit card.',
       path: '/en',
+      skip: 'Skip to content',
     },
   };
   const t = $derived(TEXT[getLocale()]);
@@ -68,10 +71,14 @@
 </script>
 
 <Seo title={t.title} description={t.description} path={t.path} jsonLd={homeJsonLd(getLocale())} />
+<svelte:head><meta name="theme-color" content="#09090b" /></svelte:head>
 
 <div id="top" class="v3 relative min-h-screen bg-night font-sans text-white antialiased">
+  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-night">{t.skip}</a>
   <Nav />
-  <main>
+  <div class="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)]">
+  <Channels />
+  <main id="main" class="min-w-0">
     <Hero />
     <Night />
     <StaffHQ />
@@ -83,6 +90,7 @@
     <Faq />
     <Final />
   </main>
+  </div>
   <Footer />
   <MobileBar />
 </div>

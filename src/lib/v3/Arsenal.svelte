@@ -15,9 +15,10 @@
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
   import { featurePath, STAFF_ROUTE } from '$lib/i18n/routes';
-  import { reveal } from '$lib/actions/reveal';
   import { ktb } from '$lib/playground/discord/theme';
   import RankCanvas from '$lib/playground/rank/RankCanvas.svelte';
+  import MockStaff from '$lib/components/mockups/MockStaff.svelte';
+  import ChannelHeader from './ChannelHeader.svelte';
 
   const SLUGS = {
     automod: { fr: 'automod-discord', en: 'discord-automod' },
@@ -29,9 +30,8 @@
 
   const TEXT = {
     fr: {
-      kicker: '/modules',
-      title: '51 modules. Un seul bot. Zéro option payante en plus.',
-      intro: 'Tout est inclus dans l’abonnement, même ce qui sortira plus tard. Tu actives ce que tu veux depuis le dashboard.',
+      title: 'Les 51 modules sont dans l’abonnement, même ceux qui sortent demain.',
+      intro: 'Tu actives ce dont ton serveur a besoin depuis le dashboard, et tu coupes le reste. Clique sur un module pour le voir tourner.',
       sample: 'extrait fictif',
       mod: {
         title: 'Modération & anti-raid',
@@ -50,7 +50,7 @@
       },
       tickets: {
         title: 'Tickets',
-        text: 'Un bouton, un fil privé, un transcript. Le staff prend le ticket en un clic, depuis Discord ou le dashboard.',
+        text: 'Le membre clique, un fil privé s’ouvre, et le staff prend le ticket en un clic depuis Discord ou le dashboard. Le transcript reste.',
         embedTitle: 'Ticket #149 · Signalement',
         embedBody: 'Ouvert par Sarah. En attente d’un membre du staff.',
         claim: 'Prendre',
@@ -67,17 +67,18 @@
       },
       logs: {
         title: 'Logs',
-        text: 'Message supprimé, rôle modifié, pseudo changé : qui, quand, avant, après.',
+        text: 'Message supprimé, rôle retiré, pseudo changé : Kotbo note qui l’a fait et quand, avec l’avant et l’après.',
         lines: ['Lena a retiré @VIP à Kylian', 'message supprimé dans #général', 'Zenox → Zen0x (pseudo)'],
         link: 'Les logs Discord',
       },
       staff: {
         title: 'Staff',
-        text: 'Recrutement, absences, réunions, évaluations, hiérarchie. Le module que les autres bots n’ont pas.',
+        text: 'Recrutement, absences, réunions, évaluations et hiérarchie. C’est le module qui fait de Kotbo un vrai outil de gestion d’équipe.',
         link: 'La gestion du staff',
       },
       rest: {
-        title: 'Et tout le reste',
+        title: 'Et 45 autres',
+        text: 'Économie, giveaways, clans, quêtes, alertes YouTube et Twitch, traduction auto, formulaires, et un serveur MCP pour brancher une IA sur ton serveur.',
         all: 'Voir les 51 modules',
         names: [
           'Économie & RPG', 'Giveaways', 'Accueil & départ', 'Règlement', 'Rôles par réaction', 'Clans', 'Saisons', 'Quêtes',
@@ -88,9 +89,8 @@
       },
     },
     en: {
-      kicker: '/modules',
-      title: '51 modules. One bot. Zero paid add-ons.',
-      intro: 'Everything is in the subscription, even what ships later. Turn on what you want from the dashboard.',
+      title: 'All 51 modules come with the subscription, even the ones shipping tomorrow.',
+      intro: 'Turn on what your server needs from the dashboard and switch off the rest. Click a module to see it run.',
       sample: 'fictional sample',
       mod: {
         title: 'Moderation & anti-raid',
@@ -109,7 +109,7 @@
       },
       tickets: {
         title: 'Tickets',
-        text: 'One button, one private thread, one transcript. Staff claim a ticket in a click, from Discord or the dashboard.',
+        text: 'The member clicks, a private thread opens, and staff claim it in one click from Discord or the dashboard. The transcript stays.',
         embedTitle: 'Ticket #149 · Report',
         embedBody: 'Opened by Sarah. Waiting for a staff member.',
         claim: 'Claim',
@@ -126,17 +126,18 @@
       },
       logs: {
         title: 'Logs',
-        text: 'Deleted message, edited role, changed nickname: who, when, before, after.',
+        text: 'Deleted message, removed role, changed nickname: Kotbo logs who did it and when, with the before and after.',
         lines: ['Lena removed @VIP from Kylian', 'message deleted in #general', 'Zenox → Zen0x (nickname)'],
         link: 'Discord logs',
       },
       staff: {
         title: 'Staff',
-        text: 'Recruitment, time off, meetings, reviews, hierarchy. The module other bots don’t have.',
+        text: 'Recruitment, time off, meetings, reviews and hierarchy. This is the module that turns Kotbo into a real team tool.',
         link: 'Staff management',
       },
       rest: {
-        title: 'And everything else',
+        title: 'And 45 more',
+        text: 'Economy, giveaways, clans, quests, YouTube and Twitch alerts, auto-translate, forms, and an MCP server to plug an AI into your server.',
         all: 'See all 51 modules',
         names: [
           'Economy & RPG', 'Giveaways', 'Welcome & goodbye', 'Rules', 'Reaction roles', 'Clans', 'Seasons', 'Quests',
@@ -167,121 +168,153 @@
   }
 
   const TONE: Record<string, string> = { alarm: 'text-alarm', amber: 'text-amber', ok: 'text-ok' };
+
+  type Key = 'mod' | 'tickets' | 'levels' | 'logs' | 'staff' | 'rest';
+  const KEYS: Key[] = ['mod', 'tickets', 'levels', 'staff', 'logs', 'rest'];
+  const ICONS: Record<Key, string> = { mod: 'shield', tickets: 'ticket', levels: 'level', logs: 'info', staff: 'mod', rest: 'star' };
+  let active = $state<Key>('mod');
 </script>
 
-<section id="modules" aria-labelledby="arsenal-title" class="border-t border-line bg-night-2 py-24 lg:py-32">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6">
-    <div use:reveal={{ direction: 'up' }} class="max-w-3xl">
-      <p class="font-mono text-sm text-glow">{t.kicker}</p>
-      <h2 id="arsenal-title" class="mt-4 font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-white sm:text-5xl lg:text-6xl">{t.title}</h2>
-      <p class="mt-6 text-lg text-mist">{t.intro}</p>
+<section id="modules" aria-labelledby="arsenal-title" class="border-t border-line bg-night-2 pb-16 sm:pb-24 lg:pb-32">
+  <div class="sticky top-16 z-20 bg-night-2/95 backdrop-blur-sm">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="modules" /></div>
+  </div>
+  <div class="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:pt-20">
+    <div class="max-w-3xl">
+      <h2 id="arsenal-title" class="font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-balance text-white sm:text-5xl lg:text-6xl">{t.title}</h2>
+      <p class="mt-6 text-lg text-mist text-pretty">{t.intro}</p>
     </div>
 
-    <div class="mt-14 grid gap-4 lg:grid-cols-6">
-      <!-- Modération : la plus grande case, c'est ce qu'on installe en premier -->
-      <article use:reveal={{ direction: 'up' }} class="flex flex-col rounded-3xl border border-line bg-night p-6 sm:p-8 lg:col-span-4">
-        <div class="flex items-center gap-3">
-          <img src={ktb('shield')} alt="" width="28" height="28" class="h-7 w-7" />
-          <h3 class="font-display text-2xl font-extrabold text-white">{t.mod.title}</h3>
-        </div>
-        <p class="mt-3 max-w-xl text-fog">{t.mod.text}</p>
-        <div class="mt-6 flex-1 rounded-xl border border-line bg-black/60 p-4 font-mono text-[12.5px] leading-6 sm:text-sm">
-          {#each t.mod.log as [time, text, tone] (time)}
-            <p class="flex gap-3"><span class="shrink-0 text-fog">[{time}]</span><span class={TONE[tone]}>{text}</span></p>
-          {/each}
-          <p class="mt-2 text-[10px] uppercase text-fog/80">{t.sample}</p>
-        </div>
-        <p class="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold">
-          {#each t.mod.links as l (l.slug)}
-            <a href={link(l.slug as keyof typeof SLUGS)} class="text-glow underline decoration-glow/30 underline-offset-4 hover:decoration-glow">{l.label}</a>
-          {/each}
-        </p>
-      </article>
+    <div class="mt-14 grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-14">
+      <ul class="border-t border-line">
+        {#each KEYS as key (key)}
+          {@const on = active === key}
+          <li class="border-b border-line">
+            <button
+              type="button"
+              aria-expanded={on}
+              onclick={() => (active = key)}
+              class="group flex w-full items-center justify-between gap-4 py-5 text-left"
+            >
+              <span class="font-display text-2xl font-extrabold tracking-tight transition-colors sm:text-3xl {on ? 'text-white' : 'text-fog group-hover:text-mist'}">{t[key].title}</span>
+              <img src={ktb(ICONS[key])} alt="" width="28" height="28" class="h-7 w-7 shrink-0 transition-opacity {on ? 'opacity-100' : 'opacity-40 group-hover:opacity-70'}" />
+            </button>
+            {#if on}
+              <div class="pb-6">
+                <p class="max-w-lg leading-relaxed text-mist">{t[key].text}</p>
+                <div class="mt-5 lg:hidden">{@render preview(key)}</div>
+                {@render links(key)}
+              </div>
+            {/if}
+          </li>
+        {/each}
+      </ul>
 
-      <!-- Tickets -->
-      <article use:reveal={{ direction: 'up', delay: 80 }} class="flex flex-col rounded-3xl border border-line bg-night p-6 sm:p-8 lg:col-span-2">
-        <div class="flex items-center gap-3">
-          <img src={ktb('ticket')} alt="" width="28" height="28" class="h-7 w-7" />
-          <h3 class="font-display text-2xl font-extrabold text-white">{t.tickets.title}</h3>
+      <div class="hidden lg:block">
+        <div class="sticky top-36">
+          {#key active}
+            <div class="arsenal-in">{@render preview(active)}</div>
+          {/key}
         </div>
-        <p class="mt-3 text-fog">{t.tickets.text}</p>
-        <div class="mt-6 flex-1 rounded-lg border-l-4 border-[#eb459e] bg-[#2b2d31] p-4 text-sm text-[#dbdee1]">
-          <p class="font-semibold text-white">{t.tickets.embedTitle}</p>
-          <p class="mt-1">{t.tickets.embedBody}</p>
-          <div class="mt-3 flex gap-2" aria-hidden="true">
-            <span class="rounded bg-[#248046] px-3 py-1.5 text-xs font-semibold text-white">{t.tickets.claim}</span>
-            <span class="rounded bg-[#da373c] px-3 py-1.5 text-xs font-semibold text-white">{t.tickets.close}</span>
-          </div>
-        </div>
-        <a href={link('tickets')} class="mt-5 text-sm font-semibold text-glow underline decoration-glow/30 underline-offset-4 hover:decoration-glow">{t.tickets.link}</a>
-      </article>
-
-      <!-- Niveaux : la carte du bot -->
-      <article use:reveal={{ direction: 'up' }} class="flex flex-col rounded-3xl border border-line bg-night p-6 sm:p-8 lg:col-span-3">
-        <div class="flex items-center gap-3">
-          <img src={ktb('level')} alt="" width="28" height="28" class="h-7 w-7" />
-          <h3 class="font-display text-2xl font-extrabold text-white">{t.levels.title}</h3>
-        </div>
-        <p class="mt-3 text-fog">{t.levels.text}</p>
-        <div class="mt-6 rounded-2xl bg-[#1e1f22] p-2.5 transition-transform {bump ? 'scale-[1.02]' : ''}">
-          <RankCanvas
-            name={t.levels.cardName}
-            tag="@{t.levels.cardName.toLowerCase()}"
-            {level}
-            {progress}
-            rank={3}
-            backgroundId="aurora"
-            font="default"
-            avatarSrc={null}
-            badges={['quests_50']}
-            label={t.levels.cardLabel(level)}
-          />
-        </div>
-        <div class="mt-5 flex flex-wrap items-center justify-between gap-3">
-          <a href={link('levels')} class="text-sm font-semibold text-glow underline decoration-glow/30 underline-offset-4 hover:decoration-glow">{t.levels.link}</a>
-          <button type="button" onclick={addXp} class="min-h-10 rounded-lg bg-night-4 px-4 font-mono text-sm font-bold text-white transition-colors hover:bg-[#4f46e5]">
-            {t.levels.xp}
-          </button>
-        </div>
-      </article>
-
-      <!-- Logs + Staff, empilés -->
-      <div class="grid gap-4 lg:col-span-3">
-        <article use:reveal={{ direction: 'up', delay: 80 }} class="rounded-3xl border border-line bg-night p-6 sm:p-8">
-          <div class="flex items-center gap-3">
-            <img src={ktb('info')} alt="" width="28" height="28" class="h-7 w-7" />
-            <h3 class="font-display text-2xl font-extrabold text-white">{t.logs.title}</h3>
-          </div>
-          <p class="mt-3 text-fog">{t.logs.text}</p>
-          <ul class="mt-4 space-y-1.5 font-mono text-[12.5px]">
-            {#each t.logs.lines as line (line)}
-              <li class="truncate rounded-md bg-night-3 px-3 py-1.5 text-mist">{line}</li>
-            {/each}
-          </ul>
-          <a href={link('logs')} class="mt-5 inline-block text-sm font-semibold text-glow underline decoration-glow/30 underline-offset-4 hover:decoration-glow">{t.logs.link}</a>
-        </article>
-        <article use:reveal={{ direction: 'up', delay: 140 }} class="rounded-3xl border border-glow/30 bg-[#4f46e5]/10 p-6 sm:p-8">
-          <div class="flex items-center gap-3">
-            <img src={ktb('mod')} alt="" width="28" height="28" class="h-7 w-7" />
-            <h3 class="font-display text-2xl font-extrabold text-white">{t.staff.title}</h3>
-          </div>
-          <p class="mt-3 text-mist">{t.staff.text}</p>
-          <a href="{base}{STAFF_ROUTE[locale]}" class="mt-5 inline-block text-sm font-semibold text-glow underline decoration-glow/30 underline-offset-4 hover:decoration-glow">{t.staff.link}</a>
-        </article>
       </div>
-
-      <!-- Le reste du catalogue -->
-      <article use:reveal={{ direction: 'up' }} class="rounded-3xl border border-line bg-night p-6 sm:p-8 lg:col-span-6">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <h3 class="font-display text-2xl font-extrabold text-white">{t.rest.title}</h3>
-          <a href="{base}{locale === 'fr' ? '/fonctionnalites' : '/en/features'}" class="text-sm font-semibold text-glow underline decoration-glow/30 underline-offset-4 hover:decoration-glow">{t.rest.all}</a>
-        </div>
-        <ul class="mt-6 flex flex-wrap gap-2">
-          {#each t.rest.names as name (name)}
-            <li class="rounded-full border border-line-2 px-3.5 py-1.5 text-sm text-mist">{name}</li>
-          {/each}
-        </ul>
-      </article>
     </div>
   </div>
 </section>
+
+{#snippet links(key: Key)}
+  <p class="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold">
+    {#if key === 'mod'}
+      {#each t.mod.links as l (l.slug)}
+        <a href={link(l.slug as keyof typeof SLUGS)} class="text-glow underline decoration-glow/30 underline-offset-4 hover:decoration-glow">{l.label}</a>
+      {/each}
+    {:else if key === 'tickets'}
+      <a href={link('tickets')} class="text-glow underline decoration-glow/30 underline-offset-4 hover:decoration-glow">{t.tickets.link}</a>
+    {:else if key === 'levels'}
+      <a href={link('levels')} class="text-glow underline decoration-glow/30 underline-offset-4 hover:decoration-glow">{t.levels.link}</a>
+    {:else if key === 'logs'}
+      <a href={link('logs')} class="text-glow underline decoration-glow/30 underline-offset-4 hover:decoration-glow">{t.logs.link}</a>
+    {:else if key === 'staff'}
+      <a href="{base}{STAFF_ROUTE[locale]}" class="text-glow underline decoration-glow/30 underline-offset-4 hover:decoration-glow">{t.staff.link}</a>
+    {:else}
+      <a href="{base}{locale === 'fr' ? '/fonctionnalites' : '/en/features'}" class="text-glow underline decoration-glow/30 underline-offset-4 hover:decoration-glow">{t.rest.all}</a>
+    {/if}
+  </p>
+{/snippet}
+
+{#snippet preview(key: Key)}
+  {#if key === 'mod'}
+    <div class="rounded-2xl bg-black p-5 font-mono text-[12.5px] leading-6 sm:text-sm">
+      {#each t.mod.log as [time, text, tone] (time)}
+        <p class="flex gap-3"><span class="shrink-0 text-fog">[{time}]</span><span class={TONE[tone]}>{text}</span></p>
+      {/each}
+      <p class="mt-3 text-[10px] uppercase text-fog">{t.sample}</p>
+    </div>
+  {:else if key === 'tickets'}
+    <div class="rounded-2xl bg-[#313338] p-5">
+      <div class="flex gap-3">
+        <img src="{base}/favicon.svg" alt="" width="40" height="40" class="h-10 w-10 rounded-full" />
+        <div class="min-w-0 flex-1">
+          <p class="flex items-center gap-1.5"><span class="font-semibold text-white">Kotbo</span><span class="rounded bg-blurple px-1 text-[10px] font-semibold leading-4 text-white">APP</span></p>
+          <div class="mt-1.5 rounded border-l-4 border-[#eb459e] bg-[#2b2d31] p-4 text-sm text-[#dbdee1]">
+            <p class="font-semibold text-white">{t.tickets.embedTitle}</p>
+            <p class="mt-1">{t.tickets.embedBody}</p>
+          </div>
+          <div class="mt-2 flex gap-2" aria-hidden="true">
+            <span class="rounded bg-[#248046] px-4 py-1.5 text-sm font-medium text-white">{t.tickets.claim}</span>
+            <span class="rounded bg-[#da373c] px-4 py-1.5 text-sm font-medium text-white">{t.tickets.close}</span>
+          </div>
+        </div>
+      </div>
+      <p class="mt-4 font-mono text-[10px] uppercase text-[#949ba4]">{t.sample}</p>
+    </div>
+  {:else if key === 'levels'}
+    <div>
+      <div class="rounded-2xl bg-[#1e1f22] p-2.5 transition-transform {bump ? 'scale-[1.02]' : ''}">
+        <RankCanvas
+          name={t.levels.cardName}
+          tag="@{t.levels.cardName.toLowerCase()}"
+          {level}
+          {progress}
+          rank={3}
+          backgroundId="aurora"
+          font="default"
+          avatarSrc={null}
+          badges={['quests_50']}
+          label={t.levels.cardLabel(level)}
+        />
+      </div>
+      <button type="button" onclick={addXp} class="mt-4 min-h-11 rounded-lg bg-night-4 px-5 font-mono text-sm font-bold text-white transition-colors hover:bg-[#4f46e5]">
+        {t.levels.xp}
+      </button>
+    </div>
+  {:else if key === 'logs'}
+    <ul class="space-y-2 rounded-2xl bg-black p-5 font-mono text-[13px]">
+      {#each t.logs.lines as line (line)}
+        <li class="rounded-md bg-night-3 px-3 py-2 text-mist">{line}</li>
+      {/each}
+      <li class="pt-1 text-[10px] uppercase text-fog">{t.sample}</li>
+    </ul>
+  {:else if key === 'staff'}
+    <div class="overflow-hidden rounded-2xl bg-white">
+      <div class="flex h-[26rem] flex-col"><MockStaff /></div>
+    </div>
+  {:else}
+    <ul class="flex flex-wrap gap-2">
+      {#each t.rest.names as name (name)}
+        <li class="rounded-full border border-line-2 px-3.5 py-1.5 text-sm text-mist">{name}</li>
+      {/each}
+    </ul>
+  {/if}
+{/snippet}
+
+<style>
+  .arsenal-in {
+    animation: arsenal-in 320ms ease both;
+  }
+  @keyframes arsenal-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+</style>

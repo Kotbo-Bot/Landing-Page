@@ -14,10 +14,10 @@
    */
   import { onMount } from 'svelte';
   import { getLocale } from '$lib/i18n/state.svelte';
-  import { reveal } from '$lib/actions/reveal';
   import { track } from '$lib/funnel';
   import { builder, TRACK_KEYS, type ModerationLevel, type ThemeKey, type TrackKey } from '$lib/playground/kit.svelte';
   import AddButton from './AddButton.svelte';
+  import ChannelHeader from './ChannelHeader.svelte';
 
   type Profile = 'rp' | 'gaming' | 'creator' | 'big';
 
@@ -30,40 +30,35 @@
 
   const TEXT = {
     fr: {
-      kicker: '/setup',
       title: 'T’as quel genre de serveur ?',
       intro: 'Choisis, et regarde ce que Kotbo te prépare. Ton choix suit le bouton jusqu’à l’install, t’auras pas à le refaire.',
       pickLabel: 'Ton type de serveur',
       profiles: {
         rp: {
-          emoji: '🚓',
           label: 'Serveur RP / FiveM',
           pitch: 'Gros staff, plaintes, candidatures, sanctions contestées. Ici tout doit être tracé.',
           channels: ['📜 règlement', '📩 candidatures', '🎫 plaintes', '🎫 remboursements', '🛡️ staff-only', '🗓️ absences-staff', '🚨 sanctions-logs'],
           roles: ['Fondateur', 'Gérant staff', 'Modérateur', 'Support', 'Staff en test'],
         },
         gaming: {
-          emoji: '🎮',
           label: 'Commu gaming / esport',
           pitch: 'Des membres qui grind, des giveaways, des clans. Et zéro raid pendant les tournois.',
           channels: ['👋 bienvenue', '🏆 classement', '🎁 giveaways', '⚔️ clans', '💰 boutique', '🎫 support', '🚨 logs'],
           roles: ['Fondateur', 'Admin', 'Modérateur', 'Animateur'],
         },
         creator: {
-          emoji: '📺',
           label: 'Streamer / créateur',
           pitch: 'Ta commu vit pendant tes lives, et doit tenir quand t’es pas là.',
           channels: ['🔴 annonces-live', '👋 bienvenue', '📜 règlement', '⭐ niveaux', '🎉 événements', '💡 suggestions'],
           roles: ['Créateur', 'Modérateur', 'VIP', 'Abonné'],
         },
         big: {
-          emoji: '🏛️',
           label: 'Grosse commu / asso',
           pitch: 'Des milliers de membres, une vraie équipe, des process. Le mode ERP.',
           channels: ['👋 accueil', '📜 règlement', '🎫 support', '🛡️ staff', '📅 réunions', '🗓️ absences', '🚨 logs'],
           roles: ['Direction', 'Responsables', 'Modérateurs', 'Helpers', 'Recrues'],
         },
-      } as Record<Profile, { emoji: string; label: string; pitch: string; channels: string[]; roles: string[] }>,
+      } as Record<Profile, { label: string; pitch: string; channels: string[]; roles: string[] }>,
       tracks: {
         greeting: 'Accueil',
         rules: 'Règlement',
@@ -83,40 +78,35 @@
       empty: 'Choisis un profil à gauche.',
     },
     en: {
-      kicker: '/setup',
       title: 'What kind of server you running?',
       intro: 'Pick one and see what Kotbo gets ready for you. Your choice follows the button all the way to setup, you won’t redo it.',
       pickLabel: 'Your server type',
       profiles: {
         rp: {
-          emoji: '🚓',
           label: 'RP / FiveM server',
           pitch: 'Big staff, complaints, applications, disputed sanctions. Everything needs a paper trail.',
           channels: ['📜 rules', '📩 applications', '🎫 complaints', '🎫 refunds', '🛡️ staff-only', '🗓️ staff-time-off', '🚨 sanction-logs'],
           roles: ['Founder', 'Staff manager', 'Moderator', 'Support', 'Trial staff'],
         },
         gaming: {
-          emoji: '🎮',
           label: 'Gaming / esports community',
           pitch: 'Members who grind, giveaways, clans. And zero raids during tournaments.',
           channels: ['👋 welcome', '🏆 leaderboard', '🎁 giveaways', '⚔️ clans', '💰 shop', '🎫 support', '🚨 logs'],
           roles: ['Founder', 'Admin', 'Moderator', 'Event host'],
         },
         creator: {
-          emoji: '📺',
           label: 'Streamer / creator',
           pitch: 'Your community lives during your streams, and has to hold up when you’re offline.',
           channels: ['🔴 live-alerts', '👋 welcome', '📜 rules', '⭐ levels', '🎉 events', '💡 suggestions'],
           roles: ['Creator', 'Moderator', 'VIP', 'Subscriber'],
         },
         big: {
-          emoji: '🏛️',
           label: 'Big community / org',
           pitch: 'Thousands of members, a real team, real processes. ERP mode.',
           channels: ['👋 lobby', '📜 rules', '🎫 support', '🛡️ staff', '📅 meetings', '🗓️ time-off', '🚨 logs'],
           roles: ['Leadership', 'Leads', 'Moderators', 'Helpers', 'Recruits'],
         },
-      } as Record<Profile, { emoji: string; label: string; pitch: string; channels: string[]; roles: string[] }>,
+      } as Record<Profile, { label: string; pitch: string; channels: string[]; roles: string[] }>,
       tracks: {
         greeting: 'Welcome',
         rules: 'Rules',
@@ -162,11 +152,13 @@
   const p = $derived(t.profiles[profile]);
 </script>
 
-<section id="setup" aria-labelledby="setup-title" class="border-t border-line bg-night py-24 lg:py-32">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6">
-    <div use:reveal={{ direction: 'up' }} class="max-w-3xl">
-      <p class="font-mono text-sm text-ok">{t.kicker}</p>
-      <h2 id="setup-title" class="mt-4 font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-white sm:text-5xl lg:text-6xl">{t.title}</h2>
+<section id="setup" aria-labelledby="setup-title" class="border-t border-line bg-night pb-16 sm:pb-24 lg:pb-32">
+  <div class="sticky top-16 z-20 bg-night/95 backdrop-blur-sm">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="setup" /></div>
+  </div>
+  <div class="mx-auto pt-14 lg:pt-20 max-w-7xl px-4 sm:px-6">
+    <div class="max-w-3xl">
+      <h2 id="setup-title" class="text-balance font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-white sm:text-5xl lg:text-6xl">{t.title}</h2>
       <p class="mt-6 text-lg text-mist">{t.intro}</p>
     </div>
 
@@ -183,7 +175,6 @@
               ? 'border-ok/60 bg-ok/10'
               : 'border-line-2 bg-night-2 hover:border-fog'}"
           >
-            <span class="text-3xl" aria-hidden="true">{t.profiles[key].emoji}</span>
             <span>
               <span class="block font-display text-lg font-bold text-white">{t.profiles[key].label}</span>
               {#if on}<span class="block text-sm text-mist">{t.profiles[key].pitch}</span>{/if}
@@ -193,7 +184,7 @@
       </div>
 
       {#key profile}
-        <div class="setup-out grid gap-px overflow-hidden rounded-3xl border border-line bg-line md:grid-cols-[minmax(0,15rem)_minmax(0,1fr)]">
+        <div class="setup-out grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-[minmax(0,15rem)_minmax(0,1fr)]">
           <!-- Côté Discord : la colonne de salons -->
           <div class="bg-[#2b2d31] p-4">
             <p class="px-2 text-xs font-semibold uppercase tracking-wide text-[#949ba4]">{t.channels}</p>

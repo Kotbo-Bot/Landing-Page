@@ -87,14 +87,6 @@ html.v3 body {
   outline-offset: 3px;
 }
 
-/* Grain discret sur les grandes zones, pour que le noir ne soit pas plat. */
-.v3-grid {
-  background-image:
-    linear-gradient(to right, rgb(255 255 255 / 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(255 255 255 / 0.035) 1px, transparent 1px);
-  background-size: 56px 56px;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .v3 *,
   .v3 *::before,

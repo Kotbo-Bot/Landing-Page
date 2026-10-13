@@ -16,8 +16,8 @@
    */
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
-  import { reveal } from '$lib/actions/reveal';
   import AddButton from './AddButton.svelte';
+  import ChannelHeader from './ChannelHeader.svelte';
 
   type Line = { key: string; need: { fr: string; en: string }; bot: string; icon: string | null; price: number };
 
@@ -37,9 +37,8 @@
 
   const TEXT = {
     fr: {
-      kicker: 'ticket n° 0042',
-      title: 'Six bots, six abonnements. Fais l’addition.',
-      intro: 'Coche ce qui tourne sur ton serveur. On imprime le ticket.',
+      title: 'Coche les bots que t’as, on t’imprime l’addition.',
+      intro: 'Un serveur qui grossit finit souvent avec quatre ou cinq abonnements, plus un tableur pour gérer le staff.',
       pickLabel: 'Ce que t’as sur ton serveur',
       sheet: 'Tableur du staff + MP',
       sheetBot: 'à la main',
@@ -62,9 +61,8 @@
       priceFmt: (n: number) => `${n.toLocaleString('fr-FR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 })} €`,
     },
     en: {
-      kicker: 'receipt #0042',
-      title: 'Six bots, six subscriptions. Do the math.',
-      intro: 'Tick what runs on your server. We’ll print the receipt.',
+      title: 'Tick the bots you run and we’ll print the bill.',
+      intro: 'A growing server usually ends up with four or five subscriptions, plus a spreadsheet to run the staff.',
       pickLabel: 'What you’ve got on your server',
       sheet: 'Staff spreadsheet + DMs',
       sheetBot: 'by hand',
@@ -104,11 +102,13 @@
   }
 </script>
 
-<section id="addition" aria-labelledby="receipt-title" class="relative overflow-hidden border-t border-line bg-night py-24 lg:py-32">
-  <div class="mx-auto grid max-w-7xl gap-14 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-20">
-    <div use:reveal={{ direction: 'up' }} class="min-w-0">
-      <p class="font-mono text-sm text-amber">{t.kicker}</p>
-      <h2 id="receipt-title" class="mt-4 font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-white sm:text-5xl lg:text-6xl">{t.title}</h2>
+<section id="addition" aria-labelledby="receipt-title" class="relative overflow-hidden border-t border-line bg-night pb-16 sm:pb-24 lg:pb-32">
+  <div class="sticky top-16 z-20 bg-night/95 backdrop-blur-sm">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="addition" /></div>
+  </div>
+  <div class="mx-auto pt-14 lg:pt-20 grid max-w-7xl gap-14 px-4 sm:px-6 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:gap-20">
+    <div class="min-w-0">
+      <h2 id="receipt-title" class="text-balance font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-white sm:text-5xl lg:text-6xl">{t.title}</h2>
       <p class="mt-6 text-lg text-mist">{t.intro}</p>
 
       <fieldset class="mt-10">
@@ -158,7 +158,7 @@
     </div>
 
     <!-- Le ticket -->
-    <div use:reveal={{ direction: 'up', delay: 120 }} class="relative mx-auto w-full max-w-sm lg:mt-6">
+    <div class="relative mx-auto w-full max-w-sm lg:order-first lg:mt-2">
       <div class="receipt relative -rotate-1 bg-[#fbfaf7] px-6 pb-8 pt-7 font-mono text-[13px] text-[#1c1917] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)]" aria-live="polite">
         <p class="text-center font-bold tracking-widest">{t.shop}</p>
         <p class="text-center text-[11px] text-[#57534e]">{t.address}</p>
@@ -235,7 +235,7 @@
     animation: print 260ms steps(4) both;
   }
   .stamp {
-    animation: stamp 380ms cubic-bezier(0.3, 1.6, 0.5, 1) both 120ms;
+    animation: stamp 380ms cubic-bezier(0.16, 1, 0.3, 1) both 120ms;
   }
   @keyframes print {
     from {

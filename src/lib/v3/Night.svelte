@@ -13,18 +13,17 @@
    * bot concurrent n'y est nommé.
    */
   import { getLocale } from '$lib/i18n/state.svelte';
-  import { reveal } from '$lib/actions/reveal';
+  import ChannelHeader from './ChannelHeader.svelte';
 
   type Notif = { app: string; title: string; body: string; tone?: 'alarm' | 'ok' | 'muted' };
 
   const TEXT = {
     fr: {
-      stamp: '02:47 · samedi',
-      title: 'T’as fondé un serveur pour kiffer. Pas pour devenir le SAV de six bots.',
+      title: 'Tu voulais un serveur pour traîner avec ta commu. T’as fini SAV de six bots.',
       intro:
-        'Plus ton serveur grossit, plus t’es seul à tout tenir. Et le pire, c’est pas les membres. C’est tout ce qui se passe derrière.',
+        'Plus ton serveur grossit, plus tu tiens seul tout ce qui se passe derrière : le staff, les sanctions, les tickets. Et ça tombe toujours la nuit.',
       pains: [
-        { quote: '« qui a ban Maxou ??? »', text: 'Personne sait. Pas de motif, pas de preuve, et Maxou crie à l’abus de pouvoir.' },
+        { quote: '« qui a ban Maxou ??? »', text: 'Personne sait. Y’a ni motif ni preuve, et Maxou crie à l’abus de pouvoir.' },
         { quote: '« jsuis pas là ce week-end »', text: 'Ton staff s’organise en MP. Les absences, tu les découvres le jour même.' },
         { quote: '« frr y’a un raid »', text: 'À 3 h du mat’, c’est toi qu’on ping. Comme d’hab.' },
       ],
@@ -49,12 +48,11 @@
       ] as Notif[],
     },
     en: {
-      stamp: '02:47 · Saturday',
-      title: 'You started a server to have fun. Not to be tech support for six bots.',
+      title: 'You wanted a server to hang out with your people. You ended up as tech support for six bots.',
       intro:
-        'The bigger your server gets, the more you’re holding it all alone. And the worst part isn’t the members. It’s everything going on behind the scenes.',
+        'The bigger your server gets, the more you hold everything behind the scenes alone: the staff, the sanctions, the tickets. And it always hits at night.',
       pains: [
-        { quote: '“who banned Maxou???”', text: 'Nobody knows. No reason, no proof, and Maxou is yelling about power abuse.' },
+        { quote: '“who banned Maxou???”', text: 'Nobody knows. There’s no reason and no proof, and Maxou is yelling about power abuse.' },
         { quote: '“i’m out this weekend”', text: 'Your staff organizes in DMs. You find out about time off on the day.' },
         { quote: '“bro we’re getting raided”', text: 'At 3 a.m., you’re the one who gets pinged. As usual.' },
       ],
@@ -85,26 +83,28 @@
   const list = $derived(calm ? t.calm : t.chaos);
 </script>
 
-<section id="nuit" aria-labelledby="night-title" class="relative border-t border-line bg-night py-24 lg:py-32">
-  <div class="mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-20">
-    <div use:reveal={{ direction: 'up' }}>
-      <p class="font-mono text-sm text-alarm">{t.stamp}</p>
-      <h2 id="night-title" class="mt-4 font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-white sm:text-5xl lg:text-6xl">
+<section id="nuit" aria-labelledby="night-title" class="relative border-t border-line bg-night pb-16 sm:pb-24 lg:pb-32">
+  <div class="sticky top-16 z-20 bg-night/95 backdrop-blur-sm">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="nuit" /></div>
+  </div>
+  <div class="mx-auto pt-14 lg:pt-20 grid max-w-7xl items-start gap-14 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-20">
+    <div>
+      <h2 id="night-title" class="text-balance font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-white sm:text-5xl lg:text-6xl">
         {t.title}
       </h2>
       <p class="mt-6 max-w-xl text-lg leading-relaxed text-mist">{t.intro}</p>
 
-      <ul class="mt-10 space-y-6">
+      <ul class="mt-10 divide-y divide-line border-y border-line [&>li]:py-5">
         {#each t.pains as pain (pain.quote)}
-          <li class="grid gap-1 border-l-2 border-alarm/60 pl-5 sm:grid-cols-[13rem_1fr] sm:gap-6">
-            <span class="font-mono text-sm font-bold text-white">{pain.quote}</span>
+          <li class="grid gap-1 sm:grid-cols-[13rem_1fr] sm:gap-6">
+            <span class="font-display text-lg font-bold text-alarm">{pain.quote}</span>
             <span class="text-fog">{pain.text}</span>
           </li>
         {/each}
       </ul>
     </div>
 
-    <div use:reveal={{ direction: 'up', delay: 120 }} class="mx-auto w-full max-w-[24rem]">
+    <div class="mx-auto w-full max-w-[24rem]">
       <!-- La bascule : le seul geste de la zone. -->
       <div role="group" aria-label={t.switchLabel} class="mx-auto mb-6 grid grid-cols-2 rounded-full border border-line-2 bg-night-2 p-1 text-sm font-semibold">
         <button
@@ -122,12 +122,10 @@
       </div>
 
       <!-- Le téléphone -->
-      <div class="relative rounded-[2.75rem] border border-line-2 bg-black p-2.5 shadow-[0_50px_120px_-40px_rgba(0,0,0,0.9)]">
+      <div class="relative rounded-[2.75rem] border border-line-2 bg-black p-2.5">
         <div
           class="relative h-[40rem] overflow-hidden rounded-[2.25rem] transition-[background] duration-700"
-          style="background: {calm
-            ? 'radial-gradient(120% 80% at 50% 0%, #1e1b4b 0%, #0b0b14 60%)'
-            : 'radial-gradient(120% 80% at 50% 0%, #3b0d0d 0%, #0b0b0e 60%)'}"
+          style="background: {calm ? '#14132b' : '#1f0e0e'}"
         >
           <div aria-hidden="true" class="mx-auto mt-2.5 h-6 w-24 rounded-full bg-black"></div>
           <div class="mt-4 text-center text-white">
@@ -160,14 +158,14 @@
           {/if}
         </div>
       </div>
-      <p class="mt-3 text-center font-mono text-[11px] uppercase text-fog">{t.scene}</p>
+      <p class="mt-3 text-center text-xs text-fog">{t.scene}</p>
     </div>
   </div>
 </section>
 
 <style>
   .notif {
-    animation: notif-in 420ms cubic-bezier(0.2, 0.9, 0.3, 1.1) both;
+    animation: notif-in 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
     animation-delay: calc(var(--i) * 70ms);
   }
   .sleep {

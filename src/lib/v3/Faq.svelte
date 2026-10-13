@@ -7,23 +7,25 @@
   import { getLocale } from '$lib/i18n/state.svelte';
   import { HOME_FAQ } from '$lib/seo/faq.js';
   import { track } from '$lib/funnel';
-  import { reveal } from '$lib/actions/reveal';
+  import ChannelHeader from './ChannelHeader.svelte';
 
   const TEXT = {
-    fr: { kicker: '/faq', title: 'Les questions qu’on nous pose tout le temps.' },
-    en: { kicker: '/faq', title: 'The questions we get all the time.' },
+    fr: { title: 'Les questions qu’on nous pose tout le temps.' },
+    en: { title: 'The questions we get all the time.' },
   };
   const t = $derived(TEXT[getLocale()]);
   const items = $derived(HOME_FAQ[getLocale()]);
 </script>
 
-<section id="faq" aria-labelledby="faq-title" class="border-t border-line bg-night-2 py-24 lg:py-32">
-  <div class="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-20">
-    <div use:reveal={{ direction: 'up' }}>
-      <p class="font-mono text-sm text-glow">{t.kicker}</p>
-      <h2 id="faq-title" class="mt-4 font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-white sm:text-5xl">{t.title}</h2>
+<section id="faq" aria-labelledby="faq-title" class="border-t border-line bg-night-2 pb-16 sm:pb-24 lg:pb-32">
+  <div class="sticky top-16 z-20 bg-night-2/95 backdrop-blur-sm">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="faq" /></div>
+  </div>
+  <div class="mx-auto max-w-3xl px-4 pt-14 sm:px-6 lg:pt-20">
+    <div>
+      <h2 id="faq-title" class="text-balance font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-white sm:text-5xl">{t.title}</h2>
     </div>
-    <div class="divide-y divide-line border-y border-line">
+    <div class="mt-10 divide-y divide-line border-y border-line">
       {#each items as item, i (item.q)}
         <details
           class="group"

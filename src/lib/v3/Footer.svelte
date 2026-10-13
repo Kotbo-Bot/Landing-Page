@@ -29,7 +29,7 @@
       cookies: 'Cookies',
       dpa: 'DPA',
       notice: 'Mentions légales',
-      eu: 'Créé et hébergé en UE · RGPD · aucun traceur sur ce site',
+      eu: 'Créé et hébergé dans l’Union européenne, sans aucun traceur sur ce site.',
     },
     en: {
       tagline: 'The Discord bot that runs your server and your staff.',
@@ -49,7 +49,7 @@
       cookies: 'Cookies',
       dpa: 'DPA',
       notice: 'Legal notice',
-      eu: 'Built and hosted in the EU · GDPR · zero trackers on this site',
+      eu: 'Built and hosted in the European Union, with zero trackers on this site.',
     },
   };
 
@@ -66,7 +66,7 @@
         <span class="font-display text-xl font-extrabold text-white">Kotbo</span>
       </div>
       <p class="mt-4 max-w-xs text-mist">{t.tagline}</p>
-      <a href="mailto:{CONTACT_EMAIL}" class="mt-4 inline-block font-mono text-sm text-white underline decoration-line-2 underline-offset-4 hover:decoration-white">{CONTACT_EMAIL}</a>
+      <a href="mailto:{CONTACT_EMAIL}" class="mt-4 inline-block text-sm text-white underline decoration-line-2 underline-offset-4 hover:decoration-white">{CONTACT_EMAIL}</a>
     </div>
     <nav aria-label={t.product}>
       <p class="text-sm font-semibold text-white">{t.product}</p>
@@ -101,6 +101,6 @@
     </nav>
   </div>
   <div class="border-t border-line">
-    <p class="mx-auto max-w-7xl px-4 py-6 font-mono text-xs text-fog sm:px-6">© {new Date().getFullYear()} Kotbo · {t.eu}</p>
+    <p class="mx-auto max-w-7xl px-4 py-6 text-sm text-fog sm:px-6">© {new Date().getFullYear()} Kotbo. {t.eu}</p>
   </div>
 </footer>

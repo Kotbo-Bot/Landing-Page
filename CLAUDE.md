@@ -42,7 +42,8 @@ bun run check      # svelte-check
 | `src/routes/` | Les routes : accueil (`/`, `/en`), page staff (`/gestion-staff-discord`, `/en/discord-staff-management`), fonctionnalités (`/fonctionnalites`, `/en/features`), pages légales. |
 | `src/lib/pages/` | L'accueil, la page staff et les pages fonctionnalités, rendus par leurs deux routes. |
 | `src/lib/seo/` | `Seo.svelte` (balises, `hreflang`), `jsonld.js`, `faq.js`. |
-| `src/lib/sections/` | Les zones de l'accueil, une par fichier. |
+| `src/lib/v3/` | L'accueil v3 : une zone par fichier, la colonne de salons, le bouton d'invitation. |
+| `src/lib/sections/` | Barre et pied de page des pages hors accueil, zones de la v2. |
 | `src/lib/playground/` | Les zones jouables : le serveur monté (`kit.svelte.ts`), l'onboarding du héros, les aperçus Discord, la carte de rang. |
 | `src/lib/components/` | Zones reprises de la v1 (catalogue, comparatif, tarifs, FAQ) et écrans du dashboard reconstitués (`mockups/`). |
 | `src/lib/data/` | `media.ts` (captures et vidéos à fournir), `proof.ts` (témoignages réels, vide par défaut). |
@@ -60,13 +61,18 @@ le fichier du dépôt sert tel quel. Publier une page relance le déploiement du
 site (`repository_dispatch` `feature-pages`), et un build quotidien rattrape un
 signal perdu. `bun run build:offline` construit sans appeler l'API.
 
-## Le principe de la v2
+## L'accueil v3
 
-Le visiteur essaie avant de lire. Le héros est un onboarding en trois questions
-qui monte un serveur dans un aperçu Discord ; la soirée qui dérape, la console
-de commandes et l'atelier de carte de rang suivent. Chaque zone se termine sur
-`InviteButton`, qui reprend le nom du serveur monté et emporte ses réglages
-(`?kit=`) jusqu'au parcours d'installation du dashboard, qui ne les redemande pas.
+L'accueil vit dans `src/lib/v3/` : la page se lit comme un serveur Discord, une
+zone par salon (`v3/channels.ts`, dont les `id` sont les ancres que les autres
+pages visent). Elle parle au fondateur d'un serveur qui a un staff : la pile de
+bots qui part, sa nuit sans Kotbo, le QG staff (écrans de `components/mockups`),
+l'addition, les modules, les profils de serveur, la confiance, le prix, la FAQ.
+Le profil choisi dans `#setup` écrit le kit (`playground/kit.svelte.ts`) et
+`v3/AddButton` l'emporte (`?kit=`) jusqu'au parcours d'installation.
+
+Les zones jouables de la v2 (`sections/`, `playground/builder/`) ne sont plus
+montées sur l'accueil.
 
 Deux règles :
 

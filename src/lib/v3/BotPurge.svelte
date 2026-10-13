@@ -27,7 +27,7 @@
       sheetRole: 'le tableur du staff',
       kotboRole: 'Fait tout ce qu’il y avait au-dessus',
       left: (name: string) => `${name} a quitté le serveur.`,
-      done: 'Plus qu’un bot. Plus de tableur.',
+      done: 'Il reste un bot, et plus de tableur.',
       replay: 'Rejouer',
       demo: 'démo',
       roles: {
@@ -49,7 +49,7 @@
       sheetRole: 'the staff spreadsheet',
       kotboRole: 'Does everything that was above',
       left: (name: string) => `${name} left the server.`,
-      done: 'One bot left. No more spreadsheet.',
+      done: 'One bot left, and no spreadsheet.',
       replay: 'Replay',
       demo: 'demo',
       roles: {
@@ -129,7 +129,7 @@
 </script>
 
 <figure bind:this={root} aria-label={t.label} class="relative">
-  <div class="overflow-hidden rounded-2xl border border-line bg-[#2b2d31] shadow-[0_40px_120px_-30px_rgba(79,70,229,0.55)]">
+  <div class="overflow-hidden rounded-lg bg-[#2b2d31] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)]">
     <!-- Barre de titre, à la Discord -->
     <div class="flex items-center justify-between border-b border-black/30 bg-[#2b2d31] px-4 py-3">
       <div class="flex items-center gap-2 text-[15px] font-semibold text-[#f2f3f5]">
@@ -236,7 +236,7 @@
     text-decoration-thickness: 2px;
   }
   .kotbo-row {
-    animation: kotbo-in 520ms cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+    animation: kotbo-in 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
   .cover-chip {
     animation: chip-in 300ms ease both;

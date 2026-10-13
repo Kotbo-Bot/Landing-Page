@@ -1,7 +1,81 @@
-# Direction artistique - kotbo.fr (v2)
+# Direction artistique - kotbo.fr
 
 Source de vérité de l'apparence du site vitrine. Quand une décision de style se
 pose, la réponse se cherche ici avant de s'inventer ailleurs.
+
+**Deux registres cohabitent pendant la transition** : l'accueil (`/`, `/en`) est
+en v3, décrite juste en dessous ; les autres pages (staff, fonctionnalités,
+légal) restent en v2, décrite plus bas, jusqu'à leur refonte.
+
+# v3 : l'accueil, la nuit du dashboard
+
+## Le concept
+
+**La page est un serveur Discord.** Chaque zone est un salon (`v3/channels.ts`),
+ouvert par sa barre de salon (nom + sujet, collée en haut pendant la lecture).
+Sur ordinateur, la colonne de salons à gauche dit où l'on est et ce qu'il reste
+à lire (pastille « non lu » qui s'éteint). La cible, le fondateur d'un serveur
+qui a un staff, vit dans Discord : il lit la page dans une grammaire qu'il
+connaît par cœur.
+
+Le héros dit en trois secondes ce que c'est (bot Discord + dashboard), pour qui
+(les serveurs qui ont un staff), pourquoi lui (la pile de bots part, le staff
+est géré). L'unique mouvement orchestré est la liste « Bots » qui se vide.
+
+## Palette
+
+Les surfaces sombres du dashboard (zinc) et son indigo. Jetons dans
+`routes/layout.css` (`night`, `night-2..4`, `line`, `fog`, `mist`, `glow`…).
+
+| Rôle | Valeur | Usage |
+| --- | --- | --- |
+| fond | `#09090b` / `#111113` | Les zones alternent entre les deux. |
+| texte | `#fafafa`, `mist #d4d4d8`, `fog #a1a1aa` | `fog` est le plus clair autorisé pour du texte courant. |
+| action | `#4f46e5` | Le bouton « Ajouter à Discord » et l'aplat final. Rien d'autre. |
+| états | `alarm #f87171`, `ok #4ade80`, `amber #fbbf24` | Ce qui déraille, ce qui est réglé. Jamais décoratif. |
+| Discord | `#313338`, `#2b2d31`, `#1e1f22` | Dans les aperçus Discord seulement. |
+
+Le ticket de caisse est le seul objet clair de la page : c'est le moment où l'on
+compte, il se lit comme un papier.
+
+## Typographie
+
+Celle du dashboard : **Outfit** 800/900 pour les titres, **Inter** pour le texte,
+**JetBrains Mono** uniquement pour ce qu'une machine écrit (journaux, ticket de
+caisse). Pas de mono décoratif, pas de sur-titre au-dessus des titres, pas de
+mot coloré dans un titre. `text-balance` sur les titres.
+
+## Garde-fous anti-slop
+
+Passés au crible des skills antislop, `frontend-design` (Anthropic),
+impeccable, taste-skill et humanizer. À ne pas réintroduire :
+
+- halo flouté, grille de fond, ombre colorée, bouton qui « glow », point qui pulse ;
+- pilule au-dessus du H1, étoiles en glyphes, chaîne de « · » ;
+- grille bento ou rangée de cartes identiques icône + titre + texte ;
+- bordure gauche colorée hors de vrais embeds Discord, emoji dans l'interface
+  (ils restent permis dans les noms de salons des aperçus, comme dans Discord) ;
+- fade-up sur chaque zone, rebond, texte invisible tant que le JS n'a pas tourné ;
+- même mise en page deux fois de suite : chaque zone a sa forme (liste qui se
+  vide, téléphone, onglets, ticket, index, profils, conversation, phrase-tarif) ;
+- en copy : « c'est pas X, c'est Y », fragments en rafale, triplets, mots creux
+  (permettre, optimiser, robuste, écosystème…), tiret cadratin.
+
+## Ton
+
+Tutoiement, oral, celui des admins sous les tutos Discord (« frr », « modo »,
+« fonda », « kick »), sans forcer l'argot. Une blague par zone au plus. Les
+scènes (téléphone, conversation, journaux) sont annoncées fictives.
+
+## Données
+
+Inchangé : chiffres réels de `api.kotbo.fr` ou rien ; prix concurrents en ordre
+de grandeur, datés, depuis `components/Comparison.svelte` ; Kotbo opposé à son
+prix le plus bas.
+
+---
+
+# v2 : les autres pages, le tableau
 
 ## Le concept
 
