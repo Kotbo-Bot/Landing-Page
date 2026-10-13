@@ -2,20 +2,21 @@
   /**
    * Le QG : ce qui distingue Kotbo des bots de modération.
    *
-   * Les écrans sont ceux du dashboard, reconstitués à l'identique dans
-   * `components/mockups` (membres fictifs). Un onglet par écran plutôt que
-   * quatre captures empilées : le visiteur choisit ce qu'il veut voir, et la
-   * page reste courte. Sous la fenêtre, la liste de ce que le module staff
-   * fait réellement (vérifiée dans le registre des modules, voir `faq.js`).
+   * Les écrans sont ceux du dashboard, recopiés de `Kotbo/recette` dans
+   * `dash/screens` et jouables sur des membres fictifs (`dash/cast.ts`). Un
+   * onglet par écran plutôt que quatre captures empilées : le visiteur choisit
+   * ce qu'il veut voir, et la page reste courte. Sous la fenêtre, la liste de
+   * ce que le module staff fait réellement (vérifiée dans le registre des
+   * modules, voir `faq.js`).
    */
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
   import { STAFF_ROUTE } from '$lib/i18n/routes';
   import { ktb } from '$lib/playground/discord/theme';
-  import MockProfile from '$lib/components/mockups/MockProfile.svelte';
-  import MockStaff from '$lib/components/mockups/MockStaff.svelte';
-  import MockSanction from '$lib/components/mockups/MockSanction.svelte';
-  import MockTickets from '$lib/components/mockups/MockTickets.svelte';
+  import MembersScreen from '$lib/dash/screens/members/MembersScreen.svelte';
+  import StaffScreen from '$lib/dash/screens/staff/StaffScreen.svelte';
+  import SanctionsScreen from '$lib/dash/screens/sanctions/SanctionsScreen.svelte';
+  import TicketsScreen from '$lib/dash/screens/tickets/TicketsScreen.svelte';
   import ChannelHeader from './ChannelHeader.svelte';
 
   type Tab = 'profile' | 'staff' | 'sanctions' | 'tickets';
@@ -43,7 +44,8 @@
       ],
       more: 'Tout sur la gestion du staff',
       demo: 'Fouiller le vrai dashboard, sans compte',
-      fictive: 'Écrans du dashboard, membres fictifs',
+      fictive: 'Le vrai dashboard, sur un serveur de démo aux membres fictifs. Clique, rien ne part nulle part',
+      small: 'Aperçu en miniature : l’écran se manipule sur un écran plus large, ou dans la démo complète',
     },
     en: {
       title: 'Your staff finally gets an HQ, and it lives in the dashboard',
@@ -67,7 +69,8 @@
       ],
       more: 'Everything about staff management',
       demo: 'Dig through the real dashboard, no account',
-      fictive: 'Dashboard screens, fictional members',
+      fictive: 'The real dashboard, on a demo server with fictional members. Click around, nothing gets sent',
+      small: 'Thumbnail preview: the screen is playable on a wider display, or in the full demo',
     },
   };
 
@@ -75,6 +78,20 @@
   const TABS: Tab[] = ['profile', 'staff', 'sanctions', 'tickets'];
   let active = $state<Tab>('profile');
   let tabEls: HTMLButtonElement[] = [];
+  // Un écran visité reste monté : revenir sur un onglet retrouve ce qu'on y a fait.
+  let seen = $state<Record<Tab, boolean>>({ profile: true, staff: false, sanctions: false, tickets: false });
+  $effect(() => {
+    seen[active] = true;
+  });
+
+  // Les écrans sont dessinés à la taille du dashboard puis réduits à la largeur
+  // disponible. Sous 0,6 les cibles deviennent trop petites pour un doigt :
+  // l'écran reste visible mais n'est plus manipulable (`inert`).
+  const STAGE_W = 1180;
+  const STAGE_H = 720;
+  let frameWidth = $state(STAGE_W);
+  const scale = $derived(Math.min(1, frameWidth / STAGE_W));
+  const playable = $derived(scale >= 0.6);
 
   function onKey(e: KeyboardEvent, i: number) {
     const moves: Record<string, number> = {
@@ -125,30 +142,33 @@
 
       <div id="hq-panel" role="tabpanel" aria-labelledby="hq-tab-{active}" class="rounded-b-2xl rounded-tr-2xl border border-line-2 bg-night-3 p-2 sm:p-3">
         <p id="hq-cap" class="px-2 pb-3 pt-1 text-base text-mist sm:px-3">{t.tabs[active].caption}</p>
-        <!-- Une capture, pas une interface : `inert` retire ses faux contrôles du
-             clavier et ses titres du plan, la légende la décrit. -->
-        <div class="dash-dark overflow-hidden rounded-xl border border-line">
-          <!-- Zone défilable : focusable pour défiler au clavier (WCAG 2.1.1). -->
-          <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-          <div class="overflow-x-auto" tabindex="0" role="region" aria-labelledby="hq-cap hq-fict">
-            <div class="min-w-[56rem]" inert aria-hidden="true">
-              {#key active}
-                <div class="hq-screen">
-                  {#if active === 'profile'}
-                    <div class="relative h-[34rem] overflow-hidden"><MockProfile /></div>
-                  {:else if active === 'staff'}
-                    <div class="flex h-[34rem] flex-col"><MockStaff /></div>
-                  {:else if active === 'sanctions'}
-                    <div class="flex h-[34rem] flex-col"><MockSanction /></div>
+        <div class="overflow-hidden rounded-xl border border-line bg-night" bind:clientWidth={frameWidth} style="height: {STAGE_H * scale}px">
+          <div
+            class="origin-top-left"
+            style="width: {STAGE_W}px; height: {STAGE_H}px; transform: scale({scale})"
+            inert={!playable}
+          >
+            {#each TABS as tab (tab)}
+              {#if seen[tab]}
+                <div class="h-full" hidden={active !== tab}>
+                  {#if tab === 'profile'}
+                    <MembersScreen />
+                  {:else if tab === 'staff'}
+                    <StaffScreen />
+                  {:else if tab === 'sanctions'}
+                    <SanctionsScreen />
                   {:else}
-                    <div class="flex h-[34rem] flex-col overflow-hidden"><MockTickets /></div>
+                    <TicketsScreen />
                   {/if}
                 </div>
-              {/key}
-            </div>
+              {/if}
+            {/each}
           </div>
         </div>
-        <p id="hq-fict" class="px-3 pb-1 pt-3 text-xs text-fog">{t.fictive}</p>
+        <p id="hq-fict" class="px-3 pb-1 pt-3 text-sm text-fog">
+          {playable ? t.fictive : t.small}
+          {#if !playable}<a href="/demo/" class="ml-1 font-semibold text-white underline decoration-white/30 underline-offset-4">{t.demo}</a>{/if}
+        </p>
       </div>
     </div>
 
@@ -178,15 +198,3 @@
     </div>
   </div>
 </section>
-
-<style>
-  .hq-screen {
-    animation: screen-in 380ms ease both;
-  }
-  @keyframes screen-in {
-    from {
-      opacity: 0;
-      transform: translateY(6px);
-    }
-  }
-</style>
