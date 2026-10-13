@@ -10,9 +10,10 @@
    * - je fais quoi ? l'ajouter, ou ouvrir le vrai dashboard en démo.
    *
    * Le texte reste court et parle comme la cible (des admins de serveur, jeunes,
-   * qui vivent sur Discord) : le film montre le produit. Sous la grille, les
-   * serveurs clients nommés, lus sur l'API (masqués si elle ne répond pas) ;
-   * près des boutons, la note Top.gg relevée à la main et les trois
+   * qui vivent sur Discord) : le film montre le produit. Sous le film et
+   * le texte, sur toute la largeur, les serveurs clients nommés, lus sur l'API
+   * (masqués si elle ne répond pas), et la note Top.gg relevée à la main ;
+   * près des boutons, les trois
    * réponses aux peurs d'avant l'invitation (prix, carte, droits admin).
    */
   import { onMount } from 'svelte';
@@ -26,7 +27,7 @@
   const TEXT = {
     fr: {
       h1a: 'Le bot Discord qui gère ton serveur',
-      h1b: 'pendant que tu dors.',
+      h1b: 'pendant que tu dors',
       sub: 'Modo, tickets, niveaux et ton staff, tout au même endroit. Avec 51 modules, ce que tu cherches est sûrement déjà dedans.',
       demo: 'Tester le dashboard',
       reassure: `${TRIAL_DAYS} jours offerts · pas de CB · pas de droits admin`,
@@ -37,7 +38,7 @@
     },
     en: {
       h1a: 'The Discord bot that runs your server',
-      h1b: 'while you sleep.',
+      h1b: 'while you sleep',
       sub: 'Mod, tickets, levels and your staff, all in one place. With 51 modules, whatever you need is probably already in there.',
       demo: 'Try the dashboard',
       reassure: `${TRIAL_DAYS} days free · no card · no admin perms`,
@@ -83,33 +84,33 @@
         </div>
 
         <p class="mt-4 text-sm text-fog">{t.reassure}</p>
-
-        <a href={TOPGG_URL} target="_blank" rel="noopener noreferrer" class="mt-6 inline-block text-sm font-semibold text-white underline decoration-line-2 underline-offset-4 hover:decoration-white">{t.rating(TOPGG_RATING)}<span class="sr-only"> {t.newTab}</span></a>
       </div>
     </div>
 
-    <!-- Les serveurs qui tournent déjà avec Kotbo, nommés : un nom et un
-         nombre de membres parlent plus qu'un logo. Masqué si l'API se tait. -->
-    {#if servers.length}
-      <div class="mt-12 flex flex-col gap-4 border-t border-line pt-6 lg:flex-row lg:items-center lg:gap-8">
-        <p class="shrink-0 text-sm font-semibold text-fog">{t.proof}</p>
-        <ul class="grid gap-3 sm:grid-cols-3 lg:flex lg:flex-wrap lg:gap-3">
+    <!-- La preuve sur toute la largeur, sous le film et le texte : les
+         serveurs qui tournent déjà avec Kotbo, nommés, avec leurs membres
+         (lus sur l'API, masqués si elle se tait), et la note Top.gg. -->
+    <div class="mt-12 flex flex-col gap-5 lg:mt-14 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+      {#if servers.length}
+        <p class="shrink-0 text-xs font-semibold uppercase tracking-wide text-fog">{t.proof}</p>
+        <ul class="grid gap-4 sm:grid-cols-3 lg:flex lg:flex-1 lg:justify-around lg:gap-6">
           {#each servers as server (server.name)}
-            <li class="flex min-w-0 items-center gap-3 rounded-xl border border-line bg-night-2 py-2 pl-2 pr-4">
+            <li class="flex min-w-0 items-center gap-3">
               {#if server.iconUrl}
-                <img src={server.iconUrl} alt="" width="36" height="36" class="h-9 w-9 shrink-0 rounded-lg bg-night-3 object-cover" onerror={(e) => ((e.currentTarget as HTMLImageElement).src = `${base}/favicon.svg`)} />
+                <img src={server.iconUrl} alt="" width="44" height="44" class="h-11 w-11 shrink-0 rounded-xl bg-night-3 object-cover" onerror={(e) => ((e.currentTarget as HTMLImageElement).src = `${base}/favicon.svg`)} />
               {:else}
-                <span aria-hidden="true" class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-night-4 text-xs font-bold text-mist">{server.name.slice(0, 2)}</span>
+                <span aria-hidden="true" class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-night-4 text-sm font-bold text-mist">{server.name.slice(0, 2)}</span>
               {/if}
               <span class="min-w-0">
-                <span class="block truncate text-sm font-semibold text-white">{server.name}</span>
-                <span class="block text-xs tabular-nums text-fog">{t.members(fmt(server.memberCount))}</span>
+                <span class="block truncate font-semibold text-white">{server.name}</span>
+                <span class="block text-sm tabular-nums text-fog">{t.members(fmt(server.memberCount))}</span>
               </span>
             </li>
           {/each}
         </ul>
-      </div>
-    {/if}
+      {/if}
+      <a href={TOPGG_URL} target="_blank" rel="noopener noreferrer" class="shrink-0 text-sm font-semibold text-white underline decoration-line-2 underline-offset-4 hover:decoration-white">{t.rating(TOPGG_RATING)}<span class="sr-only"> {t.newTab}</span></a>
+    </div>
   </div>
 </section>
 
