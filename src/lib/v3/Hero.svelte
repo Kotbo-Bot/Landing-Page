@@ -60,52 +60,55 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="bienvenue" /></div>
   </div>
 
-  <div class="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)] items-center gap-12 px-4 pb-20 pt-10 sm:px-6 lg:pb-28 lg:pt-16 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] xl:gap-14">
-    <div>
+  <div class="mx-auto max-w-7xl px-4 pb-20 pt-10 sm:px-6 lg:pb-28 lg:pt-14">
+    <div class="grid grid-cols-[minmax(0,1fr)] gap-8 xl:grid-cols-2 xl:items-end xl:gap-14">
       <h1 id="hero-title" class="font-display text-[2.6rem] font-black leading-[0.98] tracking-[-0.03em] text-balance text-white sm:text-6xl 2xl:text-[5rem]">
         {t.h1a}
         {t.h1b}
       </h1>
 
-      <p class="mt-6 max-w-xl text-lg leading-relaxed text-mist text-pretty sm:text-xl">{t.sub}</p>
+      <div>
+        <p class="max-w-xl text-lg leading-relaxed text-mist text-pretty sm:text-xl">{t.sub}</p>
 
-      <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <AddButton content="hero" size="lg" />
-        <a
-          href="/demo/"
-          class="inline-flex min-h-14 items-center justify-center rounded-xl border border-line-2 px-6 text-base font-semibold text-white transition-colors hover:border-mist hover:bg-night-3"
-        >
-          {t.demo}
-        </a>
-      </div>
+        <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+          <AddButton content="hero" size="lg" />
+          <a
+            href="/demo/"
+            class="inline-flex min-h-14 items-center justify-center whitespace-nowrap rounded-xl border border-line-2 px-6 text-base font-semibold text-white transition-colors hover:border-mist hover:bg-night-3"
+          >
+            {t.demo}
+          </a>
+        </div>
 
-      <p class="mt-5 flex items-start gap-2 text-sm text-mist"><img src={ktb('lock')} alt="" width="16" height="16" class="mt-0.5 h-4 w-4 shrink-0" />{t.reassure}</p>
-
-      <div class="mt-10 border-t border-line pt-6">
-        <p class="text-sm text-fog">{t.proof}</p>
-        <ul class="mt-4 flex flex-wrap items-center gap-x-6 gap-y-4">
-          {#each servers as server (server.name)}
-            <li class="flex items-center gap-2.5">
-              {#if server.iconUrl}
-                <img src={server.iconUrl} alt="" width="36" height="36" class="h-9 w-9 rounded-xl bg-night-3 object-cover" onerror={(e) => ((e.currentTarget as HTMLImageElement).src = `${base}/favicon.svg`)} />
-              {:else}
-                <span aria-hidden="true" class="grid h-9 w-9 place-items-center rounded-xl bg-night-4 text-xs font-bold text-mist">{server.name.slice(0, 2)}</span>
-              {/if}
-              <span>
-                <span class="line-clamp-2 block max-w-44 text-sm font-semibold text-white">{server.name}</span>
-                <span class="block text-xs tabular-nums text-fog">{t.memberCount(fmt(server.memberCount))}</span>
-              </span>
-            </li>
-          {/each}
-          <li>
-            <a href={TOPGG_URL} target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-white underline decoration-line-2 underline-offset-4 hover:decoration-white">{t.rating(TOPGG_RATING)}<span class="sr-only"> {t.newTab}</span></a>
-          </li>
-        </ul>
+        <p class="mt-5 flex items-start gap-2 text-sm text-mist"><img src={ktb('lock')} alt="" width="16" height="16" class="mt-0.5 h-4 w-4 shrink-0" />{t.reassure}</p>
       </div>
     </div>
 
-    <div class="mx-auto w-full max-w-2xl xl:max-w-none">
+    <!-- Le film prend toute la largeur : c'est lui qui montre le produit. -->
+    <div class="mt-10 lg:mt-14">
       <HeroVideo />
+    </div>
+
+    <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
+      <p class="shrink-0 text-sm text-fog">{t.proof}</p>
+      <ul class="flex flex-wrap items-center gap-x-6 gap-y-4">
+        {#each servers as server (server.name)}
+          <li class="flex items-center gap-2.5">
+            {#if server.iconUrl}
+              <img src={server.iconUrl} alt="" width="36" height="36" class="h-9 w-9 rounded-xl bg-night-3 object-cover" onerror={(e) => ((e.currentTarget as HTMLImageElement).src = `${base}/favicon.svg`)} />
+            {:else}
+              <span aria-hidden="true" class="grid h-9 w-9 place-items-center rounded-xl bg-night-4 text-xs font-bold text-mist">{server.name.slice(0, 2)}</span>
+            {/if}
+            <span>
+              <span class="line-clamp-2 block max-w-44 text-sm font-semibold text-white">{server.name}</span>
+              <span class="block text-xs tabular-nums text-fog">{t.memberCount(fmt(server.memberCount))}</span>
+            </span>
+          </li>
+        {/each}
+        <li>
+          <a href={TOPGG_URL} target="_blank" rel="noopener noreferrer" class="text-sm font-semibold text-white underline decoration-line-2 underline-offset-4 hover:decoration-white">{t.rating(TOPGG_RATING)}<span class="sr-only"> {t.newTab}</span></a>
+        </li>
+      </ul>
     </div>
   </div>
 </section>

@@ -35,7 +35,8 @@
   let muted = $state(true);
 
   function send(method: string, value?: unknown) {
-    frame?.contentWindow?.postMessage(JSON.stringify(value === undefined ? { method } : { method, value }), ORIGIN);
+    // Un objet, pas du JSON en texte : le lecteur ignore les abonnements en texte.
+    frame?.contentWindow?.postMessage(value === undefined ? { method } : { method, value }, ORIGIN);
   }
 
   function togglePlay() {
@@ -50,6 +51,14 @@
     if (!muted && !playing) togglePlay();
   }
 
+  // Le lecteur peut annoncer `ready` avant que la page n'écoute : on
+  // s'abonne aussi au chargement du cadre (par `addEventListener` : un
+  // `onload` Svelte deviendrait un gestionnaire en ligne, bloqué par la CSP).
+  // S'abonner deux fois est sans effet.
+  function listen() {
+    send('addEventListener', 'timeupdate');
+  }
+
   onMount(() => {
     const onMessage = (e: MessageEvent) => {
       if (e.origin !== ORIGIN || e.source !== frame?.contentWindow) return;
@@ -60,7 +69,7 @@
         return;
       }
       if (data.event === 'ready') {
-        send('addEventListener', 'timeupdate');
+        listen();
       } else if (data.event === 'timeupdate' && !ready) {
         // Première image : le film tourne vraiment.
         ready = true;
@@ -71,7 +80,12 @@
       }
     };
     window.addEventListener('message', onMessage);
-    return () => window.removeEventListener('message', onMessage);
+    frame?.addEventListener('load', listen);
+    listen();
+    return () => {
+      window.removeEventListener('message', onMessage);
+      frame?.removeEventListener('load', listen);
+    };
   });
 </script>
 
@@ -93,7 +107,7 @@
   </div>
 
   {#if ready}
-    <div class="absolute bottom-3 right-3 flex gap-2">
+    <div class="absolute bottom-2 right-2 flex gap-2 sm:bottom-3 sm:right-3">
       <button
         type="button"
         onclick={toggleSound}
