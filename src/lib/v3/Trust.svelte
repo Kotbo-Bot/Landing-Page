@@ -10,13 +10,10 @@
    * l'hébergement et le DPA, l'import des niveaux (voir `faq.js`). La
    * conversation est annoncée fictive.
    *
-   * Les serveurs qui utilisent Kotbo viennent de l'API, avec leur nombre de
-   * membres à jour. L'API muette, la liste disparaît.
+   * Les serveurs qui utilisent Kotbo sont dans le héros, à côté du bouton.
    */
-  import { onMount } from 'svelte';
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
-  import { publicStats } from '$lib/data/stats.svelte';
   import ChannelHeader from './ChannelHeader.svelte';
 
   type Line = { who: 'ines' | 'you'; text: string; link?: { href: string; label: string } };
@@ -27,7 +24,7 @@
       ines: 'Inès',
       inesRole: 'co-fonda',
       you: 'toi',
-      today: 'Aujourd’hui à 21:14',
+      today: (m: number) => `Aujourd’hui à 21:${String(14 + m).padStart(2, '0')}`,
       fictive: 'conversation fictive',
       lines: [
         { who: 'ines', text: 'attends avant d’ajouter un énième bot. il demande les droits admin ?' },
@@ -40,15 +37,13 @@
         { who: 'you', text: 'non on importe le classement. et la courbe d’xp peut être calée sur celle de mee6, les paliers bougent pas' },
         { who: 'ines', text: 'ok vas-y ajoute-le' },
       ] as Line[],
-      servers: 'Des serveurs qui tournent déjà avec Kotbo',
-      members: (n: string) => `${n} membres`,
     },
     en: {
       title: 'Your co-founder will ask you these. Here’s what to answer.',
       ines: 'Inès',
       inesRole: 'co-founder',
       you: 'you',
-      today: 'Today at 9:14 PM',
+      today: (m: number) => `Today at 9:${String(14 + m).padStart(2, '0')} PM`,
       fictive: 'fictional conversation',
       lines: [
         { who: 'ines', text: 'wait before we add yet another bot. does it ask for admin?' },
@@ -61,19 +56,15 @@
         { who: 'you', text: 'no we import the leaderboard. and the xp curve can match mee6’s so the tiers don’t move' },
         { who: 'ines', text: 'ok go add it' },
       ] as Line[],
-      servers: 'Servers already running on Kotbo',
-      members: (n: string) => `${n} members`,
     },
   };
 
   const t = $derived(TEXT[getLocale()]);
-  const servers = $derived((publicStats.data?.servers ?? []).slice(0, 8));
   const fmt = (n: number) => n.toLocaleString(getLocale() === 'fr' ? 'fr-FR' : 'en-US').replace(/ /g, ' ');
 
   /** Deux messages d'affilée du même auteur se regroupent, comme dans Discord. */
   const grouped = $derived(t.lines.map((line, i) => ({ ...line, head: i === 0 || t.lines[i - 1].who !== line.who })));
 
-  onMount(() => void publicStats.load());
 </script>
 
 <section id="confiance" aria-labelledby="trust-title" class="relative bg-night-2 pb-16 sm:pb-24 lg:pb-32">
@@ -100,7 +91,7 @@
                 <p class="flex flex-wrap items-baseline gap-x-2">
                   <span class="font-semibold {line.who === 'ines' ? 'text-[#f9a8d4]' : 'text-glow'}">{line.who === 'ines' ? t.ines : t.you}</span>
                   {#if line.who === 'ines'}<span class="rounded bg-night-4 px-1 text-[11px] font-medium text-mist">{t.inesRole}</span>{/if}
-                  <span class="text-xs text-fog">{t.today}</span>
+                  <span class="text-xs text-fog">{t.today(Math.floor(i / 2))}</span>
                 </p>
               {/if}
               <p class="text-[16px] leading-relaxed text-[#dbdee1]">
@@ -115,34 +106,5 @@
       </ol>
       <p class="mt-6 pl-16 text-xs text-fog">{t.fictive}</p>
     </div>
-
-    {#if servers.length > 0}
-      <div class="mt-16 border-t border-line pt-10">
-        <h3 class="text-sm font-semibold text-fog">{t.servers}</h3>
-        <ul class="mt-5 flex flex-wrap gap-x-8 gap-y-5">
-          {#each servers as server (server.name)}
-            <li class="flex items-center gap-3">
-              {#if server.iconUrl}
-                <img
-                  src={server.iconUrl}
-                  alt=""
-                  width="44"
-                  height="44"
-                  loading="lazy"
-                  class="h-11 w-11 rounded-2xl bg-night-3 object-cover"
-                  onerror={(e) => ((e.currentTarget as HTMLImageElement).src = `${base}/favicon.svg`)}
-                />
-              {:else}
-                <span aria-hidden="true" class="grid h-11 w-11 place-items-center rounded-2xl bg-night-4 text-sm font-bold text-mist">{server.name.slice(0, 2)}</span>
-              {/if}
-              <span>
-                <span class="block max-w-52 truncate font-semibold text-white">{server.name}</span>
-                <span class="block text-sm tabular-nums text-fog">{t.members(fmt(server.memberCount))}</span>
-              </span>
-            </li>
-          {/each}
-        </ul>
-      </div>
-    {/if}
   </div>
 </section>

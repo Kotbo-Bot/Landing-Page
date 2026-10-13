@@ -10,8 +10,8 @@
   import ChannelHeader from './ChannelHeader.svelte';
 
   const TEXT = {
-    fr: { title: 'Les questions qu’on nous pose tout le temps.' },
-    en: { title: 'The questions we get all the time.' },
+    fr: { title: 'T’as encore un doute ? Normal, on te répond.' },
+    en: { title: 'Still got a doubt? Fair, here are the answers.' },
   };
   const t = $derived(TEXT[getLocale()]);
   const items = $derived(HOME_FAQ[getLocale()]);
@@ -32,7 +32,7 @@
           class="group"
           ontoggle={(e) => (e.currentTarget as HTMLDetailsElement).open && track('faq_opened', { content: `q${i}` })}
         >
-          <summary class="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-5 font-display text-lg font-bold text-white marker:hidden sm:text-xl [&::-webkit-details-marker]:hidden">
+          <summary class="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-5 text-lg font-semibold text-white marker:hidden sm:text-xl [&::-webkit-details-marker]:hidden">
             {item.q}
             <span aria-hidden="true" class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-line-2 text-fog transition-transform group-open:rotate-45">+</span>
           </summary>

@@ -25,7 +25,7 @@
 
   const TEXT = {
     fr: {
-      title: 'Le prix dépend du nombre de membres, et de rien d’autre.',
+      title: 'Le prix dépend seulement du nombre de membres sur ton serveur.',
       sentenceA: 'Pour un serveur de',
       sentenceB: ', Kotbo te coûte',
       sentenceC: 'par mois.',
@@ -49,7 +49,7 @@
         `${(cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: cents % 100 ? 2 : 0, maximumFractionDigits: 2 })} €`,
     },
     en: {
-      title: 'The price depends on member count, and nothing else.',
+      title: 'The price only depends on how many members your server has.',
       sentenceA: 'For a server with',
       sentenceB: ', Kotbo costs you',
       sentenceC: 'a month.',

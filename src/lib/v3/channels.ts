@@ -28,7 +28,7 @@ export const CHANNELS: Record<Locale, ChannelGroup[]> = {
     {
       label: 'Commence ici',
       channels: [
-        { id: 'bienvenue', name: 'bienvenue', topic: 'Kotbo en trois secondes' },
+        { id: 'bienvenue', name: 'bienvenue', topic: 'le bot, le dashboard, et ton staff' },
         { id: 'nuit', name: '2h47', topic: 'la vie de fonda, sans Kotbo' },
       ],
     },
@@ -54,7 +54,7 @@ export const CHANNELS: Record<Locale, ChannelGroup[]> = {
     {
       label: 'Start here',
       channels: [
-        { id: 'bienvenue', name: 'welcome', topic: 'Kotbo in three seconds' },
+        { id: 'bienvenue', name: 'welcome', topic: 'the bot, the dashboard, and your staff' },
         { id: 'nuit', name: '2-47am', topic: 'owner life, without Kotbo' },
       ],
     },

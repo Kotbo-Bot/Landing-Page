@@ -38,6 +38,7 @@
   import Footer from '$lib/v3/Footer.svelte';
   import MobileBar from '$lib/v3/MobileBar.svelte';
   import Channels from '$lib/v3/Channels.svelte';
+  import ChannelSheet from '$lib/v3/ChannelSheet.svelte';
 
   // Requête en tête, marque en fin : c'est ce que tapent ceux qui cherchent un
   // bot sans connaître Kotbo. Le titre est aussi le titre bleu de l'embed
@@ -95,4 +96,5 @@
   </main>
   <Footer />
   <MobileBar />
+  <ChannelSheet />
 </div>

@@ -22,7 +22,7 @@
 
   const TEXT = {
     fr: {
-      title: 'Kotbo gère aussi ceux qui gèrent tes membres.',
+      title: 'Ton staff a enfin un QG, et il est dans le dashboard.',
       intro:
         'Tout ce que Kotbo fait dans Discord atterrit dans le dashboard. Ton staff y retrouve la fiche de n’importe quel membre, le suivi de chaque modo et le dossier derrière chaque ban.',
       tabsLabel: 'Écrans du dashboard',
@@ -46,7 +46,7 @@
       fictive: 'Écrans du dashboard, membres fictifs',
     },
     en: {
-      title: 'Kotbo also manages the people who manage your members.',
+      title: 'Your staff finally gets an HQ, and it lives in the dashboard.',
       intro:
         'Everything Kotbo does in Discord lands in the dashboard. Your staff can pull up any member’s profile, every mod’s track record and the file behind each ban.',
       tabsLabel: 'Dashboard screens',
@@ -96,7 +96,7 @@
     </div>
 
     <div class="mt-14">
-      <div role="tablist" aria-label={t.tabsLabel} class="flex gap-1 overflow-x-auto pb-px">
+      <div role="tablist" aria-label={t.tabsLabel} class="flex flex-wrap gap-1">
         {#each TABS as tab, i (tab)}
           <button
             bind:this={tabEls[i]}

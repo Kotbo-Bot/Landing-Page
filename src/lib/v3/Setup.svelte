@@ -172,7 +172,7 @@
             aria-checked={on}
             onclick={() => choose(key)}
             class="group flex min-h-16 items-center gap-4 rounded-2xl border px-4 py-3 text-left transition-colors {on
-              ? 'border-ok/60 bg-ok/10'
+              ? 'border-glow/60 bg-[#4f46e5]/15'
               : 'border-line-2 bg-night-2 hover:border-fog'}"
           >
             <span>
@@ -203,7 +203,7 @@
               <p class="text-sm font-semibold text-fog">{t.modules}</p>
               <ul class="mt-3 flex flex-wrap gap-2">
                 {#each kit.tracks as tr, i (tr)}
-                  <li class="chan rounded-lg bg-ok/15 px-3 py-1.5 text-sm font-semibold text-ok" style="--i: {i}">✓ {t.tracks[tr]}</li>
+                  <li class="chan rounded-lg bg-[#4f46e5]/20 px-3 py-1.5 text-sm font-semibold text-glow" style="--i: {i}">✓ {t.tracks[tr]}</li>
                 {/each}
                 <li class="chan rounded-lg bg-night-4 px-3 py-1.5 text-sm font-semibold text-mist" style="--i: {kit.tracks.length}">{t.moderation[kit.moderation]}</li>
               </ul>

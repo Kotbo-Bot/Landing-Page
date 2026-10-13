@@ -22,11 +22,7 @@
       title: 'Tu voulais un serveur pour traîner avec ta commu. T’as fini SAV de six bots.',
       intro:
         'Plus ton serveur grossit, plus tu tiens seul tout ce qui se passe derrière : le staff, les sanctions, les tickets. Et ça tombe toujours la nuit.',
-      pains: [
-        { quote: '« qui a ban Maxou ??? »', text: 'Personne sait. Y’a ni motif ni preuve, et Maxou crie à l’abus de pouvoir.' },
-        { quote: '« jsuis pas là ce week-end »', text: 'Ton staff s’organise en MP. Les absences, tu les découvres le jour même.' },
-        { quote: '« frr y’a un raid »', text: 'À 3 h du mat’, c’est toi qu’on ping. Comme d’hab.' },
-      ],
+      hint: 'Bascule pour voir la même nuit avec Kotbo :',
       without: 'Sans Kotbo',
       with: 'Avec Kotbo',
       switchLabel: 'Comparer la nuit sans et avec Kotbo',
@@ -51,11 +47,7 @@
       title: 'You wanted a server to hang out with your people. You ended up as tech support for six bots.',
       intro:
         'The bigger your server gets, the more you hold everything behind the scenes alone: the staff, the sanctions, the tickets. And it always hits at night.',
-      pains: [
-        { quote: '“who banned Maxou???”', text: 'Nobody knows. There’s no reason and no proof, and Maxou is yelling about power abuse.' },
-        { quote: '“i’m out this weekend”', text: 'Your staff organizes in DMs. You find out about time off on the day.' },
-        { quote: '“bro we’re getting raided”', text: 'At 3 a.m., you’re the one who gets pinged. As usual.' },
-      ],
+      hint: 'Flip it to see the same night with Kotbo:',
       without: 'Without Kotbo',
       with: 'With Kotbo',
       switchLabel: 'Compare the night without and with Kotbo',
@@ -93,20 +85,9 @@
         {t.title}
       </h2>
       <p class="mt-6 max-w-xl text-lg leading-relaxed text-mist">{t.intro}</p>
-
-      <ul class="mt-10 divide-y divide-line border-y border-line [&>li]:py-5">
-        {#each t.pains as pain (pain.quote)}
-          <li class="grid gap-1 sm:grid-cols-[13rem_1fr] sm:gap-6">
-            <span class="font-display text-lg font-bold text-alarm">{pain.quote}</span>
-            <span class="text-fog">{pain.text}</span>
-          </li>
-        {/each}
-      </ul>
-    </div>
-
-    <div class="mx-auto w-full max-w-[24rem]">
+      <p class="mt-10 font-semibold text-white">{t.hint}</p>
       <!-- La bascule : le seul geste de la zone. -->
-      <div role="group" aria-label={t.switchLabel} class="mx-auto mb-6 grid grid-cols-2 rounded-full border border-line-2 bg-night-2 p-1 text-sm font-semibold">
+      <div role="group" aria-label={t.switchLabel} class="mt-3 grid max-w-sm grid-cols-2 rounded-full border border-line-2 bg-night-2 p-1 text-sm font-semibold">
         <button
           type="button"
           aria-pressed={!calm}
@@ -117,9 +98,13 @@
           type="button"
           aria-pressed={calm}
           onclick={() => (calm = true)}
-          class="min-h-10 rounded-full transition-colors {calm ? 'bg-ok text-night' : 'text-fog hover:text-white'}"
+          class="min-h-10 rounded-full transition-colors {calm ? 'bg-[#4f46e5] text-white' : 'text-fog hover:text-white'}"
         >{t.with}</button>
       </div>
+
+    </div>
+
+    <div class="mx-auto w-full max-w-[24rem]">
 
       <!-- Le téléphone -->
       <div class="relative rounded-[2.75rem] border border-line-2 bg-black p-2.5">

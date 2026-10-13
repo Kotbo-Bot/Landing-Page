@@ -56,8 +56,7 @@
       empty: 'Coche au moins un truc, sinon le ticket est vide.',
       stamp: 'PAYÉ TROP CHER',
       thanks: 'Merci de ta visite. Reviens pas.',
-      note:
-        'Prix d’entrée des offres premium, relevés en ordre de grandeur sur la page publique de chaque bot en septembre 2026. Ils changent sans prévenir, et Kotbo n’est affilié à aucun de ces bots. Kotbo : offre Starter payée à l’année, prix HT.',
+      note: 'Prix premium d’entrée relevés sur la page de chaque bot en septembre 2026, en ordre de grandeur. Kotbo n’est affilié à aucun. Kotbo : Starter à l’année, HT.',
       priceFmt: (n: number) => `${n.toLocaleString('fr-FR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 })} €`,
     },
     en: {
@@ -80,8 +79,7 @@
       empty: 'Tick at least one thing, or the receipt is empty.',
       stamp: 'OVERPAID',
       thanks: 'Thanks for visiting. Don’t come back.',
-      note:
-        'Entry-level premium pricing, order-of-magnitude figures checked on each bot’s public pricing page in September 2026. They change without notice, and Kotbo isn’t affiliated with any of these bots. Kotbo: Starter plan billed yearly, excl. VAT.',
+      note: 'Entry-level premium prices from each bot’s page in September 2026, order of magnitude. Kotbo isn’t affiliated with any. Kotbo: Starter billed yearly, excl. VAT.',
       priceFmt: (n: number) => `€${n.toLocaleString('en-US', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 })}`,
     },
   };
@@ -199,12 +197,10 @@
 
 
           <div class="mt-12 rounded-lg bg-[#1c1917] p-4 font-sans text-white">
-            <p class="flex items-center justify-between gap-3">
-              <span class="flex items-center gap-2 font-display text-lg font-extrabold">
-                <img src="{base}/favicon.svg" alt="" width="22" height="22" class="h-5.5 w-5.5 rounded" />{t.kotbo}
-              </span>
-              <span class="text-right font-mono text-sm tabular-nums"><span class="text-[#a8a29e]">{t.kotboFrom}</span> {t.priceFmt(KOTBO_PRICE)}{t.perMonth}</span>
+            <p class="flex items-center gap-2 font-display text-lg font-extrabold">
+              <img src="{base}/favicon.svg" alt="" width="22" height="22" class="h-5.5 w-5.5 rounded" />{t.kotbo}
             </p>
+            <p class="mt-1 font-mono text-sm tabular-nums"><span class="text-[#d6d3d1]">{t.kotboFrom}</span> {t.priceFmt(KOTBO_PRICE)}{t.perMonth}</p>
             <p class="mt-1 text-xs text-[#d6d3d1]">{t.kotboLine}</p>
             <p class="mt-3 font-semibold text-[#86efac]">{saved > 0 ? t.saved(t.priceFmt(saved)) : t.same}</p>
           </div>

@@ -30,7 +30,7 @@
 
   const TEXT = {
     fr: {
-      title: 'Les 51 modules sont dans l’abonnement, même ceux qui sortent demain.',
+      title: 'Les 51 modules sont tous dans l’abonnement, et les prochains aussi.',
       intro: 'Tu actives ce dont ton serveur a besoin depuis le dashboard, et tu coupes le reste. Clique sur un module pour le voir tourner.',
       sample: 'extrait fictif',
       mod: {
@@ -89,7 +89,7 @@
       },
     },
     en: {
-      title: 'All 51 modules come with the subscription, even the ones shipping tomorrow.',
+      title: 'All 51 modules come with the subscription, and so will the next ones.',
       intro: 'Turn on what your server needs from the dashboard and switch off the rest. Click a module to see it run.',
       sample: 'fictional sample',
       mod: {
@@ -196,7 +196,7 @@
               onclick={() => (active = key)}
               class="group flex w-full items-center justify-between gap-4 py-5 text-left"
             >
-              <span class="font-display text-2xl font-extrabold tracking-tight transition-colors sm:text-3xl {on ? 'text-white' : 'text-fog group-hover:text-mist'}">{t[key].title}</span>
+              <span class="font-display text-2xl font-extrabold tracking-tight transition-colors {on ? 'text-white' : 'text-mist group-hover:text-white'}">{t[key].title}</span>
               <img src={ktb(ICONS[key])} alt="" width="28" height="28" class="h-7 w-7 shrink-0 transition-opacity {on ? 'opacity-100' : 'opacity-40 group-hover:opacity-70'}" />
             </button>
             {#if on}
@@ -243,9 +243,9 @@
 
 {#snippet preview(key: Key)}
   {#if key === 'mod'}
-    <div class="rounded-2xl bg-black p-5 font-mono text-[12.5px] leading-6 sm:text-sm">
+    <div class="overflow-x-auto rounded-2xl bg-black p-5 font-mono text-[12.5px] leading-6 sm:text-sm">
       {#each t.mod.log as [time, text, tone] (time)}
-        <p class="flex gap-3"><span class="shrink-0 text-fog">[{time}]</span><span class={TONE[tone]}>{text}</span></p>
+        <p class="flex gap-3 whitespace-nowrap"><span class="shrink-0 text-fog">[{time}]</span><span class={TONE[tone]}>{text}</span></p>
       {/each}
       <p class="mt-3 text-[10px] uppercase text-fog">{t.sample}</p>
     </div>
