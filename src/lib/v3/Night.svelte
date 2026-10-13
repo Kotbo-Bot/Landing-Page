@@ -36,7 +36,7 @@
     fr: {
       title: 'Tu voulais un serveur pour traîner avec ta commu. T’as fini SAV de six bots.',
       intro:
-        'Plus ton serveur grossit, plus tu tiens seul tout ce qui se passe derrière : le staff, les sanctions, les tickets. Et ça tombe toujours la nuit.',
+        'Plus ton serveur grossit, plus tu tiens seul tout ce qui se passe derrière : le staff, les sanctions, les tickets. Et ça tombe toujours la nuit',
       without: 'Sans Kotbo',
       with: 'Avec Kotbo',
       switchLabel: 'Comparer la nuit sans et avec Kotbo',
@@ -49,7 +49,7 @@
       sceneChaos: 'Scène fictive : l’écran verrouillé d’un fondateur à 2 h 47, sans Kotbo.',
       sceneCalm: 'Scène fictive : le même écran, avec Kotbo.',
       more: (n: number) => `${n} autres notifications`,
-      sleep: 'Rendors-toi.',
+      sleep: 'Rendors-toi',
       staffChat: [
         { author: 'Inès (modo)', time: '02:11', text: 'j’ai refait le planning sur le sheet, checkez svp' },
         { author: 'Enzo (modo)', time: '02:26', text: 'jsuis pas là ce we, qqn me remplace ?' },
@@ -82,7 +82,7 @@
     en: {
       title: 'You wanted a server to hang out with your people. You ended up as tech support for six bots.',
       intro:
-        'The bigger your server gets, the more you hold everything behind the scenes alone: the staff, the sanctions, the tickets. And it always hits at night.',
+        'The bigger your server gets, the more you hold everything behind the scenes alone: the staff, the sanctions, the tickets. And it always hits at night',
       without: 'Without Kotbo',
       with: 'With Kotbo',
       switchLabel: 'Compare the night without and with Kotbo',
@@ -95,7 +95,7 @@
       sceneChaos: 'Fictional scene: a server owner’s lock screen at 2:47 a.m., without Kotbo.',
       sceneCalm: 'Fictional scene: the same screen, with Kotbo.',
       more: (n: number) => `${n} more notifications`,
-      sleep: 'Go back to sleep.',
+      sleep: 'Go back to sleep',
       staffChat: [
         { author: 'Inès (mod)', time: '02:11', text: 'redid the schedule in the sheet, pls check' },
         { author: 'Enzo (mod)', time: '02:26', text: 'i’m out this weekend, can someone cover?' },

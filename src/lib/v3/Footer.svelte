@@ -12,7 +12,7 @@
 
   const TEXT = {
     fr: {
-      tagline: 'Le bot Discord qui gère ton serveur et ton staff.',
+      tagline: 'Le bot Discord qui gère ton serveur et ton staff',
       product: 'Produit',
       newTab: '(nouvel onglet)',
       features: 'Fonctionnalités',
@@ -30,10 +30,10 @@
       cookies: 'Cookies',
       dpa: 'DPA',
       notice: 'Mentions légales',
-      eu: 'Créé et hébergé dans l’Union européenne, sans aucun traceur sur ce site.',
+      eu: 'Créé et hébergé dans l’Union européenne, sans aucun traceur sur ce site',
     },
     en: {
-      tagline: 'The Discord bot that runs your server and your staff.',
+      tagline: 'The Discord bot that runs your server and your staff',
       product: 'Product',
       newTab: '(new tab)',
       features: 'Features',
@@ -51,7 +51,7 @@
       cookies: 'Cookies',
       dpa: 'DPA',
       notice: 'Legal notice',
-      eu: 'Built and hosted in the European Union, with zero trackers on this site.',
+      eu: 'Built and hosted in the European Union, with zero trackers on this site',
     },
   };
 

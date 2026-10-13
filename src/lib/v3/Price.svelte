@@ -25,10 +25,10 @@
 
   const TEXT = {
     fr: {
-      title: 'Le prix dépend seulement du nombre de membres sur ton serveur.',
+      title: 'Le prix dépend seulement du nombre de membres sur ton serveur',
       sentenceA: 'Pour un serveur de',
       sentenceB: ', Kotbo te coûte',
-      sentenceC: 'par mois.',
+      sentenceC: 'par mois',
       billing: 'Facturation',
       valueText: (n: string, price: string) => `${n} membres, ${price} par mois`,
       slider: 'Nombre de membres sur ton serveur',
@@ -37,23 +37,23 @@
       yearly: 'À l’année',
       yearlyHint: '-50 %',
       perMonth: '/mois',
-      billedYearly: (n: string) => `Facturé ${n} par an.`,
-      noCommit: 'Sans engagement, résiliable quand tu veux.',
+      billedYearly: (n: string) => `Facturé ${n} par an`,
+      noCommit: 'Sans engagement, résiliable quand tu veux',
       plan: 'Offre',
-      custom: 'Au-delà de 100 000 membres, on construit l’offre ensemble.',
+      custom: 'Au-delà de 100 000 membres, on construit l’offre ensemble',
       customCta: 'Prendre rendez-vous',
-      trial: `${TRIAL_DAYS} jours gratuits, une fois par serveur, sans carte bancaire. Tu configures tout avant de payer.`,
+      trial: `${TRIAL_DAYS} jours gratuits, une fois par serveur, sans carte bancaire. Tu configures tout avant de payer`,
       included:
-        'Chaque offre contient tout Kotbo : modération, AutoMod et anti-raid, logs, tickets et candidatures, toute la gestion du staff, niveaux, économie, stats, alertes YouTube et Twitch, le dashboard, et les modules qui sortiront après. Aucun module en option.',
-      ht: 'Prix HT.',
+        'Chaque offre contient tout Kotbo : modération, AutoMod et anti-raid, logs, tickets et candidatures, toute la gestion du staff, niveaux, économie, stats, alertes YouTube et Twitch, le dashboard, et les modules qui sortiront après. Aucun module en option',
+      ht: 'Prix HT',
       euro: (cents: number) =>
         `${(cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: cents % 100 ? 2 : 0, maximumFractionDigits: 2 })} €`,
     },
     en: {
-      title: 'The price only depends on how many members your server has.',
+      title: 'The price only depends on how many members your server has',
       sentenceA: 'For a server with',
       sentenceB: ', Kotbo costs you',
-      sentenceC: 'a month.',
+      sentenceC: 'a month',
       billing: 'Billing',
       valueText: (n: string, price: string) => `${n} members, ${price} a month`,
             slider: 'Members on your server',
@@ -62,15 +62,15 @@
       yearly: 'Yearly',
       yearlyHint: '-50%',
       perMonth: '/mo',
-      billedYearly: (n: string) => `Billed ${n} a year.`,
-      noCommit: 'No commitment, cancel whenever.',
+      billedYearly: (n: string) => `Billed ${n} a year`,
+      noCommit: 'No commitment, cancel whenever',
       plan: 'Plan',
-      custom: 'Above 100,000 members, we build the plan together.',
+      custom: 'Above 100,000 members, we build the plan together',
       customCta: 'Book a call',
-      trial: `${TRIAL_DAYS} days free, once per server, no credit card. Set everything up before you pay.`,
+      trial: `${TRIAL_DAYS} days free, once per server, no credit card. Set everything up before you pay`,
       included:
-        'Every plan has all of Kotbo: moderation, AutoMod and anti-raid, logs, tickets and applications, full staff management, levels, economy, stats, YouTube and Twitch alerts, the dashboard, and every module that ships later. No add-ons.',
-      ht: 'Prices excl. VAT.',
+        'Every plan has all of Kotbo: moderation, AutoMod and anti-raid, logs, tickets and applications, full staff management, levels, economy, stats, YouTube and Twitch alerts, the dashboard, and every module that ships later. No add-ons',
+      ht: 'Prices excl. VAT',
       euro: (cents: number) =>
         `€${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: cents % 100 ? 2 : 0, maximumFractionDigits: 2 })}`,
     },
@@ -142,7 +142,7 @@
       </div>
       <p class="text-sm text-fog">
         {#if tier}
-          {t.plan} <span class="font-semibold text-white">{tier.name}</span>. {yearly ? t.billedYearly(t.euro(tier.year)) : t.noCommit} {t.ht}
+          {t.plan} <span class="font-semibold text-white">{tier.name}</span> · {yearly ? t.billedYearly(t.euro(tier.year)) : t.noCommit} · {t.ht}
         {:else}
           <a href={SALES_URL} onclick={() => track('sales_clicked')} class="font-semibold text-white underline decoration-line-2 underline-offset-4 hover:decoration-white">{t.customCta}</a>
         {/if}

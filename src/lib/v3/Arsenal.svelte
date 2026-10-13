@@ -30,12 +30,12 @@
 
   const TEXT = {
     fr: {
-      title: 'Les 51 modules sont tous dans l’abonnement, et les prochains aussi.',
-      intro: 'Tu actives ce dont ton serveur a besoin depuis le dashboard, et tu coupes le reste. Clique sur un module pour le voir tourner.',
+      title: 'Les 51 modules sont tous dans l’abonnement, et les prochains aussi',
+      intro: 'Tu actives ce dont ton serveur a besoin depuis le dashboard, et tu coupes le reste. Clique sur un module pour le voir tourner',
       sample: 'extrait fictif',
       mod: {
         title: 'Modération & anti-raid',
-        text: 'AutoMod, anti-raid, doubles comptes, sanctions graduées. Kotbo réagit en secondes, ton staff lit le rapport au réveil.',
+        text: 'AutoMod, anti-raid, doubles comptes, sanctions graduées. Kotbo réagit en secondes, ton staff lit le rapport au réveil',
         log: [
           ['02:13:04', 'raid détecté · 38 comptes en 9 s', 'alarm'],
           ['02:13:05', 'mode raid activé, invitations coupées', 'amber'],
@@ -50,7 +50,7 @@
       },
       tickets: {
         title: 'Tickets',
-        text: 'Le membre clique, un fil privé s’ouvre, et le staff prend le ticket en un clic depuis Discord ou le dashboard. Le transcript reste.',
+        text: 'Le membre clique, un fil privé s’ouvre, et le staff prend le ticket en un clic depuis Discord ou le dashboard. Le transcript reste',
         embedTitle: 'Ticket #149 · Signalement',
         embedBody: 'Ouvert par Sarah. En attente d’un membre du staff.',
         claim: 'Prendre',
@@ -59,7 +59,7 @@
       },
       levels: {
         title: 'Niveaux & carte de rang',
-        text: 'XP texte et vocal, rôles de niveau, et une carte que tes membres ont envie de poster. Ce rendu-là, c’est le vrai.',
+        text: 'XP texte et vocal, rôles de niveau, et une carte que tes membres ont envie de poster. Ce rendu-là, c’est le vrai',
         xp: '+ XP',
         cardName: 'Toi',
         cardLabel: (lvl: number) => `Carte de rang Kotbo, niveau ${lvl}`,
@@ -67,19 +67,19 @@
       },
       logs: {
         title: 'Logs',
-        text: 'Message supprimé, rôle retiré, pseudo changé : Kotbo note qui l’a fait et quand, avec l’avant et l’après.',
+        text: 'Message supprimé, rôle retiré, pseudo changé : Kotbo note qui l’a fait et quand, avec l’avant et l’après',
         lines: ['Lena a retiré @VIP à Kylian', 'message supprimé dans #général', 'Zenox → Zen0x (pseudo)'],
         link: 'Les logs Discord',
       },
       staff: {
         title: 'Staff',
-        text: 'Recrutement, absences, réunions, évaluations et hiérarchie. C’est le module qui fait de Kotbo un vrai outil de gestion d’équipe.',
+        text: 'Recrutement, absences, réunions, évaluations et hiérarchie. C’est le module qui fait de Kotbo un vrai outil de gestion d’équipe',
         link: 'La gestion du staff',
         shot: 'Capture du dashboard : la liste du staff avec grades et avertissements, membres fictifs.',
       },
       rest: {
         title: 'Et 45 autres',
-        text: 'Économie, giveaways, clans, quêtes, alertes YouTube et Twitch, traduction auto, formulaires, et un serveur MCP pour brancher une IA sur ton serveur.',
+        text: 'Économie, giveaways, clans, quêtes, alertes YouTube et Twitch, traduction auto, formulaires, et un serveur MCP pour brancher une IA sur ton serveur',
         all: 'Voir les 51 modules',
         names: [
           'Économie & RPG', 'Giveaways', 'Accueil & départ', 'Règlement', 'Rôles par réaction', 'Clans', 'Saisons', 'Quêtes',
@@ -90,12 +90,12 @@
       },
     },
     en: {
-      title: 'All 51 modules come with the subscription, and so will the next ones.',
-      intro: 'Turn on what your server needs from the dashboard and switch off the rest. Click a module to see it run.',
+      title: 'All 51 modules come with the subscription, and so will the next ones',
+      intro: 'Turn on what your server needs from the dashboard and switch off the rest. Click a module to see it run',
       sample: 'fictional sample',
       mod: {
         title: 'Moderation & anti-raid',
-        text: 'AutoMod, anti-raid, alt accounts, graduated sanctions. Kotbo reacts in seconds, your staff reads the report in the morning.',
+        text: 'AutoMod, anti-raid, alt accounts, graduated sanctions. Kotbo reacts in seconds, your staff reads the report in the morning',
         log: [
           ['02:13:04', 'raid detected · 38 accounts in 9 s', 'alarm'],
           ['02:13:05', 'raid mode on, invites paused', 'amber'],
@@ -110,7 +110,7 @@
       },
       tickets: {
         title: 'Tickets',
-        text: 'The member clicks, a private thread opens, and staff claim it in one click from Discord or the dashboard. The transcript stays.',
+        text: 'The member clicks, a private thread opens, and staff claim it in one click from Discord or the dashboard. The transcript stays',
         embedTitle: 'Ticket #149 · Report',
         embedBody: 'Opened by Sarah. Waiting for a staff member.',
         claim: 'Claim',
@@ -119,7 +119,7 @@
       },
       levels: {
         title: 'Levels & rank card',
-        text: 'Text and voice XP, level roles, and a card your members actually want to post. This render is the real one.',
+        text: 'Text and voice XP, level roles, and a card your members actually want to post. This render is the real one',
         xp: '+ XP',
         cardName: 'You',
         cardLabel: (lvl: number) => `Kotbo rank card, level ${lvl}`,
@@ -127,19 +127,19 @@
       },
       logs: {
         title: 'Logs',
-        text: 'Deleted message, removed role, changed nickname: Kotbo logs who did it and when, with the before and after.',
+        text: 'Deleted message, removed role, changed nickname: Kotbo logs who did it and when, with the before and after',
         lines: ['Lena removed @VIP from Kylian', 'message deleted in #general', 'Zenox → Zen0x (nickname)'],
         link: 'Discord logs',
       },
       staff: {
         title: 'Staff',
-        text: 'Recruitment, time off, meetings, reviews and hierarchy. This is the module that turns Kotbo into a real team tool.',
+        text: 'Recruitment, time off, meetings, reviews and hierarchy. This is the module that turns Kotbo into a real team tool',
         link: 'Staff management',
         shot: 'Dashboard screenshot: the staff list with ranks and warnings, fictional members.',
       },
       rest: {
         title: 'And 45 more',
-        text: 'Economy, giveaways, clans, quests, YouTube and Twitch alerts, auto-translate, forms, and an MCP server to plug an AI into your server.',
+        text: 'Economy, giveaways, clans, quests, YouTube and Twitch alerts, auto-translate, forms, and an MCP server to plug an AI into your server',
         all: 'See all 51 modules',
         names: [
           'Economy & RPG', 'Giveaways', 'Welcome & goodbye', 'Rules', 'Reaction roles', 'Clans', 'Seasons', 'Quests',

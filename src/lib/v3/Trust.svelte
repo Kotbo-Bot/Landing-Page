@@ -20,7 +20,7 @@
 
   const TEXT = {
     fr: {
-      title: 'Ta co-fonda va te poser ces questions. Voilà quoi répondre.',
+      title: 'Ta co-fonda va te poser ces questions. Voilà quoi répondre',
       ines: 'Inès',
       inesRole: 'co-fonda',
       you: 'toi',
@@ -40,7 +40,7 @@
       ] as Line[],
     },
     en: {
-      title: 'Your co-founder will ask you these. Here’s what to answer.',
+      title: 'Your co-founder will ask you these. Here’s what to answer',
       ines: 'Inès',
       inesRole: 'co-founder',
       you: 'you',

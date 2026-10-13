@@ -31,30 +31,30 @@
   const TEXT = {
     fr: {
       title: 'T’as quel genre de serveur ?',
-      intro: 'Choisis, et regarde ce que Kotbo te prépare. Ton choix suit le bouton jusqu’à l’install, t’auras pas à le refaire.',
+      intro: 'Choisis, et regarde ce que Kotbo te prépare. Ton choix suit le bouton jusqu’à l’install, t’auras pas à le refaire',
       pickLabel: 'Ton type de serveur',
       profiles: {
         rp: {
           label: 'Serveur RP / FiveM',
-          pitch: 'Gros staff, plaintes, candidatures, sanctions contestées. Ici tout doit être tracé.',
+          pitch: 'Gros staff, plaintes, candidatures, sanctions contestées. Ici tout doit être tracé',
           channels: ['📜 règlement', '📩 candidatures', '🎫 plaintes', '🎫 remboursements', '🛡️ staff-only', '🗓️ absences-staff', '🚨 sanctions-logs'],
           roles: ['Fondateur', 'Gérant staff', 'Modérateur', 'Support', 'Staff en test'],
         },
         gaming: {
           label: 'Commu gaming / esport',
-          pitch: 'Des membres qui grind, des giveaways, des clans. Et zéro raid pendant les tournois.',
+          pitch: 'Des membres qui grind, des giveaways, des clans. Et zéro raid pendant les tournois',
           channels: ['👋 bienvenue', '🏆 classement', '🎁 giveaways', '⚔️ clans', '💰 boutique', '🎫 support', '🚨 logs'],
           roles: ['Fondateur', 'Admin', 'Modérateur', 'Animateur'],
         },
         creator: {
           label: 'Streamer / créateur',
-          pitch: 'Ta commu vit pendant tes lives, et doit tenir quand t’es pas là.',
+          pitch: 'Ta commu vit pendant tes lives, et doit tenir quand t’es pas là',
           channels: ['🔴 annonces-live', '👋 bienvenue', '📜 règlement', '⭐ niveaux', '🎉 événements', '💡 suggestions'],
           roles: ['Créateur', 'Modérateur', 'VIP', 'Abonné'],
         },
         big: {
           label: 'Grosse commu / asso',
-          pitch: 'Des milliers de membres, une vraie équipe, des process. Le mode ERP.',
+          pitch: 'Des milliers de membres, une vraie équipe, des process. Le mode ERP',
           channels: ['👋 accueil', '📜 règlement', '🎫 support', '🛡️ staff', '📅 réunions', '🗓️ absences', '🚨 logs'],
           roles: ['Direction', 'Responsables', 'Modérateurs', 'Helpers', 'Recrues'],
         },
@@ -74,35 +74,35 @@
       channels: 'Salons proposés',
       modules: 'Modules activés',
       roles: 'Hiérarchie staff',
-      proposal: 'Proposition de l’install guidée. Rien n’est créé sans ta validation.',
-      empty: 'Choisis un profil à gauche.',
+      proposal: 'Proposition de l’install guidée. Rien n’est créé sans ta validation',
+      empty: 'Choisis un profil à gauche',
     },
     en: {
       title: 'What kind of server you running?',
-      intro: 'Pick one and see what Kotbo gets ready for you. Your choice follows the button all the way to setup, you won’t redo it.',
+      intro: 'Pick one and see what Kotbo gets ready for you. Your choice follows the button all the way to setup, you won’t redo it',
       pickLabel: 'Your server type',
       profiles: {
         rp: {
           label: 'RP / FiveM server',
-          pitch: 'Big staff, complaints, applications, disputed sanctions. Everything needs a paper trail.',
+          pitch: 'Big staff, complaints, applications, disputed sanctions. Everything needs a paper trail',
           channels: ['📜 rules', '📩 applications', '🎫 complaints', '🎫 refunds', '🛡️ staff-only', '🗓️ staff-time-off', '🚨 sanction-logs'],
           roles: ['Founder', 'Staff manager', 'Moderator', 'Support', 'Trial staff'],
         },
         gaming: {
           label: 'Gaming / esports community',
-          pitch: 'Members who grind, giveaways, clans. And zero raids during tournaments.',
+          pitch: 'Members who grind, giveaways, clans. And zero raids during tournaments',
           channels: ['👋 welcome', '🏆 leaderboard', '🎁 giveaways', '⚔️ clans', '💰 shop', '🎫 support', '🚨 logs'],
           roles: ['Founder', 'Admin', 'Moderator', 'Event host'],
         },
         creator: {
           label: 'Streamer / creator',
-          pitch: 'Your community lives during your streams, and has to hold up when you’re offline.',
+          pitch: 'Your community lives during your streams, and has to hold up when you’re offline',
           channels: ['🔴 live-alerts', '👋 welcome', '📜 rules', '⭐ levels', '🎉 events', '💡 suggestions'],
           roles: ['Creator', 'Moderator', 'VIP', 'Subscriber'],
         },
         big: {
           label: 'Big community / org',
-          pitch: 'Thousands of members, a real team, real processes. ERP mode.',
+          pitch: 'Thousands of members, a real team, real processes. ERP mode',
           channels: ['👋 lobby', '📜 rules', '🎫 support', '🛡️ staff', '📅 meetings', '🗓️ time-off', '🚨 logs'],
           roles: ['Leadership', 'Leads', 'Moderators', 'Helpers', 'Recruits'],
         },
@@ -122,8 +122,8 @@
       channels: 'Suggested channels',
       modules: 'Modules turned on',
       roles: 'Staff hierarchy',
-      proposal: 'Guided setup proposal. Nothing is created until you confirm.',
-      empty: 'Pick a profile on the left.',
+      proposal: 'Guided setup proposal. Nothing is created until you confirm',
+      empty: 'Pick a profile on the left',
     },
   };
 

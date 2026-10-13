@@ -10,13 +10,13 @@
 
   const TEXT = {
     fr: {
-      title: 'Allez, kick les six autres.',
-      sub: `${TRIAL_DAYS} jours offerts, sans carte bancaire. Ton serveur est prêt avant que t’aies fini ton kebab.`,
+      title: 'Allez, kick les six autres',
+      sub: `${TRIAL_DAYS} jours offerts, sans carte bancaire. Ton serveur est prêt avant que t’aies fini ton kebab`,
       demo: 'Ou fouille d’abord la démo du dashboard',
     },
     en: {
-      title: 'Go on, kick the other six.',
-      sub: `${TRIAL_DAYS} days free, no credit card. Your server is ready before your food gets cold.`,
+      title: 'Go on, kick the other six',
+      sub: `${TRIAL_DAYS} days free, no credit card. Your server is ready before your food gets cold`,
       demo: 'Or dig through the dashboard demo first',
     },
   };

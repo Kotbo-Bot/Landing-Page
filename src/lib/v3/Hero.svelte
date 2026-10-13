@@ -28,7 +28,7 @@
     fr: {
       h1a: 'Le bot Discord qui gère ton serveur',
       h1b: 'pendant que tu dors',
-      sub: 'Modo, tickets, niveaux et ton staff, tout au même endroit. Avec 51 modules, ce que tu cherches est sûrement déjà dedans.',
+      sub: 'Modo, tickets, niveaux et ton staff, tout au même endroit. Avec 51 modules, ce que tu cherches est sûrement déjà dedans',
       demo: 'Tester le dashboard',
       reassure: `${TRIAL_DAYS} jours offerts · pas de CB · pas de droits admin`,
       proof: 'Ils sont déjà dessus',
@@ -39,7 +39,7 @@
     en: {
       h1a: 'The Discord bot that runs your server',
       h1b: 'while you sleep',
-      sub: 'Mod, tickets, levels and your staff, all in one place. With 51 modules, whatever you need is probably already in there.',
+      sub: 'Mod, tickets, levels and your staff, all in one place. With 51 modules, whatever you need is probably already in there',
       demo: 'Try the dashboard',
       reassure: `${TRIAL_DAYS} days free · no card · no admin perms`,
       proof: 'Already running it',

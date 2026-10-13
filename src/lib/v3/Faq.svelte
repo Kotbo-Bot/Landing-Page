@@ -10,8 +10,8 @@
   import ChannelHeader from './ChannelHeader.svelte';
 
   const TEXT = {
-    fr: { title: 'T’as encore un doute ? Normal, on te répond.' },
-    en: { title: 'Still got a doubt? Fair, here are the answers.' },
+    fr: { title: 'T’as encore un doute ? Normal, on te répond' },
+    en: { title: 'Still got a doubt? Fair, here are the answers' },
   };
   const t = $derived(TEXT[getLocale()]);
   const items = $derived(HOME_FAQ[getLocale()]);
