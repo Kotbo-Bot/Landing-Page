@@ -1,0 +1,48 @@
+ÉTAT DE LA REFONTE V3 DE L'ACCUEIL (branche feat/landing-v3)
+Fichier temporaire : à supprimer une fois la refonte terminée.
+Dernière mise à jour : 13/10/2026
+
+
+FAIT
+----
+- Barre du haut : Gestion du staff, Fonctionnalités, Prix, FAQ, Démo live,
+  langue, bouton « Ajouter à Discord ». Plus de colonne de salons à gauche.
+  Les barres « # salon » restent en tête de chaque zone, sans être collantes.
+- Héros : vidéo Vimeo à gauche (lecture auto, muette, en boucle, sans le
+  lecteur Vimeo ; nos boutons son et pause), texte à droite, accroche
+  « Le bot Discord qui gère ton serveur pendant que tu dors ». Sous le héros,
+  les serveurs clients (nom, nombre de membres) et la note Top.gg.
+  Vimeo est en dnt=1 (pas de cookies), autorisé dans la CSP (frame-src).
+- Zone #2h47 refaite : vrai écran verrouillé d'iPhone. Les notifications
+  tombent au fil du scroll et le téléphone vibre. À gauche, le salon #staff
+  dans Discord (sans Kotbo) / le rapport de Kotbo dans #staff-logs (avec Kotbo).
+- Plus de point en fin de phrase sur l'accueil. Gardés : contenu des scènes
+  (messages Discord, notifications, ticket de caisse), textes pour lecteurs
+  d'écran, FAQ (aussi lue par le JSON-LD).
+- Accessibilité vérifiée (axe) sur le héros, la barre du haut et #2h47.
+
+
+PAS FAIT
+--------
+- Zone « Ton staff a enfin un QG » : affiche encore les ANCIENNES maquettes
+  (src/lib/components/mockups/). À refaire :
+    1. Finir le socle src/lib/dash/ (commencé, NON branché sur la page) :
+       thème sombre du dashboard dans dash.css, petits composants dans ui/,
+       il manque les données fictives partagées (fixtures).
+    2. Recopier les 4 écrans depuis le dépôt produit, branche Kotbo/recette
+       (pas depuis static/demo, qui n'est plus à jour) :
+         - fiche membre  : MemberCaseModal (ouverte depuis pages/Members.svelte)
+         - équipe        : pages/StaffManagement.svelte
+         - sanctions     : pages/security/Sanctions.svelte
+         - tickets       : pages/Tickets.svelte
+       Identiques au vrai dashboard, cliquables (onglets, sélection, actions),
+       on passe de l'un à l'autre (ex. clic sur un modo dans Équipe = sa fiche),
+       taille prévue 1180 x 720, sans scroll dans l'écran.
+    3. Les brancher dans src/lib/v3/StaffHQ.svelte, puis vérifier desktop,
+       mobile et accessibilité.
+- Papicon : la version reprise du dashboard est rangée dans
+  src/lib/dash/wip/Papicon.dashboard.svelte.txt. Elle n'a PAS remplacé celle
+  du site : la comparer avant de l'adopter, car elle sert partout.
+- Les zones sous le QG (addition, modules, setup, confiance, prix, FAQ, appel
+  final) n'ont pas été retravaillées dans cette session.
+- Rien n'est mergé dans main.
