@@ -361,7 +361,7 @@
         <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
           <InviteButton content="staff-final" tone="light" size="lg" />
           <a
-            href="{base}{HOME_ROUTE[locale]}#pricing"
+            href="{base}{HOME_ROUTE[locale]}#prix"
             class="inline-flex min-h-13 items-center justify-center rounded-xl border-2 border-white px-7 text-base font-bold text-white transition-colors hover:bg-white hover:text-gray-900"
           >
             {t.final.pricing}

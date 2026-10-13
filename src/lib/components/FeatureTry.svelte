@@ -28,7 +28,7 @@
   <h2 class="font-headline text-xl font-extrabold tracking-tight text-gray-900 sm:text-2xl">{t.title}</h2>
   <p class="mt-2 leading-relaxed text-gray-700">{t.body}</p>
   <div class="mt-5 flex flex-col flex-wrap gap-3 sm:flex-row">
-    <a href="{base}{homeOf(getLocale())}#monter" class="inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-xl bg-gray-900 px-5 text-sm font-bold text-white transition-colors hover:bg-gray-800">{t.home}</a>
+    <a href="{base}{homeOf(getLocale())}#setup" class="inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-xl bg-gray-900 px-5 text-sm font-bold text-white transition-colors hover:bg-gray-800">{t.home}</a>
     <a href="{base}/demo/" class="inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-xl border border-gray-300 bg-white px-5 text-sm font-bold text-gray-900 transition-colors hover:border-gray-900">{t.demo}</a>
   </div>
 </aside>

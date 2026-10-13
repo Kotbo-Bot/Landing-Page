@@ -1,104 +1,88 @@
 <script lang="ts">
   /**
-   * L'accueil, v2 : on essaie avant de lire.
+   * L'accueil, v3 : la nuit du dashboard.
    *
-   * L'ordre suit ce que le visiteur fait, puis les questions qui lui restent :
+   * La cible est le fondateur d'un serveur qui a grandi : un staff à faire
+   * tourner, une pile de bots, un tableur. L'ordre suit ce qu'il se demande :
    *
-   * 1. il monte son serveur (le héros), et voit ce que ses membres verront ;
-   * 2. il voit ce que son staff aura, le dashboard ;
-   * 3. il vit une soirée qui dérape, et la règle ;
-   * 4. il mesure l'étendue du catalogue ;
-   * 5. il tape des commandes, puis fabrique sa carte de rang ;
-   * 6. il se situe face aux autres bots, voit qui utilise déjà Kotbo ;
-   * 7. seulement alors le prix, les dernières questions, le dernier appel.
+   * 1. c'est quoi, pour qui, pourquoi lui (le héros, et la pile de bots qui part) ;
+   * 2. « ouais, c'est exactement ma vie » (son téléphone à 2 h 47) ;
+   * 3. ce que personne d'autre ne fait (le QG du staff, vrais écrans) ;
+   * 4. combien je paye aujourd'hui (le ticket de caisse) ;
+   * 5. qu'est-ce qu'il sait faire d'autre (les modules) ;
+   * 6. est-ce que c'est pour mon serveur (les profils, qui règlent l'install) ;
+   * 7. est-ce que je peux lui faire confiance, combien, et les dernières questions ;
+   * 8. le dernier appel.
    *
-   * Chaque zone jouable se termine sur le même bouton d'invitation, qui reprend
-   * le nom du serveur monté dans le héros et en emporte les réglages.
+   * Les règles de la v2 tiennent toujours : aucun bouton mort, aucune donnée
+   * inventée présentée comme réelle (les scènes sont annoncées fictives, les
+   * chiffres viennent de l'API ou disparaissent).
    */
   import { onMount } from 'svelte';
   import { homeJsonLd } from '$lib/seo/jsonld.js';
-  import { track, trackOnView, inviteUrl } from '$lib/funnel';
-  import { SALES_URL } from '$lib/product';
+  import { track } from '$lib/funnel';
   import { getLocale } from '$lib/i18n/state.svelte';
   import Seo from '$lib/seo/Seo.svelte';
-  import { builder, encodeKit } from '$lib/playground/kit.svelte';
 
-  import SiteNav from '$lib/sections/SiteNav.svelte';
-  import BuildHero from '$lib/sections/BuildHero.svelte';
-  import TrustStrip from '$lib/sections/TrustStrip.svelte';
-  import AfterClick from '$lib/sections/AfterClick.svelte';
-  import StaffDesk from '$lib/sections/StaffDesk.svelte';
-  import Crisis from '$lib/sections/Crisis.svelte';
-  import Commands from '$lib/sections/Commands.svelte';
-  import RankStudio from '$lib/sections/RankStudio.svelte';
-  import SiteFooter from '$lib/sections/SiteFooter.svelte';
-  import StickyInvite from '$lib/sections/StickyInvite.svelte';
+  import Nav from '$lib/v3/Nav.svelte';
+  import Hero from '$lib/v3/Hero.svelte';
+  import Night from '$lib/v3/Night.svelte';
+  import StaffHQ from '$lib/v3/StaffHQ.svelte';
+  import Receipt from '$lib/v3/Receipt.svelte';
+  import Arsenal from '$lib/v3/Arsenal.svelte';
+  import Setup from '$lib/v3/Setup.svelte';
+  import Trust from '$lib/v3/Trust.svelte';
+  import Price from '$lib/v3/Price.svelte';
+  import Faq from '$lib/v3/Faq.svelte';
+  import Final from '$lib/v3/Final.svelte';
+  import Footer from '$lib/v3/Footer.svelte';
+  import MobileBar from '$lib/v3/MobileBar.svelte';
 
-  import Modules from '$lib/components/Modules.svelte';
-  import Comparison from '$lib/components/Comparison.svelte';
-  import ComparisonFaq from '$lib/components/ComparisonFaq.svelte';
-  import Pricing from '$lib/components/Pricing.svelte';
-  import TrialCta from '$lib/components/TrialCta.svelte';
-
-  // Le titre porte « bot Discord » et ses déclinaisons (tout-en-un, français,
-  // dashboard) : c'est ce que tapent ceux qui cherchent Kotbo sans le
-  // connaître. Il est aussi le titre bleu de l'embed Discord. Servi en français
-  // sur `/` et en anglais sur `/en` (lib/i18n/routes.ts).
+  // Requête en tête, marque en fin : c'est ce que tapent ceux qui cherchent un
+  // bot sans connaître Kotbo. Le titre est aussi le titre bleu de l'embed
+  // Discord quand quelqu'un colle le lien.
   const TEXT = {
     fr: {
-      title: 'Kotbo, bot Discord français tout-en-un avec dashboard',
+      title: 'Bot Discord français : modération, tickets, staff | Kotbo',
       description:
-        "Bot Discord tout-en-un : modération, AutoMod, anti-raid, logs, tickets, niveaux et staff, réglés depuis un dashboard web. Essaie-le ici, puis ajoute-le.",
+        'Kotbo, le bot Discord français tout-en-un : modération, anti-raid, tickets, niveaux et gestion du staff, réglés depuis un dashboard web. 15 jours offerts, sans CB.',
       path: '/',
     },
     en: {
-      title: 'Kotbo, the all-in-one Discord bot with a dashboard',
+      title: 'All-in-One Discord Bot: Moderation, Tickets, Staff | Kotbo',
       description:
-        'All-in-one Discord bot: moderation, AutoMod, anti-raid, logs, tickets, levels and staff, set up from a web dashboard. Try it here, then add it.',
+        'Kotbo is an all-in-one Discord bot with a web dashboard: moderation, anti-raid, tickets, levels and full staff management. 15 days free, no credit card.',
       path: '/en',
     },
   };
   const t = $derived(TEXT[getLocale()]);
 
-  /** Les zones reprises de la v1 reçoivent leur lien tout fait, réglages compris. */
-  const kit = $derived(encodeKit(builder.kit));
-  const links = $derived({
-    modules: inviteUrl('modules', kit),
-    comparison: inviteUrl('comparison', kit),
-    pricing: inviteUrl('pricing', kit),
-    trial: inviteUrl('trial-cta', kit),
-  });
-
   onMount(() => {
+    // Le fond nuit couvre aussi la zone de rebond et le haut de page.
+    document.documentElement.classList.add('v3');
     // Entrée du tunnel. Le référent n'est classé qu'ici : dès la deuxième page
     // d'une navigation interne il ne dit plus rien de la provenance réelle.
     track('site_visit', { path: location.pathname });
+    return () => document.documentElement.classList.remove('v3');
   });
 </script>
 
 <Seo title={t.title} description={t.description} path={t.path} jsonLd={homeJsonLd(getLocale())} />
 
-
-<div id="top" class="relative min-h-screen text-gray-900">
-  <SiteNav />
+<div id="top" class="v3 relative min-h-screen bg-night font-sans text-white antialiased">
+  <Nav />
   <main>
-    <BuildHero />
-    <TrustStrip />
-    <AfterClick />
-    <StaffDesk />
-    <Crisis />
-    <Modules inviteUrl={links.modules} />
-    <Commands />
-    <RankStudio />
-    <div use:trackOnView={'comparison_viewed'}>
-      <Comparison inviteUrl={links.comparison} />
-    </div>
-    <div use:trackOnView={'pricing_viewed'}>
-      <Pricing inviteUrl={links.pricing} salesUrl={SALES_URL} />
-    </div>
-    <ComparisonFaq />
-    <TrialCta inviteUrl={links.trial} salesUrl={SALES_URL} />
+    <Hero />
+    <Night />
+    <StaffHQ />
+    <Receipt />
+    <Arsenal />
+    <Setup />
+    <Trust />
+    <Price />
+    <Faq />
+    <Final />
   </main>
-  <SiteFooter />
-  <StickyInvite />
+  <Footer />
+  <MobileBar />
 </div>

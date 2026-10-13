@@ -124,7 +124,7 @@ function software(locale) {
       lowPrice: '5.00',
       highPrice: '25.00',
       offerCount: 3,
-      url: `${SITE}${PATHS.home[locale]}#pricing`,
+      url: `${SITE}${PATHS.home[locale]}#prix`,
     },
     publisher: { '@id': ORG_ID },
     alternateName: ALTERNATE_NAMES,
