@@ -19,7 +19,7 @@
   import { publicStats } from '$lib/data/stats.svelte';
   import { TOPGG_RATING, TOPGG_URL, TRIAL_DAYS } from '$lib/product';
   import AddButton from './AddButton.svelte';
-  import BotPurge from './BotPurge.svelte';
+  import HeroVideo from './HeroVideo.svelte';
   import ChannelHeader from './ChannelHeader.svelte';
   import { ktb } from '$lib/playground/discord/theme';
 
@@ -56,7 +56,7 @@
 </script>
 
 <section id="bienvenue" aria-labelledby="hero-title" class="relative bg-night">
-  <div class="sticky top-16 z-20 bg-night/95 backdrop-blur-sm">
+  <div class="sticky top-0 z-20 bg-night/95 backdrop-blur-sm">
     <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="bienvenue" /></div>
   </div>
 
@@ -104,8 +104,8 @@
       </div>
     </div>
 
-    <div class="mx-auto w-full max-w-md xl:max-w-none">
-      <BotPurge />
+    <div class="mx-auto w-full max-w-2xl xl:max-w-none">
+      <HeroVideo />
     </div>
   </div>
 </section>

@@ -3,12 +3,15 @@
    * La liste des salons sur téléphone et tablette, en panneau qui glisse
    * depuis la gauche, comme dans Discord mobile. Ouverte par l'icône de menu
    * des barres de salon. Un vrai dialogue : le focus y entre, Échap le ferme,
-   * le focus revient au bouton qui l'a ouvert.
+   * le focus revient au bouton qui l'a ouvert. L'accueil n'a pas de barre du
+   * haut : le panneau porte aussi les liens hors de l'accueil et la langue.
    */
   import { tick } from 'svelte';
   import { getLocale } from '$lib/i18n/state.svelte';
   import { CHANNELS } from './channels';
   import { channelSheet } from './sheet.svelte';
+  import { base } from '$app/paths';
+  import SideLinks from './SideLinks.svelte';
 
   const TEXT = {
     fr: { title: 'Salons de la page', close: 'Fermer' },
@@ -46,7 +49,9 @@
 >
   <div class="flex h-full flex-col">
     <div class="flex h-14 items-center justify-between border-b border-line px-4">
-      <p id="sheet-title" class="font-display text-base font-bold">{t.title}</p>
+      <p id="sheet-title" class="flex items-center gap-2.5 font-display text-base font-bold">
+        <img src="{base}/favicon.svg" alt="" width="24" height="24" class="h-6 w-6 rounded-md" />{t.title}
+      </p>
       <button type="button" onclick={() => channelSheet.hide()} class="min-h-11 rounded-lg px-3 text-sm font-semibold text-mist hover:bg-night-3 hover:text-white">
         {t.close}
       </button>
@@ -72,6 +77,7 @@
           {/each}
         </ul>
       {/each}
+      <SideLinks onnavigate={() => channelSheet.hide()} />
     </nav>
   </div>
 </dialog>

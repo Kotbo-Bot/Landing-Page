@@ -6,7 +6,9 @@
    * l'écran est surligné, comme dans Discord, et ceux que le visiteur n'a pas
    * encore vus gardent la pastille blanche des messages non lus. Elle
    * s'éteint quand la zone passe à l'écran : on voit ce qu'il reste à lire.
-   * En bas, à la place du panneau utilisateur de Discord, le bouton.
+   * Sous les salons, les liens qui mènent hors de l'accueil (`SideLinks`) :
+   * l'accueil n'a pas de barre du haut. En bas, à la place du panneau
+   * utilisateur de Discord, le bouton.
    */
   import { onMount } from 'svelte';
   import { base } from '$app/paths';
@@ -14,10 +16,11 @@
   import { TRIAL_DAYS } from '$lib/product';
   import { CHANNELS, type ChannelId } from './channels';
   import AddButton from './AddButton.svelte';
+  import SideLinks from './SideLinks.svelte';
 
   const TEXT = {
-    fr: { label: 'Salons de la page', trial: `${TRIAL_DAYS} jours offerts, sans carte`, server: 'Kotbo' },
-    en: { label: 'Page channels', trial: `${TRIAL_DAYS} days free, no card`, server: 'Kotbo' },
+    fr: { label: 'Salons de la page', trial: `${TRIAL_DAYS} jours offerts, sans carte`, server: 'Kotbo', home: 'Kotbo, accueil' },
+    en: { label: 'Page channels', trial: `${TRIAL_DAYS} days free, no card`, server: 'Kotbo', home: 'Kotbo, home' },
   };
   const t = $derived(TEXT[getLocale()]);
   const groups = $derived(CHANNELS[getLocale()]);
@@ -37,16 +40,17 @@
           if (!seen.includes(id)) seen = [...seen, id];
         }
       },
-      { rootMargin: '-72px 0px -86% 0px' },
+      { rootMargin: '-56px 0px -86% 0px' },
     );
     nodes.forEach((n) => observer.observe(n));
     return () => observer.disconnect();
   });
 </script>
 
-<aside class="sticky top-16 hidden h-[calc(100svh-4rem)] flex-col border-r border-line bg-night-2 lg:flex">
-  <a href="{base}{getLocale() === 'fr' ? '/' : '/en'}" class="flex h-12 shrink-0 items-center gap-2 border-b border-line px-4 font-display text-[15px] font-bold text-white">
-    {t.server}
+<aside class="sticky top-0 hidden h-svh flex-col border-r border-line bg-night-2 lg:flex">
+  <a href="{base}{getLocale() === 'fr' ? '/' : '/en'}" aria-label={t.home} class="flex h-12 shrink-0 items-center gap-2.5 border-b border-line px-4">
+    <img src="{base}/favicon.svg" alt="" width="24" height="24" class="h-6 w-6 rounded-md" />
+    <span class="font-display text-[15px] font-bold text-white">{t.server}</span>
   </a>
   <nav aria-label={t.label} class="flex-1 overflow-y-auto px-2 py-3">
     {#each groups as group (group.label)}
@@ -75,6 +79,7 @@
         {/each}
       </ul>
     {/each}
+    <SideLinks />
   </nav>
   <div class="shrink-0 border-t border-line bg-[#0c0c0e] p-3">
     <AddButton content="channels" class="w-full" />

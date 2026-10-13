@@ -250,11 +250,12 @@ html {
   scroll-padding-top: 4.75rem;
 }
 
-/* Accueil v3 : nav (64 px) + barre de salon collante (48 px), et la barre
+/* Accueil v3 : pas de barre du haut, seulement la barre de salon collante
+   (48 px), et la barre
    d'invitation du bas sur téléphone. Un élément qui prend le focus ne doit
    jamais finir caché dessous (WCAG 2.4.11). */
 html.v3 {
-  scroll-padding-top: 7.5rem;
+  scroll-padding-top: 3.75rem;
 }
 @media (max-width: 639px) {
   html.v3 {

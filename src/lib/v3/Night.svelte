@@ -80,7 +80,7 @@
 </script>
 
 <section id="nuit" aria-labelledby="night-title" class="relative bg-night pb-16 sm:pb-24 lg:pb-32">
-  <div class="sticky top-16 z-20 bg-night/95 backdrop-blur-sm">
+  <div class="sticky top-0 z-20 bg-night/95 backdrop-blur-sm">
     <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="nuit" /></div>
   </div>
   <div class="mx-auto pt-14 lg:pt-20 grid max-w-7xl items-start gap-14 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-20">

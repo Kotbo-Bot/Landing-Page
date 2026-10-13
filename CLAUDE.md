@@ -65,8 +65,8 @@ signal perdu. `bun run build:offline` construit sans appeler l'API.
 
 L'accueil vit dans `src/lib/v3/` : la page se lit comme un serveur Discord, une
 zone par salon (`v3/channels.ts`, dont les `id` sont les ancres que les autres
-pages visent). Elle parle au fondateur d'un serveur qui a un staff : la pile de
-bots qui part, sa nuit sans Kotbo, le QG staff (écrans de `components/mockups`),
+pages visent). Elle parle au fondateur d'un serveur qui a un staff : le film du héros,
+sa nuit sans Kotbo, le QG staff (écrans de `components/mockups`),
 l'addition, les modules, les profils de serveur, la confiance, le prix, la FAQ.
 Le profil choisi dans `#setup` écrit le kit (`playground/kit.svelte.ts`) et
 `v3/AddButton` l'emporte (`?kit=`) jusqu'au parcours d'installation.

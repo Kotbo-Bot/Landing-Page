@@ -5,7 +5,7 @@
    * La cible est le fondateur d'un serveur qui a grandi : un staff à faire
    * tourner, une pile de bots, un tableur. L'ordre suit ce qu'il se demande :
    *
-   * 1. c'est quoi, pour qui, pourquoi lui (le héros, et la pile de bots qui part) ;
+   * 1. c'est quoi, pour qui, pourquoi lui (le héros et son film de 20 s) ;
    * 2. « ouais, c'est exactement ma vie » (son téléphone à 2 h 47) ;
    * 3. ce que personne d'autre ne fait (le QG du staff, vrais écrans) ;
    * 4. combien je paye aujourd'hui (le ticket de caisse) ;
@@ -24,7 +24,6 @@
   import { getLocale } from '$lib/i18n/state.svelte';
   import Seo from '$lib/seo/Seo.svelte';
 
-  import Nav from '$lib/v3/Nav.svelte';
   import Hero from '$lib/v3/Hero.svelte';
   import Night from '$lib/v3/Night.svelte';
   import StaffHQ from '$lib/v3/StaffHQ.svelte';
@@ -76,7 +75,6 @@
 
 <div id="top" class="v3 relative min-h-screen bg-night font-sans text-white antialiased">
   <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-night">{t.skip}</a>
-  <Nav />
   <main id="main">
     <div class="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)]">
       <Channels />

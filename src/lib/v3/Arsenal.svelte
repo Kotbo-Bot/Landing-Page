@@ -178,7 +178,7 @@
 </script>
 
 <section id="modules" aria-labelledby="arsenal-title" class="bg-night-2 pb-16 sm:pb-24 lg:pb-32">
-  <div class="sticky top-16 z-20 bg-night-2/95 backdrop-blur-sm">
+  <div class="sticky top-0 z-20 bg-night-2/95 backdrop-blur-sm">
     <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="modules" /></div>
   </div>
   <div class="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:pt-20">

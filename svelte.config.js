@@ -52,6 +52,8 @@ const config = {
 				'img-src': ['self', 'data:', 'blob:', 'https://api.kotbo.fr'],
 				'font-src': ['self'],
 				'media-src': ['self'],
+				// Le film du héros (v3/HeroVideo.svelte), lu sans cookie (dnt=1).
+				'frame-src': ['https://player.vimeo.com'],
 				'connect-src': ['self', 'https://api.kotbo.fr'],
 				'object-src': ['none'],
 				'base-uri': ['self'],
