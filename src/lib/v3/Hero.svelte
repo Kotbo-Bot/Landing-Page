@@ -9,9 +9,10 @@
    *   staff, ce que les autres ne font pas ;
    * - je fais quoi ? l'ajouter, ou ouvrir le vrai dashboard en démo.
    *
-   * Le texte reste court : le film montre le produit. Les preuves tiennent sur
-   * une ligne sous les boutons : les icônes des serveurs clients lues sur l'API
-   * (masquées si elle ne répond pas), la note Top.gg relevée à la main, et les trois
+   * Le texte reste court et parle comme la cible (des admins de serveur, jeunes,
+   * qui vivent sur Discord) : le film montre le produit. Sous la grille, les
+   * serveurs clients nommés, lus sur l'API (masqués si elle ne répond pas) ;
+   * près des boutons, la note Top.gg relevée à la main et les trois
    * réponses aux peurs d'avant l'invitation (prix, carte, droits admin).
    */
   import { onMount } from 'svelte';
@@ -25,21 +26,23 @@
   const TEXT = {
     fr: {
       h1a: 'Le bot Discord qui gère ton serveur',
-      h1b: 'et ton staff.',
-      sub: 'Modération, tickets, niveaux et gestion du staff. Un seul bot, un vrai dashboard.',
-      demo: 'Voir la démo',
-      reassure: `${TRIAL_DAYS} jours offerts · sans carte · sans droits admin`,
-      proof: (names: string) => `Déjà sur ${names}`,
+      h1b: 'pendant que tu dors.',
+      sub: 'Modo, tickets, niveaux et ton staff, tout au même endroit. Tu peux kick les six autres bots.',
+      demo: 'Tester le dashboard',
+      reassure: `${TRIAL_DAYS} jours offerts · pas de CB · pas de droits admin`,
+      proof: 'Ils sont déjà dessus',
+      members: (n: string) => `${n} membres`,
       newTab: '(nouvel onglet)',
       rating: (n: number) => `Noté ${n}/5 sur Top.gg`,
     },
     en: {
       h1a: 'The Discord bot that runs your server',
-      h1b: 'and your staff.',
-      sub: 'Moderation, tickets, levels and staff management. One bot, one real dashboard.',
-      demo: 'See the demo',
-      reassure: `${TRIAL_DAYS} days free · no card · no admin rights`,
-      proof: (names: string) => `Already on ${names}`,
+      h1b: 'while you sleep.',
+      sub: 'Mod, tickets, levels and your staff, all in one place. Go ahead, kick the other six bots.',
+      demo: 'Try the dashboard',
+      reassure: `${TRIAL_DAYS} days free · no card · no admin perms`,
+      proof: 'Already running it',
+      members: (n: string) => `${n} members`,
       newTab: '(new tab)',
       rating: (n: number) => `Rated ${n}/5 on Top.gg`,
     },
@@ -47,6 +50,7 @@
 
   const t = $derived(TEXT[getLocale()]);
   const servers = $derived((publicStats.data?.servers ?? []).slice(0, 3));
+  const fmt = (n: number) => n.toLocaleString(getLocale() === 'fr' ? 'fr-FR' : 'en-US').replace(/\u202f/g, '\u00a0');
 
   onMount(() => void publicStats.load());
 </script>
@@ -80,26 +84,32 @@
 
         <p class="mt-4 text-sm text-fog">{t.reassure}</p>
 
-        <!-- La preuve tient sur une ligne : les icônes des serveurs, la note. -->
-        <div class="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-          {#if servers.length}
-            <span class="flex items-center">
-              <span class="flex -space-x-2" aria-hidden="true">
-                {#each servers as server (server.name)}
-                  {#if server.iconUrl}
-                    <img src={server.iconUrl} alt="" width="28" height="28" title={server.name} class="h-7 w-7 rounded-lg bg-night-3 object-cover ring-2 ring-night" onerror={(e) => ((e.currentTarget as HTMLImageElement).src = `${base}/favicon.svg`)} />
-                  {:else}
-                    <span class="grid h-7 w-7 place-items-center rounded-lg bg-night-4 text-[10px] font-bold text-mist ring-2 ring-night">{server.name.slice(0, 2)}</span>
-                  {/if}
-                {/each}
-              </span>
-              <span class="sr-only">{t.proof(servers.map((s) => s.name).join(', '))}</span>
-            </span>
-          {/if}
-          <a href={TOPGG_URL} target="_blank" rel="noopener noreferrer" class="font-semibold text-white underline decoration-line-2 underline-offset-4 hover:decoration-white">{t.rating(TOPGG_RATING)}<span class="sr-only"> {t.newTab}</span></a>
-        </div>
+        <a href={TOPGG_URL} target="_blank" rel="noopener noreferrer" class="mt-6 inline-block text-sm font-semibold text-white underline decoration-line-2 underline-offset-4 hover:decoration-white">{t.rating(TOPGG_RATING)}<span class="sr-only"> {t.newTab}</span></a>
       </div>
     </div>
+
+    <!-- Les serveurs qui tournent déjà avec Kotbo, nommés : un nom et un
+         nombre de membres parlent plus qu'un logo. Masqué si l'API se tait. -->
+    {#if servers.length}
+      <div class="mt-12 flex flex-col gap-4 border-t border-line pt-6 lg:flex-row lg:items-center lg:gap-8">
+        <p class="shrink-0 text-sm font-semibold text-fog">{t.proof}</p>
+        <ul class="grid gap-3 sm:grid-cols-3 lg:flex lg:flex-wrap lg:gap-3">
+          {#each servers as server (server.name)}
+            <li class="flex min-w-0 items-center gap-3 rounded-xl border border-line bg-night-2 py-2 pl-2 pr-4">
+              {#if server.iconUrl}
+                <img src={server.iconUrl} alt="" width="36" height="36" class="h-9 w-9 shrink-0 rounded-lg bg-night-3 object-cover" onerror={(e) => ((e.currentTarget as HTMLImageElement).src = `${base}/favicon.svg`)} />
+              {:else}
+                <span aria-hidden="true" class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-night-4 text-xs font-bold text-mist">{server.name.slice(0, 2)}</span>
+              {/if}
+              <span class="min-w-0">
+                <span class="block truncate text-sm font-semibold text-white">{server.name}</span>
+                <span class="block text-xs tabular-nums text-fog">{t.members(fmt(server.memberCount))}</span>
+              </span>
+            </li>
+          {/each}
+        </ul>
+      </div>
+    {/if}
   </div>
 </section>
 
