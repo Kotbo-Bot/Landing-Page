@@ -16,7 +16,7 @@
 -->
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import Papicon from '$lib/components/Papicon.svelte';
+  import Papicon from '$lib/dash/Papicon.svelte';
   import { getLocale } from '$lib/i18n/state.svelte';
 
   const TEXT = {

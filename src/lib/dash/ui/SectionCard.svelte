@@ -1,7 +1,7 @@
 <!-- Recopie de `Kotbo/apps/dashboard/src/lib/components/SectionCard.svelte` (branche `recette`) ; seul le chemin de Papicon change. -->
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import Papicon from '$lib/components/Papicon.svelte';
+  import Papicon from '$lib/dash/Papicon.svelte';
 
   const {
     title = '',

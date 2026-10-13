@@ -1,7 +1,7 @@
 <!-- Recopie de `Kotbo/apps/dashboard/src/lib/components/FormInput.svelte` (branche `recette`) ; seul le chemin de Papicon change. -->
 <script lang="ts">
   import type { HTMLInputAttributes } from 'svelte/elements';
-  import Papicon from '$lib/components/Papicon.svelte';
+  import Papicon from '$lib/dash/Papicon.svelte';
 
   type InputValue = string | number;
 
