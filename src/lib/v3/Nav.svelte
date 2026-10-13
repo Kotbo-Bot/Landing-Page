@@ -3,8 +3,8 @@
    * La barre du haut de l'accueil v3 : toute la navigation de la page.
    *
    * Deux pages (staff, fonctionnalités), deux zones de l'accueil (prix, FAQ),
-   * la démo, la langue et le bouton. La démo a son point vert, c'est le seul
-   * lien qui mène à quelque chose de vivant. Sur téléphone, tout passe dans
+   * la démo, la langue et le bouton. La démo est le seul lien en blanc : c'est le
+   * seul qui mène à quelque chose de vivant. Sur téléphone, tout passe dans
    * un panneau sous la barre.
    */
   import { base } from '$app/paths';
@@ -80,10 +80,7 @@
           <li><a href={link.href} class="rounded-lg px-3 py-2 transition-colors hover:bg-night-3 hover:text-white">{link.label}</a></li>
         {/each}
         <li>
-          <a href="/demo/" class="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-white transition-colors hover:bg-night-3">
-            <span class="h-2 w-2 rounded-full bg-ok" aria-hidden="true"></span>
-            {t.demo}
-          </a>
+          <a href="/demo/" class="rounded-lg px-3 py-2 text-white transition-colors hover:bg-night-3">{t.demo}</a>
         </li>
       </ul>
     </nav>
@@ -123,9 +120,7 @@
           <li><a href={link.href} onclick={() => (open = false)} class="block border-b border-line py-4">{link.label}</a></li>
         {/each}
         <li>
-          <a href="/demo/" class="flex items-center gap-2 py-4 text-ok">
-            <span class="h-2 w-2 rounded-full bg-ok" aria-hidden="true"></span>{t.demo}
-          </a>
+          <a href="/demo/" class="block py-4">{t.demo}</a>
         </li>
       </ul>
     </nav>

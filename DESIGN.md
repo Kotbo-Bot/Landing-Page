@@ -56,8 +56,8 @@ impeccable, taste-skill et humanizer. À ne pas réintroduire :
 - bordure gauche colorée hors de vrais embeds Discord, emoji dans l'interface
   (ils restent permis dans les noms de salons des aperçus, comme dans Discord) ;
 - fade-up sur chaque zone, rebond, texte invisible tant que le JS n'a pas tourné ;
-- même mise en page deux fois de suite : chaque zone a sa forme (liste qui se
-  vide, téléphone, onglets, ticket, index, profils, conversation, phrase-tarif) ;
+- même mise en page deux fois de suite : chaque zone a sa forme (film,
+  téléphone qui vibre, onglets, ticket, index, profils, conversation, phrase-tarif) ;
 - en copy : « c'est pas X, c'est Y », fragments en rafale, triplets, mots creux
   (permettre, optimiser, robuste, écosystème…), tiret cadratin.
 
