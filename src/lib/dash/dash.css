@@ -22,7 +22,9 @@
  *   (l. 885 à 1300, sauf celles du cadre de l'application), la palette des
  *   graphiques (l. 1580) et les messages Discord (l. 1605) suivent, préfixées.
  *
- * Ce qui n'est pas repris : le thème clair, `.compact-ui` (une préférence
+ * Ce qui n'est pas repris : les règles mobiles (`max-width: 640px` et
+ * `767px`), parce que l'écran garde toujours 1180 px et que ces requêtes
+ * lisent la largeur du navigateur, pas la sienne ; le thème clair, `.compact-ui` (une préférence
  * d'affichage, éteinte par défaut), le cadre de l'application (`.app-shell`,
  * `.app-navbar`, `.app-sidebar`, `.app-main` et ses mises en page mobiles
  * par page) et les polices de la carte `/rank`.
@@ -238,7 +240,8 @@
 }
 
 .dash .modal-backdrop {
-  position: fixed;
+  /* Calé sur le cadre de l'aperçu, pas sur la fenêtre du navigateur. */
+  position: absolute;
   inset: 0;
   z-index: 9999;
   display: flex;
@@ -250,7 +253,7 @@
 
 .dash .modal-panel {
   width: 100%;
-  max-height: 92vh;
+  max-height: 92%;
   overflow-y: auto;
   border-radius: 0.75rem;
   border: 1px solid var(--outline-variant);
@@ -311,17 +314,6 @@
   border-radius: 0.5rem;
   border: 1px solid var(--outline-variant);
   max-width: 100%;
-}
-
-/* Sur mobile : une seule ligne qui défile au doigt plutôt qu'un empilement. */
-@media (max-width: 640px) {
-  .dash .tab-group {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .dash .tab-group::-webkit-scrollbar { display: none; }
 }
 
 .dash .tab-button {
@@ -580,24 +572,26 @@
   font-weight: 500;
 }
 
+/* Le dashboard garde ici les teintes du thème clair, illisibles sur fond
+   sombre (2:1) : les mêmes couleurs en version claire, au-dessus de 4,5:1. */
 .dash .badge-success {
   background: rgba(16, 185, 129, 0.1);
-  color: rgb(4, 120, 87);
+  color: #34d399;
 }
 
 .dash .badge-warning {
   background: rgba(245, 158, 11, 0.1);
-  color: rgb(180, 83, 9);
+  color: #fbbf24;
 }
 
 .dash .badge-danger {
   background: rgba(239, 68, 68, 0.1);
-  color: rgb(185, 28, 28);
+  color: #f87171;
 }
 
 .dash .badge-info {
   background: rgba(99, 102, 241, 0.08);
-  color: rgb(67, 56, 202);
+  color: #a5b4fc;
 }
 
 .dash .badge-neutral {
@@ -667,118 +661,6 @@
   .dash .premium-card:hover,
   .dash .stat-kpi:hover {
     box-shadow: none;
-  }
-}
-
-/* ── Téléphone · ≤767px (l. 1000) ────────────────────────────────────────── */
-
-/* Seules les règles des composants sont reprises : celles qui visent
-   `.app-main` dépendent du cadre de l'application, que le site n'a pas. */
-@media (max-width: 767px) {
-  .dash .section-card,
-  .dash .section-card-flush,
-  .dash .premium-card,
-  .dash .stat-kpi {
-    border-radius: 1rem;
-  }
-
-  .dash .section-card__header {
-    align-items: stretch;
-    flex-direction: column;
-    gap: 0.875rem;
-    padding: 1rem 1rem 0.25rem;
-  }
-
-  .dash .section-card__actions {
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-  }
-
-  .dash .section-card__actions > :where(button, a):not(.btn-icon),
-  .dash .module-page__actions > :where(button, a):not(.btn-icon) {
-    min-height: 2.75rem;
-    flex: 1 1 auto;
-    justify-content: center;
-  }
-
-  .dash .section-card__body { padding: 1rem; }
-  .dash .section-card__body--flush { padding: 0; }
-
-  .dash .module-page { gap: 1.25rem; }
-  .dash .module-page__header { gap: 1rem; }
-  .dash .module-page__identity { width: 100%; }
-  .dash .module-page__actions { width: 100%; }
-
-  .dash .table-wrap {
-    margin-inline: -0.25rem;
-    border-radius: 0.875rem;
-  }
-
-  /* Les fenêtres deviennent des feuilles ancrées en bas, sous le pouce. */
-  .dash .modal-backdrop {
-    align-items: flex-end;
-    padding: 0;
-  }
-
-  .dash .modal-panel {
-    max-height: min(92dvh, 54rem);
-    padding: 1rem;
-    padding-bottom: max(1rem, env(safe-area-inset-bottom));
-    border-right: 0;
-    border-bottom: 0;
-    border-left: 0;
-    border-radius: 1.25rem 1.25rem 0 0;
-  }
-
-  .dash .app-modal,
-  .dash .confirm-modal {
-    align-items: flex-end;
-    padding: 0;
-  }
-
-  .dash .app-modal__panel,
-  .dash .confirm-modal__panel {
-    width: 100%;
-    max-width: none;
-    max-height: min(92dvh, 54rem);
-    padding-bottom: env(safe-area-inset-bottom);
-    border-right: 0;
-    border-bottom: 0;
-    border-left: 0;
-    border-radius: 1.25rem 1.25rem 0 0;
-    box-shadow: 0 -24px 70px rgb(0 0 0 / 0.28);
-  }
-
-  .dash .app-modal__panel::before,
-  .dash .confirm-modal__panel::before {
-    position: absolute;
-    top: 0.5rem;
-    left: 50%;
-    z-index: 2;
-    width: 2.5rem;
-    height: 0.25rem;
-    content: '';
-    border-radius: 999px;
-    background: var(--outline-variant);
-    transform: translateX(-50%);
-  }
-
-  .dash .app-modal__header { padding: 1.25rem 1rem 0.875rem; }
-  .dash .app-modal__body { overscroll-behavior-y: contain; }
-
-  .dash .confirm-modal__panel {
-    padding: 1.5rem 1rem max(1rem, env(safe-area-inset-bottom));
-  }
-
-  .dash .confirm-modal__actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .dash .confirm-modal__actions > button {
-    min-height: 2.75rem;
-    justify-content: center;
   }
 }
 

@@ -69,6 +69,16 @@
 
   const isScreen = $derived(size === 'screen');
 
+  // Le focus entre dans la fenêtre à l'ouverture et revient au déclencheur à la
+  // fermeture : sans ça, Échap n'était entendu que sur le fond.
+  let panel = $state<HTMLDivElement | null>(null);
+  $effect(() => {
+    if (!open || !panel) return;
+    const opener = document.activeElement as HTMLElement | null;
+    panel.focus({ preventScroll: true });
+    return () => opener?.focus?.({ preventScroll: true });
+  });
+
   function handleBackdropClick(e: Event) {
     if (closeOnBackdropClick && e.currentTarget === e.target) {
       open = false;
@@ -98,12 +108,13 @@
     role="dialog"
     aria-modal="true"
     aria-labelledby={title ? titleId : undefined}
+    tabindex="-1"
+    onkeydown={(e) => { if (e.key === 'Escape') { e.stopPropagation(); handleKeydown(e); } }}
   >
     <!-- Fond -->
     <div
       class="absolute inset-0 bg-black/40"
       onclick={handleBackdropClick}
-      onkeydown={handleKeydown}
       onkeypress={(e) => e.key === 'Enter' && handleBackdropClick(e)}
       tabindex="-1"
       role="button"
@@ -114,7 +125,9 @@
     <!-- svelte-ignore a11y_click_events_have_key_events -->
     <!-- svelte-ignore a11y_no_static_element_interactions -->
     <div
-      class="app-modal__panel relative w-full {sizeClasses[size]} bg-surface-container-lowest shadow-lg overflow-hidden border border-outline-variant flex flex-col animate-in fade-in slide-up duration-150 {isScreen
+      bind:this={panel}
+      tabindex="-1"
+      class="app-modal__panel outline-none relative w-full {sizeClasses[size]} bg-surface-container-lowest shadow-lg overflow-hidden border border-outline-variant flex flex-col animate-in fade-in slide-up duration-150 {isScreen
         ? `h-full rounded-none ${contained ? 'sm:h-[calc(100%-2rem)]' : 'sm:h-[calc(100vh-2rem)]'} sm:rounded-xl`
         : `rounded-xl ${contained ? 'max-h-[90%]' : 'max-h-[90vh]'}`}"
       onclick={(e) => e.stopPropagation()}

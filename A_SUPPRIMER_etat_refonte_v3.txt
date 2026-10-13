@@ -1,6 +1,6 @@
 ÉTAT DE LA REFONTE V3 DE L'ACCUEIL (branche feat/landing-v3)
 Fichier temporaire : à supprimer une fois la refonte terminée.
-Dernière mise à jour : 13/10/2026
+Dernière mise à jour : 13/10/2026 (soir)
 
 
 FAIT
@@ -20,29 +20,26 @@ FAIT
   (messages Discord, notifications, ticket de caisse), textes pour lecteurs
   d'écran, FAQ (aussi lue par le JSON-LD).
 - Accessibilité vérifiée (axe) sur le héros, la barre du haut et #2h47.
+- Zone « Ton staff a enfin un QG » : les quatre écrans du dashboard sont
+  recopiés depuis Kotbo/recette dans src/lib/dash/screens/ et jouables
+  (fiche membre avec la liste des membres, équipe, sanctions, tickets).
+  Un même serveur fictif (dash/cast.ts) : un clic sur un nom ouvre sa fiche
+  depuis n'importe quel écran. La fenêtre fait 1180 x 720, réduite à la
+  largeur ; sous 60 % elle devient un aperçu non cliquable avec un lien vers
+  la démo. Vérifié : ordinateur, tablette, téléphone, FR/EN, axe sans erreur.
+- Papicon : celle du dashboard sert aux écrans recopiés (dash/Papicon.svelte),
+  celle du site reste pour les anciennes maquettes (page staff v2, Arsenal).
+- Corrigé au passage dans la recopie (défauts du dashboard lui-même) :
+  badges illisibles en sombre, dt/dd dans des boutons, Échap des fenêtres.
 
 
 PAS FAIT
 --------
-- Zone « Ton staff a enfin un QG » : affiche encore les ANCIENNES maquettes
-  (src/lib/components/mockups/). À refaire :
-    1. Finir le socle src/lib/dash/ (commencé, NON branché sur la page) :
-       thème sombre du dashboard dans dash.css, petits composants dans ui/,
-       il manque les données fictives partagées (fixtures).
-    2. Recopier les 4 écrans depuis le dépôt produit, branche Kotbo/recette
-       (pas depuis static/demo, qui n'est plus à jour) :
-         - fiche membre  : MemberCaseModal (ouverte depuis pages/Members.svelte)
-         - équipe        : pages/StaffManagement.svelte
-         - sanctions     : pages/security/Sanctions.svelte
-         - tickets       : pages/Tickets.svelte
-       Identiques au vrai dashboard, cliquables (onglets, sélection, actions),
-       on passe de l'un à l'autre (ex. clic sur un modo dans Équipe = sa fiche),
-       taille prévue 1180 x 720, sans scroll dans l'écran.
-    3. Les brancher dans src/lib/v3/StaffHQ.svelte, puis vérifier desktop,
-       mobile et accessibilité.
-- Papicon : la version reprise du dashboard est rangée dans
-  src/lib/dash/wip/Papicon.dashboard.svelte.txt. Elle n'a PAS remplacé celle
-  du site : la comparer avant de l'adopter, car elle sert partout.
+- Écrans recopiés, simplifications à connaître (détail en tête de chaque
+  fichier) : la fiche garde 9 onglets sur 13, les graphiques Chart.js sont
+  redessinés en SVG, une partie des réglages tickets et sanctions n'est pas
+  reprise. Les anciennes maquettes (components/mockups/) servent encore à la
+  page staff v2 et à Arsenal.
 - Les zones sous le QG (addition, modules, setup, confiance, prix, FAQ, appel
   final) n'ont pas été retravaillées dans cette session.
 - Rien n'est mergé dans main.
