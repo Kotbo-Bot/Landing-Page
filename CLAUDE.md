@@ -42,7 +42,7 @@ bun run check      # svelte-check
 | `src/routes/` | Les routes : accueil (`/`, `/en`), page staff (`/gestion-staff-discord`, `/en/discord-staff-management`), fonctionnalités (`/fonctionnalites`, `/en/features`), pages légales. |
 | `src/lib/pages/` | L'accueil, la page staff et les pages fonctionnalités, rendus par leurs deux routes. |
 | `src/lib/seo/` | `Seo.svelte` (balises, `hreflang`), `jsonld.js`, `faq.js`. |
-| `src/lib/v3/` | L'accueil v3 : une zone par fichier, la colonne de salons, le bouton d'invitation. |
+| `src/lib/v3/` | L'accueil v3 : une zone par fichier, la barre du haut, le film du héros, le bouton d'invitation. |
 | `src/lib/sections/` | Barre et pied de page des pages hors accueil, zones de la v2. |
 | `src/lib/playground/` | Les zones jouables : le serveur monté (`kit.svelte.ts`), l'onboarding du héros, les aperçus Discord, la carte de rang. |
 | `src/lib/components/` | Zones reprises de la v1 (catalogue, comparatif, tarifs, FAQ) et écrans du dashboard reconstitués (`mockups/`). |

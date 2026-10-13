@@ -101,7 +101,7 @@
 </script>
 
 <section id="addition" aria-labelledby="receipt-title" class="relative overflow-hidden bg-night pb-16 sm:pb-24 lg:pb-32">
-  <div class="sticky top-0 z-20 bg-night/95 backdrop-blur-sm">
+  <div class="bg-night/95 backdrop-blur-sm">
     <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="addition" /></div>
   </div>
   <div class="mx-auto pt-14 lg:pt-20 grid max-w-7xl gap-14 px-4 sm:px-6 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:gap-20">

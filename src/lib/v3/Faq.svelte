@@ -18,7 +18,7 @@
 </script>
 
 <section id="faq" aria-labelledby="faq-title" class="bg-night-2 pb-16 sm:pb-24 lg:pb-32">
-  <div class="sticky top-0 z-20 bg-night-2/95 backdrop-blur-sm">
+  <div class="bg-night-2/95 backdrop-blur-sm">
     <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="faq" /></div>
   </div>
   <div class="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:pt-20">

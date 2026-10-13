@@ -24,6 +24,7 @@
   import { getLocale } from '$lib/i18n/state.svelte';
   import Seo from '$lib/seo/Seo.svelte';
 
+  import Nav from '$lib/v3/Nav.svelte';
   import Hero from '$lib/v3/Hero.svelte';
   import Night from '$lib/v3/Night.svelte';
   import StaffHQ from '$lib/v3/StaffHQ.svelte';
@@ -36,8 +37,6 @@
   import Final from '$lib/v3/Final.svelte';
   import Footer from '$lib/v3/Footer.svelte';
   import MobileBar from '$lib/v3/MobileBar.svelte';
-  import Channels from '$lib/v3/Channels.svelte';
-  import ChannelSheet from '$lib/v3/ChannelSheet.svelte';
 
   // Requête en tête, marque en fin : c'est ce que tapent ceux qui cherchent un
   // bot sans connaître Kotbo. Le titre est aussi le titre bleu de l'embed
@@ -75,10 +74,8 @@
 
 <div id="top" class="v3 relative min-h-screen bg-night font-sans text-white antialiased">
   <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-night">{t.skip}</a>
+  <Nav />
   <main id="main">
-    <div class="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)]">
-      <Channels />
-      <div class="min-w-0">
     <Hero />
     <Night />
     <StaffHQ />
@@ -88,11 +85,8 @@
     <Trust />
     <Price />
     <Faq />
-      </div>
-    </div>
     <Final />
   </main>
   <Footer />
   <MobileBar />
-  <ChannelSheet />
 </div>

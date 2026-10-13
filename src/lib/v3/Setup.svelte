@@ -171,7 +171,7 @@
 </script>
 
 <section id="setup" aria-labelledby="setup-title" class="bg-night pb-16 sm:pb-24 lg:pb-32">
-  <div class="sticky top-0 z-20 bg-night/95 backdrop-blur-sm">
+  <div class="bg-night/95 backdrop-blur-sm">
     <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="setup" /></div>
   </div>
   <div class="mx-auto pt-14 lg:pt-20 max-w-7xl px-4 sm:px-6">

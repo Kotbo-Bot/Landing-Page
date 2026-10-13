@@ -12,15 +12,15 @@ légal) restent en v2, décrite plus bas, jusqu'à leur refonte.
 ## Le concept
 
 **La page est un serveur Discord.** Chaque zone est un salon (`v3/channels.ts`),
-ouvert par sa barre de salon (nom + sujet, collée en haut pendant la lecture).
-Sur ordinateur, la colonne de salons à gauche dit où l'on est et ce qu'il reste
-à lire (pastille « non lu » qui s'éteint). La cible, le fondateur d'un serveur
+ouvert par sa barre de salon (nom + sujet). La navigation tient dans une seule
+barre en haut (`v3/Nav`), un panneau sous elle sur téléphone. La cible, le fondateur d'un serveur
 qui a un staff, vit dans Discord : il lit la page dans une grammaire qu'il
 connaît par cœur.
 
 Le héros dit en trois secondes ce que c'est (bot Discord + dashboard), pour qui
 (les serveurs qui ont un staff), pourquoi lui (la pile de bots part, le staff
-est géré). L'unique mouvement orchestré est la liste « Bots » qui se vide.
+est géré). Le film de 20 s (Vimeo, `v3/HeroVideo`) est à gauche du texte, visible
+sans défiler ; sur téléphone, il suit le titre.
 
 ## Palette
 

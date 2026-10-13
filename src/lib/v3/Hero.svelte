@@ -20,7 +20,6 @@
   import { TOPGG_RATING, TOPGG_URL, TRIAL_DAYS } from '$lib/product';
   import AddButton from './AddButton.svelte';
   import HeroVideo from './HeroVideo.svelte';
-  import ChannelHeader from './ChannelHeader.svelte';
   import { ktb } from '$lib/playground/discord/theme';
 
   const TEXT = {
@@ -56,19 +55,21 @@
 </script>
 
 <section id="bienvenue" aria-labelledby="hero-title" class="relative bg-night">
-  <div class="sticky top-0 z-20 bg-night/95 backdrop-blur-sm">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="bienvenue" /></div>
-  </div>
-
-  <div class="mx-auto max-w-7xl px-4 pb-20 pt-10 sm:px-6 lg:pb-28 lg:pt-14">
-    <div class="grid grid-cols-[minmax(0,1fr)] gap-8 xl:grid-cols-2 xl:items-end xl:gap-14">
-      <h1 id="hero-title" class="font-display text-[2.6rem] font-black leading-[0.98] tracking-[-0.03em] text-balance text-white sm:text-6xl 2xl:text-[5rem]">
+  <!-- Le film à gauche, le texte à droite : le produit se voit dès
+       l'arrivée, sans défiler. Sur téléphone : titre, film, puis le reste. -->
+  <div class="mx-auto max-w-7xl px-4 pb-20 pt-8 sm:px-6 lg:pb-24 lg:pt-12">
+    <div class="grid grid-cols-[minmax(0,1fr)] gap-x-12 gap-y-7 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:grid-rows-[auto_auto] lg:items-center xl:gap-x-16">
+      <h1 id="hero-title" class="font-display text-[2.6rem] font-black leading-[0.98] tracking-[-0.03em] text-balance text-white sm:text-6xl lg:col-start-2 lg:row-start-1 lg:self-end lg:text-5xl xl:text-[3.6rem] 2xl:text-[4.2rem]">
         {t.h1a}
         {t.h1b}
       </h1>
 
-      <div>
-        <p class="max-w-xl text-lg leading-relaxed text-mist text-pretty sm:text-xl">{t.sub}</p>
+      <div class="lg:col-start-1 lg:row-span-2 lg:row-start-1">
+        <HeroVideo />
+      </div>
+
+      <div class="lg:col-start-2 lg:row-start-2 lg:self-start">
+        <p class="max-w-xl text-lg leading-relaxed text-mist text-pretty">{t.sub}</p>
 
         <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
           <AddButton content="hero" size="lg" />
@@ -82,11 +83,6 @@
 
         <p class="mt-5 flex items-start gap-2 text-sm text-mist"><img src={ktb('lock')} alt="" width="16" height="16" class="mt-0.5 h-4 w-4 shrink-0" />{t.reassure}</p>
       </div>
-    </div>
-
-    <!-- Le film prend toute la largeur : c'est lui qui montre le produit. -->
-    <div class="mt-10 lg:mt-14">
-      <HeroVideo />
     </div>
 
     <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
