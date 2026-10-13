@@ -99,7 +99,9 @@
           <span class="sr-only">{t.switchTo}</span>
         </a>
       {/if}
-      <AddButton content="header" size="sm" class="hidden sm:inline-flex lg:hidden" />
+      <!-- Un seul bouton à la fois : la barre du bas le porte sur téléphone,
+           la colonne de salons sur ordinateur. -->
+      <div class="hidden sm:block lg:hidden"><AddButton content="header" size="sm" /></div>
       <button
         bind:this={menuButton}
         type="button"
