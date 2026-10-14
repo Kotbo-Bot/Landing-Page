@@ -10,7 +10,7 @@
    * 3. ce que personne d'autre ne fait (le QG du staff, vrais écrans) ;
    * 4. combien je paye aujourd'hui (le ticket de caisse) ;
    * 5. qu'est-ce qu'il sait faire d'autre (les modules) ;
-   * 6. est-ce que c'est pour mon serveur (les profils, qui règlent l'install) ;
+   * 6. et avec mon IA (le serveur MCP, dans une fenêtre de chat) ;
    * 7. est-ce que je peux lui faire confiance, combien, et les dernières questions ;
    * 8. le dernier appel.
    *
@@ -30,7 +30,7 @@
   import StaffHQ from '$lib/v3/StaffHQ.svelte';
   import Receipt from '$lib/v3/Receipt.svelte';
   import Arsenal from '$lib/v3/Arsenal.svelte';
-  import Setup from '$lib/v3/Setup.svelte';
+  import Mcp from '$lib/v3/Mcp.svelte';
   import Trust from '$lib/v3/Trust.svelte';
   import Price from '$lib/v3/Price.svelte';
   import Faq from '$lib/v3/Faq.svelte';
@@ -60,28 +60,25 @@
   const t = $derived(TEXT[getLocale()]);
 
   onMount(() => {
-    // Le fond nuit couvre aussi la zone de rebond et le haut de page.
-    document.documentElement.classList.add('v3');
     // Entrée du tunnel. Le référent n'est classé qu'ici : dès la deuxième page
     // d'une navigation interne il ne dit plus rien de la provenance réelle.
     track('site_visit', { path: location.pathname });
-    return () => document.documentElement.classList.remove('v3');
   });
 </script>
 
 <Seo title={t.title} description={t.description} path={t.path} jsonLd={homeJsonLd(getLocale())} />
 <svelte:head><meta name="theme-color" content="#09090b" /></svelte:head>
 
-<div id="top" class="v3 relative min-h-screen bg-night font-sans text-white antialiased">
+<div id="top" class="v3 relative min-h-screen bg-night font-sans text-ink antialiased">
   <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-night">{t.skip}</a>
-  <Nav />
+  <Nav home />
   <main id="main">
     <Hero />
     <Night />
     <StaffHQ />
     <Receipt />
     <Arsenal />
-    <Setup />
+    <Mcp />
     <Trust />
     <Price />
     <Faq />

@@ -1,277 +1,168 @@
 <script lang="ts">
-  import { base } from '$app/paths';
-  import { onMount, type Snippet } from 'svelte';
-  import LanguageSwitcher from '$lib/components/ui/LanguageSwitcher.svelte';
+  /**
+   * Le gabarit des pages légales : la barre et le pied de page du site
+   * (`v3/Shell`, sans barre d'invitation), un titre, le sommaire qui suit la
+   * lecture sur grand écran, et le texte.
+   *
+   * Les pages écrivent leur texte en HTML simple (`policy-section`,
+   * `info-box`, `table-wrap`…) : la mise en forme vit ici, sur les jetons de
+   * `routes/layout.css`, et suit donc le thème choisi.
+   */
+  import type { Snippet } from 'svelte';
   import { getLocale } from '$lib/i18n/state.svelte';
+  import Shell from '$lib/v3/Shell.svelte';
 
   type SectionLink = { id: string; label: string };
 
-  let {
+  const {
     title,
     subtitle,
-    sections,
-    activePage,
+    sections = [],
     children,
   }: {
     title: string;
-    subtitle: string;
-    sections: SectionLink[];
-    activePage: 'privacy' | 'terms' | 'cgv' | 'cookies' | 'dpa' | 'legal';
+    subtitle?: string;
+    sections?: SectionLink[];
     children: Snippet;
   } = $props();
 
-  let scrolled = $state(false);
-
-  onMount(() => {
-    const handleScroll = () => { scrolled = window.scrollY > 30; };
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  });
-
   const TEXT = {
-    fr: {
-      back: 'Retour à l\'accueil',
-      toc: 'Sommaire',
-      footerTagline: '© 2026 Kotbo. Le centre de contrôle Discord.',
-      footer: {
-        privacy: 'Confidentialité',
-        terms: 'CGU',
-        cgv: 'CGV',
-        cookies: 'Cookies',
-        dpa: 'DPA',
-        legal: 'Mentions légales',
-        discord: 'Discord',
-        docs: 'Documentation',
-      },
-    },
-    en: {
-      back: 'Back to home',
-      toc: 'Contents',
-      footerTagline: '© 2026 Kotbo. The Discord control center.',
-      footer: {
-        privacy: 'Privacy',
-        terms: 'Terms of Use',
-        cgv: 'Terms of Sale',
-        cookies: 'Cookies',
-        dpa: 'DPA',
-        legal: 'Legal Notice',
-        discord: 'Discord',
-        docs: 'Documentation',
-      },
-    },
+    fr: { toc: 'Sommaire' },
+    en: { toc: 'Contents' },
   };
-
   const t = $derived(TEXT[getLocale()]);
 </script>
 
-<div class="sticky top-0 z-50 transition-all duration-300" class:nav-scrolled={scrolled}>
-  <nav class="max-w-[90rem] mx-auto px-8 py-5 flex justify-between items-center">
-    <a href="{base}/" class="flex items-center gap-3 group">
-      <img src="{base}/favicon.svg" alt="Kotbo Logo" class="w-9 h-9 rounded-xl shadow-md" />
-      <span class="font-black text-xl tracking-tight text-gray-900 group-hover:text-indigo-700 transition-colors">Kotbo</span>
-    </a>
-    <div class="flex items-center gap-4">
-      <LanguageSwitcher />
-      <a
-        href="{base}/"
-        class="flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-gray-900 transition-colors bg-white border border-gray-200 rounded-xl px-4 py-2 shadow-sm hover:shadow-md"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-        </svg>
-        {t.back}
-      </a>
-    </div>
-  </nav>
-</div>
-
-<div class="min-h-screen">
-  <header class="bg-white border-b border-gray-100 py-14">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-      <h1 class="text-4xl md:text-5xl font-black tracking-tight text-gray-900 mb-4 font-headline">{title}</h1>
-      <p class="text-gray-500 font-semibold text-sm mt-4">{subtitle}</p>
+<Shell invite={false}>
+  <header class="border-b border-line">
+    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:py-20">
+      <h1 class="max-w-4xl text-balance font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-ink sm:text-5xl">{title}</h1>
+      {#if subtitle}<p class="mt-5 text-sm text-fog">{subtitle}</p>{/if}
     </div>
   </header>
 
-  <div class="max-w-[82rem] mx-auto px-6 py-14 flex flex-col lg:flex-row gap-10 items-start">
-    <aside class="lg:sticky lg:top-24 lg:w-64 shrink-0 bg-white rounded-2xl border border-gray-100 shadow-sm p-5 self-start">
-      <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">{t.toc}</p>
-      <nav class="flex flex-col gap-1">
-        {#each sections as section}
-          <a
-            href="#{section.id}"
-            class="text-sm font-semibold text-gray-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg px-3 py-2 transition-colors"
-          >{section.label}</a>
-        {/each}
+  <div class="mx-auto grid max-w-7xl gap-12 px-4 py-14 sm:px-6 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-20 lg:py-20">
+    {#if sections.length}
+      <nav aria-labelledby="toc-title" class="lg:sticky lg:top-24 lg:self-start">
+        <p id="toc-title" class="text-sm font-semibold text-ink">{t.toc}</p>
+        <ol class="mt-3 border-l border-line text-sm">
+          {#each sections as section (section.id)}
+            <li><a href="#{section.id}" class="-ml-px block border-l border-transparent py-2 pl-4 leading-snug text-fog transition-colors hover:border-ink hover:text-ink">{section.label}</a></li>
+          {/each}
+        </ol>
       </nav>
-    </aside>
+    {/if}
 
-    <main class="flex-1 max-w-3xl prose-policy">
+    <div class="prose-policy min-w-0 max-w-3xl {sections.length ? '' : 'lg:col-span-2'}">
       {@render children()}
-    </main>
-  </div>
-
-  <footer class="bg-white border-t border-gray-200 py-10 text-center text-gray-500 text-sm font-bold mt-10">
-    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-      <div class="flex items-center gap-3">
-        <img src="{base}/favicon.svg" alt="Kotbo Logo" class="w-8 h-8 rounded-lg shadow-sm grayscale opacity-50" />
-        <span class="font-black text-lg text-gray-400">Kotbo</span>
-      </div>
-      <p>{t.footerTagline}</p>
-      <div class="flex flex-wrap justify-center gap-6 uppercase tracking-widest text-[10px] font-black">
-        <a href="{base}/privacy" class:text-indigo-600={activePage === 'privacy'} class="hover:text-gray-900 transition-colors">{t.footer.privacy}</a>
-        <a href="{base}/terms" class:text-indigo-600={activePage === 'terms'} class="hover:text-gray-900 transition-colors">{t.footer.terms}</a>
-        <a href="{base}/cgv" class:text-indigo-600={activePage === 'cgv'} class="hover:text-gray-900 transition-colors">{t.footer.cgv}</a>
-        <a href="{base}/cookies" class:text-indigo-600={activePage === 'cookies'} class="hover:text-gray-900 transition-colors">{t.footer.cookies}</a>
-        <a href="{base}/dpa" class:text-indigo-600={activePage === 'dpa'} class="hover:text-gray-900 transition-colors">{t.footer.dpa}</a>
-        <a href="{base}/mentions-legales" class:text-indigo-600={activePage === 'legal'} class="hover:text-gray-900 transition-colors">{t.footer.legal}</a>
-        <a href="https://nathaan.me/u/discord" target="_blank" rel="noopener" class="hover:text-gray-900 transition-colors">{t.footer.discord}</a>
-        <a href="https://docs.kotbo.fr" target="_blank" rel="noopener" class="hover:text-gray-900 transition-colors">{t.footer.docs}</a>
-      </div>
     </div>
-  </footer>
-</div>
+  </div>
+</Shell>
 
 <style>
   .prose-policy {
-    font-family: var(--font-sans, 'Inter', sans-serif);
-    color: #374151;
+    color: var(--color-mist);
     line-height: 1.75;
   }
 
   .prose-policy :global(.policy-section) {
-    position: relative;
     margin-bottom: 3.5rem;
     padding-bottom: 3rem;
-    border-bottom: 1px solid #f3f4f6;
-    scroll-margin-top: 7rem;
+    border-bottom: 1px solid var(--color-line);
+    scroll-margin-top: 6rem;
   }
-
   .prose-policy :global(.policy-section:last-child) { border-bottom: none; }
 
+  /* Le numéro de la section, repris du sommaire. */
   .prose-policy :global(.section-badge) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    background: #eef2ff;
-    color: #4338ca;
-    font-size: 0.65rem;
-    font-weight: 900;
-    border-radius: 0.5rem;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.75rem;
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 800;
+    color: var(--color-fog);
+    margin-bottom: 0.5rem;
   }
 
   .prose-policy :global(h2) {
-    font-size: 1.6rem;
-    font-weight: 900;
-    color: #111827;
-    margin-bottom: 1rem;
-    font-family: 'Manrope', sans-serif;
-    letter-spacing: -0.02em;
-  }
-
-  .prose-policy :global(h3) {
-    font-size: 1.05rem;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
     font-weight: 800;
-    color: #1f2937;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    margin-bottom: 1rem;
+    text-wrap: balance;
+  }
+  .prose-policy :global(h3) {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-ink);
     margin-top: 1.75rem;
     margin-bottom: 0.5rem;
   }
+  .prose-policy :global(h4) { color: var(--color-ink); }
+  .prose-policy :global(strong) { color: var(--color-ink); }
 
-  .prose-policy :global(p) { margin-bottom: 1rem; font-size: 0.9375rem; }
+  .prose-policy :global(p) { margin-bottom: 1rem; }
 
-  .prose-policy :global(ul) { list-style: none; padding-left: 0; margin-bottom: 1rem; }
-  .prose-policy :global(ul li) {
-    position: relative;
-    padding-left: 1.5rem;
-    margin-bottom: 0.5rem;
-    font-size: 0.9375rem;
-  }
-  .prose-policy :global(ul li::before) {
-    content: '›';
-    position: absolute;
-    left: 0;
-    color: #6366f1;
-    font-weight: 900;
-    font-size: 1.1rem;
-    line-height: 1.5;
-  }
+  .prose-policy :global(ul) { list-style: disc; padding-left: 1.25rem; margin-bottom: 1rem; }
+  .prose-policy :global(ul li) { margin-bottom: 0.5rem; }
+  .prose-policy :global(ul li::marker) { color: var(--color-glow); }
+  .prose-policy :global(ol) { list-style: decimal; padding-left: 1.25rem; margin-bottom: 1rem; }
 
   .prose-policy :global(a) {
-    color: #4f46e5;
-    font-weight: 700;
+    color: var(--color-glow);
+    font-weight: 600;
     text-decoration: underline;
-    text-underline-offset: 2px;
+    text-underline-offset: 3px;
   }
-  .prose-policy :global(a:hover) { color: #3730a3; }
+  .prose-policy :global(a:hover) { text-decoration-thickness: 2px; }
 
+  .prose-policy :global(hr) { border-color: var(--color-line); }
+
+  /* Un encadré : une précision, un avertissement (`warn`), un interdit (`danger`). */
   .prose-policy :global(.info-box) {
-    background: #eff6ff;
-    border: 1px solid #bfdbfe;
+    background: var(--color-night-3);
+    border: 1px solid var(--color-line-2);
     border-radius: 0.875rem;
     padding: 1rem 1.25rem;
-    font-size: 0.875rem;
-    color: #1e40af;
+    font-size: 0.9375rem;
     line-height: 1.65;
   }
-
   .prose-policy :global(.info-box p:last-child) { margin-bottom: 0; }
+  .prose-policy :global(.info-box.warn) { border-color: var(--color-amber); }
+  .prose-policy :global(.info-box.danger) { border-color: var(--color-alarm); }
+
   .prose-policy :global(.table-wrap) { overflow-x: auto; padding: 1px; }
   .prose-policy :global(table) {
     width: 100%;
     border-collapse: collapse;
     margin: 1.25rem 0 1.5rem;
     font-size: 0.875rem;
-    border-radius: 0.75rem;
-    overflow: hidden;
-    box-shadow: 0 0 0 1px #e5e7eb;
+    border: 1px solid var(--color-line);
   }
   .prose-policy :global(th) {
-    background: #f3f4f6;
-    font-weight: 800;
-    color: #374151;
+    background: var(--color-night-3);
+    font-weight: 700;
+    color: var(--color-ink);
     padding: 0.75rem 1rem;
     text-align: left;
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
   }
   .prose-policy :global(td) {
     padding: 0.7rem 1rem;
-    color: #4b5563;
-    border-top: 1px solid #f3f4f6;
+    border-top: 1px solid var(--color-line);
     vertical-align: top;
   }
-  .prose-policy :global(tr:hover td) { background: #fafafa; }
 
   .prose-policy :global(code) {
-    background: #f3f4f6;
-    color: #4338ca;
+    font-family: var(--font-mono);
+    background: var(--color-night-3);
+    color: var(--color-ink);
     padding: 0.12rem 0.35rem;
     border-radius: 0.35rem;
     font-size: 0.82em;
-    font-weight: 700;
   }
 
-  /* ── Info box variants ───────────────────────────────── */
-  .prose-policy :global(.info-box.warn) {
-    background: #fffbeb;
-    border-color: #fde68a;
-    color: #92400e;
-  }
-  .prose-policy :global(.info-box.warn a) { color: #b45309; }
-  .prose-policy :global(.info-box.danger) {
-    background: #fef2f2;
-    border-color: #fecaca;
-    color: #991b1b;
-  }
-  .prose-policy :global(.info-box.danger a) { color: #b91c1c; }
-
-  /* ── Rights grid ─────────────────────────────────────── */
   .prose-policy :global(.rights-grid) {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -279,37 +170,29 @@
     margin: 1.25rem 0;
   }
   .prose-policy :global(.right-card) {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
+    background: var(--color-night-2);
+    border: 1px solid var(--color-line);
     border-radius: 1rem;
     padding: 1.1rem 1.25rem;
-    transition: box-shadow 0.2s, border-color 0.2s;
-  }
-  .prose-policy :global(.right-card:hover) {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
-    border-color: #c7d2fe;
   }
   .prose-policy :global(.right-card h4) {
     font-size: 0.95rem;
-    font-weight: 800;
-    color: #1f2937;
+    font-weight: 700;
     margin-bottom: 0.4rem;
   }
   .prose-policy :global(.right-card p) {
-    font-size: 0.8375rem;
-    color: #6b7280;
+    font-size: 0.875rem;
+    color: var(--color-fog);
     margin: 0;
   }
   .prose-policy :global(.art) {
-    font-weight: 400;
-    font-size: 0.72rem;
-    color: #9ca3af;
+    font-size: 0.75rem;
+    color: var(--color-fog);
   }
 
-  /* ── Contact card ────────────────────────────────────── */
   .prose-policy :global(.contact-card) {
-    background: #fafafa;
-    border: 1px solid #e5e7eb;
+    background: var(--color-night-2);
+    border: 1px solid var(--color-line);
     border-radius: 1rem;
     padding: 1.5rem;
     margin-top: 1rem;

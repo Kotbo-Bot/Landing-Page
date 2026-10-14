@@ -634,9 +634,8 @@
 
 /* ── Animations (l. 767) ─────────────────────────────────────────────────── */
 
-/* Le site a ses propres `.animate-in` et `.fade-in` (300 ms) : la version du
-   dashboard (150 ms) passe devant sous `.dash`, et ses images clés sont
-   renommées pour ne pas écraser celles du site. */
+/* Les animations du dashboard (150 ms), enfermées sous `.dash` ; leurs
+   images clés sont préfixées pour ne pas se mêler à celles du site. */
 .dash .animate-in {
   animation-duration: 150ms;
   animation-timing-function: ease-out;

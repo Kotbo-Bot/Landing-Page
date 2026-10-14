@@ -6,10 +6,11 @@
    * Kotbo arrive en bas avec son prix. Le ticket est l'unique objet clair de
    * la page : c'est le moment où l'on compte, il doit se lire comme un papier.
    *
-   * Les prix concurrents sont ceux de `components/Comparison.svelte` (entrée de
-   * gamme premium relevée sur leurs pages publiques en septembre 2026, en
-   * ordre de grandeur, affichés « ≈ »). Kotbo est opposé à son prix le plus
-   * bas (Starter payé à l'année, 2,50 €/mois) : annoncer un palier supérieur
+   * Les prix concurrents sont l'entrée de gamme premium de chaque bot, relevée
+   * sur leurs pages publiques en septembre 2026 (conversion approximative pour
+   * les prix en dollars), en ordre de grandeur, affichés « ≈ ». Ils
+   * changent sans préavis : les revérifier avant de les toucher. Kotbo est
+   * opposé à son prix le plus bas (Starter payé à l'année, 2,50 €/mois) : annoncer un palier supérieur
    * gonflerait la comparaison, et c'est le seul prix que tout serveur peut
    * payer. Le tableur du staff ne coûte rien, il coûte du temps : il est
    * compté en heures, pas en euros.
@@ -18,6 +19,7 @@
   import { getLocale } from '$lib/i18n/state.svelte';
   import AddButton from './AddButton.svelte';
   import ChannelHeader from './ChannelHeader.svelte';
+  import { MODULE_COUNT } from './modules';
 
   type Line = { key: string; need: { fr: string; en: string }; bot: string; icon: string | null; price: number };
 
@@ -49,12 +51,11 @@
       hours: (h: number) => `+ ${h} h/sem`,
       yourTime: 'de ton temps',
       kotbo: 'Kotbo, tout compris',
-      kotboLine: 'les 51 modules, staff inclus',
+      kotboLine: `les ${MODULE_COUNT} modules, staff inclus`,
       kotboFrom: 'dès',
       saved: (n: string) => `T’économises ${n}/mois. Et tes dimanches`,
       same: 'Même prix. Mais un seul bot, et ton staff en plus',
       empty: 'Coche au moins un truc, sinon le ticket est vide',
-      stamp: 'PAYÉ TROP CHER',
       thanks: 'Merci de ta visite. Reviens pas',
       note: 'Prix premium d’entrée relevés sur la page de chaque bot en septembre 2026, en ordre de grandeur. Kotbo n’est affilié à aucun. Kotbo : Starter à l’année, HT',
       priceFmt: (n: number) => `${n.toLocaleString('fr-FR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 })} €`,
@@ -72,12 +73,11 @@
       hours: (h: number) => `+ ${h} h/wk`,
       yourTime: 'of your time',
       kotbo: 'Kotbo, all in',
-      kotboLine: 'all 51 modules, staff included',
+      kotboLine: `all ${MODULE_COUNT} modules, staff included`,
       kotboFrom: 'from',
       saved: (n: string) => `You save ${n}/mo. And your Sundays`,
       same: 'Same price. But one bot, and your staff on top',
       empty: 'Tick at least one thing, or the receipt is empty',
-      stamp: 'OVERPAID',
       thanks: 'Thanks for visiting. Don’t come back',
       note: 'Entry-level premium prices from each bot’s page in September 2026, order of magnitude. Kotbo isn’t affiliated with any. Kotbo: Starter billed yearly, excl. VAT',
       priceFmt: (n: number) => `€${n.toLocaleString('en-US', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 })}`,
@@ -106,7 +106,7 @@
   </div>
   <div class="mx-auto pt-14 lg:pt-20 grid max-w-7xl gap-14 px-4 sm:px-6 lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:gap-20">
     <div class="min-w-0">
-      <h2 id="receipt-title" class="text-balance font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-white sm:text-5xl lg:text-6xl">{t.title}</h2>
+      <h2 id="receipt-title" class="text-balance font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-ink sm:text-5xl lg:text-6xl">{t.title}</h2>
       <p class="mt-6 text-lg text-mist">{t.intro}</p>
 
       <fieldset class="mt-10">
@@ -122,7 +122,7 @@
               <input type="checkbox" checked={on} onchange={() => toggle(line.key)} class="sr-only" />
               <img src="{base}/bots/{line.icon}" alt="" width="28" height="28" class="h-7 w-7 rounded-full bg-night-3" />
               <span class="min-w-0 flex-1">
-                <span class="block text-sm font-semibold text-white">{line.need[locale]}</span>
+                <span class="block text-sm font-semibold text-ink">{line.need[locale]}</span>
                 <span class="block text-xs text-fog">{line.bot}</span>
               </span>
               <span
@@ -140,10 +140,10 @@
           >
             <input type="checkbox" bind:checked={sheet} class="sr-only" />
             <span class="grid h-7 w-7 place-items-center rounded-full bg-[#107c41]" aria-hidden="true">
-              <svg viewBox="0 0 16 16" class="h-3.5 w-3.5 text-white"><path fill="currentColor" d="M2 2h12v12H2zM3.5 3.5v2.5h3.5V3.5zm5 0v2.5h4V3.5zm-5 4V10h3.5V7.5zm5 0V10h4V7.5zm-5 4v1h3.5v-1zm5 0v1h4v-1z" /></svg>
+              <svg viewBox="0 0 16 16" class="h-3.5 w-3.5 text-ink"><path fill="currentColor" d="M2 2h12v12H2zM3.5 3.5v2.5h3.5V3.5zm5 0v2.5h4V3.5zm-5 4V10h3.5V7.5zm5 0V10h4V7.5zm-5 4v1h3.5v-1zm5 0v1h4v-1z" /></svg>
             </span>
             <span class="min-w-0 flex-1">
-              <span class="block text-sm font-semibold text-white">{t.sheet}</span>
+              <span class="block text-sm font-semibold text-ink">{t.sheet}</span>
               <span class="block text-xs text-fog">{t.sheetBot}</span>
             </span>
             <span aria-hidden="true" class="grid h-5 w-5 place-items-center rounded-md border {sheet ? 'border-glow bg-glow text-night' : 'border-[#71717a]'}">
@@ -182,11 +182,6 @@
           </ul>
           <div class="my-4 border-t-2 border-dashed border-[#d6d3d1]" aria-hidden="true"></div>
           <div class="relative">
-          {#if total > 8}
-            <p class="stamp pointer-events-none absolute -bottom-9 left-0 rotate-[-9deg] rounded-md border-[3px] border-[#dc2626] px-2 py-0.5 font-sans text-base font-black tracking-wider text-[#dc2626]/85" aria-hidden="true">
-              {t.stamp}
-            </p>
-          {/if}
           <p class="flex justify-between text-base font-bold">
             <span>{t.subtotal}</span>
             <span class="tabular-nums">≈ {t.priceFmt(total)}{t.perMonth}</span>
@@ -197,7 +192,7 @@
           </div>
 
 
-          <div class="mt-12 rounded-lg bg-[#1c1917] p-4 font-sans text-white">
+          <div class="stay-dark mt-6 rounded-lg bg-[#1c1917] p-4 font-sans text-white">
             <p class="flex items-center gap-2 font-display text-lg font-extrabold">
               <img src="{base}/favicon.svg" alt="" width="22" height="22" class="h-5.5 w-5.5 rounded" />{t.kotbo}
             </p>
@@ -231,21 +226,12 @@
   .line-in {
     animation: print 260ms steps(4) both;
   }
-  .stamp {
-    animation: stamp 380ms cubic-bezier(0.16, 1, 0.3, 1) both 120ms;
-  }
   @keyframes print {
     from {
       clip-path: inset(0 100% 0 0);
     }
     to {
       clip-path: inset(0 0 0 0);
-    }
-  }
-  @keyframes stamp {
-    from {
-      opacity: 0;
-      transform: rotate(-9deg) scale(1.8);
     }
   }
 </style>

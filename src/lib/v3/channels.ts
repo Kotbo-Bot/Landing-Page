@@ -4,13 +4,14 @@
  * Chaque zone de l'accueil est un salon, avec son nom et son sujet, comme la
  * barre du haut d'un vrai salon. La colonne de gauche (`Channels.svelte`) les
  * liste par catégorie, et chaque zone ouvre sur sa barre (`ChannelHeader`).
- * `id` est l'ancre de la zone : les autres pages y renvoient
- * (`sections/SiteNav.svelte`, `FeatureTry`, `StaffPage`), ne pas la renommer
+ * `id` est l'ancre de la zone : les autres pages y renvoient (`v3/Nav` hors
+ * de l'accueil, `articles/Article`, `pages/FeaturesHub`), ne pas la renommer
  * sans elles.
  */
 import type { Locale } from '$lib/i18n/state.svelte';
+import { MODULE_COUNT } from './modules';
 
-export type ChannelId = 'bienvenue' | 'nuit' | 'qg' | 'addition' | 'modules' | 'setup' | 'confiance' | 'prix' | 'faq';
+export type ChannelId = 'bienvenue' | 'nuit' | 'qg' | 'addition' | 'modules' | 'ia' | 'confiance' | 'prix' | 'faq';
 
 export interface Channel {
   id: ChannelId;
@@ -37,13 +38,13 @@ export const CHANNELS: Record<Locale, ChannelGroup[]> = {
       channels: [
         { id: 'qg', name: 'qg-staff', topic: 'les vrais écrans du dashboard' },
         { id: 'addition', name: 'l-addition', topic: 'ce que te coûte ta pile de bots' },
-        { id: 'modules', name: 'modules', topic: '51 modules, tous dans l’abonnement' },
+        { id: 'modules', name: 'modules', topic: `${MODULE_COUNT} modules, tous dans l’abonnement` },
       ],
     },
     {
       label: 'Ton serveur',
       channels: [
-        { id: 'setup', name: 'setup', topic: 'dis-nous quel serveur t’as' },
+        { id: 'ia', name: 'ia', topic: 'branche ton IA sur ton serveur' },
         { id: 'confiance', name: 'co-fondateurs', topic: 'avant d’ajouter un énième bot' },
         { id: 'prix', name: 'prix', topic: 'un curseur, un prix' },
         { id: 'faq', name: 'faq', topic: 'tout le reste' },
@@ -63,13 +64,13 @@ export const CHANNELS: Record<Locale, ChannelGroup[]> = {
       channels: [
         { id: 'qg', name: 'staff-hq', topic: 'the real dashboard screens' },
         { id: 'addition', name: 'the-bill', topic: 'what your bot pile costs you' },
-        { id: 'modules', name: 'modules', topic: '51 modules, all in the subscription' },
+        { id: 'modules', name: 'modules', topic: `${MODULE_COUNT} modules, all in the subscription` },
       ],
     },
     {
       label: 'Your server',
       channels: [
-        { id: 'setup', name: 'setup', topic: 'tell us what server you run' },
+        { id: 'ia', name: 'ai', topic: 'plug your AI into your server' },
         { id: 'confiance', name: 'co-founders', topic: 'before adding yet another bot' },
         { id: 'prix', name: 'pricing', topic: 'one slider, one price' },
         { id: 'faq', name: 'faq', topic: 'everything else' },

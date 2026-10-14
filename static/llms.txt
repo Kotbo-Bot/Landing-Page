@@ -13,7 +13,7 @@ Kotbo is a French Discord bot with a web dashboard. Beyond moderation, it runs a
 
 ## Pages
 
-- [Accueil](https://kotbo.fr/): présentation, catalogue des modules, comparatif avec les autres bots, tarifs, FAQ.
+- [Accueil](https://kotbo.fr/): présentation, écrans du dashboard pour le staff, coût d'une pile de bots comparée à Kotbo, les 58 modules, le serveur MCP, tarifs, FAQ.
 - [Gestion du staff Discord](https://kotbo.fr/gestion-staff-discord): hiérarchies, absences, réunions, tâches, évaluations, recrutement, casier des sanctions, doubles comptes, FAQ.
 - [Fonctionnalités](https://kotbo.fr/fonctionnalites): AutoMod et anti-raid, détection des doubles comptes, logs, tickets, niveaux, chacune sur sa page.
 - [Home (English)](https://kotbo.fr/en): the same home page in English.
@@ -39,7 +39,17 @@ Kotbo is a French Discord bot with a web dashboard. Beyond moderation, it runs a
 - Détection des doubles comptes : chaque arrivant est comparé aux membres présents (profil, invitations, style d'écriture, horaires, vocal, appareil et IP avec la vérification par lien) ; le staff lie les comptes ou écarte l'alerte.
 - Appels de bannissement, AutoMod (mots interdits, règles regex), protection anti-raid, modération des pseudos, logs Discord, vérification de sécurité.
 
+## Serveur MCP (IA)
+
+Kotbo expose un serveur MCP (Model Context Protocol, en bêta) : Claude, ChatGPT ou Gemini peuvent lire et piloter un serveur Discord avec plus de 300 outils. Exemples : répondre aux tickets en attente au nom du bot, sortir le rapport des sanctions, sanctionner les comptes d'un raid, voir quels modérateurs sont inactifs, activer un module, créer salons et rôles, publier une annonce, lire le score de santé du serveur (Pulse).
+
+- Branchement : dans le dashboard, « Connecter une IA » puis « Nouvelle clé » ; l'URL du serveur se colle dans l'IA (connecteur personnalisé sur Claude, app en mode développeur sur ChatGPT, bloc mcp_server sur Gemini), puis « Autoriser l'accès ».
+- Chaque clé a ses permissions (lecture, écriture), chaque action de l'IA est notée dans le journal du dashboard sous le nom de la clé, et une clé révoquée coupe l'accès.
+
 ## Autres modules
+
+Le catalogue compte 58 modules, tous compris dans chaque offre.
+
 
 Tickets support, niveaux et XP, saisons, économie et RPG, quêtes, réputation, giveaways, événements et quiz, suggestions, règlement, accueil et départ, rôles par réaction, auto-réponses, formulaires personnalisés, actualités et RSS, traduction automatique, intégrations YouTube et Twitch, automatisations, statistiques, liens de salons entre serveurs, serveur MCP pour piloter le serveur depuis un agent IA, widgets sur le profil Discord des membres.
 

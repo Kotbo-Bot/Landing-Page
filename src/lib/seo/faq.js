@@ -159,3 +159,47 @@ export const STAFF_FAQ = {
     },
   ],
 };
+
+/**
+ * La question sur la gratuité, ajoutée à la fin de la FAQ de chaque page
+ * fonctionnalité (`data/features.ts`) : elle n'a pas à être recopiée dans
+ * chaque fiche de la console. Durée d'essai alignée sur `TRIAL_DAYS`
+ * (`product.ts`).
+ */
+export const FREE_FAQ = {
+  fr: {
+    q: 'Est-ce gratuit ?',
+    a: "Tu as 15 jours d'essai gratuit, une fois par serveur, sans carte bancaire, pour tout configurer. Ensuite, le prix dépend seulement du nombre de membres, à partir de 5 € HT par mois jusqu'à 1 000 membres, et chaque offre ouvre tout le catalogue.",
+  },
+  en: {
+    q: 'Is it free?',
+    a: 'You get a 15-day free trial, once per server, no card needed, to set everything up. After that, the price depends only on your member count, starting at €5 per month (excl. tax) up to 1,000 members, and every plan opens the whole catalog.',
+  },
+};
+
+/** La FAQ de la page qui rassemble les articles (`/fonctionnalites`). */
+/** @type {Faq} */
+export const HUB_FAQ = {
+  fr: [
+    {
+      q: 'Quel bot Discord choisir pour gérer un serveur ?',
+      a: "Ça dépend de ce que tu veux gérer. Pour un seul besoin, un bot spécialisé suffit. Dès que tu cumules modération, tickets, logs et niveaux, un bot tout-en-un comme Kotbo évite d'empiler les bots et les abonnements.",
+    },
+    {
+      q: 'Kotbo est-il un bot Discord français ?',
+      a: "Oui. Kotbo est conçu en France, hébergé dans l'Union européenne, et parle français comme anglais, dans Discord comme dans le dashboard.",
+    },
+    FREE_FAQ.fr,
+  ],
+  en: [
+    {
+      q: 'Which Discord bot should I use to run a server?',
+      a: 'It depends on what you need. For a single job, a specialized bot is enough. Once you combine moderation, tickets, logs and levels, an all-in-one bot like Kotbo saves you from stacking bots and subscriptions.',
+    },
+    {
+      q: 'Does Kotbo work in English?',
+      a: 'Yes. Kotbo speaks English and French, in Discord and in the dashboard.',
+    },
+    FREE_FAQ.en,
+  ],
+};

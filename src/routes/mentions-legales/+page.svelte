@@ -232,7 +232,6 @@
   title={t.title}
   subtitle={t.subtitle}
   {sections}
-  activePage="legal"
 >
   <div class="info-box danger mb-10">
     <p class="font-bold mb-1">{t.danger.title}</p>
@@ -267,7 +266,7 @@
       <strong>Nathan Rontey</strong>
       (<a href="https://nathaan.me/" target="_blank" rel="noopener noreferrer">nathaan.me</a>){t.s01.p2c}
     </p>
-    <p class="text-sm text-gray-500">
+    <p class="text-sm text-fog">
       {t.s01.p3a}
       <a href="{base}/cgv">{t.s01.p3link}</a>{t.s01.p3b}
     </p>

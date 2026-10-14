@@ -228,7 +228,7 @@
 
   <div class="mx-auto grid max-w-7xl gap-10 px-4 pt-14 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:gap-x-20 lg:gap-y-8 lg:pt-20">
     <div class="lg:col-start-1 lg:row-start-1 lg:self-end">
-      <h2 id="night-title" class="text-balance font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-white sm:text-5xl lg:text-[3.4rem]">
+      <h2 id="night-title" class="text-balance font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-ink sm:text-5xl lg:text-[3.4rem]">
         {t.title}
       </h2>
       <p class="mt-6 max-w-xl text-lg leading-relaxed text-mist">{t.intro}</p>
@@ -239,8 +239,8 @@
           aria-hidden="true"
           class="thumb absolute inset-y-1 left-1 w-[calc(50%-0.25rem)] rounded-full {calm ? 'translate-x-full bg-[#4f46e5]' : 'bg-alarm'}"
         ></span>
-        <button type="button" aria-pressed={!calm} onclick={() => choose(false)} class="relative min-h-11 rounded-full transition-colors {!calm ? 'text-night' : 'text-fog hover:text-white'}">{t.without}</button>
-        <button type="button" aria-pressed={calm} onclick={() => choose(true)} class="relative min-h-11 rounded-full transition-colors {calm ? 'text-white' : 'text-fog hover:text-white'}">{t.with}</button>
+        <button type="button" aria-pressed={!calm} onclick={() => choose(false)} class="relative min-h-11 rounded-full transition-colors {!calm ? 'text-night' : 'text-fog hover:text-ink'}">{t.without}</button>
+        <button type="button" aria-pressed={calm} onclick={() => choose(true)} class="relative min-h-11 rounded-full transition-colors {calm ? 'text-ink' : 'text-fog hover:text-ink'}">{t.with}</button>
       </div>
     </div>
 
@@ -256,8 +256,8 @@
         <span aria-hidden="true" class="absolute -right-[3px] top-[28%] h-16 w-[3px] rounded-r bg-[#3a3a40]"></span>
 
           <div bind:this={frame} class="rounded-[3.4rem] bg-gradient-to-b from-[#4a4a50] via-[#2a2a2e] to-[#3a3a3f] p-[3px] shadow-[0_40px_100px_-30px_rgba(0,0,0,0.9)]">
-            <div class="rounded-[3.25rem] bg-black p-[10px]">
-              <div class="screen relative aspect-[9/19.5] overflow-hidden rounded-[2.6rem] text-white">
+            <div class="stay-dark rounded-[3.25rem] bg-black p-[10px]">
+              <div class="screen relative aspect-[9/19.5] overflow-hidden rounded-[2.6rem] text-ink">
                 <!-- Fonds d'écran : la nuit rouge, puis la nuit calme. -->
                 <div aria-hidden="true" class="absolute inset-0 transition-opacity duration-700" style="background: radial-gradient(120% 70% at 50% 0%, #4a1212 0%, #1c0808 50%, #0b0505 100%); opacity: {calm ? 0 : 1}"></div>
                 <div aria-hidden="true" class="absolute inset-0 transition-opacity duration-700" style="background: radial-gradient(120% 70% at 50% 0%, #25215e 0%, #0e0c24 52%, #05050c 100%); opacity: {calm ? 1 : 0}"></div>
@@ -279,8 +279,8 @@
                   <!-- Cadenas, date, heure, mode de concentration. -->
                   <div class="shrink-0 text-center">
                     <svg aria-hidden="true" viewBox="0 0 24 24" class="mx-auto h-4 w-4 fill-white/85"><path d="M7 10V7a5 5 0 0 1 10 0v3h.5A1.5 1.5 0 0 1 19 11.5v8a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 19.5v-8A1.5 1.5 0 0 1 6.5 10H7Zm2 0h6V7a3 3 0 0 0-6 0v3Z" /></svg>
-                    <p class="mt-1.5 text-[0.95rem] font-semibold text-white/80">{t.lockDate}</p>
-                    <p class="clock -mt-1 font-display text-[5.4rem] font-bold leading-none tracking-[-0.02em] tabular-nums text-white/95">2:47</p>
+                    <p class="mt-1.5 text-[0.95rem] font-semibold text-ink/80">{t.lockDate}</p>
+                    <p class="clock -mt-1 font-display text-[5.4rem] font-bold leading-none tracking-[-0.02em] tabular-nums text-ink/95">2:47</p>
                     <div class="mt-2 flex h-6 justify-center">
                       {#if calm}
                         <span class="focus inline-flex items-center gap-1.5 rounded-full bg-white/12 px-2.5 text-[0.75rem] font-semibold text-[#c7c2ff] backdrop-blur-md">
@@ -299,10 +299,10 @@
                         <div class="min-w-0 flex-1">
                           <p class="flex items-baseline justify-between gap-2">
                             <span class="truncate text-[0.82rem] font-semibold leading-tight">{n.title}</span>
-                            <span class="shrink-0 text-[0.7rem] text-white/55">{n.time}</span>
+                            <span class="shrink-0 text-[0.7rem] text-ink/55">{n.time}</span>
                           </p>
-                          {#if n.sub}<p class="truncate text-[0.72rem] leading-tight text-white/60">{n.sub}</p>{/if}
-                          <p class="line-clamp-2 text-[0.8rem] leading-snug text-white/90">{n.body}</p>
+                          {#if n.sub}<p class="truncate text-[0.72rem] leading-tight text-ink/60">{n.sub}</p>{/if}
+                          <p class="line-clamp-2 text-[0.8rem] leading-snug text-ink/90">{n.body}</p>
                         </div>
                       </li>
                     {/each}
@@ -314,7 +314,7 @@
                       <div class="stack relative">
                         <div class="mx-2 h-2.5 rounded-b-[1rem] bg-white/[0.09]"></div>
                         <div class="mx-5 h-2 rounded-b-[0.9rem] bg-white/[0.05]"></div>
-                        <p class="mt-1 text-center text-[0.7rem] font-medium text-white/55">{t.more(HIDDEN_COUNT)}</p>
+                        <p class="mt-1 text-center text-[0.7rem] font-medium text-ink/55">{t.more(HIDDEN_COUNT)}</p>
                       </div>
                     {:else if calm}
                       <p class="sleep text-center font-display text-2xl font-extrabold">{t.sleep}</p>
@@ -341,7 +341,7 @@
 
     <!-- Le salon du staff, dans Discord : la même nuit, vue de l'intérieur. -->
     <div class="lg:col-start-1 lg:row-start-2 lg:self-start">
-      <div class="max-w-xl overflow-hidden rounded-lg bg-[#313338] shadow-[0_24px_60px_-30px_rgba(0,0,0,0.9)]">
+      <div class="stay-dark max-w-xl overflow-hidden rounded-lg bg-[#313338] shadow-[0_24px_60px_-30px_rgba(0,0,0,0.9)]">
         <p class="flex h-12 items-center gap-2 border-b border-black/30 px-4 text-[15px] font-semibold text-[#f2f3f5]">
           <span aria-hidden="true" class="text-xl font-normal text-[#80848e]">#</span>
           <span translate="no">{calm ? t.logsChannel : t.staffChannel}</span>

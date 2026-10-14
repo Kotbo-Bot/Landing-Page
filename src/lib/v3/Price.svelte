@@ -7,9 +7,8 @@
    * (`planForMemberCount` côté bot). Pas de colonnes à comparer, donc : un
    * curseur, un prix, et ce qui est inclus dit une fois.
    *
-   * Montants en centimes, recopiés de `PLAN_REGISTRY` (comme
-   * `components/Pricing.svelte`, `seo/jsonld.js` et `static/llms.txt` : les
-   * modifier ensemble).
+   * Montants en centimes, recopiés de `PLAN_REGISTRY` (comme `seo/jsonld.js`
+   * et `static/llms.txt` : les modifier ensemble).
    */
   import { getLocale } from '$lib/i18n/state.svelte';
   import { trackOnView, track } from '$lib/funnel';
@@ -108,8 +107,8 @@
     <p class="mt-6 font-display text-4xl font-extrabold leading-[1.1] tracking-[-0.02em] text-fog sm:text-6xl">
       {#if tier}
         {t.sentenceA}
-        <span class="whitespace-nowrap text-white tabular-nums">{fmt(shown)}{members >= 1_000_000 ? '+' : ''} {t.members}</span>{t.sentenceB}
-        <span class="whitespace-nowrap text-white tabular-nums">{t.euro(monthCents)}</span>
+        <span class="whitespace-nowrap text-ink tabular-nums">{fmt(shown)}{members >= 1_000_000 ? '+' : ''} {t.members}</span>{t.sentenceB}
+        <span class="whitespace-nowrap text-ink tabular-nums">{t.euro(monthCents)}</span>
         {t.sentenceC}
       {:else}
         {t.custom}
@@ -135,16 +134,16 @@
 
     <div class="mt-10 flex flex-col gap-6 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between">
       <div role="group" aria-label={t.billing} class="inline-grid grid-cols-2 rounded-xl border border-line-2 p-1 text-sm font-semibold">
-        <button type="button" aria-pressed={!yearly} onclick={() => (yearly = false)} class="min-h-10 rounded-lg px-4 transition-colors {!yearly ? 'bg-white text-night' : 'text-fog hover:text-white'}">{t.monthly}</button>
-        <button type="button" aria-pressed={yearly} onclick={() => (yearly = true)} class="min-h-10 rounded-lg px-4 transition-colors {yearly ? 'bg-white text-night' : 'text-fog hover:text-white'}">
-          {t.yearly} <span class="ml-1 {yearly ? 'text-[#15803d]' : 'text-ok'}">{t.yearlyHint}</span>
+        <button type="button" aria-pressed={!yearly} onclick={() => (yearly = false)} class="min-h-10 rounded-lg px-4 transition-colors {!yearly ? 'bg-ink text-night' : 'text-fog hover:text-ink'}">{t.monthly}</button>
+        <button type="button" aria-pressed={yearly} onclick={() => (yearly = true)} class="min-h-10 rounded-lg px-4 transition-colors {yearly ? 'bg-ink text-night' : 'text-fog hover:text-ink'}">
+          {t.yearly} <span class="ml-1 {yearly ? 'text-[#15803d] in-data-[theme=light]:text-[#4ade80]' : 'text-ok'}">{t.yearlyHint}</span>
         </button>
       </div>
       <p class="text-sm text-fog">
         {#if tier}
-          {t.plan} <span class="font-semibold text-white">{tier.name}</span> · {yearly ? t.billedYearly(t.euro(tier.year)) : t.noCommit} · {t.ht}
+          {t.plan} <span class="font-semibold text-ink">{tier.name}</span> · {yearly ? t.billedYearly(t.euro(tier.year)) : t.noCommit} · {t.ht}
         {:else}
-          <a href={SALES_URL} onclick={() => track('sales_clicked')} class="font-semibold text-white underline decoration-line-2 underline-offset-4 hover:decoration-white">{t.customCta}</a>
+          <a href={SALES_URL} onclick={() => track('sales_clicked')} class="font-semibold text-ink underline decoration-line-2 underline-offset-4 hover:decoration-ink">{t.customCta}</a>
         {/if}
       </p>
     </div>

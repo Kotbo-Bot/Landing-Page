@@ -13,7 +13,7 @@
  * faute de page dédiée. Le texte décrit ce que le bot fait vraiment : il se
  * vérifie dans le dépôt produit avant d'être publié.
  */
-import { TRIAL_DAYS } from '$lib/product';
+import { FREE_FAQ, HUB_FAQ } from '$lib/seo/faq.js';
 import type { Locale } from '$lib/i18n/state.svelte';
 import pages from './feature-pages.json';
 
@@ -44,27 +44,16 @@ export interface Feature {
 	text: Record<Locale, FeatureText>;
 }
 
-const FREE = {
-	fr: {
-		q: 'Est-ce gratuit ?',
-		a: `Tu as ${TRIAL_DAYS} jours d'essai gratuit, une fois par serveur, pour tout configurer. Ensuite, une seule offre payante ouvre tout le catalogue.`,
-	},
-	en: {
-		q: 'Is it free?',
-		a: `You get a ${TRIAL_DAYS}-day free trial, once per server, to set everything up. After that, a single paid plan opens the whole catalog.`,
-	},
-};
-
 /**
  * Les pages publiées, dans l'ordre choisi dans la console. La question sur la
- * gratuité est ajoutée ici à chaque page, avec la durée d'essai à jour : elle
- * n'a pas à être recopiée dans chaque fiche.
+ * gratuité (`seo/faq.js`, que le JSON-LD reprend aussi) est ajoutée ici à
+ * chaque page : elle n'a pas à être recopiée dans chaque fiche.
  */
 export const FEATURES: Feature[] = (pages.pages as Feature[]).map((page) => ({
 	...page,
 	text: {
-		fr: { ...page.text.fr, faq: [...page.text.fr.faq, FREE.fr] },
-		en: { ...page.text.en, faq: [...page.text.en.faq, FREE.en] },
+		fr: { ...page.text.fr, faq: [...page.text.fr.faq, FREE_FAQ.fr] },
+		en: { ...page.text.en, faq: [...page.text.en.faq, FREE_FAQ.en] },
 	},
 }));
 
@@ -90,17 +79,7 @@ export const HUB: Record<Locale, { title: string; description: string; h1: strin
 				'Un bot français, créé et hébergé dans l\'Union européenne',
 			],
 		},
-		faq: [
-			{
-				q: 'Quel bot Discord choisir pour gérer un serveur ?',
-				a: "Ça dépend de ce que tu veux gérer. Pour un seul besoin, un bot spécialisé suffit. Dès que tu cumules modération, tickets, logs et niveaux, un bot tout-en-un comme Kotbo évite d'empiler les bots et les abonnements.",
-			},
-			{
-				q: 'Kotbo est-il un bot Discord français ?',
-				a: "Oui. Kotbo est conçu en France, hébergé dans l'Union européenne, et parle français comme anglais, dans Discord comme dans le dashboard.",
-			},
-			FREE.fr,
-		],
+		faq: HUB_FAQ.fr,
 	},
 	en: {
 		title: 'All-in-one Discord bot with a dashboard: features · Kotbo',
@@ -118,17 +97,7 @@ export const HUB: Record<Locale, { title: string; description: string; h1: strin
 				'Built and hosted in the European Union',
 			],
 		},
-		faq: [
-			{
-				q: 'Which Discord bot should I use to run a server?',
-				a: "It depends on what you need. For a single job, a specialized bot is enough. Once you combine moderation, tickets, logs and levels, an all-in-one bot like Kotbo saves you from stacking bots and subscriptions.",
-			},
-			{
-				q: 'Does Kotbo work in English?',
-				a: 'Yes. Kotbo speaks English and French, in Discord and in the dashboard.',
-			},
-			FREE.en,
-		],
+		faq: HUB_FAQ.en,
 	},
 };
 

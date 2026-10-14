@@ -112,7 +112,7 @@
         type="button"
         onclick={toggleSound}
         aria-label={muted ? t.unmute : t.mute}
-        class="grid h-11 w-11 place-items-center rounded-full bg-night/80 text-white backdrop-blur-md transition-colors hover:bg-night"
+        class="grid h-11 w-11 place-items-center rounded-full bg-night/80 text-ink backdrop-blur-md transition-colors hover:bg-night"
       >
         {#if muted}
           <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M11 5 6 9H3v6h3l5 4V5ZM22 9l-6 6M16 9l6 6" /></svg>
@@ -124,7 +124,7 @@
         type="button"
         onclick={togglePlay}
         aria-label={playing ? t.pause : t.play}
-        class="grid h-11 w-11 place-items-center rounded-full bg-night/80 text-white backdrop-blur-md transition-colors hover:bg-night"
+        class="grid h-11 w-11 place-items-center rounded-full bg-night/80 text-ink backdrop-blur-md transition-colors hover:bg-night"
       >
         {#if playing}
           <svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5"><path fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" /></svg>

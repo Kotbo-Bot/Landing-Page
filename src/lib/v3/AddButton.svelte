@@ -35,7 +35,7 @@
   } as const;
   const TONES = {
     primary: 'bg-[#4f46e5] text-white hover:bg-[#4338ca]',
-    white: 'bg-white text-night hover:bg-indigo-100',
+    white: 'bg-white text-[#09090b] hover:bg-indigo-100',
   } as const;
 </script>
 

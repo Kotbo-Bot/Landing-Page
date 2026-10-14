@@ -18,6 +18,7 @@
   import SanctionsScreen from '$lib/dash/screens/sanctions/SanctionsScreen.svelte';
   import TicketsScreen from '$lib/dash/screens/tickets/TicketsScreen.svelte';
   import ChannelHeader from './ChannelHeader.svelte';
+  import DashStage from './DashStage.svelte';
 
   type Tab = 'profile' | 'staff' | 'sanctions' | 'tickets';
 
@@ -44,8 +45,6 @@
       ],
       more: 'Tout sur la gestion du staff',
       demo: 'Fouiller le vrai dashboard, sans compte',
-      fictive: 'Le vrai dashboard, sur un serveur de démo aux membres fictifs. Clique, rien ne part nulle part',
-      small: 'Aperçu en miniature : l’écran se manipule sur un écran plus large, ou dans la démo complète',
     },
     en: {
       title: 'Your staff finally gets an HQ, and it lives in the dashboard',
@@ -69,8 +68,6 @@
       ],
       more: 'Everything about staff management',
       demo: 'Dig through the real dashboard, no account',
-      fictive: 'The real dashboard, on a demo server with fictional members. Click around, nothing gets sent',
-      small: 'Thumbnail preview: the screen is playable on a wider display, or in the full demo',
     },
   };
 
@@ -83,15 +80,6 @@
   $effect(() => {
     seen[active] = true;
   });
-
-  // Les écrans sont dessinés à la taille du dashboard puis réduits à la largeur
-  // disponible. Sous 0,6 les cibles deviennent trop petites pour un doigt :
-  // l'écran reste visible mais n'est plus manipulable (`inert`).
-  const STAGE_W = 1180;
-  const STAGE_H = 720;
-  let frameWidth = $state(STAGE_W);
-  const scale = $derived(Math.min(1, frameWidth / STAGE_W));
-  const playable = $derived(scale >= 0.6);
 
   function onKey(e: KeyboardEvent, i: number) {
     const moves: Record<string, number> = {
@@ -114,7 +102,7 @@
   </div>
   <div class="mx-auto pt-14 lg:pt-20 max-w-7xl px-4 sm:px-6">
     <div class="max-w-4xl">
-      <h2 id="hq-title" class="text-balance font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-white sm:text-5xl lg:text-6xl">{t.title}</h2>
+      <h2 id="hq-title" class="text-balance font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-ink sm:text-5xl lg:text-6xl">{t.title}</h2>
       <p class="mt-6 max-w-2xl text-lg leading-relaxed text-mist">{t.intro}</p>
     </div>
 
@@ -132,8 +120,8 @@
             onclick={() => (active = tab)}
             onkeydown={(e) => onKey(e, i)}
             class="min-h-11 shrink-0 rounded-t-xl border border-b-0 px-4 text-sm font-semibold transition-colors {active === tab
-              ? 'border-line-2 bg-night-3 text-white shadow-[inset_0_2px_0_#a5b4fc]'
-              : 'border-transparent text-fog hover:text-white'}"
+              ? 'border-line-2 bg-night-3 text-ink shadow-[inset_0_2px_0_#a5b4fc]'
+              : 'border-transparent text-fog hover:text-ink'}"
           >
             {t.tabs[tab].label}
           </button>
@@ -142,44 +130,34 @@
 
       <div id="hq-panel" role="tabpanel" aria-labelledby="hq-tab-{active}" class="rounded-b-2xl rounded-tr-2xl border border-line-2 bg-night-3 p-2 sm:p-3">
         <p id="hq-cap" class="px-2 pb-3 pt-1 text-base text-mist sm:px-3">{t.tabs[active].caption}</p>
-        <div class="overflow-hidden rounded-xl border border-line bg-night" bind:clientWidth={frameWidth} style="height: {STAGE_H * scale}px">
-          <div
-            class="origin-top-left"
-            style="width: {STAGE_W}px; height: {STAGE_H}px; transform: scale({scale})"
-            inert={!playable}
-          >
-            {#each TABS as tab (tab)}
-              {#if seen[tab]}
-                <div class="h-full" hidden={active !== tab}>
-                  {#if tab === 'profile'}
-                    <MembersScreen />
-                  {:else if tab === 'staff'}
-                    <StaffScreen />
-                  {:else if tab === 'sanctions'}
-                    <SanctionsScreen />
-                  {:else}
-                    <TicketsScreen />
-                  {/if}
-                </div>
-              {/if}
-            {/each}
-          </div>
-        </div>
-        <p id="hq-fict" class="px-3 pb-1 pt-3 text-sm text-fog">
-          {playable ? t.fictive : t.small}
-          {#if !playable}<a href="/demo/" class="ml-1 font-semibold text-white underline decoration-white/30 underline-offset-4">{t.demo}</a>{/if}
-        </p>
+        <DashStage>
+          {#each TABS as tab (tab)}
+            {#if seen[tab]}
+              <div class="h-full" hidden={active !== tab}>
+                {#if tab === 'profile'}
+                  <MembersScreen />
+                {:else if tab === 'staff'}
+                  <StaffScreen />
+                {:else if tab === 'sanctions'}
+                  <SanctionsScreen />
+                {:else}
+                  <TicketsScreen />
+                {/if}
+              </div>
+            {/if}
+          {/each}
+        </DashStage>
       </div>
     </div>
 
     <div class="mt-20 grid gap-12 lg:grid-cols-[18rem_1fr]">
       <div>
-        <h3 class="font-display text-3xl font-extrabold tracking-tight text-white">{t.erpTitle}</h3>
+        <h3 class="font-display text-3xl font-extrabold tracking-tight text-ink">{t.erpTitle}</h3>
         <div class="mt-6 flex flex-col gap-3">
           <a href="{base}{STAFF_ROUTE[getLocale()]}" class="inline-flex min-h-11 items-center gap-2 font-semibold text-glow underline decoration-glow/30 underline-offset-4 hover:decoration-glow">
             {t.more}
           </a>
-          <a href="/demo/" class="inline-flex min-h-11 items-center gap-2 font-semibold text-white underline decoration-white/20 underline-offset-4 hover:decoration-white">
+          <a href="/demo/" class="inline-flex min-h-11 items-center gap-2 font-semibold text-ink underline decoration-ink/20 underline-offset-4 hover:decoration-ink">
             {t.demo}
           </a>
         </div>
@@ -189,7 +167,7 @@
           <li class="flex gap-4 border-t border-line py-5">
             <img src={ktb(item.icon)} alt="" width="22" height="22" class="mt-0.5 h-5.5 w-5.5 shrink-0" />
             <div>
-              <p class="font-display text-lg font-bold text-white">{item.title}</p>
+              <p class="font-display text-lg font-bold text-ink">{item.title}</p>
               <p class="mt-1 leading-relaxed text-fog">{item.text}</p>
             </div>
           </li>

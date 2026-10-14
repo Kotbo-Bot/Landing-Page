@@ -74,7 +74,7 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6"><ChannelHeader id="confiance" /></div>
   </div>
   <div class="mx-auto max-w-7xl px-4 pt-14 sm:px-6 lg:pt-20">
-    <h2 id="trust-title" class="max-w-3xl font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-balance text-white sm:text-5xl">{t.title}</h2>
+    <h2 id="trust-title" class="max-w-3xl font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-balance text-ink sm:text-5xl">{t.title}</h2>
 
     <div class="mt-12 max-w-3xl">
       <figure aria-labelledby="trust-fict">
@@ -93,15 +93,15 @@
             <div class="min-w-0">
               {#if line.head}
                 <p class="flex flex-wrap items-baseline gap-x-2">
-                  <span class="font-semibold {line.who === 'ines' ? 'text-[#f9a8d4]' : 'text-glow'}">{line.who === 'ines' ? t.ines : t.you}</span>
+                  <span class="font-semibold {line.who === 'ines' ? 'text-[#f9a8d4] in-data-[theme=light]:text-[#be185d]' : 'text-glow'}">{line.who === 'ines' ? t.ines : t.you}</span>
                   {#if line.who === 'ines'}<span class="rounded bg-night-4 px-1 text-[11px] font-medium text-mist">{t.inesRole}</span>{/if}
                   <span class="text-xs text-fog">{t.today(Math.floor(i / 2))}</span>
                 </p>
               {/if}
-              <p class="text-[16px] leading-relaxed text-[#dbdee1]">
+              <p class="text-[16px] leading-relaxed text-mist">
                 {line.text}
                 {#if line.link}
-                  · <a href="{base}{line.link.href}" class="text-[#00a8fc] underline underline-offset-2">{line.link.label}</a>
+                  · <a href="{base}{line.link.href}" class="text-[#00a8fc] in-data-[theme=light]:text-[#0369a1] underline underline-offset-2">{line.link.label}</a>
                 {/if}
               </p>
             </div>

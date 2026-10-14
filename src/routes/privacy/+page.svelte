@@ -1007,7 +1007,6 @@
   title={t.title}
   subtitle={t.subtitle}
   {sections}
-  activePage="privacy"
 >
   <!-- Préambule -->
   <div class="info-box warn mb-10">
@@ -1449,12 +1448,12 @@
     <div class="section-badge">14</div>
     <h2>{t.contact.h2}</h2>
     <div class="contact-card">
-      <p class="text-sm text-gray-500 font-bold uppercase tracking-widest mb-1">{t.contact.cardLabel1}</p>
-      <a href="mailto:privacy@kotbo.fr" class="font-black text-indigo-700 text-lg hover:underline">privacy@kotbo.fr</a>
-      <p class="text-sm text-gray-600 mt-3 leading-relaxed">{t.contact.cardBody1}</p>
-      <hr class="my-4 border-gray-100" />
-      <p class="text-sm text-gray-500 font-bold uppercase tracking-widest mb-1">{t.contact.cardLabel2}</p>
-      <a href="mailto:contact@kotbo.fr" class="font-black text-gray-700 text-lg hover:underline">contact@kotbo.fr</a>
+      <p class="text-sm font-semibold text-fog mb-1">{t.contact.cardLabel1}</p>
+      <a href="mailto:privacy@kotbo.fr" class="font-bold text-glow text-lg hover:underline">privacy@kotbo.fr</a>
+      <p class="text-sm text-fog mt-3 leading-relaxed">{t.contact.cardBody1}</p>
+      <hr class="my-4 border-line" />
+      <p class="text-sm font-semibold text-fog mb-1">{t.contact.cardLabel2}</p>
+      <a href="mailto:contact@kotbo.fr" class="font-bold text-ink text-lg hover:underline">contact@kotbo.fr</a>
     </div>
     <div class="info-box mt-6">
       <strong>{t.contact.authorityStrong}</strong> {t.contact.authorityP1} <strong>{t.contact.authorityStrong2}</strong> —

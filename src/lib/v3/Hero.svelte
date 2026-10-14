@@ -23,12 +23,13 @@
   import { TOPGG_RATING, TOPGG_URL, TRIAL_DAYS } from '$lib/product';
   import AddButton from './AddButton.svelte';
   import HeroVideo from './HeroVideo.svelte';
+  import { MODULE_COUNT } from './modules';
 
   const TEXT = {
     fr: {
       h1a: 'Le bot Discord qui gère ton serveur',
       h1b: 'pendant que tu dors',
-      sub: 'Modo, tickets, niveaux et ton staff, tout au même endroit. Avec 51 modules, ce que tu cherches est sûrement déjà dedans',
+      sub: `Modo, tickets, niveaux et ton staff, tout au même endroit. Avec ${MODULE_COUNT} modules, ce que tu cherches est sûrement déjà dedans`,
       demo: 'Tester le dashboard',
       reassure: `${TRIAL_DAYS} jours offerts · pas de CB · pas de droits admin`,
       proof: 'Ils sont déjà dessus',
@@ -39,7 +40,7 @@
     en: {
       h1a: 'The Discord bot that runs your server',
       h1b: 'while you sleep',
-      sub: 'Mod, tickets, levels and your staff, all in one place. With 51 modules, whatever you need is probably already in there',
+      sub: `Mod, tickets, levels and your staff, all in one place. With ${MODULE_COUNT} modules, whatever you need is probably already in there`,
       demo: 'Try the dashboard',
       reassure: `${TRIAL_DAYS} days free · no card · no admin perms`,
       proof: 'Already running it',
@@ -61,7 +62,7 @@
        l'arrivée, sans défiler. Sur téléphone : titre, film, puis le reste. -->
   <div class="mx-auto max-w-7xl px-4 pb-20 pt-8 sm:px-6 lg:pb-24 lg:pt-12">
     <div class="grid grid-cols-[minmax(0,1fr)] gap-x-12 gap-y-7 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:grid-rows-[auto_auto] lg:items-center xl:gap-x-16">
-      <h1 id="hero-title" class="font-display text-[2.6rem] font-black leading-[0.98] tracking-[-0.03em] text-balance text-white sm:text-6xl lg:col-start-2 lg:row-start-1 lg:self-end lg:text-[2.6rem] xl:text-[3.1rem]">
+      <h1 id="hero-title" class="font-display text-[2.6rem] font-black leading-[0.98] tracking-[-0.03em] text-balance text-ink sm:text-6xl lg:col-start-2 lg:row-start-1 lg:self-end lg:text-[2.6rem] xl:text-[3.1rem]">
         {t.h1a}
         {t.h1b}
       </h1>
@@ -77,7 +78,7 @@
           <AddButton content="hero" size="lg" />
           <a
             href="/demo/"
-            class="inline-flex min-h-14 items-center justify-center whitespace-nowrap rounded-xl px-5 text-base font-semibold text-white transition-colors hover:bg-night-3"
+            class="inline-flex min-h-14 items-center justify-center whitespace-nowrap rounded-xl px-5 text-base font-semibold text-ink transition-colors hover:bg-night-3"
           >
             {t.demo} <span aria-hidden="true" class="ml-1.5 text-fog">→</span>
           </a>
@@ -102,14 +103,14 @@
                 <span aria-hidden="true" class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-night-4 text-sm font-bold text-mist">{server.name.slice(0, 2)}</span>
               {/if}
               <span class="min-w-0">
-                <span class="block truncate font-semibold text-white">{server.name}</span>
+                <span class="block truncate font-semibold text-ink">{server.name}</span>
                 <span class="block text-sm tabular-nums text-fog">{t.members(fmt(server.memberCount))}</span>
               </span>
             </li>
           {/each}
         </ul>
       {/if}
-      <a href={TOPGG_URL} target="_blank" rel="noopener noreferrer" class="shrink-0 text-sm font-semibold text-white underline decoration-line-2 underline-offset-4 hover:decoration-white">{t.rating(TOPGG_RATING)}<span class="sr-only"> {t.newTab}</span></a>
+      <a href={TOPGG_URL} target="_blank" rel="noopener noreferrer" class="shrink-0 text-sm font-semibold text-ink underline decoration-line-2 underline-offset-4 hover:decoration-ink">{t.rating(TOPGG_RATING)}<span class="sr-only"> {t.newTab}</span></a>
     </div>
   </div>
 </section>

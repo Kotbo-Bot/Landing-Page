@@ -27,10 +27,10 @@ bun run check      # svelte-check
   Exception : les FAQ vivent dans `src/lib/seo/faq.js`, parce que le même texte
   nourrit le JSON-LD `FAQPage`.
 - **Une URL par langue** pour les pages listées dans `src/lib/i18n/routes.ts`
-  (accueil `/` et `/en`, page staff, pages fonctionnalités). Sur ces pages, l'URL décide de la langue,
+  (accueil `/` et `/en`, articles et leur index). Sur ces pages, l'URL décide de la langue,
   jamais le navigateur des robots : Googlebot rend le JS en `en-US`. Une nouvelle
   page bilingue s'ajoute là et dans `src/routes/sitemap.xml/+server.ts` ; si elle porte du
-  JSON-LD, aussi dans `PATHS` de `seo/jsonld.js`.
+  JSON-LD, aussi dans `PATHS` de `seo/jsonld.js` et dans `allJsonLd()`.
 - **JSON-LD sous CSP.** Il est injecté en ligne et autorisé par empreinte :
   tout son contenu vient de `src/lib/seo/jsonld.js`, que `svelte.config.js`
   importe au build. Pas de JSON-LD construit ailleurs.
@@ -39,20 +39,25 @@ bun run check      # svelte-check
 
 | Dossier | Contenu |
 | --- | --- |
-| `src/routes/` | Les routes : accueil (`/`, `/en`), page staff (`/gestion-staff-discord`, `/en/discord-staff-management`), fonctionnalités (`/fonctionnalites`, `/en/features`), pages légales. |
-| `src/lib/pages/` | L'accueil, la page staff et les pages fonctionnalités, rendus par leurs deux routes. |
+| `src/routes/` | Les routes : accueil (`/`, `/en`), index des articles (`/fonctionnalites`, `/en/features`), article staff (`/gestion-staff-discord`, `/en/discord-staff-management`), articles de la console (`/fonctionnalites/<slug>`), pages légales, page d'erreur. |
+| `src/lib/pages/` | L'accueil, l'index des articles, l'article staff et le gabarit des articles de la console, rendus par leurs deux routes. |
+| `src/lib/articles/` | Les articles : la liste (`posts.ts`), le texte de l'article staff (`staff.ts`), le gabarit (`Article.svelte`), la barre forum et la liste des sujets. |
 | `src/lib/seo/` | `Seo.svelte` (balises, `hreflang`), `jsonld.js`, `faq.js`. |
-| `src/lib/v3/` | L'accueil v3 : une zone par fichier, la barre du haut, le film du héros, le bouton d'invitation. |
-| `src/lib/sections/` | Barre et pied de page des pages hors accueil, zones de la v2. |
-| `src/lib/playground/` | Les zones jouables : le serveur monté (`kit.svelte.ts`), l'onboarding du héros, les aperçus Discord, la carte de rang. |
-| `src/lib/components/` | Zones reprises de la v1 (catalogue, comparatif, tarifs, FAQ) et écrans du dashboard reconstitués (`mockups/`). |
-| `src/lib/data/` | `media.ts` (captures et vidéos à fournir), `proof.ts` (témoignages réels, vide par défaut). |
+| `src/lib/v3/` | L'accueil, une zone par fichier, et ce que tout le site partage : barre du haut, pied de page, châssis des autres pages (`Shell`), bouton d'invitation, FAQ, cadre des écrans du dashboard (`DashStage`). |
+| `src/lib/dash/` | Les écrans du dashboard recopiés (`screens/`), jouables sur des membres fictifs (`cast.ts`). |
+| `src/lib/playground/` | Ce que l'accueil garde de la v2 : le kit du parcours d'installation (`kit.svelte.ts`), les aperçus Discord, la carte de rang. |
+| `src/lib/components/` | `LegalPageLayout.svelte`, le gabarit des pages légales. |
+| `src/lib/data/` | Pages de la console (`features.ts`), chiffres des communautés (`stats.svelte.ts`), `proof.ts` (témoignages réels, vide par défaut). |
 | `static/ktb/`, `static/rank/` | Emojis du bot, polices de la carte de rang avec leurs licences. |
-| `static/llms.txt`, `robots.txt` | Référencement et lecture par les assistants IA. `llms.txt` recopie les tarifs : le tenir aligné sur `Pricing.svelte`. Le sitemap est généré (`src/routes/sitemap.xml/`). |
+| `static/llms.txt`, `robots.txt` | Référencement et lecture par les assistants IA. `llms.txt` recopie les tarifs et le nombre de modules : le tenir aligné sur `v3/Price.svelte` et `v3/modules.ts`. Le sitemap est généré (`src/routes/sitemap.xml/`). |
 
-## Pages fonctionnalités
+## Articles
 
-Les pages `/fonctionnalites/<slug>` et `/en/features/<slug>` ne s'écrivent pas
+`/fonctionnalites` est l'index des articles, présenté comme un salon forum
+Discord (`DESIGN.md`). L'article staff y est épinglé : il s'écrit ici
+(`articles/staff.ts`), parce qu'il montre les vrais écrans du dashboard, et
+garde son URL hors de `/fonctionnalites`. Les autres articles,
+`/fonctionnalites/<slug>` et `/en/features/<slug>`, ne s'écrivent pas
 ici : elles se rédigent et se publient dans la console admin de dash.kotbo.fr
 (`/admin/feature-pages`, dépôt `Kotbo`). Au build, `scripts/fetch-features.mjs`
 lit `api.kotbo.fr/api/public/feature-pages` et écrit
@@ -67,12 +72,15 @@ L'accueil vit dans `src/lib/v3/` : la page se lit comme un serveur Discord, une
 zone par salon (`v3/channels.ts`, dont les `id` sont les ancres que les autres
 pages visent). Elle parle au fondateur d'un serveur qui a un staff : le film du héros,
 sa nuit sans Kotbo, le QG staff (écrans du dashboard recopiés dans `dash/screens`, voir `dash/cast.ts`),
-l'addition, les modules, les profils de serveur, la confiance, le prix, la FAQ.
-Le profil choisi dans `#setup` écrit le kit (`playground/kit.svelte.ts`) et
-`v3/AddButton` l'emporte (`?kit=`) jusqu'au parcours d'installation.
+l'addition, les modules (catalogue recopié dans `v3/modules.ts`, dont le compte
+alimente tous les « N modules » de la page), le serveur MCP (`#ia`), la
+confiance, le prix, la FAQ. `v3/AddButton` emporte encore le kit
+(`playground/kit.svelte.ts`, `?kit=`) jusqu'au parcours d'installation, mais
+plus aucune zone de l'accueil ne le règle.
 
-Les zones jouables de la v2 (`sections/`, `playground/builder/`) ne sont plus
-montées sur l'accueil.
+Les autres pages (articles, légal, erreur) reprennent la barre du haut, le
+pied de page et la nuit de l'accueil (`v3/Shell`) ; `html.v3` est posé dans
+`app.html`, pour tout le site.
 
 Deux règles :
 
