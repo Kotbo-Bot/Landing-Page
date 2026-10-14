@@ -41,7 +41,7 @@
           identity: 'Identité',
           soustraitant: 'Sous-traitant',
           soustraitantValue: 'Kotbo —',
-          soustraitantCode: "[À COMPLÉTER : nom de l'entrepreneur individuel]",
+          soustraitantCode: 'Nathan Rontey EI',
           soustraitantRest: ', entreprise individuelle · SIREN 101 303 535, SIRET 101 303 535 00021 · TVA FR 14 101303535 · contact',
           responsable: 'Responsable',
           responsableValue: "L'administrateur du serveur Discord ayant invité et configuré Kotbo, identifié par son compte Discord et l'identifiant de serveur (Guild ID) concerné.",
@@ -231,7 +231,7 @@
           identity: 'Identity',
           soustraitant: 'Processor',
           soustraitantValue: 'Kotbo —',
-          soustraitantCode: '[TO BE COMPLETED: name of the sole trader]',
+          soustraitantCode: 'Nathan Rontey EI',
           soustraitantRest: ', sole proprietorship · SIREN 101 303 535, SIRET 101 303 535 00021 · VAT FR 14 101303535 · contact',
           responsable: 'Controller',
           responsableValue: 'The administrator of the Discord server who invited and configured Kotbo, identified by their Discord account and the relevant server identifier (Guild ID).',
@@ -429,7 +429,7 @@
       <table>
         <thead><tr><th>{t.s01.table.party}</th><th>{t.s01.table.identity}</th></tr></thead>
         <tbody>
-          <tr><td>{t.s01.table.soustraitant}</td><td>{t.s01.table.soustraitantValue} <code>{t.s01.table.soustraitantCode}</code>{t.s01.table.soustraitantRest} <a href="mailto:privacy@kotbo.fr">privacy@kotbo.fr</a></td></tr>
+          <tr><td>{t.s01.table.soustraitant}</td><td>{t.s01.table.soustraitantValue} {t.s01.table.soustraitantCode}{t.s01.table.soustraitantRest} <a href="mailto:privacy@kotbo.fr">privacy@kotbo.fr</a></td></tr>
           <tr><td>{t.s01.table.responsable}</td><td>{t.s01.table.responsableValue}</td></tr>
         </tbody>
       </table>

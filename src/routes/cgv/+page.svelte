@@ -68,20 +68,16 @@
       },
       vendeur: {
         h2: 'Identité du vendeur',
-        warnTitle: 'À compléter avant publication',
-        warnBody: 'Deux mentions obligatoires restent marquées',
-        warnCode: '[À COMPLÉTER]',
-        warnBody2: "ci-dessous : la dénomination exacte et l'adresse professionnelle (art. L221-5 du code de la consommation). La page ne doit pas être mise en ligne tant qu'elles manquent. Le numéro de TVA indiqué est celui qui découle du SIREN : il doit être vérifié sur l'attestation d'assujettissement avant publication.",
         thInfo: 'Information',
         thValue: 'Valeur',
         rowDenomination: 'Dénomination',
-        rowDenominationValue: "[À COMPLÉTER : nom de l'entrepreneur individuel]",
+        rowDenominationValue: 'Nathan Rontey EI',
         rowForme: 'Forme',
         rowFormeValue: 'Entreprise individuelle sous le régime de la micro-entreprise',
         rowSiren: 'SIREN',
         rowSiret: 'SIRET (siège)',
         rowAdresse: 'Adresse professionnelle',
-        rowAdresseValue: '[À COMPLÉTER]',
+        rowAdresseValue: 'Bordeaux (Gironde), France',
         rowTva: 'N° de TVA intracommunautaire',
         rowDirecteur: 'Directeur de la publication',
         rowDirecteurValue: 'Elouan Passereau et Nathan Rontey',
@@ -380,20 +376,16 @@
       },
       vendeur: {
         h2: "Seller's identity",
-        warnTitle: 'To be completed before publication',
-        warnBody: 'Two mandatory particulars remain marked',
-        warnCode: '[TO BE COMPLETED]',
-        warnBody2: "below: the exact legal name and the business address (Art. L221-5 of the French Consumer Code). The page must not be published until these are filled in. The VAT number shown is derived from the SIREN number: it must be verified against the certificate of VAT liability before publication.",
         thInfo: 'Information',
         thValue: 'Value',
         rowDenomination: 'Legal name',
-        rowDenominationValue: '[TO BE COMPLETED: name of the sole trader]',
+        rowDenominationValue: 'Nathan Rontey EI',
         rowForme: 'Legal form',
         rowFormeValue: 'Sole proprietorship under the French micro-entrepreneur regime',
         rowSiren: 'SIREN',
         rowSiret: 'SIRET (registered office)',
         rowAdresse: 'Business address',
-        rowAdresseValue: '[TO BE COMPLETED]',
+        rowAdresseValue: 'Bordeaux (Gironde), France',
         rowTva: 'Intra-Community VAT number',
         rowDirecteur: 'Publication director',
         rowDirecteurValue: 'Elouan Passereau and Nathan Rontey',
@@ -705,22 +697,15 @@
     <div class="section-badge">02</div>
     <h2>{t.vendeur.h2}</h2>
 
-    <div class="info-box danger mb-6">
-      <p class="font-bold mb-1">{t.vendeur.warnTitle}</p>
-      <p class="mb-0">
-        {t.vendeur.warnBody} <code>{t.vendeur.warnCode}</code> {t.vendeur.warnBody2}
-      </p>
-    </div>
-
     <div class="table-wrap">
       <table>
         <thead><tr><th>{t.vendeur.thInfo}</th><th>{t.vendeur.thValue}</th></tr></thead>
         <tbody>
-          <tr><td>{t.vendeur.rowDenomination}</td><td><code>{t.vendeur.rowDenominationValue}</code></td></tr>
+          <tr><td>{t.vendeur.rowDenomination}</td><td>{t.vendeur.rowDenominationValue}</td></tr>
           <tr><td>{t.vendeur.rowForme}</td><td>{t.vendeur.rowFormeValue}</td></tr>
           <tr><td>{t.vendeur.rowSiren}</td><td>101 303 535</td></tr>
           <tr><td>{t.vendeur.rowSiret}</td><td>101 303 535 00021</td></tr>
-          <tr><td>{t.vendeur.rowAdresse}</td><td><code>{t.vendeur.rowAdresseValue}</code></td></tr>
+          <tr><td>{t.vendeur.rowAdresse}</td><td>{t.vendeur.rowAdresseValue}</td></tr>
           <tr><td>{t.vendeur.rowTva}</td><td>FR 14 101303535</td></tr>
           <tr><td>{t.vendeur.rowDirecteur}</td><td>{t.vendeur.rowDirecteurValue}</td></tr>
           <tr><td>{t.vendeur.rowContactCommercial}</td><td><a href="mailto:contact@kotbo.fr">contact@kotbo.fr</a></td></tr>

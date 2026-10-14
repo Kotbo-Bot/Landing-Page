@@ -7,7 +7,7 @@
   const TEXT = {
     fr: {
       title: 'Politique de Confidentialité',
-      subtitle: 'Dernière mise à jour : 20 juillet 2026 · Bot Discord Kotbo et Dashboard associé',
+      subtitle: 'Dernière mise à jour : 14 octobre 2026 · Bot Discord Kotbo et Dashboard associé',
       sections: {
         responsable: 'Responsable & rôles',
         collecte: 'Données collectées',
@@ -39,7 +39,7 @@
       responsable: {
         h2: 'Responsable du traitement & répartition des rôles',
         p1a: 'Le service Kotbo est édité et exploité par',
-        p1code: "[À COMPLÉTER : nom de l'entrepreneur individuel]",
+        p1code: 'Nathan Rontey EI',
         p1b: 'entreprise individuelle immatriculée sous le SIREN 101 303 535, qui est à ce titre le responsable du traitement pour les traitements décrits au présent paragraphe.',
         p2: 'Le service est conçu et développé par :',
         p3a: 'Contact vie privée :',
@@ -494,7 +494,7 @@
     },
     en: {
       title: 'Privacy Policy',
-      subtitle: 'Last updated: 20 July 2026 · Kotbo Discord bot and associated Dashboard',
+      subtitle: 'Last updated: 14 October 2026 · Kotbo Discord bot and associated Dashboard',
       sections: {
         responsable: 'Controller & roles',
         collecte: 'Data collected',
@@ -526,7 +526,7 @@
       responsable: {
         h2: 'Data controller & allocation of roles',
         p1a: 'The Kotbo service is published and operated by',
-        p1code: '[TO BE COMPLETED: name of the sole trader]',
+        p1code: 'Nathan Rontey EI',
         p1b: 'a sole proprietorship registered under SIREN number 101 303 535, which acts as the data controller for the processing described in this section.',
         p2: 'The service is designed and developed by:',
         p3a: 'Privacy contact:',
@@ -1023,7 +1023,7 @@
     <div class="section-badge">01</div>
     <h2>{t.responsable.h2}</h2>
     <p>
-      {t.responsable.p1a} <code>{t.responsable.p1code}</code>, {t.responsable.p1b}
+      {t.responsable.p1a} {t.responsable.p1code}, {t.responsable.p1b}
     </p>
     <p>{t.responsable.p2}</p>
     <ul>

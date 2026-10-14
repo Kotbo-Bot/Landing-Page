@@ -22,7 +22,7 @@
   const TEXT = {
     fr: {
       title: 'Mentions légales',
-      subtitle: 'Dernière mise à jour : 5 septembre 2026',
+      subtitle: 'Dernière mise à jour : 14 octobre 2026',
       metaDescription: "Mentions légales du service Kotbo : éditeur, immatriculation, directeur de publication, hébergeur et contact.",
       sections: {
         editeur: "Éditeur du site",
@@ -32,13 +32,6 @@
         conditions: 'Conditions contractuelles',
         pi: 'Propriété intellectuelle',
       },
-      danger: {
-        title: 'À compléter avant publication',
-        body1: "L'adresse professionnelle marquée",
-        code: '[À COMPLÉTER]',
-        body2a: "ci-dessous est une mention obligatoire pour un vendeur à distance",
-        body2b: " : la page ne doit pas être mise en ligne tant qu'elle manque. Le numéro de TVA indiqué découle du SIREN et doit être vérifié sur l'attestation d'assujettissement.",
-      },
       s01: {
         h2: 'Éditeur du site et du service',
         p1: "Le service Kotbo — bot Discord, tableau de bord et site — est édité et exploité par une entreprise individuelle relevant du régime de la micro-entreprise :",
@@ -46,14 +39,14 @@
           info: 'Information',
           value: 'Valeur',
           denomination: 'Dénomination',
-          denominationValue: "[À COMPLÉTER : nom de l'entrepreneur individuel]",
+          denominationValue: 'Nathan Rontey EI',
           forme: 'Forme juridique',
           formeValue: 'Entreprise individuelle — régime de la micro-entreprise',
           siren: 'SIREN',
           siret: 'SIRET (siège)',
           tva: 'N° de TVA intracommunautaire',
           adresse: 'Adresse professionnelle',
-          adresseValue: '[À COMPLÉTER]',
+          adresseValue: 'Bordeaux (Gironde), France',
           email: 'E-mail',
         },
         p2a: 'Le service est conçu et développé par',
@@ -118,7 +111,7 @@
     },
     en: {
       title: 'Legal Notice',
-      subtitle: 'Last updated: September 5, 2026',
+      subtitle: 'Last updated: October 14, 2026',
       metaDescription: 'Legal notice for the Kotbo service: publisher, registration, publication director, host, and contact.',
       sections: {
         editeur: 'Website publisher',
@@ -128,13 +121,6 @@
         conditions: 'Contractual terms',
         pi: 'Intellectual property',
       },
-      danger: {
-        title: 'To be completed before publication',
-        body1: 'The business address marked',
-        code: '[TO BE COMPLETED]',
-        body2a: "below is a mandatory disclosure for a distance seller",
-        body2b: " : the page must not be published until it is filled in. The VAT number shown is derived from the SIREN number and must be verified against the tax registration certificate.",
-      },
       s01: {
         h2: 'Publisher of the website and service',
         p1: "The Kotbo service — Discord bot, dashboard, and website — is published and operated by a sole proprietorship under the French micro-entreprise regime :",
@@ -142,14 +128,14 @@
           info: 'Information',
           value: 'Value',
           denomination: 'Business name',
-          denominationValue: '[TO BE COMPLETED: name of the sole trader]',
+          denominationValue: 'Nathan Rontey EI',
           forme: 'Legal form',
           formeValue: 'Sole proprietorship — micro-entreprise regime',
           siren: 'SIREN',
           siret: 'SIRET (registered office)',
           tva: 'Intra-Community VAT number',
           adresse: 'Business address',
-          adresseValue: '[TO BE COMPLETED]',
+          adresseValue: 'Bordeaux (Gironde), France',
           email: 'Email',
         },
         p2a: 'The service is designed and developed by',
@@ -233,13 +219,6 @@
   subtitle={t.subtitle}
   {sections}
 >
-  <div class="info-box danger mb-10">
-    <p class="font-bold mb-1">{t.danger.title}</p>
-    <p class="mb-0">
-      {t.danger.body1} <code>{t.danger.code}</code> {t.danger.body2a}{t.danger.body2b}
-    </p>
-  </div>
-
   <section id="editeur" class="policy-section">
     <div class="section-badge">01</div>
     <h2>{t.s01.h2}</h2>
@@ -250,12 +229,12 @@
       <table>
         <thead><tr><th>{t.s01.table.info}</th><th>{t.s01.table.value}</th></tr></thead>
         <tbody>
-          <tr><td>{t.s01.table.denomination}</td><td><code>{t.s01.table.denominationValue}</code></td></tr>
+          <tr><td>{t.s01.table.denomination}</td><td>{t.s01.table.denominationValue}</td></tr>
           <tr><td>{t.s01.table.forme}</td><td>{t.s01.table.formeValue}</td></tr>
           <tr><td>{t.s01.table.siren}</td><td>101&nbsp;303&nbsp;535</td></tr>
           <tr><td>{t.s01.table.siret}</td><td>101&nbsp;303&nbsp;535&nbsp;00021</td></tr>
           <tr><td>{t.s01.table.tva}</td><td>FR&nbsp;14&nbsp;101303535</td></tr>
-          <tr><td>{t.s01.table.adresse}</td><td><code>{t.s01.table.adresseValue}</code></td></tr>
+          <tr><td>{t.s01.table.adresse}</td><td>{t.s01.table.adresseValue}</td></tr>
           <tr><td>{t.s01.table.email}</td><td><a href="mailto:contact@kotbo.fr">contact@kotbo.fr</a></td></tr>
         </tbody>
       </table>
