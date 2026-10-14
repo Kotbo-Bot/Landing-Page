@@ -305,9 +305,13 @@ export function hubJsonLd(locale) {
   };
 }
 
-/** Le `<script>` tel que les pages l'injectent, et tel que la CSP l'empreinte. */
+/**
+ * Le `<script>` tel que les pages l'injectent, et tel que la CSP l'empreinte.
+ * `<`, `>` et `&` sont échappés : le texte des articles vient de l'API, et un
+ * `</script>` dans un titre fermerait la balise.
+ */
 export function jsonLdString(/** @type {object} */ data) {
-  return JSON.stringify(data);
+  return JSON.stringify(data).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
 }
 
 /** Tous les JSON-LD que le site peut servir, pour la CSP. */
