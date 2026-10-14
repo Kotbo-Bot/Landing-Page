@@ -6,7 +6,7 @@
 <script lang="ts">
   import Papicon from '$lib/dash/Papicon.svelte';
   import { getLocale } from '$lib/i18n/state.svelte';
-  import type { Toasts } from './toasts.svelte';
+  import type { Toasts } from './toastStore.svelte';
 
   const TEXT = {
     fr: { close: 'Fermer' },

@@ -11,7 +11,7 @@
   import { getLocale } from '$lib/i18n/state.svelte';
   import { buildBlacklist, ME, type DemoBlacklistEntry } from '$lib/dash/fixtures/tickets';
   import type { Ask } from './confirm';
-  import type { Toasts } from './toasts.svelte';
+  import type { Toasts } from './toastStore.svelte';
 
   const TEXT = {
     fr: {

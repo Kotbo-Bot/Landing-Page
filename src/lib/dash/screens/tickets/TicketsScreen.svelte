@@ -49,7 +49,7 @@
   import TicketSettings from './TicketSettings.svelte';
   import FormTextarea from './FormTextarea.svelte';
   import Toasts from './Toasts.svelte';
-  import { createToasts } from './toasts.svelte';
+  import { createToasts } from './toastStore.svelte';
   import { dialog } from './a11y';
   import type { ConfirmRequest } from './confirm';
 

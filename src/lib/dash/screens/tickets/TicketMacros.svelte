@@ -16,7 +16,7 @@
   import FormTextarea from './FormTextarea.svelte';
   import { dialog } from './a11y';
   import type { Ask } from './confirm';
-  import type { Toasts } from './toasts.svelte';
+  import type { Toasts } from './toastStore.svelte';
 
   const TEXT = {
     fr: {
