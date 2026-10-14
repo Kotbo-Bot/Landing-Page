@@ -1,0 +1,705 @@
+/*
+ * Le thème sombre de dash.kotbo.fr, pour les écrans du dashboard recopiés sur
+ * le site.
+ *
+ * Recopie de `Kotbo/apps/dashboard/src/app.css` (branche `recette`), thème
+ * sombre seulement, et enfermée sous la classe `.dash` : rien ici ne touche le
+ * reste du site. Un écran recopié se pose dans `<Dash>` (`dash/Dash.svelte`) ou
+ * dans un `<div class="dash">` après avoir importé ce fichier, et ses classes
+ * s'y écrivent telles quelles, sans retouche.
+ *
+ * Correspondance avec le fichier source :
+ * - `:root` (l. 125) et `:root.dark` (l. 194) deviennent le bloc `.dash` :
+ *   les variables sources (`--primary-color`…) avec leurs valeurs sombres ;
+ * - le `@theme` (l. 47) y est redéclaré : les utilitaires Tailwind lisent
+ *   `--color-*`, que `:root` a déjà résolues avec les valeurs claires du site.
+ *   Les redéclarer ici les fait relire sur `.dash`. Les entrées que le site
+ *   n'avait pas (`--color-warning`, `--color-success`, `--color-on-error`
+ *   variable, `--text-2xs`, `--text-body-sm`) sont ajoutées au `@theme` de
+ *   `routes/layout.css`, pour que Tailwind génère leurs utilitaires ;
+ * - `:root.dark .x` et `.dark .x` deviennent `.dash .x` ;
+ * - les classes de composants (l. 300 à 790), les règles tactiles et mobiles
+ *   (l. 885 à 1300, sauf celles du cadre de l'application), la palette des
+ *   graphiques (l. 1580) et les messages Discord (l. 1605) suivent, préfixées.
+ *
+ * Ce qui n'est pas repris : les règles mobiles (`max-width: 640px` et
+ * `767px`), parce que l'écran garde toujours 1180 px et que ces requêtes
+ * lisent la largeur du navigateur, pas la sienne ; le thème clair, `.compact-ui` (une préférence
+ * d'affichage, éteinte par défaut), le cadre de l'application (`.app-shell`,
+ * `.app-navbar`, `.app-sidebar`, `.app-main` et ses mises en page mobiles
+ * par page) et les polices de la carte `/rank`.
+ */
+
+@keyframes dash-slide-up {
+  from { transform: translateY(4px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes dash-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes dash-slide-in-right {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes dash-btn-spin { to { transform: rotate(360deg); } }
+
+.dash {
+  /* ── Jetons sources : `:root` puis `:root.dark` ───────────────────────── */
+
+  /* Plans des surcouches. `.dash` isole son empilement (plus bas) : ces
+     valeurs restent internes à l'écran et ne passent pas devant la page. */
+  --layer-modal: 9999;
+  --layer-modal-overlay: 10010;
+  --layer-popover: 15000;
+  --layer-confirm: 20000;
+  --app-navbar-height: 3.5rem;
+  --app-navbar-z: 40;
+
+  --background: #09090b;
+  --surface: #09090b;
+  --on-background: #fafafa;
+  --on-surface: #fafafa;
+  --surface-container-lowest: #18181b;
+  --surface-container-low: #111113;
+  --surface-container: #1c1c1f;
+  --surface-container-high: #27272a;
+  --surface-container-highest: #3f3f46;
+  --on-surface-variant: #b4b4bb;
+  --outline: #71717a;
+  --outline-variant: #27272a;
+  --surface-hover: rgba(255, 255, 255, 0.04);
+  --surface-selection: rgba(129, 140, 248, 0.08);
+  --primary-color: #818cf8;
+  --on-primary-color: #1e1b4b;
+  --primary-container-color: #1e1b4b;
+  --on-primary-container-color: #c7d2fe;
+  --secondary-color: #a5b4fc;
+  --secondary-container-color: #312e81;
+  --on-secondary-container-color: #e0e7ff;
+  --tertiary-color: #a78bfa;
+  --tertiary-container-color: #2e1065;
+  --on-tertiary-container-color: #ddd6fe;
+  --warning-color: #fbbf24;
+  --success-color: #4ade80;
+  --error-color: #f87171;
+  --on-error-color: #450a0a;
+  --error-container-color: #450a0a;
+  --on-error-container-color: #fecaca;
+
+  /* Palette des graphiques, valeurs sombres (l. 1580). */
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
+  --series-5: #d55181;
+  --series-6: #008300;
+  --series-7: #9085e9;
+  --series-8: #e66767;
+  --series-neutral: #52525b;
+
+  /* ── Le `@theme` du dashboard, relu sur `.dash` ──────────────────────── */
+
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-on-background: var(--on-background);
+  --color-on-surface: var(--on-surface);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-highest: var(--surface-container-highest);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-selection: var(--surface-selection);
+
+  --color-primary: var(--primary-color);
+  --color-on-primary: var(--on-primary-color);
+  --color-primary-container: var(--primary-container-color);
+  --color-on-primary-container: var(--on-primary-container-color);
+
+  --color-secondary: var(--secondary-color);
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: var(--secondary-container-color);
+  --color-on-secondary-container: var(--on-secondary-container-color);
+
+  --color-tertiary: var(--tertiary-color);
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: var(--tertiary-container-color);
+  --color-on-tertiary-container: var(--on-tertiary-container-color);
+
+  --color-error: var(--error-color);
+  --color-on-error: var(--on-error-color);
+  --color-error-container: var(--error-container-color);
+  --color-on-error-container: var(--on-error-container-color);
+
+  --color-warning: var(--warning-color);
+  --color-success: var(--success-color);
+
+  /* Polices du dashboard. Le site les sert déjà en local (`app.css`) :
+     Outfit 600 pour les titres de page, Inter pour le texte, Manrope pour les
+     libellés. `--font-sans` et `--font-mono` reprennent les piles par défaut
+     de Tailwind, que le dashboard ne redéfinit pas et que le site, lui,
+     remplace (Inter, JetBrains Mono). */
+  --font-headline: "Outfit", "Inter", system-ui, -apple-system, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-label: "Manrope", "Inter", system-ui, -apple-system, sans-serif;
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  color-scheme: dark;
+  isolation: isolate;
+}
+
+/* ── Base (l. 18 et l. 239) ──────────────────────────────────────────────── */
+
+/* Dans la couche `base` de Tailwind, comme dans le dashboard : une classe
+   utilitaire posée sur le cadre ou sur un élément passe devant. */
+@layer base {
+  /* Ce que `body` portait dans le dashboard. */
+  .dash {
+    background-color: var(--background);
+    color: var(--on-surface);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    text-align: left;
+  }
+
+  .dash :where(button:not(:disabled), [role="button"]:not(:disabled)) {
+    cursor: pointer;
+  }
+
+  .dash :where(button, a, input, select, textarea) {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .dash :where(img, svg, video, canvas) {
+    max-width: 100%;
+  }
+
+  .dash select {
+    color-scheme: dark;
+  }
+
+  .dash select option {
+    background-color: var(--surface-container);
+    color: var(--on-surface);
+  }
+
+  .dash select option:checked {
+    background-color: var(--surface-container-high);
+    color: var(--on-surface);
+  }
+}
+
+/* Anneau de focus clavier uniforme, hors couche comme dans le dashboard.
+   Spécificité renforcée par `:is` : il passe devant l'anneau du site
+   (`.v3 :focus-visible`, `routes/layout.css`). */
+.dash :is(a, button, [role="tab"], [role="button"]):focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* ── Primitives partagées (l. 300) ───────────────────────────────────────── */
+
+.dash .section-card {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 0.75rem;
+  transition: box-shadow 0.2s ease;
+}
+
+.dash .section-card:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.dash .section-card-flush {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.dash .premium-card {
+  transition: all 0.2s ease;
+  border: 1px solid var(--outline-variant);
+  background: var(--surface-container-lowest);
+}
+
+.dash .premium-card:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  border-color: var(--color-primary);
+}
+
+.dash .modal-backdrop {
+  /* Calé sur le cadre de l'aperçu, pas sur la fenêtre du navigateur. */
+  position: absolute;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.dash .modal-panel {
+  width: 100%;
+  max-height: 92%;
+  overflow-y: auto;
+  border-radius: 0.75rem;
+  border: 1px solid var(--outline-variant);
+  background: var(--surface-container-lowest);
+  box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.15);
+  padding: 1.5rem;
+}
+
+.dash .modal-panel-lg { max-width: 48rem; }
+.dash .modal-panel-xl { max-width: 72rem; }
+
+.dash .data-table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.dash .data-table thead tr {
+  background: var(--surface-container);
+}
+
+.dash .data-table th {
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--on-surface-variant);
+}
+
+.dash .data-table tbody tr {
+  border-bottom: 1px solid var(--outline-variant);
+  transition: background 0.15s ease;
+}
+
+.dash .data-table tbody tr:last-child { border-bottom: none; }
+.dash .data-table tbody tr:hover { background: var(--surface-hover); }
+.dash .data-table td { padding: 0.75rem 1rem; }
+
+.dash .stat-kpi {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  transition: all 0.2s ease;
+}
+
+.dash .stat-kpi:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.dash .tab-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.125rem;
+  padding: 0.25rem;
+  background: var(--surface-container);
+  border-radius: 0.5rem;
+  border: 1px solid var(--outline-variant);
+  max-width: 100%;
+}
+
+.dash .tab-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  color: var(--on-surface-variant);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.dash .tab-button:hover {
+  background: var(--surface-hover);
+  color: var(--on-surface);
+}
+
+.dash .tab-button.active {
+  background: var(--surface-container-lowest);
+  color: var(--on-surface);
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ── Boutons (l. 452) ────────────────────────────────────────────────────── */
+
+.dash .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.25;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+
+.dash .btn:active { transform: scale(0.98); }
+.dash .btn:disabled,
+.dash .btn[aria-disabled="true"] { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+/* Bouton écrit à la main, grisé mais cliquable pour dire pourquoi. */
+.dash button[aria-disabled="true"]:not(.btn) { opacity: 0.5; cursor: not-allowed; }
+
+.dash .btn-primary {
+  background: var(--primary-color);
+  color: var(--on-primary-color);
+}
+.dash .btn-primary:hover:not(:disabled):not([aria-disabled="true"]) { opacity: 0.92; }
+
+.dash .btn-tonal {
+  background: var(--surface-container);
+  color: var(--on-surface);
+  border-color: var(--outline-variant);
+}
+.dash .btn-tonal:hover:not(:disabled):not([aria-disabled="true"]) { background: var(--surface-container-high); }
+
+.dash .btn-ghost {
+  background: transparent;
+  color: var(--on-surface-variant);
+}
+.dash .btn-ghost:hover:not(:disabled):not([aria-disabled="true"]) { background: var(--surface-hover); color: var(--on-surface); }
+
+.dash .btn-danger {
+  background: transparent;
+  color: var(--error-color);
+  border-color: color-mix(in srgb, var(--error-color) 30%, transparent);
+}
+.dash .btn-danger:hover:not(:disabled):not([aria-disabled="true"]) { background: color-mix(in srgb, var(--error-color) 10%, transparent); }
+
+.dash .btn-sm { padding: 0.3125rem 0.75rem; font-size: 0.75rem; }
+
+/* L'icône d'un bouton garde sa taille, même dans une cellule étroite. */
+.dash .btn svg { max-width: none; flex-shrink: 0; }
+
+.dash .btn-icon { padding: 0.5rem; aspect-ratio: 1; }
+.dash .btn-sm.btn-icon { padding: 0.3125rem; }
+
+.dash .btn-spinner {
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 9999px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  animation: dash-btn-spin 0.7s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dash .btn-spinner { animation-duration: 2s; }
+}
+
+/* ── Onglets : compteur (l. 534) ─────────────────────────────────────────── */
+
+.dash .tab-badge {
+  min-width: 1.125rem;
+  padding: 0 0.3125rem;
+  border-radius: 9999px;
+  background: var(--surface-container-high);
+  color: var(--on-surface-variant);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.125rem;
+  text-align: center;
+}
+.dash .tab-button.active .tab-badge {
+  background: var(--primary-container-color);
+  color: var(--on-primary-container-color);
+}
+
+/* ── Filtres : pastilles (l. 552) ────────────────────────────────────────── */
+
+.dash .filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.dash .filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid var(--outline-variant);
+  background: transparent;
+  color: var(--on-surface-variant);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.dash .filter-pill:hover:not(:disabled) { background: var(--surface-hover); color: var(--on-surface); }
+.dash .filter-pill:disabled { opacity: 0.5; cursor: not-allowed; }
+.dash .filter-pill[aria-pressed="true"] {
+  background: var(--primary-container-color);
+  border-color: color-mix(in srgb, var(--primary-color) 35%, transparent);
+  color: var(--on-primary-container-color);
+}
+.dash .filter-pill__count {
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.75;
+}
+
+/* ── Encadrés d'information (l. 586) ─────────────────────────────────────── */
+
+.dash .callout {
+  --callout-color: var(--primary-color);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--callout-color) 25%, transparent);
+  background: color-mix(in srgb, var(--callout-color) 6%, transparent);
+}
+.dash .callout--success { --callout-color: var(--success-color); }
+.dash .callout--warning { --callout-color: var(--warning-color); }
+.dash .callout--danger { --callout-color: var(--error-color); }
+
+.dash .callout__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--callout-color) 12%, transparent);
+  color: var(--callout-color);
+}
+.dash .callout__body { min-width: 0; padding-top: 0.3125rem; }
+.dash .callout__title { font-size: 0.875rem; font-weight: 600; color: var(--on-surface); }
+.dash .callout__text { font-size: 0.8125rem; line-height: 1.55; color: var(--on-surface-variant); }
+.dash .callout__title + .callout__text { margin-top: 0.125rem; }
+.dash .callout__actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.625rem; }
+
+/* ── Champs de saisie (l. 620) ───────────────────────────────────────────── */
+
+.dash .input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--outline-variant);
+  background: var(--surface-container);
+  color: var(--on-surface);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.dash .input::placeholder { color: color-mix(in srgb, var(--on-surface-variant) 60%, transparent); }
+.dash .input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-color) 18%, transparent);
+}
+.dash .input:disabled { opacity: 0.5; cursor: not-allowed; }
+.dash .field--invalid .input,
+.dash .input[aria-invalid="true"] { border-color: var(--error-color); }
+
+.dash .field { display: flex; flex-direction: column; min-width: 0; }
+.dash .field-required { color: var(--error-color); }
+.dash .field-error {
+  font-size: 0.75rem;
+  color: var(--error-color);
+  margin-top: 0.25rem;
+}
+
+.dash .field-label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--on-surface);
+  margin-bottom: 0.375rem;
+}
+
+.dash .field-hint {
+  font-size: 0.75rem;
+  color: var(--on-surface-variant);
+  margin-top: 0.25rem;
+}
+
+/* ── Tables responsives (l. 672) ─────────────────────────────────────────── */
+
+.dash .table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 0.75rem;
+  border: 1px solid var(--outline-variant);
+}
+
+.dash .table-wrap .data-table { min-width: 640px; }
+
+/* ── Pastilles de statut (l. 681) ────────────────────────────────────────── */
+
+/* Le dashboard n'a qu'une teinte par pastille, pensée pour le fond clair, et
+   le thème sombre la garde telle quelle : recopiée sans retouche. */
+.dash .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+}
+
+/* Le dashboard garde ici les teintes du thème clair, illisibles sur fond
+   sombre (2:1) : les mêmes couleurs en version claire, au-dessus de 4,5:1. */
+.dash .badge-success {
+  background: rgba(16, 185, 129, 0.1);
+  color: #34d399;
+}
+
+.dash .badge-warning {
+  background: rgba(245, 158, 11, 0.1);
+  color: #fbbf24;
+}
+
+.dash .badge-danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+}
+
+.dash .badge-info {
+  background: rgba(99, 102, 241, 0.08);
+  color: #a5b4fc;
+}
+
+.dash .badge-neutral {
+  background: var(--surface-container);
+  color: var(--on-surface-variant);
+}
+
+.dash .section-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--on-surface-variant);
+}
+
+/* ── Mentions Discord (l. 727) : directement les valeurs `.dark` ─────────── */
+
+.dash .mention {
+  background: rgba(129, 140, 248, 0.1);
+  color: #a5b4fc;
+  font-weight: 500;
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+.dash .mention-link {
+  color: #a5b4fc;
+  font-weight: 500;
+  text-decoration: none;
+  background: rgba(129, 140, 248, 0.05);
+  padding: 0 4px;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+}
+
+.dash .mention-link:hover {
+  background: rgba(129, 140, 248, 0.15);
+  text-decoration: underline;
+}
+
+/* ── Animations (l. 767) ─────────────────────────────────────────────────── */
+
+/* Les animations du dashboard (150 ms), enfermées sous `.dash` ; leurs
+   images clés sont préfixées pour ne pas se mêler à celles du site. */
+.dash .animate-in {
+  animation-duration: 150ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}
+
+.dash .slide-in-from-right { animation-name: dash-slide-in-right; }
+.dash .fade-in { animation-name: dash-fade-in; }
+.dash .slide-up { animation-name: dash-slide-up; }
+
+/* ── Surcouches (l. 828) ─────────────────────────────────────────────────── */
+
+.dash .app-modal { z-index: var(--layer-modal); }
+.dash .member-case-overlay { z-index: var(--layer-modal-overlay); }
+.dash .app-modal.app-modal--above-case { z-index: var(--layer-popover); }
+.dash .confirm-modal { z-index: var(--layer-confirm); }
+.dash .app-popover { z-index: var(--layer-popover); }
+
+/* Un écran tactile n'a pas de survol à quitter : l'ombre resterait collée. */
+@media (hover: none) {
+  .dash .section-card:hover,
+  .dash .premium-card:hover,
+  .dash .stat-kpi:hover {
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dash *,
+  .dash *::before,
+  .dash *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Messages Discord rendus par le bot (l. 1605) ────────────────────────── */
+
+/* Le HTML des messages de tickets arrive tout fait de l'API dans le
+   dashboard : seules ces classes `dc-*` le mettent en forme. */
+.dash .dc-emoji {
+  display: inline-block;
+  width: auto;
+  height: 1.375em;
+  margin: 0 0.1em;
+  vertical-align: -0.3em;
+  object-fit: contain;
+}
+.dash .dc-heading { display: block; font-weight: 700; line-height: 1.3; color: inherit; }
+.dash .dc-h1 { font-size: 1.5em; margin: 0.25em 0; }
+.dash .dc-h2 { font-size: 1.25em; margin: 0.2em 0; }
+.dash .dc-h3 { font-size: 1.05em; margin: 0.15em 0; }
+.dash .dc-subtext { display: block; font-size: 0.8em; opacity: 0.6; }
+.dash .dc-quote { display: block; padding-left: 0.6rem; border-left: 4px solid rgba(255, 255, 255, 0.2); }
+.dash .dc-link { color: #00a8fc; }
+.dash .dc-link:hover { text-decoration: underline; }
+.dash .dc-mention {
+  padding: 0 0.2em;
+  border-radius: 0.2rem;
+  font-weight: 500;
+  color: #c9cdfb;
+  background: rgba(88, 101, 242, 0.3);
+}
+.dash .dc-code { padding: 0.1em 0.3em; border-radius: 0.25rem; background: rgba(0, 0, 0, 0.3); font-family: ui-monospace, monospace; font-size: 0.875em; }
+.dash .dc-pre { padding: 0.5rem 0.75rem; margin: 0.4rem 0; border-radius: 0.375rem; background: rgba(0, 0, 0, 0.3); font-family: ui-monospace, monospace; font-size: 0.85em; overflow-x: auto; }

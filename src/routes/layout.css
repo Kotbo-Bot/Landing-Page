@@ -1,43 +1,123 @@
+/*
+ * La v3 : la nuit du dashboard, sur tout le site (`html.v3`, posé dans
+ * `app.html`).
+ *
+ * Les mêmes surfaces que le thème sombre de dash.kotbo.fr (zinc, indigo), les
+ * mêmes polices (Outfit pour les titres, Inter, JetBrains Mono pour ce que le
+ * bot écrit). Le visiteur passe de la page au dashboard sans changer de pièce.
+ */
 @theme {
   --font-sans: 'Inter', sans-serif;
-  --font-hand: 'Caveat', cursive;
-  
-  --color-board: #f8f9fa;
-  --color-postit-yellow: #fdfd96;
-  --color-postit-blue: #aec6cf;
-  --color-postit-pink: #ffb7b2;
-  --color-marker-red: #ff4d4d;
-  --color-marker-blue: #4d79ff;
-  
-  --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0,0,0,0.05);
-  --shadow-postit: 2px 4px 6px rgba(0, 0, 0, 0.1), inset 0 -2px 5px rgba(0,0,0,0.05);
+  --font-display: 'Outfit', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --color-night: #09090b;
+  --color-night-2: #111113;
+  --color-night-3: #18181b;
+  --color-night-4: #1f1f23;
+  --color-line: #27272a;
+  --color-line-2: #3f3f46;
+  --color-fog: #a1a1aa;
+  --color-mist: #d4d4d8;
+  --color-glow: #a5b4fc;
+  --color-blurple: #5865f2;
+  --color-alarm: #f87171;
+  --color-ok: #4ade80;
+  --color-amber: #fbbf24;
+  /* Le texte principal : blanc la nuit, noir en clair. `text-white` reste
+     pour ce qui est blanc dans les deux thèmes (bouton indigo, Discord). */
+  --color-ink: #fafafa;
+
+  /* Entrées du `@theme` de dash.kotbo.fr que `app.css` n'avait pas, sous le
+     même nom, pour que les classes recopiées des écrans du dashboard
+     (`text-warning`, `bg-success/10`, `text-2xs`…) existent ici. Leurs valeurs
+     sombres sont posées par `.dash` (`lib/dash/dash.css`) ; hors de `.dash`,
+     elles retombent sur les valeurs claires du dashboard. */
+  --color-warning: var(--warning-color, #b45309);
+  --color-success: var(--success-color, #15803d);
+  --text-2xs: 0.6875rem;
+  --text-body-sm: 0.8125rem;
 }
 
-body {
-  background-color: var(--color-board);
-  background-image: radial-gradient(#d1d5db 1px, transparent 1px);
-  background-size: 24px 24px;
-  color: #1f2937;
+html.v3,
+html.v3 body {
+  background: var(--color-night);
+  color: var(--color-ink);
   font-family: var(--font-sans);
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color-scheme: dark;
 }
 
-/* Post-it tape effect */
-.postit-tape::after {
-  content: "";
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%) rotate(-2deg);
-  width: 60px;
-  height: 20px;
-  background-color: rgba(255, 255, 255, 0.4);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+/* Rien ne déborde sur le côté. `clip` et non `hidden`, et sur `html` seul :
+   `hidden` sur `html` et `body` fait de `body` un conteneur de défilement, et
+   la barre du haut (`sticky`) ne colle plus. */
+html.v3 { overflow-x: clip; }
+
+/*
+ * Le mode clair, choisi par le visiteur (`v3/ThemeToggle`, posé
+ * avant l'affichage par `lib/theme-boot.js`). Les mêmes jetons, en zinc clair.
+ * Contrastes sur blanc : `fog` 7,7:1, `glow` 7,1:1, `ok` 5,0:1, `alarm`
+ * 4,8:1, `amber` 5,0:1.
+ *
+ * Ce qui montre un écran sombre pour de vrai (aperçus Discord, journaux du
+ * bot, écrans du dashboard, la fenêtre de l'IA) garde ses couleurs : ces
+ * blocs portent `stay-dark`, qui y rétablit les jetons de la nuit.
+ */
+[data-theme='light'] {
+  --color-night: #ffffff;
+  --color-night-2: #f4f4f5;
+  --color-night-3: #ececee;
+  --color-night-4: #e4e4e7;
+  --color-line: #e4e4e7;
+  --color-line-2: #d4d4d8;
+  --color-fog: #52525b;
+  --color-mist: #3f3f46;
+  --color-glow: #4338ca;
+  --color-alarm: #dc2626;
+  --color-ok: #15803d;
+  --color-amber: #b45309;
+  --color-ink: #09090b;
 }
 
-.hand-drawn-border {
-  border: 2px solid #374151;
-  border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+html.v3[data-theme='light'] {
+  color-scheme: light;
 }
+
+[data-theme='light'] .stay-dark {
+  --color-night: #09090b;
+  --color-night-2: #111113;
+  --color-night-3: #18181b;
+  --color-night-4: #1f1f23;
+  --color-line: #27272a;
+  --color-line-2: #3f3f46;
+  --color-fog: #a1a1aa;
+  --color-mist: #d4d4d8;
+  --color-glow: #a5b4fc;
+  --color-alarm: #f87171;
+  --color-ok: #4ade80;
+  --color-amber: #fbbf24;
+  --color-ink: #fafafa;
+  color-scheme: dark;
+}
+
+.v3 ::selection {
+  background: #4f46e5;
+  color: #fff;
+}
+
+.v3 :focus-visible {
+  outline: 2px solid var(--color-glow);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v3 *,
+  .v3 *::before,
+  .v3 *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}
+

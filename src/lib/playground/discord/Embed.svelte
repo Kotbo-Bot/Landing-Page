@@ -45,7 +45,7 @@
           {#each fields as field (field.name)}
             <div class={field.inline === false ? 'col-span-full' : ''}>
               <dt class="text-xs font-semibold text-[#f2f3f5]">{field.name}</dt>
-              <dd class="text-sm text-[#dbdee1]">{field.value}</dd>
+              <dd class="whitespace-pre-line text-sm text-[#dbdee1]">{field.value}</dd>
             </div>
           {/each}
         </dl>

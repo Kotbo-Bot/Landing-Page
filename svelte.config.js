@@ -2,6 +2,7 @@ import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { createHash } from 'node:crypto';
 import { allJsonLd, jsonLdString } from './src/lib/seo/jsonld.js';
+import { THEME_BOOT } from './src/lib/theme-boot.js';
 
 // Empreintes des JSON-LD injectés en ligne (src/lib/seo/jsonld.js), calculées
 // sur la même chaîne que les pages : un texte modifié reste autorisé, une
@@ -9,6 +10,8 @@ import { allJsonLd, jsonLdString } from './src/lib/seo/jsonld.js';
 const jsonLdHashes = allJsonLd().map(
 	(data) => `sha256-${createHash('sha256').update(jsonLdString(data)).digest('base64')}`
 );
+// Le script qui pose le thème avant le premier affichage (src/lib/theme-boot.js).
+const themeBootHash = `sha256-${createHash('sha256').update(THEME_BOOT).digest('base64')}`;
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -43,7 +46,7 @@ const config = {
 			mode: 'hash',
 			directives: {
 				'default-src': ['self'],
-				'script-src': ['self', ...jsonLdHashes],
+				'script-src': ['self', themeBootHash, ...jsonLdHashes],
 				// Les transitions de Svelte posent des <style> en ligne.
 				'style-src': ['self', 'unsafe-inline'],
 				// data: et blob: : l'image du serveur monté et la photo de la carte
@@ -52,6 +55,8 @@ const config = {
 				'img-src': ['self', 'data:', 'blob:', 'https://api.kotbo.fr'],
 				'font-src': ['self'],
 				'media-src': ['self'],
+				// Le film du héros (v3/HeroVideo.svelte), lu sans cookie (dnt=1).
+				'frame-src': ['https://player.vimeo.com'],
 				'connect-src': ['self', 'https://api.kotbo.fr'],
 				'object-src': ['none'],
 				'base-uri': ['self'],

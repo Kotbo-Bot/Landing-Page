@@ -227,8 +227,6 @@ export function track(step: FunnelStep, options: TrackOptions = {}): void {
  * document - elle y est dès le premier octet. C'est l'affichage à l'écran qui
  * fait l'événement, d'où l'observateur, déconnecté au premier déclenchement.
  *
- * Le site utilise déjà ce mécanisme pour ses animations (`lib/actions/reveal`) :
- * on le réutilise plutôt que d'en introduire un second.
  */
 export function trackOnView(node: HTMLElement, step: FunnelStep) {
   if (!browser || optedOut()) return {};

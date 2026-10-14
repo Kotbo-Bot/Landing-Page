@@ -14,16 +14,20 @@ type Pair = Record<Locale, string>;
 export const HOME_ROUTE: Pair = { fr: '/', en: '/en' };
 
 /**
- * La page « gestion du staff », hors du gabarit des fonctionnalités : elle a
- * ses propres écrans du dashboard (`pages/StaffPage.svelte`).
+ * L'article « gestion du staff », écrit dans ce dépôt plutôt que dans la
+ * console (`articles/staff.ts`) : il a ses propres écrans du dashboard. Il
+ * garde son URL, déjà indexée, hors de `/fonctionnalites`.
  */
 export const STAFF_ROUTE: Pair = { fr: '/gestion-staff-discord', en: '/en/discord-staff-management' };
+
+/** La page qui rassemble les articles (`pages/FeaturesHub.svelte`). */
+export const FEATURES_ROUTE: Pair = { fr: '/fonctionnalites', en: '/en/features' };
 
 /** Chemins sans `base` ni barre finale, comme SvelteKit les sert. */
 export const BILINGUAL: Pair[] = [
 	HOME_ROUTE,
 	STAFF_ROUTE,
-	{ fr: '/fonctionnalites', en: '/en/features' },
+	FEATURES_ROUTE,
 	...FEATURES.map((f) => ({ fr: featurePath(f.slug, 'fr'), en: featurePath(f.slug, 'en') })),
 ];
 

@@ -15,18 +15,33 @@
  * Pas d'`aggregateRating` : les notes viennent de Top.gg, et Google interdit
  * de reprendre celles d'un autre site (voir `product.ts`).
  */
-import { HOME_FAQ, STAFF_FAQ } from './faq.js';
+import { FREE_FAQ, HOME_FAQ, HUB_FAQ, STAFF_FAQ } from './faq.js';
+// Les pages de la console, telles que `scripts/fetch-features.mjs` les écrit
+// avant le build : le JSON-LD de chaque article en sort.
+import featurePages from '../data/feature-pages.json' with { type: 'json' };
 
 const SITE = 'https://kotbo.fr';
 const ORG_ID = `${SITE}/#organization`;
 const SITE_ID = `${SITE}/#website`;
 const APP_ID = `${SITE}/#software`;
 
-/** Les URL de chaque page, alignées sur `LOCALIZED_ROUTES` (`i18n/routes.ts`). */
+/** Les URL de chaque page, alignées sur `i18n/routes.ts`. */
 const PATHS = {
   home: { fr: '/', en: '/en' },
   staff: { fr: '/gestion-staff-discord', en: '/en/discord-staff-management' },
+  hub: { fr: '/fonctionnalites', en: '/en/features' },
 };
+
+/** Comme `featurePath` (`i18n/routes.ts`). */
+const featureUrl = (/** @type {{ fr: string, en: string }} */ slug, /** @type {'fr' | 'en'} */ locale) =>
+  `${SITE}${locale === 'en' ? `/en/features/${slug.en}` : `/fonctionnalites/${slug.fr}`}`;
+
+/**
+ * @typedef {{ name: string, title: string, description: string, h1: string, lead: string, faq: { q: string, a: string }[] }} FeatureText
+ * @typedef {{ key: string, slug: { fr: string, en: string }, text: { fr: FeatureText, en: FeatureText } }} FeaturePage
+ */
+/** @type {FeaturePage[]} */
+const FEATURE_PAGES = featurePages.pages;
 
 const LANG = { fr: 'fr-FR', en: 'en-US' };
 
@@ -50,10 +65,12 @@ const TEXT = {
       'AutoMod, protection anti-raid et captcha',
       'Logs Discord',
       'Tickets support',
-      'Niveaux, économie et événements',
-      'Serveur MCP pour agents IA',
+      'Niveaux, économie, giveaways et événements',
+      'Serveur MCP : piloter le serveur depuis Claude, ChatGPT ou Gemini',
     ],
     home: 'Accueil',
+    hub: 'Fonctionnalités',
+    hubName: 'Fonctionnalités de Kotbo, un article par module',
     staffName: 'Gestion du staff Discord',
     staffDescription:
       "Gérer l'équipe de modération d'un serveur Discord avec Kotbo : hiérarchies, absences, réunions, évaluations, recrutement, casier des sanctions et doubles comptes.",
@@ -74,10 +91,12 @@ const TEXT = {
       'AutoMod, anti-raid protection and captcha',
       'Discord logs',
       'Support tickets',
-      'Levels, economy and events',
-      'MCP server for AI agents',
+      'Levels, economy, giveaways and events',
+      'MCP server: run the server from Claude, ChatGPT or Gemini',
     ],
     home: 'Home',
+    hub: 'Features',
+    hubName: "Kotbo's features, one article per module",
     staffName: 'Discord staff management',
     staffDescription:
       "Run a Discord server's moderation team with Kotbo: hierarchies, absences, meetings, reviews, recruitment, sanction records and alt accounts.",
@@ -117,14 +136,14 @@ function software(locale) {
     image: `${SITE}/og-image.png`,
     featureList: t.features,
     // Le prix mensuel le plus bas et le plus haut des offres de
-    // `components/Pricing.svelte`, hors taxes : les modifier ensemble.
+    // `v3/Price.svelte`, hors taxes : les modifier ensemble.
     offers: {
       '@type': 'AggregateOffer',
       priceCurrency: 'EUR',
       lowPrice: '5.00',
       highPrice: '25.00',
       offerCount: 3,
-      url: `${SITE}${PATHS.home[locale]}#pricing`,
+      url: `${SITE}${PATHS.home[locale]}#prix`,
     },
     publisher: { '@id': ORG_ID },
     alternateName: ALTERNATE_NAMES,
@@ -167,6 +186,46 @@ export function homeJsonLd(locale) {
   };
 }
 
+/**
+ * Le fil d'Ariane d'un article : accueil, index des articles, article.
+ * @param {'fr' | 'en'} locale @param {string} name @param {string} url
+ */
+function articleBreadcrumb(locale, name, url) {
+  const t = TEXT[locale];
+  return {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: t.home, item: `${SITE}${PATHS.home[locale]}` },
+      { '@type': 'ListItem', position: 2, name: t.hub, item: `${SITE}${PATHS.hub[locale]}` },
+      { '@type': 'ListItem', position: 3, name, item: url },
+    ],
+  };
+}
+
+/**
+ * Un article. Pas de date : les pages de la console n'en portent pas, et une
+ * date inventée serait pire que pas de date.
+ * @param {'fr' | 'en'} locale @param {{ url: string, name: string, headline: string, description: string }} a
+ */
+function article(locale, { url, name, headline, description }) {
+  return {
+    '@type': 'Article',
+    '@id': `${url}#article`,
+    url,
+    mainEntityOfPage: url,
+    headline,
+    name,
+    description,
+    inLanguage: LANG[locale],
+    image: `${SITE}/og-image.png`,
+    author: { '@id': ORG_ID },
+    publisher: { '@id': ORG_ID },
+    about: { '@id': APP_ID },
+    isPartOf: { '@id': `${SITE}${PATHS.hub[locale]}#collection` },
+    breadcrumb: articleBreadcrumb(locale, name, url),
+  };
+}
+
 /** @param {'fr' | 'en'} locale */
 export function staffJsonLd(locale) {
   const t = TEXT[locale];
@@ -176,12 +235,56 @@ export function staffJsonLd(locale) {
     '@graph': [
       organization(locale),
       software(locale),
+      article(locale, { url, name: t.staffName, headline: t.staffName, description: t.staffDescription }),
+      faqPage(STAFF_FAQ[locale], url, locale),
+    ],
+  };
+}
+
+/**
+ * Une page de la console, par sa clé.
+ * @param {string} key @param {'fr' | 'en'} locale
+ */
+export function featureJsonLd(key, locale) {
+  const page = FEATURE_PAGES.find((p) => p.key === key);
+  if (!page) return undefined;
+  const text = page.text[locale];
+  const url = featureUrl(page.slug, locale);
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      organization(locale),
+      software(locale),
+      article(locale, { url, name: text.name, headline: text.h1, description: text.description }),
+      // La FAQ affichée : celle de la fiche, plus la question sur la gratuité
+      // (comme `data/features.ts`).
+      faqPage([...text.faq, FREE_FAQ[locale]], url, locale),
+    ],
+  };
+}
+
+/**
+ * L'index des articles : la liste, dans l'ordre de la page (l'article staff
+ * épinglé, puis les pages de la console).
+ * @param {'fr' | 'en'} locale
+ */
+export function hubJsonLd(locale) {
+  const t = TEXT[locale];
+  const url = `${SITE}${PATHS.hub[locale]}`;
+  const items = [
+    { name: t.staffName, url: `${SITE}${PATHS.staff[locale]}` },
+    ...FEATURE_PAGES.map((p) => ({ name: p.text[locale].name, url: featureUrl(p.slug, locale) })),
+  ];
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      organization(locale),
+      software(locale),
       {
-        '@type': 'WebPage',
-        '@id': url,
+        '@type': 'CollectionPage',
+        '@id': `${url}#collection`,
         url,
-        name: t.staffName,
-        description: t.staffDescription,
+        name: t.hubName,
         inLanguage: LANG[locale],
         isPartOf: { '@id': SITE_ID },
         about: { '@id': APP_ID },
@@ -189,21 +292,34 @@ export function staffJsonLd(locale) {
           '@type': 'BreadcrumbList',
           itemListElement: [
             { '@type': 'ListItem', position: 1, name: t.home, item: `${SITE}${PATHS.home[locale]}` },
-            { '@type': 'ListItem', position: 2, name: t.staffName, item: url },
+            { '@type': 'ListItem', position: 2, name: t.hub, item: url },
           ],
         },
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListElement: items.map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: item.name, url: item.url })),
+        },
       },
-      faqPage(STAFF_FAQ[locale], url, locale),
+      faqPage(HUB_FAQ[locale], url, locale),
     ],
   };
 }
 
-/** Le `<script>` tel que les pages l'injectent, et tel que la CSP l'empreinte. */
+/**
+ * Le `<script>` tel que les pages l'injectent, et tel que la CSP l'empreinte.
+ * `<`, `>` et `&` sont échappés : le texte des articles vient de l'API, et un
+ * `</script>` dans un titre fermerait la balise.
+ */
 export function jsonLdString(/** @type {object} */ data) {
-  return JSON.stringify(data);
+  return JSON.stringify(data).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
 }
 
 /** Tous les JSON-LD que le site peut servir, pour la CSP. */
 export function allJsonLd() {
-  return /** @type {const} */ (['fr', 'en']).flatMap((locale) => [homeJsonLd(locale), staffJsonLd(locale)]);
+  return /** @type {const} */ (['fr', 'en']).flatMap((locale) => [
+    homeJsonLd(locale),
+    staffJsonLd(locale),
+    hubJsonLd(locale),
+    ...FEATURE_PAGES.map((p) => /** @type {object} */ (featureJsonLd(p.key, locale))),
+  ]);
 }

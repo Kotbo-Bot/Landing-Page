@@ -412,7 +412,6 @@
   title={t.title}
   subtitle={t.subtitle}
   {sections}
-  activePage="dpa"
 >
   <div class="info-box warn mb-10">
     <p class="font-bold mb-1">{t.warn.title}</p>

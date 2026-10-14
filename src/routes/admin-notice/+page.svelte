@@ -1,6 +1,11 @@
 <script lang="ts">
+  /**
+   * Le modèle de texte qu'un serveur publie pour informer ses membres des
+   * données que Kotbo traite (lié depuis la politique de confidentialité et
+   * le DPA). Même gabarit que les pages légales, sans sommaire.
+   */
   import Seo from '$lib/seo/Seo.svelte';
-  import { base } from '$app/paths';
+  import LegalPageLayout from '$lib/components/LegalPageLayout.svelte';
   import { getLocale } from '$lib/i18n/state.svelte';
 
   const TEXT = {
@@ -8,7 +13,6 @@
       pageTitle: "Modèle d'information des membres | Kotbo",
       metaDescription:
         "Modèle de texte à publier sur ton serveur Discord pour informer les membres des données que Kotbo traite, selon les modules activés.",
-      back: '← Retour à Kotbo',
       h1: "Modèle d'information des membres",
       intro: "Ce modèle doit être adapté aux modules réellement activés, aux durées retenues par le serveur et à l'identité de son administrateur.",
       template: {
@@ -26,18 +30,11 @@
         'destinataires et durées ;',
         "modalités concrètes d'exercice des droits.",
       ],
-      footer: {
-        privacy: 'Confidentialité',
-        terms: 'CGU',
-        dpa: 'DPA',
-        legal: 'Mentions légales',
-      },
     },
     en: {
       pageTitle: 'Member Information Template | Kotbo',
       metaDescription:
         'Template to post on your Discord server so members know which data Kotbo processes, depending on the modules you enabled.',
-      back: '← Back to Kotbo',
       h1: 'Member information template',
       intro: 'This template must be adapted to the modules actually enabled, the retention periods chosen by the server, and the identity of its administrator.',
       template: {
@@ -55,12 +52,6 @@
         'the recipients and retention periods;',
         'the concrete arrangements for exercising rights.',
       ],
-      footer: {
-        privacy: 'Privacy',
-        terms: 'Terms of Use',
-        dpa: 'DPA',
-        legal: 'Legal Notice',
-      },
     },
   };
 
@@ -69,25 +60,16 @@
 
 <Seo title={t.pageTitle} description={t.metaDescription} path="/admin-notice" />
 
-<main class="min-h-screen bg-gray-50 text-gray-800 py-14 px-6">
-  <article class="max-w-3xl mx-auto bg-white border border-gray-200 rounded-3xl p-7 md:p-12 shadow-sm prose-legal">
-    <a href="{base}/" class="text-sm font-bold text-indigo-700 hover:underline">{t.back}</a>
-    <h1>{t.h1}</h1>
-    <p>{t.intro}</p>
-    <div class="template">
-      <h2>{t.template.h2}</h2>
-      <p>{t.template.p1}</p>
-      <p>{t.template.p2a}</p>
-      <p>{t.template.p3}</p>
-      <p>{t.template.p4a}</p>
-      <p>{t.template.p5}</p>
-    </div>
-    <h2>{t.requiredTitle}</h2>
-    <ul>{#each t.required as item}<li>{item}</li>{/each}</ul>
-    <footer><a href="{base}/privacy">{t.footer.privacy}</a><a href="{base}/terms">{t.footer.terms}</a><a href="{base}/dpa">{t.footer.dpa}</a><a href="{base}/mentions-legales">{t.footer.legal}</a></footer>
-  </article>
-</main>
-
-<style>
-  .prose-legal{line-height:1.75}.prose-legal h1{font:800 2.3rem Manrope,sans-serif;margin:1.5rem 0;color:#111827}.prose-legal h2{font:800 1.3rem Manrope,sans-serif;margin:2rem 0 .5rem}.template{margin:2rem 0;padding:1.5rem;border:1px solid #c7d2fe;background:#f5f7ff;border-radius:1rem}.template h2{margin-top:0}ul{padding-left:1.4rem;list-style:disc}footer{display:flex;gap:1.25rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid #e5e7eb;font-weight:700;color:#4338ca}
-</style>
+<LegalPageLayout title={t.h1}>
+  <p>{t.intro}</p>
+  <div class="info-box my-8">
+    <h2>{t.template.h2}</h2>
+    <p>{t.template.p1}</p>
+    <p>{t.template.p2a}</p>
+    <p>{t.template.p3}</p>
+    <p>{t.template.p4a}</p>
+    <p>{t.template.p5}</p>
+  </div>
+  <h2>{t.requiredTitle}</h2>
+  <ul>{#each t.required as item (item)}<li>{item}</li>{/each}</ul>
+</LegalPageLayout>

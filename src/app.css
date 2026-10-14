@@ -1,14 +1,12 @@
-@import '@fontsource/caveat/latin-400.css';
-@import '@fontsource/caveat/latin-700.css';
 @import '@fontsource/inter/latin-400.css';
 @import '@fontsource/inter/latin-500.css';
 @import '@fontsource/inter/latin-600.css';
 @import '@fontsource/inter/latin-700.css';
-@import '@fontsource/manrope/latin-400.css';
-@import '@fontsource/manrope/latin-500.css';
-@import '@fontsource/manrope/latin-600.css';
-@import '@fontsource/manrope/latin-700.css';
-@import '@fontsource/manrope/latin-800.css';
+@import '@fontsource/outfit/latin-600.css';
+@import '@fontsource/outfit/latin-800.css';
+@import '@fontsource/outfit/latin-900.css';
+@import '@fontsource/jetbrains-mono/latin-500.css';
+@import '@fontsource/jetbrains-mono/latin-700.css';
 @import "tailwindcss";
 @source not "../motion";
 @import "./routes/layout.css";
@@ -54,7 +52,9 @@
   --color-error-container: #ffdad6;
   --color-on-error-container: #93000a;
 
-  --font-headline: "Manrope", sans-serif;
+  /* Les titres des écrans du dashboard recopiés (`font-headline`) : Outfit,
+     comme là-bas. `.dash` (`dash/dash.css`) reprend la main sur ses jetons. */
+  --font-headline: "Outfit", "Inter", sans-serif;
   --font-body: "Inter", sans-serif;
   --font-label: "Inter", sans-serif;
 
@@ -102,218 +102,29 @@
   --on-tertiary-container-color: #ffc7a2;
 }
 
-:root.dark {
-  --background: #020617; 
-  --surface: #0f172a;    
-  --on-background: #f8fafc;
-  --on-surface: #f8fafc;
-  --surface-container-lowest: #1e293b;
-  --surface-container-low: #0f172a;
-  --surface-container: #111827;
-  --surface-container-high: #334155;
-  --surface-container-highest: #374151;
-  --on-surface-variant: #b0bfd0;
-  --outline: #5a6a7e;
-  --outline-variant: #3d4f63;
-  --surface-hover: rgba(255, 255, 255, 0.06);
-  --surface-selection: rgba(255, 255, 255, 0.1);
-  --primary-color: #8ea8c5;
-  --on-primary-color: #0f172a;
-  --primary-container-color: #233246;
-  --on-primary-container-color: #d7e7f5;
-  --secondary-color: #8ab1c1;
-  --secondary-container-color: #1e3440;
-  --on-secondary-container-color: #d6eef8;
-  --tertiary-color: #f59e0b;
-  --tertiary-container-color: #3a2500;
-  --on-tertiary-container-color: #ffe6bb;
-}
-
-.premium-card {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid var(--outline-variant);
-  background: var(--surface-container-lowest);
-}
-
-.premium-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-  border-color: var(--color-primary);
-}
-
-/* Animations for Toasts and Pages */
-@keyframes slide-in-right {
-  from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.animate-in {
-  animation-duration: 300ms;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  animation-fill-mode: both;
-}
-
-.slide-in-from-right {
-  animation-name: slide-in-right;
-}
-
-.fade-in {
-  animation-name: fade-in;
-}
-
-/* ── Scroll reveal ──────────────────────────────────────────── */
-.will-reveal {
-  opacity: 0;
-  transition:
-    opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1) var(--reveal-delay, 0ms),
-    transform 0.65s cubic-bezier(0.4, 0, 0.2, 1) var(--reveal-delay, 0ms);
-}
-.reveal-up    { transform: translateY(28px); }
-.reveal-left  { transform: translateX(-32px); }
-.reveal-right { transform: translateX(32px); }
-.reveal-none  { transform: translateY(0); }
-.will-reveal.revealed {
-  opacity: 1;
-  transform: none !important;
-}
-
-/* ── Hero page-load entrance ────────────────────────────────── */
-@keyframes hero-rise {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.hero-enter           { animation: hero-rise 0.65s cubic-bezier(0.4, 0, 0.2, 1) both; }
-.hero-delay-1         { animation-delay: 80ms; }
-.hero-delay-2         { animation-delay: 220ms; }
-.hero-delay-3         { animation-delay: 380ms; }
-.hero-delay-4         { animation-delay: 560ms; }
-
-/* ── Zones jouables ─────────────────────────────────────────────
-   MOTION 3 (DESIGN.md) : chaque mouvement signale une conséquence.
-   Rien ne boucle. */
-
-/* Un message qui vient d'arriver dans un aperçu Discord. */
+/* Un message qui vient d'arriver dans un aperçu Discord : le mouvement
+   signale une conséquence, rien ne boucle. */
 @keyframes dc-enter {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: none; }
 }
 .dc-enter { animation: dc-enter 0.32s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 
-/* Un salon qui apparaît parce qu'on vient de cocher son module. */
-@keyframes dc-fresh {
-  from { opacity: 0; transform: translateX(-8px); background: rgba(88, 101, 242, 0.35); }
-  60%  { opacity: 1; transform: none; background: rgba(88, 101, 242, 0.35); }
-  to   { background: transparent; }
-}
-.dc-fresh { animation: dc-fresh 0.9s ease-out both; border-radius: 4px; }
-
-/* Changement de salon : le fil se remplace sans saut. */
-@keyframes dc-channel {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-.dc-channel { animation: dc-channel 0.18s ease-out both; }
-
-.dc-bar { transition: width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
-
-/* La question suivante de l'onboarding du héros arrive de la droite : on avance. */
-@keyframes step-in {
-  from { opacity: 0; transform: translateX(16px); }
-  to   { opacity: 1; transform: none; }
-}
-.step-in { animation: step-in 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
-
-/* Un incident qui tombe dans la liste « À traiter ». */
-@keyframes crisis-drop {
-  from { opacity: 0; transform: translateY(-12px) rotate(-1.5deg); }
-  to   { opacity: 1; transform: none; }
-}
-.crisis-incident { animation: crisis-drop 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
-.crisis-trace { animation: dc-enter 0.3s ease-out both; }
-.crisis-done { animation: dc-enter 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
-.sticky-invite { animation: dc-enter 0.25s ease-out both; }
-
 /* ── Navigation par ancres ──────────────────────────────────────
-   Défilement fluide, arrêté sous l'en-tête collant. */
+   Défilement fluide, arrêté sous la barre du haut (64 px) ; sur téléphone,
+   au-dessus de la barre d'invitation du bas. Un élément qui prend le focus ne
+   doit jamais finir caché dessous (WCAG 2.4.11). */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 4.75rem;
+  scroll-padding-top: 5rem;
 }
-
-/* L'indicateur de l'en-tête glisse d'un lien à l'autre au défilement. */
-.nav-bar { transition: left 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
-
-/* À l'arrivée par un lien de l'en-tête, un trait au marqueur se pose sous le
-   titre de la zone, puis s'efface : l'œil sait où il a atterri. */
-@keyframes anchor-mark {
-  0%   { text-decoration-color: rgba(79, 70, 229, 0); text-underline-offset: 0.5em; }
-  25%  { text-decoration-color: rgba(79, 70, 229, 1); text-underline-offset: 0.16em; }
-  75%  { text-decoration-color: rgba(79, 70, 229, 1); text-underline-offset: 0.16em; }
-  100% { text-decoration-color: rgba(79, 70, 229, 0); text-underline-offset: 0.16em; }
+@media (max-width: 639px) {
+  html {
+    scroll-padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+  }
 }
-@keyframes anchor-mark-dark {
-  0%   { text-decoration-color: rgba(165, 180, 252, 0); text-underline-offset: 0.5em; }
-  25%  { text-decoration-color: rgba(165, 180, 252, 1); text-underline-offset: 0.16em; }
-  75%  { text-decoration-color: rgba(165, 180, 252, 1); text-underline-offset: 0.16em; }
-  100% { text-decoration-color: rgba(165, 180, 252, 0); text-underline-offset: 0.16em; }
-}
-.anchor-arrived {
-  text-decoration-line: underline;
-  text-decoration-thickness: 0.12em;
-  text-decoration-skip-ink: none;
-  animation: anchor-mark 1.8s ease-out both;
-}
-.bg-gray-950 .anchor-arrived { animation-name: anchor-mark-dark; }
-:where(h1, h2)[tabindex='-1']:focus { outline: none; }
-
-/* Les aperçus défilent sans barre épaisse, comme dans Discord. */
-.dc-scroll { scrollbar-width: thin; scrollbar-color: #1a1b1e transparent; }
 
 @media (prefers-reduced-motion: reduce) {
-  .dc-enter,
-  .dc-fresh,
-  .dc-channel,
-  .crisis-incident,
-  .crisis-trace,
-  .crisis-done,
-  .sticky-invite,
-  .step-in,
-  .hero-enter,
-  .anchor-arrived,
-  .marker-path-animated {
-    animation: none !important;
-  }
+  .dc-enter { animation: none !important; }
   html { scroll-behavior: auto; }
-  .dc-bar,
-  .nav-bar { transition: none; }
-  .will-reveal {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
-}
-
-/* Focus visible partout, y compris dans les aperçus sombres. */
-:where(a, button, input, select, textarea, [role='tab']):focus-visible {
-  outline: 2px solid #4f46e5;
-  outline-offset: 2px;
-}
-.bg-gray-950 :where(a, button):focus-visible,
-.dc-scroll :where(a, button):focus-visible {
-  outline-color: #a5b4fc;
-}
-
-/* ── MarkerCircle SVG draw ──────────────────────────────────── */
-.marker-path-animated {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: draw-marker 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.45s both;
-}
-@keyframes draw-marker {
-  to { stroke-dashoffset: 0; }
 }

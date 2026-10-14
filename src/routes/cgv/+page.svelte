@@ -679,7 +679,6 @@
   title={t.title}
   subtitle={t.subtitleTemplate(t.pricingDate)}
   {sections}
-  activePage="cgv"
 >
   <div class="info-box warn mb-10">
     <p class="font-bold mb-1">{t.intro.title}</p>
@@ -729,7 +728,7 @@
         </tbody>
       </table>
     </div>
-    <p class="text-sm text-gray-500">
+    <p class="text-sm text-fog">
       {t.vendeur.footnote}
     </p>
   </section>
@@ -893,7 +892,7 @@
   <section id="retractation" class="policy-section">
     <div class="section-badge">10</div>
     <h2>{t.retractation.h2}</h2>
-    <p class="text-sm text-gray-500">{t.retractation.note}</p>
+    <p class="text-sm text-fog">{t.retractation.note}</p>
     <p>
       {t.retractation.p1a} <strong>{t.retractation.p1Strong}</strong> {t.retractation.p1b}
     </p>

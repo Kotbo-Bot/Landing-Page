@@ -12,6 +12,7 @@ export const TRIAL_DAYS = 15;
 export const SALES_URL = 'https://pros.kotbo.fr/rdv';
 export const CONTACT_EMAIL = 'contact@kotbo.fr';
 export const DOCS_URL = 'https://docs.kotbo.fr';
+export const DASHBOARD_URL = 'https://dash.kotbo.fr';
 export const STATUS_URL = 'https://status.kotbo.fr';
 export const DISCORD_URL = 'https://nathaan.me/u/discord';
 export const STATS_ENDPOINT = 'https://api.kotbo.fr/api/public/stats';

@@ -314,15 +314,14 @@
   title={t.title}
   subtitle={t.subtitle}
   {sections}
-  activePage="cookies"
 >
-  <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-6 mb-10 flex gap-4">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-indigo-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+  <div class="bg-night-3 border border-line-2 rounded-2xl p-6 mb-10 flex gap-4">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-glow shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
     </svg>
     <div>
-      <p class="font-bold text-indigo-900 text-sm mb-1">{t.banner.title}</p>
-      <p class="text-indigo-800 text-sm leading-relaxed mb-0">
+      <p class="font-bold text-ink text-sm mb-1">{t.banner.title}</p>
+      <p class="text-mist text-sm leading-relaxed mb-0">
         {t.banner.body1} <strong>{t.banner.strong1}</strong>{t.banner.body2}
         <a href="#mesure" class="underline font-bold">{t.banner.link}</a>{t.banner.body3}
       </p>
@@ -368,8 +367,8 @@
     <div class="opt-out-card">
       <div class="flex items-start justify-between gap-6 flex-wrap">
         <div class="min-w-[16rem] flex-1">
-          <p class="font-black text-gray-900 text-sm mb-1">{t.s01.card.title}</p>
-          <p class="text-sm text-gray-500 mb-0">
+          <p class="font-bold text-ink text-sm mb-1">{t.s01.card.title}</p>
+          <p class="text-sm text-fog mb-0">
             {t.s01.card.desc}
           </p>
         </div>
@@ -390,7 +389,7 @@
       </div>
 
       {#if ready}
-        <p class="mt-4 mb-0 text-sm font-bold" class:text-emerald-700={optedOut || browserSignal} class:text-gray-500={!optedOut && !browserSignal}>
+        <p class="mt-4 mb-0 text-sm font-bold" class:text-ok={optedOut || browserSignal} class:text-fog={!optedOut && !browserSignal}>
           {#if browserSignal}
             {t.s01.card.statusBrowserSignal}
           {:else if optedOut}
@@ -404,7 +403,7 @@
     <p>
       {t.s01.p4a} <a href="mailto:privacy@kotbo.fr">privacy@kotbo.fr</a>.
     </p>
-    <p class="text-sm text-gray-500">
+    <p class="text-sm text-fog">
       {t.s01.p5}
     </p>
   </section>
@@ -468,8 +467,8 @@
 
 <style>
   .opt-out-card {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
+    background: var(--color-night-3);
+    border: 1px solid var(--color-line-2);
     border-radius: 1rem;
     padding: 1.25rem 1.5rem;
     margin: 1.25rem 0;
@@ -482,15 +481,15 @@
     width: 3.25rem;
     height: 1.85rem;
     border-radius: 999px;
-    background: #d1d5db;
+    background: var(--color-line-2);
     border: none;
     cursor: pointer;
     transition: background 0.18s ease;
     flex-shrink: 0;
   }
   .switch:disabled { cursor: not-allowed; opacity: 0.65; }
-  .switch:focus-visible { outline: 2px solid #4f46e5; outline-offset: 3px; }
-  .switch-on { background: #059669; }
+  .switch:focus-visible { outline: 2px solid var(--color-glow); outline-offset: 3px; }
+  .switch-on { background: #15803d; }
 
   .switch-knob {
     position: absolute;
