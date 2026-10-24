@@ -36,7 +36,7 @@ export interface ArticleSection {
 	/** Étapes, dans l'ordre. */
 	steps?: ArticleItem[];
 	/** L'écran du dashboard qui suit le texte. */
-	figure?: { screen: 'staff' | 'sanctions'; caption: string };
+	figure?: { screen: 'staff' | 'sanctions' | 'tickets'; caption: string };
 }
 
 export interface StaffArticle {
