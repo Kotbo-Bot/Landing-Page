@@ -204,35 +204,27 @@ export const HUB_FAQ = {
   ],
 };
 
-/** La FAQ de l'article des nouveautés (`articles/updates.ts`). */
+/** La FAQ de l'index des notes de version (`/nouveautes`). */
 /** @type {Faq} */
 export const UPDATES_FAQ = {
   fr: [
     {
-      q: 'Faut-il faire quelque chose pour passer à Kotbo 9.5 ?',
-      a: "Non, si ton serveur utilise le Kotbo hébergé : la mise à jour arrive sur tous les serveurs en même temps. AegisAI reste éteint tant que tu ne l'actives pas, parce qu'il envoie le texte des messages à un service extérieur. En auto-hébergement, mets ton instance à jour depuis le dépôt GitHub.",
-    },
-    {
-      q: "Qu'est-ce qu'AegisAI fait des messages de mon serveur ?",
-      a: "Kotbo envoie le texte des messages à l'API AegisAI, qui renvoie une note de toxicité et une émotion. À l'activation, tu choisis si AegisAI peut garder les messages pour entraîner son modèle ; tant que tu n'as pas répondu, rien n'est gardé, et le choix se change dans les réglages. Côté Kotbo, les émotions ne sont conservées qu'en totaux, et les extraits des détections suivent la durée de conservation de tes logs.",
+      q: 'Faut-il faire quelque chose pour avoir la dernière version de Kotbo ?',
+      a: "Non, si ton serveur utilise le Kotbo hébergé : chaque mise à jour arrive sur tous les serveurs en même temps. Un nouveau module reste éteint tant que tu ne l'actives pas dans le dashboard. En auto-hébergement, chaque note de version sur GitHub liste les migrations et les variables à ajouter.",
     },
     {
       q: 'Où lire le détail technique de chaque version ?',
-      a: "Chaque version a ses notes complètes dans les releases GitHub du dépôt Kotbo-Bot/Kotbo. Cette page en garde ce qui change pour ton serveur.",
+      a: "Chaque version a ses notes complètes dans les releases GitHub du dépôt Kotbo-Bot/Kotbo, avec un lien depuis sa note ici. Les notes de ce site gardent ce qui change pour ton serveur.",
     },
   ],
   en: [
     {
-      q: 'Do I need to do anything to get Kotbo 9.5?',
-      a: "No, if your server uses hosted Kotbo: the update reaches every server at the same time. AegisAI stays off until you turn it on, because it sends message text to an outside service. If you self-host, update your instance from the GitHub repository.",
-    },
-    {
-      q: "What does AegisAI do with my server's messages?",
-      a: 'Kotbo sends the text of messages to the AegisAI API, which returns a toxicity score and an emotion. When you turn it on, you choose whether AegisAI may keep messages to train its model; until you answer, nothing is kept, and you can change it in the settings. On the Kotbo side, emotions are only stored as totals, and detection excerpts follow your log retention period.',
+      q: 'Do I need to do anything to get the latest version of Kotbo?',
+      a: "No, if your server uses hosted Kotbo: every update reaches all servers at the same time. A new module stays off until you turn it on in the dashboard. If you self-host, each release note on GitHub lists the migrations and variables to add.",
     },
     {
       q: 'Where can I read the technical details of each version?',
-      a: 'Every version has full notes in the GitHub releases of the Kotbo-Bot/Kotbo repository. This page keeps what changes for your server.',
+      a: 'Every version has full notes in the GitHub releases of the Kotbo-Bot/Kotbo repository, linked from its note here. The notes on this site keep what changes for your server.',
     },
   ],
 };

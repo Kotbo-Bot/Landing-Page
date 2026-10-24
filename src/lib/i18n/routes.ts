@@ -8,6 +8,7 @@
  */
 import type { Locale } from './state.svelte';
 import { FEATURES } from '$lib/data/features';
+import { RELEASES } from '$lib/articles/releases.js';
 
 type Pair = Record<Locale, string>;
 
@@ -20,7 +21,7 @@ export const HOME_ROUTE: Pair = { fr: '/', en: '/en' };
  */
 export const STAFF_ROUTE: Pair = { fr: '/gestion-staff-discord', en: '/en/discord-staff-management' };
 
-/** L'article des nouveautés de la dernière version (`articles/updates.ts`). */
+/** L'index des notes de version (`pages/UpdatesHub.svelte`). */
 export const UPDATES_ROUTE: Pair = { fr: '/nouveautes', en: '/en/whats-new' };
 
 /** La page qui rassemble les articles (`pages/FeaturesHub.svelte`). */
@@ -33,6 +34,7 @@ export const BILINGUAL: Pair[] = [
 	UPDATES_ROUTE,
 	FEATURES_ROUTE,
 	...FEATURES.map((f) => ({ fr: featurePath(f.slug, 'fr'), en: featurePath(f.slug, 'en') })),
+	...RELEASES.map((r) => ({ fr: releasePath(r.slug, 'fr'), en: releasePath(r.slug, 'en') })),
 ];
 
 /**
@@ -68,4 +70,9 @@ export function homeOf(locale: Locale): string {
 
 export function featurePath(slug: Record<Locale, string>, locale: Locale): string {
 	return locale === 'en' ? `/en/features/${slug.en}` : `/fonctionnalites/${slug.fr}`;
+}
+
+/** La note d'une version, même slug dans les deux langues. */
+export function releasePath(slug: string, locale: Locale): string {
+	return `${UPDATES_ROUTE[locale]}/${slug}`;
 }

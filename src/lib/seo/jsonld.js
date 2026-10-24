@@ -16,6 +16,7 @@
  * de reprendre celles d'un autre site (voir `product.ts`).
  */
 import { FREE_FAQ, HOME_FAQ, HUB_FAQ, STAFF_FAQ, UPDATES_FAQ } from './faq.js';
+import { RELEASES } from '../articles/releases.js';
 // Les pages de la console, telles que `scripts/fetch-features.mjs` les écrit
 // avant le build : le JSON-LD de chaque article en sort.
 import featurePages from '../data/feature-pages.json' with { type: 'json' };
@@ -36,6 +37,9 @@ const PATHS = {
 /** Comme `featurePath` (`i18n/routes.ts`). */
 const featureUrl = (/** @type {{ fr: string, en: string }} */ slug, /** @type {'fr' | 'en'} */ locale) =>
   `${SITE}${locale === 'en' ? `/en/features/${slug.en}` : `/fonctionnalites/${slug.fr}`}`;
+
+/** Comme `releasePath` (`i18n/routes.ts`). */
+const releaseUrl = (/** @type {string} */ slug, /** @type {'fr' | 'en'} */ locale) => `${SITE}${PATHS.updates[locale]}/${slug}`;
 
 /**
  * @typedef {{ name: string, title: string, description: string, h1: string, lead: string, faq: { q: string, a: string }[] }} FeatureText
@@ -75,9 +79,8 @@ const TEXT = {
     staffName: 'Gestion du staff Discord',
     staffDescription:
       "Gérer l'équipe de modération d'un serveur Discord avec Kotbo : hiérarchies, absences, réunions, évaluations, recrutement, casier des sanctions et doubles comptes.",
-    updatesName: 'Nouveautés de Kotbo 9.5',
-    updatesDescription:
-      "Ce que change Kotbo 9.5 : détection des insultes par l'IA AegisAI, tickets façon centre de support, fiche membre complète, site du serveur, simulateur d'AutoMod et Pulse refait.",
+    updates: 'Nouveautés',
+    updatesName: 'Les notes de version de Kotbo',
   },
   en: {
     appDescription:
@@ -104,9 +107,8 @@ const TEXT = {
     staffName: 'Discord staff management',
     staffDescription:
       "Run a Discord server's moderation team with Kotbo: hierarchies, absences, meetings, reviews, recruitment, sanction records and alt accounts.",
-    updatesName: "What's new in Kotbo 9.5",
-    updatesDescription:
-      'What changes in Kotbo 9.5: insult detection by the AegisAI model, support-desk tickets, full member profiles, a website for your server, an AutoMod simulator and a rebuilt Pulse.',
+    updates: "What's new",
+    updatesName: 'Kotbo release notes',
   },
 };
 
@@ -248,7 +250,10 @@ export function staffJsonLd(locale) {
   };
 }
 
-/** @param {'fr' | 'en'} locale */
+/**
+ * L'index des notes de version : la liste, de la plus récente à la plus ancienne.
+ * @param {'fr' | 'en'} locale
+ */
 export function updatesJsonLd(locale) {
   const t = TEXT[locale];
   const url = `${SITE}${PATHS.updates[locale]}`;
@@ -257,8 +262,63 @@ export function updatesJsonLd(locale) {
     '@graph': [
       organization(locale),
       software(locale),
-      article(locale, { url, name: t.updatesName, headline: t.updatesName, description: t.updatesDescription }),
+      {
+        '@type': 'CollectionPage',
+        '@id': `${url}#collection`,
+        url,
+        name: t.updatesName,
+        inLanguage: LANG[locale],
+        isPartOf: { '@id': SITE_ID },
+        about: { '@id': APP_ID },
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: t.home, item: `${SITE}${PATHS.home[locale]}` },
+            { '@type': 'ListItem', position: 2, name: t.updates, item: url },
+          ],
+        },
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListElement: RELEASES.map((r, i) => ({ '@type': 'ListItem', position: i + 1, name: `Kotbo ${r.version}`, url: releaseUrl(r.slug, locale) })),
+        },
+      },
       faqPage(UPDATES_FAQ[locale], url, locale),
+    ],
+  };
+}
+
+/**
+ * La note d'une version. Elle porte sa vraie date de sortie, celle de la
+ * release GitHub, et se range sous l'index des notes plutôt que sous les articles.
+ * @param {string} slug @param {'fr' | 'en'} locale
+ */
+export function releaseJsonLd(slug, locale) {
+  const release = RELEASES.find((r) => r.slug === slug);
+  if (!release) return undefined;
+  const t = TEXT[locale];
+  const text = release.text[locale];
+  const url = releaseUrl(slug, locale);
+  const name = `Kotbo ${release.version}`;
+  const hub = `${SITE}${PATHS.updates[locale]}`;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      organization(locale),
+      software(locale),
+      {
+        ...article(locale, { url, name, headline: text.h1, description: text.description }),
+        datePublished: release.date,
+        isPartOf: { '@id': `${hub}#collection` },
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: t.home, item: `${SITE}${PATHS.home[locale]}` },
+            { '@type': 'ListItem', position: 2, name: t.updates, item: hub },
+            { '@type': 'ListItem', position: 3, name, item: url },
+          ],
+        },
+      },
+      ...(text.faq?.length ? [faqPage(text.faq, url, locale)] : []),
     ],
   };
 }
@@ -295,7 +355,7 @@ export function hubJsonLd(locale) {
   const url = `${SITE}${PATHS.hub[locale]}`;
   const items = [
     { name: t.staffName, url: `${SITE}${PATHS.staff[locale]}` },
-    { name: t.updatesName, url: `${SITE}${PATHS.updates[locale]}` },
+    { name: `Kotbo ${RELEASES[0].version}`, url: releaseUrl(RELEASES[0].slug, locale) },
     ...FEATURE_PAGES.map((p) => ({ name: p.text[locale].name, url: featureUrl(p.slug, locale) })),
   ];
   return {
@@ -343,6 +403,7 @@ export function allJsonLd() {
     homeJsonLd(locale),
     staffJsonLd(locale),
     updatesJsonLd(locale),
+    ...RELEASES.map((r) => /** @type {object} */ (releaseJsonLd(r.slug, locale))),
     hubJsonLd(locale),
     ...FEATURE_PAGES.map((p) => /** @type {object} */ (featureJsonLd(p.key, locale))),
   ]);
