@@ -1,0 +1,1 @@
+import{$a as e,Ia as t,eo as n}from"./vendor-icons-C2V4czVR.js";import{Yp as r}from"./auth.svelte-DaIkh-Tu.js";var i=n(null),a={get active(){return t(i)},get target(){return t(i)?.target??null},start(t){let n=t.href.split(/[?#]/)[0];e(i,{...t,path:n,startedAt:Date.now()},!0),r.goto(t.href)},stop(){e(i,null)}};export{a as t};

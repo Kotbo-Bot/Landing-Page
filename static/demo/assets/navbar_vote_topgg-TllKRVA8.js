@@ -1,0 +1,1 @@
+import{r as e}from"./i18n-B5iabLPd.js";var t=()=>`Voter pour Kotbo sur Top.gg`,n=()=>`Vote for Kotbo on Top.gg`,r=((r={},i={})=>(i.locale??e())===`fr`?t(r):n(r));export{r as t};

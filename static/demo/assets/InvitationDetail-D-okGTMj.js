@@ -1,0 +1,1 @@
+import{Fi as e,ba as t,ho as n,mo as r}from"./vendor-icons-C2V4czVR.js";import{t as i}from"./inviteDetailsModal.svelte-DUwUUw3k.js";function a(a,o){n(o,!0);let s=e(o,`code`,3,``),c=new Set([`sources`,`top`,`suspensions`]);t(()=>{s()&&!c.has(s())&&i.show(s())}),r()}export{a as default};
