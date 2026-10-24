@@ -1,0 +1,1 @@
+var e=`https://top.gg/bot/1481651387317354598/vote`;export{e as t};

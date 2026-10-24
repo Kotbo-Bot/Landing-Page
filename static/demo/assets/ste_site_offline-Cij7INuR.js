@@ -1,0 +1,1 @@
+import{r as e}from"./i18n-B5iabLPd.js";var t=()=>`En ligne`,n=()=>`Online`,r=((r={},i={})=>(i.locale??e())===`fr`?t(r):n(r)),i=()=>`Hors ligne`,a=()=>`Offline`,o=((t={},n={})=>(n.locale??e())===`fr`?i(t):a(t));export{r as n,o as t};

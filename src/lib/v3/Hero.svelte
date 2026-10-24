@@ -14,11 +14,13 @@
    * le texte, sur toute la largeur, les serveurs clients nommés, lus sur l'API
    * (masqués si elle ne répond pas), et la note Top.gg relevée à la main ;
    * près des boutons, les trois
-   * réponses aux peurs d'avant l'invitation (prix, carte, droits admin).
+   * réponses aux peurs d'avant l'invitation (prix, carte, droits admin), puis
+   * une ligne vers l'article de la dernière version.
    */
   import { onMount } from 'svelte';
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
+  import { UPDATES_ROUTE } from '$lib/i18n/routes';
   import { publicStats } from '$lib/data/stats.svelte';
   import { TOPGG_RATING, TOPGG_URL, TRIAL_DAYS } from '$lib/product';
   import AddButton from './AddButton.svelte';
@@ -32,6 +34,7 @@
       sub: `Modo, tickets, niveaux et ton staff, tout au même endroit. Avec ${MODULE_COUNT} modules, ce que tu cherches est sûrement déjà dedans`,
       demo: 'Tester le dashboard',
       reassure: `${TRIAL_DAYS} jours offerts · pas de CB · pas de droits admin`,
+      update: 'Kotbo 9.5 est là : AegisAI lit le ton des messages et les tickets passent en centre de support',
       proof: 'Ils sont déjà dessus',
       members: (n: string) => `${n} membres`,
       newTab: '(nouvel onglet)',
@@ -43,6 +46,7 @@
       sub: `Mod, tickets, levels and your staff, all in one place. With ${MODULE_COUNT} modules, whatever you need is probably already in there`,
       demo: 'Try the dashboard',
       reassure: `${TRIAL_DAYS} days free · no card · no admin perms`,
+      update: 'Kotbo 9.5 is out: AegisAI reads the tone of messages and tickets become a support desk',
       proof: 'Already running it',
       members: (n: string) => `${n} members`,
       newTab: '(new tab)',
@@ -51,6 +55,7 @@
   };
 
   const t = $derived(TEXT[getLocale()]);
+  const locale = $derived(getLocale());
   const servers = $derived((publicStats.data?.servers ?? []).slice(0, 3));
   const fmt = (n: number) => n.toLocaleString(getLocale() === 'fr' ? 'fr-FR' : 'en-US').replace(/\u202f/g, '\u00a0');
 
@@ -85,6 +90,7 @@
         </div>
 
         <p class="mt-4 text-sm text-fog">{t.reassure}</p>
+        <a href="{base}{UPDATES_ROUTE[locale]}" class="mt-5 inline-flex min-h-11 max-w-md items-center text-sm font-semibold text-ink underline decoration-ink/30 underline-offset-4 text-pretty hover:decoration-ink">{t.update}</a>
       </div>
     </div>
 

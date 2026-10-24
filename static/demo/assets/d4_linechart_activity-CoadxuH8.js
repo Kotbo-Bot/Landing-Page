@@ -1,1 +1,0 @@
-import{r as e}from"./i18n-B5iabLPd.js";var t=()=>`Activité`,n=()=>`Activity`,r=((r={},i={})=>(i.locale??e())===`fr`?t(r):n(r));export{r as t};

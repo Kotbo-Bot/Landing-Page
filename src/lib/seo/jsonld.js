@@ -15,7 +15,7 @@
  * Pas d'`aggregateRating` : les notes viennent de Top.gg, et Google interdit
  * de reprendre celles d'un autre site (voir `product.ts`).
  */
-import { FREE_FAQ, HOME_FAQ, HUB_FAQ, STAFF_FAQ } from './faq.js';
+import { FREE_FAQ, HOME_FAQ, HUB_FAQ, STAFF_FAQ, UPDATES_FAQ } from './faq.js';
 // Les pages de la console, telles que `scripts/fetch-features.mjs` les écrit
 // avant le build : le JSON-LD de chaque article en sort.
 import featurePages from '../data/feature-pages.json' with { type: 'json' };
@@ -29,6 +29,7 @@ const APP_ID = `${SITE}/#software`;
 const PATHS = {
   home: { fr: '/', en: '/en' },
   staff: { fr: '/gestion-staff-discord', en: '/en/discord-staff-management' },
+  updates: { fr: '/nouveautes', en: '/en/whats-new' },
   hub: { fr: '/fonctionnalites', en: '/en/features' },
 };
 
@@ -74,6 +75,9 @@ const TEXT = {
     staffName: 'Gestion du staff Discord',
     staffDescription:
       "Gérer l'équipe de modération d'un serveur Discord avec Kotbo : hiérarchies, absences, réunions, évaluations, recrutement, casier des sanctions et doubles comptes.",
+    updatesName: 'Nouveautés de Kotbo 9.5',
+    updatesDescription:
+      "Ce que change Kotbo 9.5 : détection des insultes par l'IA AegisAI, tickets façon centre de support, fiche membre complète, site du serveur, simulateur d'AutoMod et Pulse refait.",
   },
   en: {
     appDescription:
@@ -100,6 +104,9 @@ const TEXT = {
     staffName: 'Discord staff management',
     staffDescription:
       "Run a Discord server's moderation team with Kotbo: hierarchies, absences, meetings, reviews, recruitment, sanction records and alt accounts.",
+    updatesName: "What's new in Kotbo 9.5",
+    updatesDescription:
+      'What changes in Kotbo 9.5: insult detection by the AegisAI model, support-desk tickets, full member profiles, a website for your server, an AutoMod simulator and a rebuilt Pulse.',
   },
 };
 
@@ -241,6 +248,21 @@ export function staffJsonLd(locale) {
   };
 }
 
+/** @param {'fr' | 'en'} locale */
+export function updatesJsonLd(locale) {
+  const t = TEXT[locale];
+  const url = `${SITE}${PATHS.updates[locale]}`;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      organization(locale),
+      software(locale),
+      article(locale, { url, name: t.updatesName, headline: t.updatesName, description: t.updatesDescription }),
+      faqPage(UPDATES_FAQ[locale], url, locale),
+    ],
+  };
+}
+
 /**
  * Une page de la console, par sa clé.
  * @param {string} key @param {'fr' | 'en'} locale
@@ -273,6 +295,7 @@ export function hubJsonLd(locale) {
   const url = `${SITE}${PATHS.hub[locale]}`;
   const items = [
     { name: t.staffName, url: `${SITE}${PATHS.staff[locale]}` },
+    { name: t.updatesName, url: `${SITE}${PATHS.updates[locale]}` },
     ...FEATURE_PAGES.map((p) => ({ name: p.text[locale].name, url: featureUrl(p.slug, locale) })),
   ];
   return {
@@ -319,6 +342,7 @@ export function allJsonLd() {
   return /** @type {const} */ (['fr', 'en']).flatMap((locale) => [
     homeJsonLd(locale),
     staffJsonLd(locale),
+    updatesJsonLd(locale),
     hubJsonLd(locale),
     ...FEATURE_PAGES.map((p) => /** @type {object} */ (featureJsonLd(p.key, locale))),
   ]);

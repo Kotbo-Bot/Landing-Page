@@ -9,11 +9,12 @@
  * sections, FAQ), à 220 mots par minute.
  */
 import type { Locale } from '$lib/i18n/state.svelte';
-import { featurePath, STAFF_ROUTE } from '$lib/i18n/routes';
+import { featurePath, STAFF_ROUTE, UPDATES_ROUTE } from '$lib/i18n/routes';
 import { FEATURES } from '$lib/data/features';
 import { featureIcon } from '$lib/data/featureIcons';
-import { STAFF_FAQ } from '$lib/seo/faq.js';
-import { STAFF_ARTICLE, type ArticleSection } from './staff';
+import { STAFF_FAQ, UPDATES_FAQ } from '$lib/seo/faq.js';
+import { STAFF_ARTICLE, type ArticleSection, type StaffArticle } from './staff';
+import { UPDATES_ARTICLE } from './updates';
 
 export interface Post {
 	key: string;
@@ -45,29 +46,26 @@ export function readingMinutes(lead: string, sections: ArticleSection[], faq: Re
 	return Math.max(1, Math.round(total / WORDS_PER_MINUTE));
 }
 
-const STAFF_POST: Post = {
-	key: 'staff',
-	path: STAFF_ROUTE,
-	icon: 'crown',
-	pinned: true,
-	text: {
-		fr: {
-			name: STAFF_ARTICLE.fr.name,
-			h1: STAFF_ARTICLE.fr.h1,
-			description: STAFF_ARTICLE.fr.description,
-			minutes: readingMinutes(STAFF_ARTICLE.fr.lead, STAFF_ARTICLE.fr.sections, STAFF_FAQ.fr),
-		},
-		en: {
-			name: STAFF_ARTICLE.en.name,
-			h1: STAFF_ARTICLE.en.h1,
-			description: STAFF_ARTICLE.en.description,
-			minutes: readingMinutes(STAFF_ARTICLE.en.lead, STAFF_ARTICLE.en.sections, STAFF_FAQ.en),
-		},
-	},
-};
+/** Un article écrit dans ce dépôt, épinglé en tête de l'index. */
+function pinnedPost(
+	key: string,
+	path: Record<Locale, string>,
+	icon: string,
+	article: Record<Locale, StaffArticle>,
+	faq: Record<Locale, ReadonlyArray<{ q: string; a: string }>>,
+): Post {
+	const text = (locale: Locale) => ({
+		name: article[locale].name,
+		h1: article[locale].h1,
+		description: article[locale].description,
+		minutes: readingMinutes(article[locale].lead, article[locale].sections, faq[locale]),
+	});
+	return { key, path, icon, pinned: true, text: { fr: text('fr'), en: text('en') } };
+}
 
 export const POSTS: Post[] = [
-	STAFF_POST,
+	pinnedPost('staff', STAFF_ROUTE, 'crown', STAFF_ARTICLE, STAFF_FAQ),
+	pinnedPost('updates', UPDATES_ROUTE, 'news', UPDATES_ARTICLE, UPDATES_FAQ),
 	...FEATURES.map((f) => ({
 		key: f.key,
 		path: { fr: featurePath(f.slug, 'fr'), en: featurePath(f.slug, 'en') },

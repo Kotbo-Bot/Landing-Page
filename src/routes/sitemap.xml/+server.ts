@@ -1,5 +1,5 @@
 import { SITE_URL } from '$lib/product';
-import { HOME_ROUTE, STAFF_ROUTE, featurePath } from '$lib/i18n/routes';
+import { HOME_ROUTE, STAFF_ROUTE, UPDATES_ROUTE, featurePath } from '$lib/i18n/routes';
 import { FEATURES } from '$lib/data/features';
 
 /**
@@ -24,6 +24,7 @@ function entries(): Entry[] {
 	return [
 		...bilingual(HOME_ROUTE, 'weekly', '1.0', '0.9'),
 		...bilingual(STAFF_ROUTE, 'monthly', '0.9', '0.9'),
+		...bilingual(UPDATES_ROUTE, 'weekly', '0.8', '0.7'),
 		...bilingual({ fr: '/fonctionnalites', en: '/en/features' }, 'monthly', '0.9', '0.8'),
 		...FEATURES.flatMap((feature) =>
 			bilingual({ fr: featurePath(feature.slug, 'fr'), en: featurePath(feature.slug, 'en') }, 'monthly', '0.8', '0.7'),

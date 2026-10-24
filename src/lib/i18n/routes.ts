@@ -20,6 +20,9 @@ export const HOME_ROUTE: Pair = { fr: '/', en: '/en' };
  */
 export const STAFF_ROUTE: Pair = { fr: '/gestion-staff-discord', en: '/en/discord-staff-management' };
 
+/** L'article des nouveautés de la dernière version (`articles/updates.ts`). */
+export const UPDATES_ROUTE: Pair = { fr: '/nouveautes', en: '/en/whats-new' };
+
 /** La page qui rassemble les articles (`pages/FeaturesHub.svelte`). */
 export const FEATURES_ROUTE: Pair = { fr: '/fonctionnalites', en: '/en/features' };
 
@@ -27,6 +30,7 @@ export const FEATURES_ROUTE: Pair = { fr: '/fonctionnalites', en: '/en/features'
 export const BILINGUAL: Pair[] = [
 	HOME_ROUTE,
 	STAFF_ROUTE,
+	UPDATES_ROUTE,
 	FEATURES_ROUTE,
 	...FEATURES.map((f) => ({ fr: featurePath(f.slug, 'fr'), en: featurePath(f.slug, 'en') })),
 ];
