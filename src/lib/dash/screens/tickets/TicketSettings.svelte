@@ -61,6 +61,9 @@
       delayHours: 'Délai (heures)',
       inactivityMessage: 'Message ({user} = mention)',
       inactivityPh: 'Bonjour {user}, votre ticket est inactif…',
+      staffReminder: 'Relancer le staff quand un membre attend',
+      staffReminderDesc: "Si personne du staff n'a répondu au membre après ce délai, le bot mentionne la personne qui a pris le ticket, sinon le rôle staff. Une relance par attente, comptée dans les statistiques.",
+      staffReminderMinutes: 'Délai sans réponse (minutes)',
       slaTitle: 'Objectifs de service',
       slaDesc: 'Délais de première réponse et de résolution, suivis dans la boîte de réception.',
       slaFirst: 'Première réponse (minutes)',
@@ -122,6 +125,9 @@
       delayHours: 'Delay (hours)',
       inactivityMessage: 'Message ({user} = mention)',
       inactivityPh: 'Hello {user}, your ticket has been inactive...',
+      staffReminder: 'Remind staff when a member is waiting',
+      staffReminderDesc: 'If no staff member has replied after this delay, the bot mentions whoever claimed the ticket, otherwise the staff role. One reminder per wait, counted in the stats.',
+      staffReminderMinutes: 'Delay without reply (minutes)',
       slaTitle: 'Service targets',
       slaDesc: 'First reply and resolution times, tracked in the inbox.',
       slaFirst: 'First reply (minutes)',
@@ -163,6 +169,8 @@
   let ticketStaffRoleId = $state('0');
   let ticketDmRelayChannelId = $state('');
   let ticketAutoClaimOnReply = $state(false);
+  let ticketStaffReminderEnabled = $state(false);
+  let ticketStaffReminderMinutes = $state(60);
   let ticketSatisfactionLogChannelId = $state('3');
   let ticketSatisfactionLogAnonymous = $state(false);
 
@@ -301,7 +309,7 @@
 
   <!-- ─── Inactivité ─── -->
   <div class="rounded-xl border border-outline-variant/10 bg-surface-container-low/40 overflow-hidden">
-    {@render sectionHeader('inactivity', 'clock', 'bg-warning/10 text-warning', t.inactivityTitle, t.inactivityDesc, config.ticketInactivityEnabled)}
+    {@render sectionHeader('inactivity', 'clock', 'bg-warning/10 text-warning', t.inactivityTitle, t.inactivityDesc, config.ticketInactivityEnabled || ticketStaffReminderEnabled)}
     {#if expandedConfigSection === 'inactivity'}
       <div class="px-5 pb-5 space-y-4 border-t border-outline-variant/10 pt-4">
         <label class="flex items-center gap-3 cursor-pointer p-2.5 hover:bg-white/5 rounded-xl transition-colors">
@@ -322,6 +330,20 @@
               <FormTextarea bind:value={config.ticketInactivityMessage} placeholder={t.inactivityPh} className="w-full h-20" />
             </label>
           </div>
+        {/if}
+
+        <label class="flex items-center gap-3 cursor-pointer p-2.5 hover:bg-white/5 rounded-xl transition-colors">
+          <input type="checkbox" bind:checked={ticketStaffReminderEnabled} class="w-4 h-4 rounded text-primary focus:ring-primary border-outline-variant/30" />
+          <div>
+            <span class="text-xs font-bold text-on-surface">{t.staffReminder}</span>
+            <p class="text-2xs text-on-surface-variant">{t.staffReminderDesc}</p>
+          </div>
+        </label>
+        {#if ticketStaffReminderEnabled}
+          <label class="block sm:max-w-[33%]">
+            <span class="text-xs font-bold text-on-surface-variant/80 ml-1 mb-2 block">{t.staffReminderMinutes}</span>
+            <input type="number" bind:value={ticketStaffReminderMinutes} min={1} max={10080} class="w-full bg-surface-container-high text-sm px-4 py-2.5 rounded-xl border border-outline-variant/10 focus:ring-1 ring-primary/30 transition-all outline-none" />
+          </label>
         {/if}
       </div>
     {/if}

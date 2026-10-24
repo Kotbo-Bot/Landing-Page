@@ -37,6 +37,8 @@
       unassigned: 'Non attribués',
       waiting: 'À traiter',
       breached: 'Hors délai',
+      unanswered: 'Restés sans réponse',
+      unansweredHint: (count: number) => `Tickets de la période où le staff a dû être relancé (${count} relance(s)). Active la relance dans Paramètres › Inactivité.`,
       oldest: 'Plus ancien en cours',
       intro: 'Délais en médiane, avec le 90e centile pour repérer les tickets oubliés.',
       compare: "Comparer à la période d'avant",
@@ -67,6 +69,8 @@
       unassigned: 'Unassigned',
       waiting: 'Needs reply',
       breached: 'Overdue',
+      unanswered: 'Left unanswered',
+      unansweredHint: (count: number) => `Tickets in this period where staff had to be reminded (${count} reminder(s)). Turn reminders on in Settings › Inactivity.`,
       oldest: 'Oldest open',
       intro: 'Median times, with the 90th percentile to spot forgotten tickets.',
       compare: 'Compare with previous period',
@@ -171,6 +175,7 @@
     { id: 'unassigned', label: t.unassigned, value: fmtNumber(2) },
     { id: 'waiting', label: t.waiting, value: fmtNumber(3) },
     { id: 'breached', label: t.breached, value: fmtNumber(1) },
+    { id: 'unanswered', label: t.unanswered, value: fmtNumber(Math.round(2 * stats.days / 30)), hint: t.unansweredHint(Math.round(3 * stats.days / 30)) },
     { id: 'oldest', label: t.oldest, value: duration(26 * 60) },
   ]);
 
