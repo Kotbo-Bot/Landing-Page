@@ -1,5 +1,5 @@
 <script lang="ts">
-  import UpdatesPage from '$lib/pages/UpdatesPage.svelte';
+  import UpdatesHub from '$lib/pages/UpdatesHub.svelte';
 </script>
 
-<UpdatesPage />
+<UpdatesHub />

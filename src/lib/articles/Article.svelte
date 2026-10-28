@@ -1,7 +1,10 @@
 <script lang="ts">
   /**
-   * Un article : l'article staff (`articles/staff.ts`) ou une page de la
-   * console (`data/features.ts`).
+   * Un article : l'article staff (`articles/staff.ts`), une page de la
+   * console (`data/features.ts`) ou une note de version (`articles/releases.js`).
+   * Une note se range dans son propre forum (`forum`), porte sa date et le
+   * lien vers la release GitHub (`source`), et mène aux versions d'avant. Un
+   * billet du blog (`articles/blog.js`) a son forum, sa date et son auteur.
    *
    * Ces pages sont écrites pour la recherche : un titre qui reprend la
    * requête, un texte qui dit ce que le bot fait, une FAQ qui répond aux
@@ -23,9 +26,9 @@
   import Shell from '$lib/v3/Shell.svelte';
   import AddButton from '$lib/v3/AddButton.svelte';
   import FaqList from '$lib/v3/FaqList.svelte';
-  import ForumBar from './ForumBar.svelte';
+  import ForumBar, { type Forum } from './ForumBar.svelte';
   import PostList from './PostList.svelte';
-  import { POSTS, relatedTo } from './posts';
+  import { BLOG_POSTS, POSTS, RELEASE_POSTS, relatedTo } from './posts';
   import type { ArticleSection } from './staff';
 
   type Screen = NonNullable<ArticleSection['figure']>['screen'];
@@ -36,14 +39,22 @@
     h1: string;
     lead: string;
     sections: ArticleSection[];
-    faq: ReadonlyArray<{ q: string; a: string }>;
+    faq?: ReadonlyArray<{ q: string; a: string }>;
     final?: { title: string; body: string };
     /** Emplacements des deux invitations, repris dans la mesure. */
     invite: { hero: string; final: string };
     figure?: Snippet<[Screen]>;
+    /** Le forum de l'article et le libellé du lien vers sa liste ; celui des articles par défaut. */
+    forum?: Forum & { all: string };
+    /** Date de publication, `AAAA-MM-JJ`. */
+    date?: string;
+    /** Le texte d'origine, ailleurs. */
+    source?: { href: string; label: string };
+    /** Signature d'un billet du blog ; Kotbo par défaut. */
+    author?: string;
   }
 
-  const { postKey, seo, h1, lead, sections, faq, final, invite, figure }: Props = $props();
+  const { postKey, seo, h1, lead, sections, faq = [], final, invite, figure, forum, date, source, author }: Props = $props();
 
   const TEXT = {
     fr: {
@@ -74,8 +85,15 @@
 
   const locale = $derived(getLocale());
   const t = $derived(TEXT[locale]);
-  const post = $derived(POSTS.find((p) => p.key === postKey)!);
-  const related = $derived(relatedTo(postKey));
+  // Un billet du blog mène aux autres billets, puis aux articles.
+  const pool = $derived(
+    RELEASE_POSTS.some((p) => p.key === postKey) ? RELEASE_POSTS : BLOG_POSTS.some((p) => p.key === postKey) ? [...BLOG_POSTS, ...POSTS] : POSTS,
+  );
+  const post = $derived(pool.find((p) => p.key === postKey)!);
+  const related = $derived(relatedTo(postKey, 3, pool));
+  const published = $derived(
+    date ? new Date(`${date}T12:00:00Z`).toLocaleDateString(locale === 'fr' ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : null,
+  );
   const closing = $derived(final ?? t.final);
 
   /** Le lien d'un point vers l'article qui le détaille, s'il est publié. */
@@ -89,14 +107,15 @@
 
 <Shell>
   <article aria-labelledby="article-title">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6"><ForumBar post={post.text[locale].name} /></div>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6"><ForumBar post={post.text[locale].name} {forum} /></div>
 
     <header class="mx-auto max-w-7xl px-4 pt-12 sm:px-6 lg:pt-16">
       <div class="max-w-4xl">
         <!-- La ligne d'auteur d'un message Discord. -->
         <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-fog">
           <img src="{base}/favicon.svg" alt="" width="28" height="28" class="h-7 w-7 rounded-full" />
-          <span class="font-semibold text-ink">{t.author}</span>
+          <span class="font-semibold text-ink">{author ?? t.author}</span>
+          {#if published}<time datetime={date}>{published}</time>{/if}
           <span>{t.minutes(post.text[locale].minutes)}</span>
         </p>
         <h1 id="article-title" class="mt-5 text-balance font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-ink sm:text-5xl lg:text-6xl">{h1}</h1>
@@ -104,6 +123,9 @@
         <div class="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
           <AddButton content={invite.hero} size="lg" />
           <a href="/demo/" class="inline-flex min-h-11 items-center font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">{t.demo}</a>
+          {#if source}
+            <a href={source.href} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">{source.label}</a>
+          {/if}
         </div>
         <p class="mt-4 text-sm text-fog">{t.offer}</p>
       </div>
@@ -171,27 +193,31 @@
             {#each sections as section, i (section.h2)}
               <li><a href="#section-{i + 1}" class="-ml-px block border-l border-transparent py-2 pl-4 leading-snug text-fog transition-colors hover:border-ink hover:text-ink">{section.h2}</a></li>
             {/each}
-            <li><a href="#faq" class="-ml-px block border-l border-transparent py-2 pl-4 leading-snug text-fog transition-colors hover:border-ink hover:text-ink">{t.faq}</a></li>
+            {#if faq.length}
+              <li><a href="#faq" class="-ml-px block border-l border-transparent py-2 pl-4 leading-snug text-fog transition-colors hover:border-ink hover:text-ink">{t.faq}</a></li>
+            {/if}
           </ol>
         </div>
       </nav>
     </div>
   </article>
 
-  <section id="faq" aria-labelledby="faq-title" class="scroll-mt-20 bg-night-2 py-16 sm:py-24">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6">
-      <div class="max-w-3xl">
-        <h2 id="faq-title" class="text-balance font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-ink sm:text-5xl">{t.faq}</h2>
-        <div class="mt-10"><FaqList items={faq} trackAs="{postKey}-q" level="h3" /></div>
+  {#if faq.length}
+    <section id="faq" aria-labelledby="faq-title" class="scroll-mt-20 bg-night-2 py-16 sm:py-24">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6">
+        <div class="max-w-3xl">
+          <h2 id="faq-title" class="text-balance font-display text-4xl font-black leading-[1.02] tracking-[-0.02em] text-ink sm:text-5xl">{t.faq}</h2>
+          <div class="mt-10"><FaqList items={faq} trackAs="{postKey}-q" level="h3" /></div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  {/if}
 
   <nav aria-labelledby="related-title" class="py-16 sm:py-24">
     <div class="mx-auto max-w-7xl px-4 sm:px-6">
       <div class="flex flex-wrap items-end justify-between gap-3">
         <h2 id="related-title" class="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">{t.related}</h2>
-        <a href="{base}{FEATURES_ROUTE[locale]}" class="inline-flex min-h-11 items-center font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">{t.all}</a>
+        <a href={forum?.href ?? `${base}${FEATURES_ROUTE[locale]}`} class="inline-flex min-h-11 items-center font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">{forum?.all ?? t.all}</a>
       </div>
       <div class="mt-8"><PostList posts={related} /></div>
     </div>

@@ -6,7 +6,8 @@
    * `channels.ts`), et celui de la zone qu'on lit s'allume au défilement, comme
    * le salon ouvert dans Discord. Ailleurs, « Gestion du staff » et
    * « Fonctionnalités » mènent à leurs articles (allumés quand on y est), les
-   * autres liens aux zones de l'accueil. À droite : la langue, le thème et le
+   * autres liens aux zones de l'accueil. « Blog » n'a pas de zone : il mène
+   * partout au blog. À droite : la langue, le thème et le
    * bouton du dashboard, pour qui a déjà Kotbo ; l'invitation reste dans les
    * zones de la page et dans la barre du bas sur téléphone.
    * Sur téléphone, tout passe dans un panneau sous la barre.
@@ -15,7 +16,7 @@
   import { page } from '$app/state';
   import { getLocale, rememberLocale, setLocale } from '$lib/i18n/state.svelte';
   import { onMount } from 'svelte';
-  import { FEATURES_ROUTE, homeOf, pairOf, routePath, STAFF_ROUTE } from '$lib/i18n/routes';
+  import { BLOG_ROUTE, FEATURES_ROUTE, homeOf, pairOf, routePath, STAFF_ROUTE } from '$lib/i18n/routes';
   import { DASHBOARD_URL } from '$lib/product';
   import ThemeToggle from './ThemeToggle.svelte';
 
@@ -30,6 +31,7 @@
         { id: 'ia', label: 'Intégration IA' },
         { id: 'prix', label: 'Tarifs' },
         { id: 'faq', label: 'FAQ' },
+        { id: 'blog', label: 'Blog' },
       ],
       menu: 'Menu',
       close: 'Fermer',
@@ -47,6 +49,7 @@
         { id: 'ia', label: 'AI integration' },
         { id: 'prix', label: 'Pricing' },
         { id: 'faq', label: 'FAQ' },
+        { id: 'blog', label: 'Blog' },
       ],
       menu: 'Menu',
       close: 'Close',
@@ -65,9 +68,9 @@
   const pair = $derived(pairOf(path));
 
   /** Hors de l'accueil, les zones qui ont leur page y mènent. */
-  const PAGES: Partial<Record<string, Record<'fr' | 'en', string>>> = { qg: STAFF_ROUTE, modules: FEATURES_ROUTE };
+  const PAGES: Partial<Record<string, Record<'fr' | 'en', string>>> = { qg: STAFF_ROUTE, modules: FEATURES_ROUTE, blog: BLOG_ROUTE };
   function hrefOf(id: string): string {
-    if (home) return `#${id}`;
+    if (home && id !== 'blog') return `#${id}`;
     const own = PAGES[id];
     return own ? `${base}${own[locale]}` : `${base}${homeOf(locale)}#${id}`;
   }
@@ -77,7 +80,7 @@
     const own = PAGES[id];
     if (!own) return false;
     const p = path.replace(/\/$/, '');
-    return p === own[locale] || (id === 'modules' && p.startsWith(`${own[locale]}/`));
+    return p === own[locale] || ((id === 'modules' || id === 'blog') && p.startsWith(`${own[locale]}/`));
   }
   /** La zone qu'on lit : la dernière dont le haut est passé sous la barre. */
   let current = $state<string | null>(null);

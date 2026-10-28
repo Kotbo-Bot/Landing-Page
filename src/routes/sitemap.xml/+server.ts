@@ -1,6 +1,8 @@
 import { SITE_URL } from '$lib/product';
-import { HOME_ROUTE, STAFF_ROUTE, UPDATES_ROUTE, featurePath } from '$lib/i18n/routes';
+import { BLOG_ROUTE, HOME_ROUTE, STAFF_ROUTE, UPDATES_ROUTE, blogPath, featurePath, releasePath } from '$lib/i18n/routes';
 import { FEATURES } from '$lib/data/features';
+import { RELEASES } from '$lib/articles/releases.js';
+import { BLOG } from '$lib/articles/blog.js';
 
 /**
  * Le sitemap, prérendu au build. Il suit les pages fonctionnalités publiées
@@ -25,6 +27,11 @@ function entries(): Entry[] {
 		...bilingual(HOME_ROUTE, 'weekly', '1.0', '0.9'),
 		...bilingual(STAFF_ROUTE, 'monthly', '0.9', '0.9'),
 		...bilingual(UPDATES_ROUTE, 'weekly', '0.8', '0.7'),
+		...RELEASES.flatMap((release) =>
+			bilingual({ fr: releasePath(release.slug, 'fr'), en: releasePath(release.slug, 'en') }, 'yearly', '0.6', '0.5'),
+		),
+		...bilingual(BLOG_ROUTE, 'weekly', '0.7', '0.6'),
+		...BLOG.flatMap((post) => bilingual({ fr: blogPath(post.slug, 'fr'), en: blogPath(post.slug, 'en') }, 'yearly', '0.6', '0.5')),
 		...bilingual({ fr: '/fonctionnalites', en: '/en/features' }, 'monthly', '0.9', '0.8'),
 		...FEATURES.flatMap((feature) =>
 			bilingual({ fr: featurePath(feature.slug, 'fr'), en: featurePath(feature.slug, 'en') }, 'monthly', '0.8', '0.7'),
