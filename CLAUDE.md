@@ -74,6 +74,13 @@ lu par `seo/jsonld.js`), réécrit depuis la release GitHub de la version. Une
 nouvelle version s'ajoute en tête du tableau : elle devient la note épinglée
 du forum des articles et la ligne sous le héros (`teaser`).
 
+## Blog
+
+Les annonces de l'équipe, `/blog/<slug>` et `/en/blog/<slug>`, listées par
+`/blog`. Le texte vit dans `articles/blog.js`, sur le modèle d'une note de
+version plus un auteur ; un billet s'ajoute en tête du tableau. Ce qui change
+à chaque version reste dans les notes de version.
+
 ## L'accueil v3
 
 L'accueil vit dans `src/lib/v3/` : la page se lit comme un serveur Discord, une
