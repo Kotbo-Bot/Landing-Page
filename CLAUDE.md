@@ -66,6 +66,21 @@ le fichier du dépôt sert tel quel. Publier une page relance le déploiement du
 site (`repository_dispatch` `feature-pages`), et un build quotidien rattrape un
 signal perdu. `bun run build:offline` construit sans appeler l'API.
 
+## Notes de version
+
+Une note par mise à jour, `/nouveautes/<slug>` et `/en/whats-new/<slug>`,
+listées par `/nouveautes`. Le texte vit dans `articles/releases.js` (JS simple,
+lu par `seo/jsonld.js`), réécrit depuis la release GitHub de la version. Une
+nouvelle version s'ajoute en tête du tableau : elle devient la note épinglée
+du forum des articles et la ligne sous le héros (`teaser`).
+
+## Blog
+
+Les annonces de l'équipe, `/blog/<slug>` et `/en/blog/<slug>`, listées par
+`/blog`. Le texte vit dans `articles/blog.js`, sur le modèle d'une note de
+version plus un auteur ; un billet s'ajoute en tête du tableau. Ce qui change
+à chaque version reste dans les notes de version.
+
 ## L'accueil v3
 
 L'accueil vit dans `src/lib/v3/` : la page se lit comme un serveur Discord, une
