@@ -3,7 +3,8 @@
    * Un article : l'article staff (`articles/staff.ts`), une page de la
    * console (`data/features.ts`) ou une note de version (`articles/releases.js`).
    * Une note se range dans son propre forum (`forum`), porte sa date et le
-   * lien vers la release GitHub (`source`), et mène aux versions d'avant.
+   * lien vers la release GitHub (`source`), et mène aux versions d'avant. Un
+   * billet du blog (`articles/blog.js`) a son forum, sa date et son auteur.
    *
    * Ces pages sont écrites pour la recherche : un titre qui reprend la
    * requête, un texte qui dit ce que le bot fait, une FAQ qui répond aux
@@ -27,7 +28,7 @@
   import FaqList from '$lib/v3/FaqList.svelte';
   import ForumBar, { type Forum } from './ForumBar.svelte';
   import PostList from './PostList.svelte';
-  import { POSTS, RELEASE_POSTS, relatedTo } from './posts';
+  import { BLOG_POSTS, POSTS, RELEASE_POSTS, relatedTo } from './posts';
   import type { ArticleSection } from './staff';
 
   type Screen = NonNullable<ArticleSection['figure']>['screen'];
@@ -49,9 +50,11 @@
     date?: string;
     /** Le texte d'origine, ailleurs. */
     source?: { href: string; label: string };
+    /** Signature d'un billet du blog ; Kotbo par défaut. */
+    author?: string;
   }
 
-  const { postKey, seo, h1, lead, sections, faq = [], final, invite, figure, forum, date, source }: Props = $props();
+  const { postKey, seo, h1, lead, sections, faq = [], final, invite, figure, forum, date, source, author }: Props = $props();
 
   const TEXT = {
     fr: {
@@ -82,7 +85,10 @@
 
   const locale = $derived(getLocale());
   const t = $derived(TEXT[locale]);
-  const pool = $derived(RELEASE_POSTS.some((p) => p.key === postKey) ? RELEASE_POSTS : POSTS);
+  // Un billet du blog mène aux autres billets, puis aux articles.
+  const pool = $derived(
+    RELEASE_POSTS.some((p) => p.key === postKey) ? RELEASE_POSTS : BLOG_POSTS.some((p) => p.key === postKey) ? [...BLOG_POSTS, ...POSTS] : POSTS,
+  );
   const post = $derived(pool.find((p) => p.key === postKey)!);
   const related = $derived(relatedTo(postKey, 3, pool));
   const published = $derived(
@@ -108,7 +114,7 @@
         <!-- La ligne d'auteur d'un message Discord. -->
         <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-fog">
           <img src="{base}/favicon.svg" alt="" width="28" height="28" class="h-7 w-7 rounded-full" />
-          <span class="font-semibold text-ink">{t.author}</span>
+          <span class="font-semibold text-ink">{author ?? t.author}</span>
           {#if published}<time datetime={date}>{published}</time>{/if}
           <span>{t.minutes(post.text[locale].minutes)}</span>
         </p>

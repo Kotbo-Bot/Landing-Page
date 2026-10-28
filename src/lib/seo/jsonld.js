@@ -17,6 +17,7 @@
  */
 import { FREE_FAQ, HOME_FAQ, HUB_FAQ, STAFF_FAQ, UPDATES_FAQ } from './faq.js';
 import { RELEASES } from '../articles/releases.js';
+import { BLOG } from '../articles/blog.js';
 // Les pages de la console, telles que `scripts/fetch-features.mjs` les écrit
 // avant le build : le JSON-LD de chaque article en sort.
 import featurePages from '../data/feature-pages.json' with { type: 'json' };
@@ -31,6 +32,7 @@ const PATHS = {
   home: { fr: '/', en: '/en' },
   staff: { fr: '/gestion-staff-discord', en: '/en/discord-staff-management' },
   updates: { fr: '/nouveautes', en: '/en/whats-new' },
+  blog: { fr: '/blog', en: '/en/blog' },
   hub: { fr: '/fonctionnalites', en: '/en/features' },
 };
 
@@ -40,6 +42,9 @@ const featureUrl = (/** @type {{ fr: string, en: string }} */ slug, /** @type {'
 
 /** Comme `releasePath` (`i18n/routes.ts`). */
 const releaseUrl = (/** @type {string} */ slug, /** @type {'fr' | 'en'} */ locale) => `${SITE}${PATHS.updates[locale]}/${slug}`;
+
+/** Comme `blogPath` (`i18n/routes.ts`). */
+const blogUrl = (/** @type {string} */ slug, /** @type {'fr' | 'en'} */ locale) => `${SITE}${PATHS.blog[locale]}/${slug}`;
 
 /**
  * @typedef {{ name: string, title: string, description: string, h1: string, lead: string, faq: { q: string, a: string }[] }} FeatureText
@@ -81,6 +86,8 @@ const TEXT = {
       "Gérer l'équipe de modération d'un serveur Discord avec Kotbo : hiérarchies, absences, réunions, évaluations, recrutement, casier des sanctions et doubles comptes.",
     updates: 'Nouveautés',
     updatesName: 'Les notes de version de Kotbo',
+    blog: 'Blog',
+    blogName: 'Le blog de Kotbo',
   },
   en: {
     appDescription:
@@ -109,6 +116,8 @@ const TEXT = {
       "Run a Discord server's moderation team with Kotbo: hierarchies, absences, meetings, reviews, recruitment, sanction records and alt accounts.",
     updates: "What's new",
     updatesName: 'Kotbo release notes',
+    blog: 'Blog',
+    blogName: 'The Kotbo blog',
   },
 };
 
@@ -324,6 +333,78 @@ export function releaseJsonLd(slug, locale) {
 }
 
 /**
+ * L'index du blog : les billets, du plus récent au plus ancien.
+ * @param {'fr' | 'en'} locale
+ */
+export function blogJsonLd(locale) {
+  const t = TEXT[locale];
+  const url = `${SITE}${PATHS.blog[locale]}`;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      organization(locale),
+      software(locale),
+      {
+        '@type': 'CollectionPage',
+        '@id': `${url}#collection`,
+        url,
+        name: t.blogName,
+        inLanguage: LANG[locale],
+        isPartOf: { '@id': SITE_ID },
+        about: { '@id': APP_ID },
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: t.home, item: `${SITE}${PATHS.home[locale]}` },
+            { '@type': 'ListItem', position: 2, name: t.blog, item: url },
+          ],
+        },
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListElement: BLOG.map((b, i) => ({ '@type': 'ListItem', position: i + 1, name: b.text[locale].h1, url: blogUrl(b.slug, locale) })),
+        },
+      },
+    ],
+  };
+}
+
+/**
+ * Un billet du blog, signé de son auteur et daté.
+ * @param {string} slug @param {'fr' | 'en'} locale
+ */
+export function blogPostJsonLd(slug, locale) {
+  const post = BLOG.find((b) => b.slug === slug);
+  if (!post) return undefined;
+  const t = TEXT[locale];
+  const text = post.text[locale];
+  const url = blogUrl(slug, locale);
+  const hub = `${SITE}${PATHS.blog[locale]}`;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      organization(locale),
+      software(locale),
+      {
+        ...article(locale, { url, name: text.h1, headline: text.h1, description: text.description }),
+        '@type': 'BlogPosting',
+        datePublished: post.date,
+        author: { '@type': 'Person', name: post.author },
+        isPartOf: { '@id': `${hub}#collection` },
+        breadcrumb: {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: t.home, item: `${SITE}${PATHS.home[locale]}` },
+            { '@type': 'ListItem', position: 2, name: t.blog, item: hub },
+            { '@type': 'ListItem', position: 3, name: text.h1, item: url },
+          ],
+        },
+      },
+      ...(text.faq?.length ? [faqPage(text.faq, url, locale)] : []),
+    ],
+  };
+}
+
+/**
  * Une page de la console, par sa clé.
  * @param {string} key @param {'fr' | 'en'} locale
  */
@@ -404,6 +485,8 @@ export function allJsonLd() {
     staffJsonLd(locale),
     updatesJsonLd(locale),
     ...RELEASES.map((r) => /** @type {object} */ (releaseJsonLd(r.slug, locale))),
+    blogJsonLd(locale),
+    ...BLOG.map((b) => /** @type {object} */ (blogPostJsonLd(b.slug, locale))),
     hubJsonLd(locale),
     ...FEATURE_PAGES.map((p) => /** @type {object} */ (featureJsonLd(p.key, locale))),
   ]);

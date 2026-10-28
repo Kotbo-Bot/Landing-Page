@@ -11,7 +11,7 @@
    */
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
-  import { featurePath, STAFF_ROUTE, UPDATES_ROUTE } from '$lib/i18n/routes';
+  import { BLOG_ROUTE, featurePath, STAFF_ROUTE, UPDATES_ROUTE } from '$lib/i18n/routes';
   import { CONTACT_EMAIL, DISCORD_URL, DOCS_URL, STATUS_URL, TOPGG_VOTE_URL } from '$lib/product';
   import { FEATURES } from '$lib/data/features';
 
@@ -25,6 +25,7 @@
       all: 'Toutes les fonctionnalités',
       staff: 'Gestion du staff Discord',
       updates: 'Notes de version',
+      blog: 'Blog',
       demo: 'Démo du dashboard',
       docs: 'Documentation',
       status: 'État des services',
@@ -55,6 +56,7 @@
       all: 'All features',
       staff: 'Discord staff management',
       updates: 'Release notes',
+      blog: 'Blog',
       demo: 'Dashboard demo',
       docs: 'Docs',
       status: 'Service status',
@@ -124,6 +126,7 @@
         <li><a class={link} href="{base}{locale === 'fr' ? '/fonctionnalites' : '/en/features'}">{t.all}</a></li>
         <li><a class={link} href="{base}{STAFF_ROUTE[locale]}">{t.staff}</a></li>
         <li><a class={link} href="{base}{UPDATES_ROUTE[locale]}">{t.updates}</a></li>
+        <li><a class={link} href="{base}{BLOG_ROUTE[locale]}">{t.blog}</a></li>
         {#each FEATURES as p (p.slug.fr)}
           <li><a class={link} href="{base}{featurePath(p.slug, locale)}">{p.text[locale].name}</a></li>
         {/each}

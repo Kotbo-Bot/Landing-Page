@@ -11,12 +11,13 @@
  * sections, FAQ), à 220 mots par minute.
  */
 import type { Locale } from '$lib/i18n/state.svelte';
-import { featurePath, releasePath, STAFF_ROUTE } from '$lib/i18n/routes';
+import { blogPath, featurePath, releasePath, STAFF_ROUTE } from '$lib/i18n/routes';
 import { FEATURES } from '$lib/data/features';
 import { featureIcon } from '$lib/data/featureIcons';
 import { STAFF_FAQ } from '$lib/seo/faq.js';
 import { STAFF_ARTICLE, type ArticleSection } from './staff';
 import { RELEASES, type Release } from './releases.js';
+import { BLOG } from './blog.js';
 
 export interface Post {
 	key: string;
@@ -89,6 +90,21 @@ function releasePost(release: Release, pinned = false): Post {
 
 /** Les notes de version, de la plus récente à la plus ancienne. */
 export const RELEASE_POSTS: Post[] = RELEASES.map((release) => releasePost(release));
+
+/** Les billets du blog, du plus récent au plus ancien. */
+export const BLOG_POSTS: Post[] = BLOG.map((b) => {
+	const text = (locale: Locale) => {
+		const t = b.text[locale];
+		return { name: t.h1, h1: t.h1, description: t.description, minutes: readingMinutes(t.lead, t.sections, t.faq ?? []) };
+	};
+	return {
+		key: `blog-${b.slug}`,
+		path: { fr: blogPath(b.slug, 'fr'), en: blogPath(b.slug, 'en') },
+		icon: 'msg',
+		pinned: false,
+		text: { fr: text('fr'), en: text('en') },
+	};
+});
 
 export const POSTS: Post[] = [
 	STAFF_POST,
