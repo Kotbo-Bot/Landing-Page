@@ -333,12 +333,19 @@ export function releaseJsonLd(slug, locale) {
 }
 
 /**
- * L'index du blog : les billets, du plus récent au plus ancien.
+ * L'index du blog : tout le site, dans l'ordre de `ALL_POSTS` (`articles/posts.ts`).
  * @param {'fr' | 'en'} locale
  */
 export function blogJsonLd(locale) {
   const t = TEXT[locale];
   const url = `${SITE}${PATHS.blog[locale]}`;
+  const items = [
+    ...BLOG.map((b) => ({ name: b.text[locale].h1, url: blogUrl(b.slug, locale) })),
+    { name: t.staffName, url: `${SITE}${PATHS.staff[locale]}` },
+    ...RELEASES.slice(0, 1).map((r) => ({ name: `Kotbo ${r.version}`, url: releaseUrl(r.slug, locale) })),
+    ...FEATURE_PAGES.map((p) => ({ name: p.text[locale].name, url: featureUrl(p.slug, locale) })),
+    ...RELEASES.slice(1).map((r) => ({ name: `Kotbo ${r.version}`, url: releaseUrl(r.slug, locale) })),
+  ];
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -361,7 +368,7 @@ export function blogJsonLd(locale) {
         },
         mainEntity: {
           '@type': 'ItemList',
-          itemListElement: BLOG.map((b, i) => ({ '@type': 'ListItem', position: i + 1, name: b.text[locale].h1, url: blogUrl(b.slug, locale) })),
+          itemListElement: items.map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: item.name, url: item.url })),
         },
       },
     ],

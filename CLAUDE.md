@@ -76,10 +76,10 @@ du forum des articles et la ligne sous le héros (`teaser`).
 
 ## Blog
 
-Les annonces de l'équipe, `/blog/<slug>` et `/en/blog/<slug>`, listées par
-`/blog`. Le texte vit dans `articles/blog.js`, sur le modèle d'une note de
-version plus un auteur ; un billet s'ajoute en tête du tableau. Ce qui change
-à chaque version reste dans les notes de version.
+Les annonces de l'équipe, `/blog/<slug>` et `/en/blog/<slug>`. Le texte vit
+dans `articles/blog.js`, sur le modèle d'une note de version plus un auteur ;
+un billet s'ajoute en tête du tableau. L'index `/blog` rassemble tout le site
+(`ALL_POSTS`) : les billets, puis les articles, puis les notes de version.
 
 ## L'accueil v3
 

@@ -122,6 +122,15 @@ export const POSTS: Post[] = [
 ];
 
 /**
+ * Tout ce que le site publie, pour l'index du blog : les billets, puis les
+ * articles, puis les notes de version d'avant (la dernière est déjà dans
+ * `POSTS`). Rien n'y est épinglé : l'épingle sert au forum des articles.
+ */
+export const ALL_POSTS: Post[] = [...BLOG_POSTS, ...POSTS, ...RELEASE_POSTS]
+	.filter((post, i, all) => all.findIndex((p) => p.key === post.key) === i)
+	.map((post) => ({ ...post, pinned: false }));
+
+/**
  * Trois autres articles, ceux qui suivent dans l'ordre de la liste (en
  * reprenant au début) : chaque article en lie d'autres, et tous finissent
  * liés, sans aligner tout l'index sous chacun. Une note de version mène aux
