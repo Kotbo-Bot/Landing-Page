@@ -74,7 +74,7 @@ export default {
         },
         {
           h2: 'Confier les giveaways à l’équipe animation',
-          body: 'Par défaut, /giveaway est ouvert aux administrateurs et aux membres qui ont Gérer le serveur ou Gérer les messages. Ajoute des rôles gestionnaires dans la configuration et ton équipe animation lance ses concours sans toucher à la modération. L’onglet Modèles garde tes concours récurrents, et une page publique liste les giveaways en cours sans connexion',
+          body: 'Par défaut, /giveaway est ouvert aux administrateurs et aux membres qui ont Gérer le serveur ou Gérer les messages. Ajoute des rôles gestionnaires dans la configuration et ton équipe animation lance ses concours sans toucher à la modération. L’onglet Modèles garde tes concours récurrents, et une page publique liste les giveaways en cours sans connexion. L’apparence de l’annonce se règle aussi dans la configuration : couleurs, titre, images, libellé et couleur du bouton, annonce des gagnants et réponses aux participants. Chaque enregistrement est gardé sous un nom, pour revenir à une ancienne configuration',
         },
       ],
       faq: [
@@ -176,7 +176,7 @@ export default {
         },
         {
           h2: 'Handing giveaways to your events team',
-          body: 'By default, /giveaway is open to admins and members with Manage Server or Manage Messages. Add manager roles in the configuration and your events team runs giveaways without moderation rights. The Templates tab keeps your recurring giveaways, and a public page lists running giveaways with no login needed',
+          body: 'By default, /giveaway is open to admins and members with Manage Server or Manage Messages. Add manager roles in the configuration and your events team runs giveaways without moderation rights. The Templates tab keeps your recurring giveaways, and a public page lists running giveaways with no login needed. The announcement’s look is set in the configuration too: colors, title, images, button label and color, the winners announcement and the replies to entrants. Each save is kept under a name, so you can go back to an older setup',
         },
       ],
       faq: [

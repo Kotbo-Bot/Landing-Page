@@ -24,7 +24,7 @@ export default {
         },
         {
           h2: 'Boutons ou réactions emoji ?',
-          body: 'Les vieux bots de rôles réaction lisaient les emojis posés sous un message. Kotbo publie des boutons, et la différence se sent à l’usage',
+          body: 'Les vieux bots de rôles réaction lisaient les emojis posés sous un message. Kotbo publie des boutons, et la différence se sent à l’usage. Chaque clic est vérifié contre le panneau enregistré : un bouton dont le rôle a été retiré du panneau répond qu’il n’est plus actif au lieu de distribuer ce rôle',
           items: [
             { title: 'Une réponse à chaque clic', body: 'Le membre reçoit un message visible de lui seul qui confirme le rôle ajouté ou retiré. Avec une réaction, il ne sait pas si le bot l’a vue' },
             { title: 'Un libellé lisible', body: 'Chaque bouton porte un texte, un emoji et une couleur au choix, au lieu d’un emoji à deviner' },
@@ -58,7 +58,7 @@ export default {
         },
         {
           h2: 'Un menu de rôles dans le fil d’accueil',
-          body: 'Si tu veux que les rôles se choisissent dès l’arrivée, le fil d’accueil de Kotbo se termine sur un menu en boutons ou en menu déroulant. Chaque page du menu peut ajouter, retirer ou basculer un rôle, ou le rendre exclusif : choisir une équipe retire alors les autres du même groupe',
+          body: 'Si tu veux que les rôles se choisissent dès l’arrivée, le fil d’accueil de Kotbo se termine sur un menu en boutons ou en menu déroulant. Chaque page du menu peut ajouter, retirer ou basculer un rôle, ou le rendre exclusif : choisir une équipe retire alors les autres du même groupe. En style boutons, une page peut aussi être un lien qui ouvre directement un salon ou un site',
         },
         {
           h2: 'Donner un rôle à plusieurs membres d’un coup',
@@ -118,7 +118,7 @@ export default {
         },
         {
           h2: 'Buttons or emoji reactions?',
-          body: 'Older reaction role bots read the emojis added under a message. Kotbo posts buttons, and you feel the difference in use',
+          body: 'Older reaction role bots read the emojis added under a message. Kotbo posts buttons, and you feel the difference in use. Each click is checked against the saved panel: a button whose role was taken off the panel says it’s no longer active instead of handing out that role',
           items: [
             { title: 'A reply on every click', body: 'The member gets a message only they can see, confirming the role was added or removed. With a reaction, they can’t tell whether the bot saw it' },
             { title: 'A readable label', body: 'Each button carries text, an optional emoji and a color, instead of an emoji to decode' },
@@ -152,7 +152,7 @@ export default {
         },
         {
           h2: 'A role menu in the welcome thread',
-          body: 'If you want roles picked right on arrival, Kotbo’s welcome thread ends on a menu as buttons or a dropdown. Each page of the menu can add, remove or toggle a role, or make it exclusive: picking one team then removes the others in the same group',
+          body: 'If you want roles picked right on arrival, Kotbo’s welcome thread ends on a menu as buttons or a dropdown. Each page of the menu can add, remove or toggle a role, or make it exclusive: picking one team then removes the others in the same group. In button style, a page can also be a link that opens a channel or a website directly',
         },
         {
           h2: 'Giving a role to several members at once',

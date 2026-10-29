@@ -48,7 +48,7 @@ export default {
         },
         {
           h2: 'Aller plus loin : le fil d’accueil',
-          body: 'Un message dans #bienvenue se noie vite sur un serveur actif. L’onglet Fil d’accueil ouvre un fil rien que pour l’arrivant, public ou privé, et lui parle comme un modo le ferait',
+          body: 'Un message dans #bienvenue se noie vite sur un serveur actif. L’onglet Fil d’accueil ouvre un fil rien que pour l’arrivant, public ou privé, et lui parle comme un modo le ferait. Le nom du fil se règle lui aussi avec les variables, {username} par exemple',
           points: [
             'Une séquence de messages envoyés dans l’ordre, avec un délai et l’indicateur « est en train d’écrire » avant chacun',
             'Un nom et un avatar au choix pour ces messages, réglables message par message',
@@ -141,7 +141,7 @@ export default {
         },
         {
           h2: 'Going further: the welcome thread',
-          body: 'A message in #welcome scrolls away fast on a busy server. The Welcome thread tab opens a thread just for the newcomer, public or private, and talks to them the way a mod would',
+          body: 'A message in #welcome scrolls away fast on a busy server. The Welcome thread tab opens a thread just for the newcomer, public or private, and talks to them the way a mod would. The thread name is set with variables too, {username} for example',
           points: [
             'A sequence of messages sent in order, with a delay and the “is typing” indicator before each',
             'A name and avatar of your choice for those messages, adjustable per message',

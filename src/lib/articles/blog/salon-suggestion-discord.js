@@ -24,7 +24,7 @@ export default {
         },
         {
           h2: 'Mettre en place un bot suggestion Discord avec Kotbo',
-          body: 'Le module Suggestions s’installe en une commande, ou depuis la page Suggestions du dashboard',
+          body: 'Le module Suggestions s’installe en une commande, ou depuis la page Suggestions du dashboard. Sans salon configuré, /suggest se rabat sur un salon texte dont le nom contient « suggest »',
           steps: [
             { title: 'Crée le salon', body: 'Un salon texte, #suggestions par exemple, où seul le bot écrit. Les membres y votent avec les boutons' },
             { title: 'Active le module', body: 'Tape /suggestion-config enable en indiquant ce salon. Les suggestions y seront publiées' },
@@ -99,6 +99,10 @@ export default {
           a: 'Oui. /suggestion-config send-embed publie un message avec un bouton qui ouvre un formulaire, et la suggestion part dans le salon configuré',
         },
         {
+          q: 'Qui peut utiliser /suggestion-config ?',
+          a: 'Par défaut, seuls les membres qui ont la permission Administrateur. /suggest, lui, est ouvert à tous les membres',
+        },
+        {
           q: 'Comment changer le salon des suggestions ?',
           a: 'Relance /suggestion-config enable avec le nouveau salon, ou change-le dans la configuration de la page Suggestions du dashboard. Les nouvelles suggestions y seront publiées',
         },
@@ -122,7 +126,7 @@ export default {
         },
         {
           h2: 'Setting up a Discord suggestion bot with Kotbo',
-          body: 'The Suggestions module takes one command to set up, or the Suggestions page of the dashboard',
+          body: 'The Suggestions module takes one command to set up, or the Suggestions page of the dashboard. With no channel set, /suggest falls back on a text channel whose name contains “suggest”',
           steps: [
             { title: 'Create the channel', body: 'A text channel, #suggestions for example, where only the bot posts. Members vote there with the buttons' },
             { title: 'Turn the module on', body: 'Type /suggestion-config enable with that channel. Suggestions get posted there' },
@@ -195,6 +199,10 @@ export default {
         {
           q: 'Can members suggest something without a command?',
           a: 'Yes. /suggestion-config send-embed posts a message with a button that opens a form, and the suggestion goes to the configured channel',
+        },
+        {
+          q: 'Who can use /suggestion-config?',
+          a: 'By default, only members with the Administrator permission. /suggest is open to every member',
         },
         {
           q: 'How do I change the suggestions channel?',

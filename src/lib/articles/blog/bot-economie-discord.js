@@ -66,7 +66,7 @@ export default {
         },
         {
           h2: 'Un marché entre membres pour faire circuler les objets',
-          body: 'Avec le module Marché entre membres, /market ouvre l’hôtel des ventes : chacun y met en vente les objets de son inventaire, à prix fixe ou aux enchères, pour une durée d’une heure à sept jours. Les objets viennent de la boutique, des drops et du jeu de rôle, que les membres lancent avec /rpg, /tour et /raid',
+          body: 'Avec le module Marché entre membres, /market ouvre l’hôtel des ventes : chacun y met en vente les objets de son inventaire, à prix fixe ou aux enchères, pour une durée d’une heure à sept jours. Les objets viennent de la boutique, des drops et du jeu de rôle, que les membres lancent avec /rpg et /tour',
           points: [
             'Le prix proposé à la mise en vente part de la moyenne des ventes du même objet sur les 30 derniers jours',
             'Un enchérisseur dépassé récupère sa mise',
@@ -171,7 +171,7 @@ export default {
         },
         {
           h2: 'A member marketplace to keep items moving',
-          body: 'With the Member market module, /market opens the auction house: members list items from their inventory at a fixed price or as an auction, for one hour up to seven days. Items come from the shop, drops and the role-playing game, which members start with /rpg, /tower and /raid',
+          body: 'With the Member market module, /market opens the auction house: members list items from their inventory at a fixed price or as an auction, for one hour up to seven days. Items come from the shop, drops and the role-playing game, which members start with /rpg and /tower',
           points: [
             'The suggested listing price starts from the average sale price of the same item over the last 30 days',
             'An outbid bidder gets their bid back',

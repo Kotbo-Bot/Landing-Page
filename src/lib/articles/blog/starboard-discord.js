@@ -86,12 +86,12 @@ export default {
           a: 'C’est toi qui fixes le seuil. Par défaut, il faut un score de 5, votes positifs moins votes négatifs',
         },
         {
-          q: 'Est-ce qu’on peut utiliser un emoji personnalisé pour le starboard ?',
-          a: 'Oui. Ajoute l’emoji de ton serveur dans la liste des emojis positifs, il compte comme une étoile',
-        },
-        {
           q: 'Que se passe-t-il si le message d’origine est supprimé ?',
           a: 'Kotbo retire le highlight du salon. Rien ne reste qui pointe vers un message disparu',
+        },
+        {
+          q: 'Est-ce qu’un vote compte deux fois s’il est posé sur l’original et sur le highlight ?',
+          a: 'Oui, Kotbo additionne les réactions des deux messages. Coupe « Compter les réactions du highlight » si tu préfères ne compter que le message d’origine',
         },
         {
           q: 'Est-ce que le starboard marche dans les fils ?',
@@ -179,12 +179,12 @@ export default {
           a: 'You set the threshold. By default a message needs a score of 5, upvotes minus downvotes',
         },
         {
-          q: 'Can I use a custom emoji for the starboard?',
-          a: 'Yes. Add your server’s emoji to the upvote list and it counts like a star',
-        },
-        {
           q: 'What happens if the original message is deleted?',
           a: 'Kotbo removes the highlight from the channel, so nothing is left pointing at a message that’s gone',
+        },
+        {
+          q: 'Does a vote count twice if it’s on both the original and the highlight?',
+          a: 'Yes, Kotbo adds up the reactions on both messages. Turn off Count reactions on the highlight if you’d rather count the original message only',
         },
         {
           q: 'Does the starboard work in threads?',
