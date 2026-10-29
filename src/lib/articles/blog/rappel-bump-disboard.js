@@ -61,6 +61,16 @@ export default {
           ],
         },
         {
+          h2: 'Organiser les bumps sans épuiser ton équipe',
+          body: 'Douze bumps par jour sur Disboard, personne ne les tient seul. Quelques habitudes évitent que ça retombe toujours sur le même modo',
+          points: [
+            'Un salon #bump ouvert à tous les membres, pas seulement au staff : n’importe qui peut taper /bump',
+            'Le nom du dernier bumpeur dans chaque rappel, pour voir qui s’y colle et le remercier',
+            'Un rôle que les volontaires prennent eux-mêmes et qu’ils mentionnent quand ils passent la main',
+            'Pas de sanction pour un bump raté : c’est de la visibilité en moins, pas une faute',
+          ],
+        },
+        {
           h2: 'Voir combien de membres le bump ramène',
           body: 'Bumper toutes les deux heures pendant un mois, ça se mesure. Sur la page Invitations du dashboard, Kotbo étiquette tout seul les invitations créées par un autre bot avec le nom de ce bot. Si l’annuaire crée sa propre invitation sur ton serveur, l’onglet Provenances montre les arrivées par ce lien et combien sont restées. Tu peux aussi nommer à la main l’invitation que tu as mise sur ta fiche',
         },
@@ -144,6 +154,16 @@ export default {
           body: 'Kotbo adds no command of its own: it listens to the directories’ command. It recognises their bot by name and checks that the message answers /bump, so another post from the same bot is never mistaken for a bump',
           commands: [
             { name: '/bump', body: 'The command of Disboard, Discadia, DiscordServers.com and Disforge. The directory’s public reply to it is what starts Kotbo’s countdown' },
+          ],
+        },
+        {
+          h2: 'Sharing bump duty without burning out your team',
+          body: 'Twelve Disboard bumps a day is more than one person can keep up with. A few habits keep it from always landing on the same mod',
+          points: [
+            'A #bump channel open to every member, not just staff: anyone can type /bump',
+            'The last bumper’s name in every reminder, so you can see who’s pitching in and thank them',
+            'A role volunteers pick up themselves and mention when they hand over',
+            'No sanction for a missed bump: it’s a bit less visibility, not an offence',
           ],
         },
         {

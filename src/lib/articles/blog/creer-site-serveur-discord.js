@@ -117,6 +117,7 @@ export default {
             'Showing your rules, team and news before people join',
             'Keeping a wiki or FAQ that doesn’t drown in chat',
             'Giving banned members somewhere to appeal, since they can’t see the server anymore',
+            'Letting people who are curious about your server look around before they commit to joining it',
           ],
         },
         {
@@ -152,7 +153,7 @@ export default {
         },
         {
           h2: 'A website that brings members in',
-          body: 'A site that doesn’t get people to join only does half the job. Kotbo measures the whole path, without cookies',
+          body: 'A site that doesn’t get people to join only does half the job. Kotbo measures the whole path, from the first visit to the member who is still around a week later, without cookies',
           points: [
             'The Join button goes through a tracked invite, labelled Site web',
             'The funnel counts visitors, Join clicks, joins through that invite and those still there after 7 days',
@@ -162,7 +163,7 @@ export default {
         },
         {
           h2: 'What the site doesn’t do',
-          body: 'Better to know before you start',
+          body: 'Better to know these before you start, so nothing catches you off guard once the site is live',
           points: [
             'It lives at dash.kotbo.fr/s/ followed by the name you choose, which you can change: the old address redirects',
             'The Powered by Kotbo mention stays in the footer',
