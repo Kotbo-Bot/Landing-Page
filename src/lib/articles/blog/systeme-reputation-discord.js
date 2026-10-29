@@ -24,7 +24,7 @@ export default {
         },
         {
           h2: 'Les commandes de réputation',
-          body: 'On peut aussi donner un +rep sans taper de commande : clic droit sur un message ou sur un membre, Applications, ⚡ Actions Kotbo, puis Donner de la réputation. Depuis un message, la raison note le salon où il a été posté',
+          body: 'On peut aussi donner un +rep sans taper de commande : clic droit sur un message ou sur un membre, Applications, Actions Kotbo, puis Donner de la réputation. Depuis un message, la raison note le salon où il a été posté',
           commands: [
             { name: '/rep give membre:<membre> raison:<raison>', body: 'Donne un +rep à un membre. La raison est facultative et s’affiche avec le vote' },
             { name: '/rep check membre:<membre>', body: 'Le total d’un membre, sa place au classement et les votes qu’il lui reste aujourd’hui. Sans option, les tiens' },
@@ -123,7 +123,7 @@ export default {
         },
         {
           h2: 'Reputation commands',
-          body: 'You can also give +rep without typing a command: right-click a message or a member, Apps, ⚡ Kotbo actions, then the reputation action. From a message, the reason records the channel it was posted in. Options are typed in French',
+          body: 'You can also give +rep without typing a command: right-click a message or a member, Apps, Kotbo actions, then the reputation action. From a message, the reason records the channel it was posted in. Options are typed in French',
           commands: [
             { name: '/rep give membre:<member> raison:<reason>', body: 'Gives a member +rep. The reason is optional and shows with the vote' },
             { name: '/rep check membre:<member>', body: 'A member’s total, leaderboard rank and votes left today. With no option, yours' },

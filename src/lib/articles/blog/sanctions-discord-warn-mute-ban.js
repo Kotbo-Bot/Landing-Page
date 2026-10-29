@@ -56,7 +56,7 @@ export default {
             },
             {
               name: '/sanction to',
-              body: 'Exclut temporairement le membre pour la duree donnée. Kotbo renouvelle l’exclusion si elle doit durer plus que ce que Discord accepte',
+              body: 'Exclut temporairement le membre pour la durée donnée (option duree). Kotbo renouvelle l’exclusion si elle doit durer plus que ce que Discord accepte',
             },
             {
               name: '/sanction kick',
@@ -212,7 +212,7 @@ export default {
             },
             {
               name: '/sanction to',
-              body: 'Times the member out for the given duree. Kotbo renews the timeout when it has to last longer than Discord allows',
+              body: 'Times the member out for the given duration (the duree option). Kotbo renews the timeout when it has to last longer than Discord allows',
             },
             {
               name: '/sanction kick',

@@ -15,7 +15,7 @@ export default {
       sections: [
         {
           h2: 'Ce que Discord fait, et ce qu’il ne fait pas',
-          body: 'Dans Paramètres du serveur, Intégrations, tu peux relier Twitch ou YouTube. Ça sert à donner un rôle à tes abonnés ou à tes membres de chaîne, pas à annoncer tes contenus. Pour poster une alerte quand un live démarre, il faut un bot qui regarde la chaîne à intervalle régulier',
+          body: 'Dans Paramètres du serveur, Intégrations, tu peux relier Twitch ou YouTube. Ça sert à donner un rôle à tes abonnés ou à tes membres de chaîne, et aucun message n’est posté quand tu publies. Pour poster une alerte quand un live démarre, il faut un bot qui regarde la chaîne à intervalle régulier',
           points: [
             'L’intégration native synchronise des rôles d’abonnés, elle ne poste aucun message',
             'Aucune alerte native pour un nouveau live, une nouvelle vidéo ou un nouveau Short',
@@ -104,7 +104,7 @@ export default {
       sections: [
         {
           h2: 'What Discord does, and what it doesn’t',
-          body: 'In Server Settings, Integrations, you can connect Twitch or YouTube. That links a role to your subscribers or channel members, it doesn’t announce your content. To post an alert when a stream starts, you need a bot that checks the channel at regular intervals',
+          body: 'In Server Settings, Integrations, you can connect Twitch or YouTube. That links a role to your subscribers or channel members, and nothing gets posted when you publish. To post an alert when a stream starts, you need a bot that checks the channel at regular intervals',
           points: [
             'The native integration syncs subscriber roles, it posts no message',
             'No native alert for a new stream, a new video or a new Short',

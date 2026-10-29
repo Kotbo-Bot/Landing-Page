@@ -20,7 +20,64 @@ Kotbo is a French Discord bot with a web dashboard. Beyond moderation, it runs a
 - [Features (English)](https://kotbo.fr/en/features)
 - [Discord staff management (English)](https://kotbo.fr/en/discord-staff-management): the staff page in English.
 - [Démo du dashboard](https://kotbo.fr/demo/): le dashboard dans le navigateur, sans compte.
+- [Blog](https://kotbo.fr/blog): guides pour gérer un serveur Discord avec Kotbo, annonces, notes de version.
 - [Documentation](https://docs.kotbo.fr/)
+
+## Guides
+
+Chaque guide répond à une question d’admin de serveur Discord, avec les commandes et réglages réels du bot.
+
+- [Comment faire un giveaway sur Discord (avec un bot)](https://kotbo.fr/blog/faire-un-giveaway-discord)
+- [Message de bienvenue Discord : le guide complet](https://kotbo.fr/blog/message-bienvenue-discord)
+- [Protéger son serveur Discord d’un raid : guide anti-raid](https://kotbo.fr/blog/proteger-serveur-discord-raid)
+- [Rôle réaction Discord : donner des rôles en un clic](https://kotbo.fr/blog/role-reaction-discord)
+- [Comment warn quelqu’un sur Discord : warn, mute et ban](https://kotbo.fr/blog/sanctions-discord-warn-mute-ban)
+- [Vérification Discord et captcha : filtrer les arrivants](https://kotbo.fr/blog/verification-captcha-discord)
+- [Comment rendre son serveur Discord actif (et le garder)](https://kotbo.fr/blog/rendre-serveur-discord-actif)
+- [Bot économie Discord : monnaie, boutique et marché](https://kotbo.fr/blog/bot-economie-discord)
+- [Notification Twitch et YouTube sur Discord](https://kotbo.fr/blog/notification-twitch-youtube-discord)
+- [Salon vocal temporaire Discord : le join to create](https://kotbo.fr/blog/salon-vocal-temporaire-discord)
+- [Statistiques serveur Discord : voir l’activité](https://kotbo.fr/blog/statistiques-serveur-discord)
+- [Comment faire un embed Discord, sans coder](https://kotbo.fr/blog/creer-embed-discord)
+- [Recrutement staff Discord : recruter ses modérateurs](https://kotbo.fr/blog/recrutement-staff-discord)
+- [Faire appel d’un ban Discord : le formulaire d’unban](https://kotbo.fr/blog/appel-ban-discord-formulaire-unban)
+- [Salon suggestion Discord : votes et réponses du staff](https://kotbo.fr/blog/salon-suggestion-discord)
+- [Gérer son serveur Discord avec une IA (serveur MCP)](https://kotbo.fr/blog/gerer-serveur-discord-ia)
+- [Créer un site pour son serveur Discord, sans coder](https://kotbo.fr/blog/creer-site-serveur-discord)
+- [Tracker d’invitations Discord : qui invite qui](https://kotbo.fr/blog/tracker-invitations-discord)
+- [Rappel bump Disboard : ne rate plus un /bump](https://kotbo.fr/blog/rappel-bump-disboard)
+- [Partenariat Discord : comment le faire et le suivre](https://kotbo.fr/blog/partenariat-serveur-discord)
+- [Relier deux serveurs Discord : salon commun et staff](https://kotbo.fr/blog/relier-serveurs-discord)
+- [Système de clans Discord : créer des clans avec un bot](https://kotbo.fr/blog/systeme-clan-discord)
+- [Système de réputation Discord : le +rep et le prestige](https://kotbo.fr/blog/systeme-reputation-discord)
+- [Starboard Discord : mettre en avant les meilleurs messages](https://kotbo.fr/blog/starboard-discord)
+
+### Guides (English)
+
+- [How to do a giveaway on Discord with a bot](https://kotbo.fr/en/blog/giveaway-on-discord)
+- [Discord welcome message: set one up with a bot](https://kotbo.fr/en/blog/discord-welcome-message)
+- [How to stop a raid on Discord: anti-raid bot guide](https://kotbo.fr/en/blog/discord-anti-raid-bot)
+- [Discord reaction roles: let members pick their roles](https://kotbo.fr/en/blog/discord-reaction-roles)
+- [How to warn someone on Discord: warn, mute and ban](https://kotbo.fr/en/blog/how-to-warn-someone-on-discord)
+- [Discord verification bot: captcha for new members](https://kotbo.fr/en/blog/discord-verification-captcha-bot)
+- [How to make your Discord server active (and keep it)](https://kotbo.fr/en/blog/make-discord-server-active)
+- [Discord economy bot: currency, role shop and market](https://kotbo.fr/en/blog/discord-economy-bot)
+- [Discord Twitch and YouTube notifications](https://kotbo.fr/en/blog/discord-twitch-youtube-notifications)
+- [Discord temp voice channels: join to create](https://kotbo.fr/en/blog/discord-temp-voice-channels)
+- [Discord server stats: see your server’s activity](https://kotbo.fr/en/blog/discord-server-stats)
+- [How to make an embed on Discord, no code](https://kotbo.fr/en/blog/discord-embed-builder)
+- [How to recruit Discord moderators: staff applications](https://kotbo.fr/en/blog/how-to-recruit-discord-moderators)
+- [Discord ban appeal: set up an unban form](https://kotbo.fr/en/blog/discord-ban-appeal-form)
+- [Discord suggestion bot: votes and staff replies](https://kotbo.fr/en/blog/discord-suggestion-bot)
+- [Manage your Discord server with AI (MCP server)](https://kotbo.fr/en/blog/manage-discord-server-ai)
+- [Website for a Discord server, without coding](https://kotbo.fr/en/blog/website-for-discord-server)
+- [Discord invite tracker: see who invited whom](https://kotbo.fr/en/blog/discord-invite-tracker)
+- [Disboard bump reminder: never miss a /bump again](https://kotbo.fr/en/blog/disboard-bump-reminder)
+- [Discord partnerships: how to set them up and track them](https://kotbo.fr/en/blog/discord-server-partnerships)
+- [Link Discord servers: shared chat and staff server](https://kotbo.fr/en/blog/link-discord-servers)
+- [Discord clan bot: set up a clan system on your server](https://kotbo.fr/en/blog/discord-clan-bot)
+- [Discord reputation bot: +rep and prestige rankings](https://kotbo.fr/en/blog/discord-reputation-bot)
+- [Discord starboard bot: feature your best messages](https://kotbo.fr/en/blog/discord-starboard-bot)
 
 ## Gestion du staff
 

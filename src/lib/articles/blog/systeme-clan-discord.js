@@ -46,7 +46,7 @@ export default {
         },
         {
           h2: 'Saisons de clans : ce qui se passe à la clôture',
-          body: 'À la fin d’une saison, Kotbo désigne le clan vainqueur, remet ses récompenses, ajoute « [🏆 CHAMPION] » au nom de la catégorie de son QG, publie l’annonce, puis remet les scores des clans à zéro. L’historique reste consultable avec /clan historique',
+          body: 'À la fin d’une saison, Kotbo désigne le clan vainqueur, remet ses récompenses, ajoute « [CHAMPION] » précédé d’un trophée au nom de la catégorie de son QG, publie l’annonce, puis remet les scores des clans à zéro. L’historique reste consultable avec /clan historique',
           points: [
             'Récompenses au choix : plus de chances aux giveaways pour le clan gagnant, rôle de chef pour le meilleur contributeur',
             'Un bilan, si tu l’actives, publié chaque lundi dans le QG de chaque clan : points de la semaine, meilleurs contributeurs, place au classement',
@@ -150,7 +150,7 @@ export default {
         },
         {
           h2: 'Clan seasons: what happens when one ends',
-          body: 'When a season ends, Kotbo names the winning clan, hands out its rewards, adds “[🏆 CHAMPION]” to its HQ category name, posts the announcement, then resets the clan scores. Past seasons stay available with /clan historique',
+          body: 'When a season ends, Kotbo names the winning clan, hands out its rewards, adds “[CHAMPION]” with a trophy to its HQ category name, posts the announcement, then resets the clan scores. Past seasons stay available with /clan historique',
           points: [
             'Optional rewards: better giveaway odds for the winning clan, the leader role for the top contributor',
             'An optional weekly recap posted every Monday in each clan’s HQ: the week’s points, top contributors, leaderboard position',
