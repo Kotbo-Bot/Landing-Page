@@ -15,10 +15,10 @@ export default {
       sections: [
         {
           h2: 'Réputation, XP et prestige : ce que chacun mesure',
-          body: 'Les trois se complètent, mais ne récompensent pas la même chose. Choisis selon ce que tu veux voir plus souvent sur ton serveur',
+          body: 'Les trois se complètent, mais ne récompensent pas la même chose. Choisis selon ce que tu veux voir plus souvent sur ton serveur. Beaucoup de serveurs font tourner réputation et niveaux ensemble, et n’ajoutent le prestige que quand la communauté réclame de la compétition',
           items: [
             { title: 'La réputation', body: 'Ce que les autres pensent de toi. Un membre qui répond aux questions ou dépanne les nouveaux grimpe, même s’il parle peu' },
-            { title: 'L’XP et les niveaux', body: 'Le temps passé à écrire et en vocal. Ça mesure la présence, pas la qualité', link: { feature: 'leveling', label: 'Lire l’article sur les niveaux et l’XP' } },
+            { title: 'L’XP et les niveaux', body: 'Le temps passé à écrire et en vocal. Ça mesure la présence, et ne dit rien de l’aide apportée', link: { feature: 'leveling', label: 'Lire l’article sur les niveaux et l’XP' } },
             { title: 'Le prestige', body: 'Un classement compétitif tiré de l’XP, avec des paliers, des séries et une perte de points quand on disparaît' },
           ],
         },
@@ -33,7 +33,7 @@ export default {
         },
         {
           h2: 'Les règles qui empêchent de tricher',
-          body: 'Un +rep ne vaut quelque chose que s’il est rare. Kotbo applique ces règles d’office',
+          body: 'Un +rep ne vaut quelque chose que s’il est rare. Si chacun peut en distribuer autant qu’il veut, le classement devient la liste de ceux qui ont le plus de potes. Kotbo applique ces règles d’office',
           points: [
             'Trois votes par jour et par membre, le jour suivant le fuseau horaire du serveur',
             'Un seul +rep par jour vers la même personne',
@@ -114,10 +114,10 @@ export default {
       sections: [
         {
           h2: 'Reputation, XP and prestige: what each one measures',
-          body: 'They work well together, but they don’t reward the same thing. Pick based on what you want to see more of on your server',
+          body: 'They work well together, but they don’t reward the same thing. Pick based on what you want to see more of on your server. Many servers run reputation and levels side by side, and only add prestige once the community asks for competition',
           items: [
             { title: 'Reputation', body: 'What other members think of you. Someone who answers questions or helps newcomers climbs, even if they rarely chat' },
-            { title: 'XP and levels', body: 'Time spent typing and in voice. It measures presence, not quality', link: { feature: 'leveling', label: 'Read the article on levels and XP' } },
+            { title: 'XP and levels', body: 'Time spent typing and in voice. It measures presence and says nothing about the help given', link: { feature: 'leveling', label: 'Read the article on levels and XP' } },
             { title: 'Prestige', body: 'A competitive ranking built from XP, with tiers, streaks and point loss when you vanish' },
           ],
         },
@@ -132,7 +132,7 @@ export default {
         },
         {
           h2: 'Rules that stop reputation farming',
-          body: 'A +rep only means something if it is scarce. Kotbo enforces these rules out of the box',
+          body: 'A +rep only means something if it is scarce. If anyone can hand out as many as they want, the leaderboard turns into a list of whoever has the most friends. Kotbo enforces these rules out of the box',
           points: [
             'Three votes per day per member, with the day following the server’s time zone',
             'Only one +rep per day to the same person',
