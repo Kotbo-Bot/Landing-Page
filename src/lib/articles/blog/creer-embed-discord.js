@@ -104,7 +104,7 @@ export default {
       title: 'How to make an embed on Discord, no code',
       h1: 'How to make an embed on Discord: a visual builder with a live preview',
       description:
-        'How to make an embed on Discord: why your account can’t send one, then a visual embed builder with Kotbo, the /say command and scheduled messages for your server.',
+        'How to make an embed on Discord: why your account can’t send one, then a visual embed builder with Kotbo, the /say command and scheduled messages.',
       lead: 'An embed is the boxed message with a colored bar, a title, fields and sometimes an image. Your Discord account can’t send one: only bots and webhooks can. With Kotbo, you build it on the dashboard with a live preview, then it posts it in the channel you pick',
       sections: [
         {

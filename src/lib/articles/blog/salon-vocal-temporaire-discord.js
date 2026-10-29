@@ -10,7 +10,7 @@ export default {
       title: 'Salon vocal temporaire Discord : le join to create',
       h1: 'Salon vocal temporaire sur Discord : un vocal par groupe, créé à la demande',
       description:
-        'Salon vocal temporaire Discord : un salon générateur crée un vocal privé à chaque membre qui le rejoint, avec un panneau pour le renommer, le verrouiller ou le transférer.',
+        'Salon vocal temporaire Discord : un salon générateur crée un vocal à chaque membre qui le rejoint, avec un panneau pour le renommer, le verrouiller ou le céder.',
       lead: 'Un salon vocal temporaire, c’est un vocal créé quand un membre rejoint un salon « générateur », puis supprimé quand il se vide. Discord ne le fait pas nativement, il faut un bot. Avec Kotbo, le créateur reçoit un panneau pour gérer son salon sans demander au staff',
       sections: [
         {
@@ -88,6 +88,10 @@ export default {
           a: 'Discord n’accepte que deux renommages d’un même salon par tranche de dix minutes. Le panneau affiche le temps restant avant le prochain',
         },
         {
+          q: 'Qui peut récupérer un salon vocal dont le propriétaire est parti ?',
+          a: 'Par défaut, le premier membre présent qui clique sur Récupérer le salon. Tu peux réserver ce bouton au staff dans le bloc Propriété du salon, et le staff peut toujours récupérer un salon sans propriétaire',
+        },
+        {
           q: 'Est-ce qu’on peut avoir plusieurs générateurs ?',
           a: 'Oui. Tu ajoutes des générateurs additionnels, chacun avec son modèle de nom, sa catégorie et son rôle requis',
         },
@@ -150,7 +154,7 @@ export default {
         },
         {
           h2: 'Keeping staff in control',
-          body: 'Moderator permissions are set action by action: rename, limit, lock, chat, reservation, kick or ban, transfer. Each one stays open to staff or goes admins only. Open rooms show up in the Active channels tab, and every panel action can go to your logs',
+          body: 'Moderator permissions are set action by action: rename, limit, lock, chat, reservation, kick or ban, transfer. Each one stays open to staff or goes admins only, so a moderator can step in on a room without being able to do everything. Open rooms show up in the Active channels tab, and every panel action can go to your logs',
         },
       ],
       faq: [
@@ -173,6 +177,10 @@ export default {
         {
           q: 'Why can’t I rename my voice channel again?',
           a: 'Discord only accepts two renames of the same channel per ten minutes. The panel shows how long until the next one',
+        },
+        {
+          q: 'Who can claim a voice channel when its owner leaves?',
+          a: 'By default, the first member in the room who clicks Claim the channel. You can keep that button to staff in the Channel ownership block, and staff can always claim a room with no owner',
         },
         {
           q: 'Can I have several generator channels?',

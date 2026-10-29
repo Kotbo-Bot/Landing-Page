@@ -24,7 +24,7 @@ export default {
         },
         {
           h2: 'Et sans annuaire ?',
-          body: 'Discord a son propre répertoire, la Découverte de serveurs, réservé aux serveurs Communauté qui remplissent ses critères. On n’y bumpe pas : Discord choisit qui il met en avant. Pour la plupart des serveurs qui démarrent, les annuaires restent la façon la plus directe de se faire voir',
+          body: 'Discord a son propre répertoire, la Découverte de serveurs, réservé aux serveurs Communauté qui remplissent ses critères. On n’y bumpe pas : Discord choisit qui il met en avant. Pour la plupart des serveurs qui démarrent, les annuaires restent la façon la plus directe de se faire voir. Ils marchent mieux avec une description soignée et des tags qui collent à ton serveur, puisque c’est ce que lisent les visiteurs avant de cliquer',
         },
         {
           h2: 'Ce que fait le rappel de bump de Kotbo',
@@ -52,10 +52,18 @@ export default {
         },
         {
           h2: 'Savoir si tes bumps ramènent du monde',
-          body: 'Bumper ne sert à rien si personne ne reste. Les invitations de Kotbo comptent qui fait venir qui, et surtout qui reste',
+          body: 'Bumper ne sert à rien si personne ne reste. Les invitations de Kotbo comptent qui fait venir qui, et surtout qui reste. Pour le reste, l’onglet Comparer de la page Statistiques met une semaine de bumps réguliers face à une semaine sans, et tu sais si l’effort paie',
           commands: [
             { name: '/invites stats', body: 'Pour toi ou un autre membre : invitations totales, membres encore présents, partis, et taux de rétention' },
             { name: '/invites leaderboard', body: 'Le classement des inviteurs, trié sur le nombre de membres restés plutôt que sur le total' },
+          ],
+        },
+        {
+          h2: 'Mesurer une pub ou un partenariat',
+          body: 'Le bump n’est qu’un canal parmi d’autres. Pour comparer, Kotbo rattache les arrivées à leur source quand tu lui en donnes le moyen',
+          items: [
+            { title: 'Un code d’invitation par campagne', body: 'Dans le module Campagnes, attache un code d’invitation : les arrivées passées par ce code depuis la date de départ sont créditées à la campagne' },
+            { title: 'Les partenariats', body: 'Le module Partenariats suit tes partenaires, les publicités croisées et ce qu’elles rapportent. Il est éteint par défaut, à allumer dans Modules' },
           ],
         },
       ],
@@ -81,6 +89,10 @@ export default {
           a: 'Kotbo ne voit que les réponses publiques. Un /bump refusé parce que trop tôt n’est visible que de celui qui l’a tapé, donc il n’est pas compté, et c’est voulu',
         },
         {
+          q: 'Est-ce que je peux couper le rappel de bump ?',
+          a: 'Oui. Éteins le module Rappel de bump dans Modules du dashboard : Kotbo arrête alors de repérer les bumps de ton serveur',
+        },
+        {
           q: 'Comment savoir qui a fait venir le plus de membres ?',
           a: 'Tape /invites leaderboard : Kotbo classe les inviteurs sur le nombre de membres encore présents, pas sur le total brut',
         },
@@ -104,7 +116,7 @@ export default {
         },
         {
           h2: 'What about Discord’s own directory?',
-          body: 'Discord has Server Discovery, kept for Community servers that meet its criteria. You can’t bump there: Discord picks who gets featured. For most servers starting out, server lists stay the most direct way to get seen',
+          body: 'Discord has Server Discovery, kept for Community servers that meet its criteria. You can’t bump there: Discord picks who gets featured. For most servers starting out, server lists stay the most direct way to get seen. They work better with a clear description and tags that fit your server, since that’s what visitors read before clicking',
         },
         {
           h2: 'What Kotbo’s bump reminder does',
@@ -132,10 +144,18 @@ export default {
         },
         {
           h2: 'Finding out if bumps bring people in',
-          body: 'Bumping is pointless if nobody stays. Kotbo’s invite tracking counts who brings in whom, and above all who stays',
+          body: 'Bumping is pointless if nobody stays. Kotbo’s invite tracking counts who brings in whom, and above all who stays. Beyond that, the Compare tab on the Statistics page puts a week of steady bumps next to a week without, so you know if it’s worth the effort',
           commands: [
             { name: '/invites stats', body: 'For you or another member: total invites, members still here, members who left, and retention rate' },
             { name: '/invites leaderboard', body: 'The inviter ranking, sorted by members who stayed rather than the raw total' },
+          ],
+        },
+        {
+          h2: 'Measuring an ad or a partnership',
+          body: 'Bumping is one channel among others. To compare, Kotbo ties joins to their source when you give it a way to',
+          items: [
+            { title: 'One invite code per campaign', body: 'In the Campaigns module, attach an invite code: joins through that code since the start date are credited to the campaign' },
+            { title: 'Partnerships', body: 'The Partnerships module tracks your partners, cross-promotions and what they bring in. It’s off by default, turn it on in Modules' },
           ],
         },
       ],
@@ -159,6 +179,10 @@ export default {
         {
           q: 'Why didn’t Kotbo see my bump?',
           a: 'Kotbo only sees public replies. A /bump refused for being too early is only visible to whoever typed it, so it doesn’t count, on purpose',
+        },
+        {
+          q: 'Can I turn the bump reminder off?',
+          a: 'Yes. Turn off the Bump reminder module in Modules on the dashboard: Kotbo then stops tracking bumps on your server',
         },
         {
           q: 'How do I see who invited the most members?',

@@ -57,6 +57,16 @@ export default {
           h2: 'Pourquoi une vieille vidéo n’est pas annoncée',
           body: 'Quand tu ajoutes une chaîne YouTube, Kotbo note la dernière vidéo publiée sans l’annoncer : il ne va pas ressortir tout ton historique. Ensuite, une vidéo publiée il y a plus de 24 heures n’est pas annoncée non plus. Côté Twitch, la fin du live remet le suivi à zéro, et le live suivant repart avec une nouvelle annonce',
         },
+        {
+          h2: 'Un salon d’annonces que les membres ne coupent pas',
+          body: 'Une alerte que personne ne lit ne sert à rien. Quelques habitudes qui gardent ton salon d’annonces utile',
+          points: [
+            'Un salon réservé aux alertes, où seul le bot écrit, et un autre pour en discuter',
+            'Un rôle de notification que les membres prennent eux-mêmes, avec les rôles par réaction de Kotbo, plutôt que @everyone à chaque Short',
+            'Si tu suis plusieurs créateurs, chaque suivi a son propre salon et sa propre mention : le live d’un ami ne réveille pas tout le serveur',
+            'Un message court qui dit ce qui se passe, le titre fait le reste',
+          ],
+        },
       ],
       faq: [
         {
@@ -135,6 +145,16 @@ export default {
         {
           h2: 'Why an old video isn’t announced',
           body: 'When you add a YouTube channel, Kotbo records the latest upload without announcing it, so your whole back catalog doesn’t flood the server. After that, a video published more than 24 hours ago isn’t announced either. On Twitch, the end of a stream resets the follow, and the next stream gets a fresh alert',
+        },
+        {
+          h2: 'An announcement channel members don’t mute',
+          body: 'An alert nobody reads is wasted. A few habits keep your announcement channel worth following',
+          points: [
+            'One channel for alerts where only the bot posts, and another one to talk about them',
+            'A notification role members pick for themselves, with Kotbo’s reaction roles, instead of @everyone on every Short',
+            'If you follow several creators, each follow has its own channel and its own mention: a friend going live doesn’t wake the whole server',
+            'A short message that says what’s happening, the title does the rest',
+          ],
         },
       ],
       faq: [

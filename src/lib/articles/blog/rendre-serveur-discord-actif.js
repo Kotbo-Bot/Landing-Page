@@ -45,7 +45,7 @@ export default {
           h2: 'Toujours les mêmes en haut du classement',
           body: 'Un classement que personne ne peut plus rattraper décourage plus qu’il ne motive. Donne une chance aux nouveaux',
           items: [
-            { title: 'Les saisons', body: 'Une saison a un nom et des dates. À sa clôture, le classement est figé et archivé (/seasons leaderboard), et, si le prestige est actif, son classement repart de bas pour tout le monde', link: { feature: 'leveling', label: 'Lire l’article sur les niveaux et l’XP' } },
+            { title: 'Les saisons', body: 'Une saison a un nom et des dates. À sa clôture, le classement est figé et archivé (/seasons list, puis /seasons leaderboard), et, si le prestige est actif, son classement repart de bas pour tout le monde', link: { feature: 'leveling', label: 'Lire l’article sur les niveaux et l’XP' } },
             { title: 'Les clans', body: 'Les membres jouent en équipe : celui qui ne finira jamais premier fait quand même gagner son clan' },
           ],
         },
@@ -148,7 +148,7 @@ export default {
           h2: 'The same people always top the leaderboard',
           body: 'A leaderboard nobody can catch up with discourages more than it motivates. Give newcomers a shot',
           items: [
-            { title: 'Seasons', body: 'A season has a name and dates. When it closes, the leaderboard is frozen and archived (/seasons leaderboard), and, if prestige is on, its ranking starts again from low for everyone', link: { feature: 'leveling', label: 'Read the article on levels and XP' } },
+            { title: 'Seasons', body: 'A season has a name and dates. When it closes, the leaderboard is frozen and archived (/seasons list, then /seasons leaderboard), and, if prestige is on, its ranking starts again from low for everyone', link: { feature: 'leveling', label: 'Read the article on levels and XP' } },
             { title: 'Clans', body: 'Members play as a team: someone who will never finish first still helps their clan win' },
           ],
         },

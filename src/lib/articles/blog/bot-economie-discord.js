@@ -129,7 +129,7 @@ export default {
         },
         {
           h2: 'Economy commands to earn and spend coins',
-          body: 'Members earn currency through commands, and by talking too: when the leveling module is on, chatting and spending time in voice earns a few coins, with a delay between two rewards so spam doesn’t pay',
+          body: 'Members earn currency through commands, and by talking too: when the leveling module is on, chatting and spending time in voice earns a few coins, with a delay between two rewards so spam doesn’t pay. Options are typed in French',
           commands: [
             { name: '/daily', body: 'Today’s reward, drawn between a minimum and a maximum you set. Coming back without a break builds a streak that raises the reward' },
             { name: '/work', body: 'A salary every hour, plus a bit of game XP. It grows with the player’s level' },

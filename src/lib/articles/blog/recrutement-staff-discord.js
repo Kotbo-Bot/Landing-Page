@@ -51,7 +51,7 @@ export default {
         },
         {
           h2: 'Trier les candidatures et faire passer l’oral',
-          body: 'Toutes les candidatures arrivent dans la page Recrutement du dashboard. Les responsables sont prévenus, et un salon de journaux peut les annoncer côté Discord',
+          body: 'Toutes les candidatures arrivent dans la page Recrutement du dashboard, et le salon des journaux du recrutement peut les annoncer côté Discord',
           steps: [
             {
               title: 'Lis et annote',
@@ -174,7 +174,7 @@ export default {
         },
         {
           h2: 'Sorting applications and holding the interview',
-          body: 'Every application lands on the dashboard’s Recruitment page. Managers get notified, and a log channel can announce them on Discord',
+          body: 'Every application lands on the dashboard’s Recruitment page, and the recruitment log channel can announce them on Discord',
           steps: [
             {
               title: 'Read and annotate',

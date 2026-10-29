@@ -10,7 +10,7 @@ export default {
       title: 'Statistiques serveur Discord : voir l’activité',
       h1: 'Statistiques de serveur Discord : voir qui parle, où et quand',
       description:
-        'Statistiques serveur Discord : ce que montre Server Insights, puis messages, vocal, arrivées et santé des salons avec Kotbo, sur le dashboard et en commande slash.',
+        'Statistiques serveur Discord : ce que montre Server Insights, puis messages, vocal, arrivées et santé des salons avec Kotbo, en commandes et sur le dashboard.',
       lead: 'Pour voir l’activité de ton serveur Discord, tu as deux sources : Server Insights, l’outil de Discord réservé aux serveurs éligibles, et un bot qui compte lui-même les messages, le vocal et les arrivées. Kotbo fait le second, avec des commandes slash pour un coup d’œil et le dashboard pour creuser',
       sections: [
         {
@@ -55,6 +55,16 @@ export default {
             { title: 'Choisis la période d’analyse', body: 'Avec /channelhealth config, l’option periode va de 7 à 90 jours' },
             { title: 'Décide du mode', body: 'Notification seulement ou Automatique, séparément pour les salons surchargés et pour les salons morts' },
             { title: 'Archive à la main si tu préfères', body: '/channelhealth archiver déplace un salon dans la catégorie d’archives et le passe en lecture seule' },
+          ],
+        },
+        {
+          h2: 'Afficher le nombre de membres dans un salon',
+          body: 'Le compteur affiché dans le nom d’un salon vocal reste la stat la plus visible de ton serveur. Kotbo les gère dans la page Salons, onglet Compteurs, avec un modèle de nom où {count} est remplacé par le chiffre',
+          points: [
+            'Membres totaux, bots, membres en ligne, membres en vocal ou membres d’un rôle précis',
+            'Salons, catégories et boosts du serveur',
+            'Un objectif de membres, pour afficher où tu en es',
+            'Discord limite les renommages de salons : les compteurs se mettent à jour toutes les 10 minutes, pas en direct',
           ],
         },
         {
@@ -139,6 +149,16 @@ export default {
             { title: 'Set the analysis window', body: 'With /channelhealth config, the periode option goes from 7 to 90 days' },
             { title: 'Choose the mode', body: 'Notify only or Automatic, separately for overloaded channels and for dead ones' },
             { title: 'Archive by hand if you prefer', body: '/channelhealth archiver moves a channel to the archive category and makes it read-only' },
+          ],
+        },
+        {
+          h2: 'Showing the member count in a channel',
+          body: 'A counter in a voice channel’s name is still the most visible stat on your server. Kotbo handles them on the Channels page, Counters tab, with a name template where {count} becomes the number',
+          points: [
+            'Total members, bots, members online, members in voice or members with a given role',
+            'The server’s channels, categories and boosts',
+            'A member goal, to show how close you are',
+            'Discord rate-limits channel renames: counters update every 10 minutes, not live',
           ],
         },
         {
