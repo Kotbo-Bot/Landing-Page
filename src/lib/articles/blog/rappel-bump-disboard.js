@@ -30,7 +30,7 @@ export default {
             'Il amène des curieux, qui restent si ton salon d’arrivée et ton règlement leur donnent envie',
             'Ta fiche d’annuaire compte autant que le bump : description, étiquettes, langue',
             'Sur un annuaire chargé, d’autres serveurs te repassent devant en quelques minutes',
-            'Un bot ne peut pas lancer la commande d’un autre bot : le /bump se tape à la main. Kotbo ne bumpe donc pas à ta place, il te dit quand y aller',
+            'Un bot ne peut pas lancer la commande d’un autre bot : le /bump se tape à la main. Kotbo s’occupe donc du rappel, et le bump reste à la main',
           ],
         },
         {
@@ -67,7 +67,7 @@ export default {
             'Un salon #bump ouvert à tous les membres, pas seulement au staff : n’importe qui peut taper /bump',
             'Le nom du dernier bumpeur dans chaque rappel, pour voir qui s’y colle et le remercier',
             'Un rôle que les volontaires prennent eux-mêmes et qu’ils mentionnent quand ils passent la main',
-            'Pas de sanction pour un bump raté : c’est de la visibilité en moins, pas une faute',
+            'Pas de sanction pour un bump raté : au pire, le serveur perd un peu de visibilité',
           ],
         },
         {
@@ -86,7 +86,7 @@ export default {
         },
         {
           q: 'Est-ce qu’un bot peut bumper à ma place ?',
-          a: 'Non. Discord ne laisse pas un bot lancer la commande d’un autre bot, le /bump se tape à la main. Kotbo se charge du rappel, pas du bump',
+          a: 'Non. Discord ne laisse pas un bot lancer la commande d’un autre bot, le /bump se tape à la main. Kotbo se charge uniquement du rappel',
         },
         {
           q: 'Pourquoi le rappel de bump ne ping personne ?',
@@ -126,7 +126,7 @@ export default {
             'It brings curious visitors, who stay if your landing channel and rules make them want to',
             'Your directory listing matters as much as the bump: description, tags, language',
             'On a busy directory, other servers pass you again within minutes',
-            'A bot can’t run another bot’s command, so /bump is typed by hand. Kotbo doesn’t bump for you, it tells you when to go',
+            'A bot can’t run another bot’s command, so /bump is typed by hand. So Kotbo handles the reminder, and the bump stays manual',
           ],
         },
         {
@@ -163,7 +163,7 @@ export default {
             'A #bump channel open to every member, not just staff: anyone can type /bump',
             'The last bumper’s name in every reminder, so you can see who’s pitching in and thank them',
             'A role volunteers pick up themselves and mention when they hand over',
-            'No sanction for a missed bump: it’s a bit less visibility, not an offence',
+            'No sanction for a missed bump: at worst, the server loses a little visibility',
           ],
         },
         {
@@ -182,7 +182,7 @@ export default {
         },
         {
           q: 'Can a bot bump my server automatically?',
-          a: 'No. Discord doesn’t let a bot run another bot’s command, so /bump is typed by hand. Kotbo handles the reminder, not the bump',
+          a: 'No. Discord doesn’t let a bot run another bot’s command, so /bump is typed by hand. Kotbo only handles the reminder',
         },
         {
           q: 'Why doesn’t the bump reminder ping anyone?',

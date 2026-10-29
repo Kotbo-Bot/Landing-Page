@@ -15,7 +15,7 @@ export default {
       sections: [
         {
           h2: 'C’est quoi un serveur MCP Discord',
-          body: 'MCP, pour Model Context Protocol, est un standard ouvert qui donne des outils à une IA : lire une liste, envoyer un message, changer un réglage. Le serveur MCP de Kotbo, encore en bêta, expose ton serveur Discord sous forme d’outils que Claude, ChatGPT ou Gemini appellent quand ta demande le demande. Ça n’a rien d’un bot Discord IA qui discute dans un salon : l’IA reste ton assistant, hors de Discord, et c’est toi qui lui parles',
+          body: 'MCP, pour Model Context Protocol, est un standard ouvert qui donne des outils à une IA : lire une liste, envoyer un message, changer un réglage. Le serveur MCP de Kotbo, encore en bêta, expose ton serveur Discord sous forme d’outils que Claude, ChatGPT ou Gemini appellent quand ta demande le demande. Un bot Discord IA discute avec les membres dans un salon. Ici, l’IA reste ton assistant, hors de Discord, et c’est toi qui lui parles',
         },
         {
           h2: 'Brancher Kotbo sur Claude, ChatGPT ou Gemini',
@@ -59,7 +59,7 @@ export default {
           h2: 'Bot Discord IA ou serveur MCP',
           body: 'Les deux répondent à des besoins différents, et la recherche « bot discord ia » mélange souvent les deux',
           items: [
-            { title: 'Un bot IA dans le serveur', body: 'Il discute avec les membres dans un salon. Pratique pour l’animation, sans accès à ta gestion' },
+            { title: 'Un bot IA dans le serveur', body: 'Il discute avec les membres dans un salon, pour animer ou répondre aux questions courantes' },
             { title: 'Un serveur MCP', body: 'Il donne à ton IA les outils de ton dashboard. Pratique pour le staff : une question en français, et l’IA lit, croise et agit à ta place, dans les droits de sa clé' },
           ],
         },
@@ -100,7 +100,7 @@ export default {
       sections: [
         {
           h2: 'What a Discord MCP server is',
-          body: 'MCP, the Model Context Protocol, is an open standard that hands tools to an AI: read a list, send a message, change a setting. Kotbo’s MCP server, still in beta, exposes your Discord server as tools that Claude, ChatGPT or Gemini call when your request needs them. It has nothing to do with an AI chatbot in a channel: the AI stays your assistant, outside Discord, and you’re the one talking to it',
+          body: 'MCP, the Model Context Protocol, is an open standard that hands tools to an AI: read a list, send a message, change a setting. Kotbo’s MCP server, still in beta, exposes your Discord server as tools that Claude, ChatGPT or Gemini call when your request needs them. An AI Discord bot chats with members in a channel. Here, the AI stays your assistant, outside Discord, and you’re the one talking to it',
         },
         {
           h2: 'Connecting Kotbo to Claude, ChatGPT or Gemini',
@@ -144,7 +144,7 @@ export default {
           h2: 'AI Discord bot or MCP server',
           body: 'They answer different needs, and searches for an AI Discord bot often mix the two up',
           items: [
-            { title: 'An AI bot in the server', body: 'It chats with members in a channel. Handy for entertainment, with no access to how you run things' },
+            { title: 'An AI bot in the server', body: 'It chats with members in a channel, to liven things up or answer common questions' },
             { title: 'An MCP server', body: 'It gives your AI the tools of your dashboard. Handy for staff: ask a question in plain English, and the AI reads, cross-checks and acts for you, within its key’s rights' },
           ],
         },
