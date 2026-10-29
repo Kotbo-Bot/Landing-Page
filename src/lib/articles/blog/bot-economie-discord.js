@@ -24,7 +24,7 @@ export default {
         },
         {
           h2: 'Les commandes pour gagner et dépenser des pièces',
-          body: 'Les membres gagnent de la monnaie par commande, et aussi en parlant : quand le module Niveaux tourne, écrire et passer du temps en vocal rapporte quelques pièces, avec un délai entre deux gains pour que le spam ne paie pas',
+          body: 'Les membres gagnent de la monnaie par commande, et aussi en parlant : quand le module de niveaux tourne, écrire et passer du temps en vocal rapporte quelques pièces, avec un délai entre deux gains pour que le spam ne paie pas',
           commands: [
             { name: '/daily', body: 'La récompense du jour, tirée entre un minimum et un maximum que tu fixes. Revenir sans interruption fait monter une série qui majore le gain' },
             { name: '/work', body: 'Un salaire toutes les heures, plus un peu d’XP du jeu. Il grandit avec le niveau du joueur' },
@@ -95,7 +95,7 @@ export default {
         },
         {
           q: 'Comment gagner des pièces sur un bot économie Discord ?',
-          a: 'Avec Kotbo : /daily une fois par période, /work toutes les heures, les quêtes, les drops et, si le module Niveaux tourne, l’activité en texte et en vocal',
+          a: 'Avec Kotbo : /daily une fois par période, /work toutes les heures, les quêtes, les drops et, si le module de niveaux tourne, l’activité en texte et en vocal',
         },
         {
           q: 'Comment éviter l’inflation dans une économie Discord ?',
@@ -129,7 +129,7 @@ export default {
         },
         {
           h2: 'Economy commands to earn and spend coins',
-          body: 'Members earn currency through commands, and by talking too: when the Leveling module is on, chatting and spending time in voice earns a few coins, with a delay between two rewards so spam doesn’t pay',
+          body: 'Members earn currency through commands, and by talking too: when the leveling module is on, chatting and spending time in voice earns a few coins, with a delay between two rewards so spam doesn’t pay',
           commands: [
             { name: '/daily', body: 'Today’s reward, drawn between a minimum and a maximum you set. Coming back without a break builds a streak that raises the reward' },
             { name: '/work', body: 'A salary every hour, plus a bit of game XP. It grows with the player’s level' },
@@ -154,7 +154,7 @@ export default {
           body: 'Plan half an hour for a first version that holds up, shop included',
           steps: [
             { title: 'Turn on the module', body: 'In the dashboard, turn on Economy & RPG. The Economy page groups the settings, items, shop, black market and players' },
-            { title: 'Name your currency', body: 'In the Settings tab, give your currency a name and an emoji, plus an image if you like. By default it is called KotboCoins' },
+            { title: 'Name your currency', body: 'In the Configuration tab, give your currency a name and an emoji, plus an image if you like. By default it is called KotboCoins' },
             { title: 'Set the rewards', body: 'Set the minimum, maximum and delay of /daily. Start low: making rewards more generous always goes down better than taking coins back' },
             { title: 'Stock the shop', body: 'Add two or three offers that mean something on your server, a color role or access to a channel, before thinking about items' },
             { title: 'Announce it', body: 'Post a message pointing to /economy-info and /boutique, so members know what to do with their coins' },
@@ -171,7 +171,7 @@ export default {
         },
         {
           h2: 'A member marketplace to keep items moving',
-          body: 'With the Member marketplace module, /market opens the auction house: members list items from their inventory at a fixed price or as an auction, for one hour up to seven days. Items come from the shop, drops and the role-playing game, which members start with /rpg, /tower and /raid',
+          body: 'With the Member market module, /market opens the auction house: members list items from their inventory at a fixed price or as an auction, for one hour up to seven days. Items come from the shop, drops and the role-playing game, which members start with /rpg, /tower and /raid',
           points: [
             'The suggested listing price starts from the average sale price of the same item over the last 30 days',
             'An outbid bidder gets their bid back',
@@ -192,7 +192,7 @@ export default {
       faq: [
         {
           q: 'How do I make a currency on Discord?',
-          a: 'Discord has no built-in currency, so you need a bot. With Kotbo, turn on the Economy & RPG module in the dashboard, then give your currency a name and an emoji in the Settings tab',
+          a: 'Discord has no built-in currency, so you need a bot. With Kotbo, turn on the Economy & RPG module in the dashboard, then give your currency a name and an emoji in the Configuration tab',
         },
         {
           q: 'What is the best Discord bot for an economy with a role shop?',
@@ -200,7 +200,7 @@ export default {
         },
         {
           q: 'How do members earn coins with a Discord economy bot?',
-          a: 'With Kotbo: /daily once per period, /work every hour, quests, drops and, when the Leveling module is on, text and voice activity',
+          a: 'With Kotbo: /daily once per period, /work every hour, quests, drops and, when the leveling module is on, text and voice activity',
         },
         {
           q: 'How do I prevent inflation in a Discord economy?',
@@ -208,7 +208,7 @@ export default {
         },
         {
           q: 'Can members trade items with each other?',
-          a: 'Yes, with the Member marketplace module. /market opens the auction house, where members sell items at a fixed price or as an auction',
+          a: 'Yes, with the Member market module. /market opens the auction house, where members sell items at a fixed price or as an auction',
         },
         {
           q: 'Can I turn off gambling in a Discord economy bot?',

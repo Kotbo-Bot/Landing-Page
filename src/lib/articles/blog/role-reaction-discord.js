@@ -10,7 +10,7 @@ export default {
       title: 'Rôle réaction Discord : donner des rôles en un clic',
       h1: 'Rôles par réaction sur Discord : laisser les membres choisir leurs rôles',
       description:
-        'Rôle réaction Discord : ce que l’Onboarding de Discord fait déjà, puis un message à boutons avec Kotbo pour que chaque membre se donne ses rôles automatiquement.',
+        'Rôle réaction Discord : ce que l’Onboarding fait déjà, puis un message à boutons avec Kotbo pour que chaque membre se donne ses rôles automatiquement.',
       lead: 'Un rôle réaction, c’est un message où chaque membre clique pour se donner un rôle : notifications, jeux, pronoms, région. Discord en fait une partie avec l’Onboarding, et un bot fait le reste dans n’importe quel salon. Avec Kotbo, ça passe par des boutons, plus fiables que les réactions emoji',
       sections: [
         {
@@ -89,6 +89,10 @@ export default {
         {
           q: 'Est-ce qu’un membre peut retirer son rôle lui-même ?',
           a: 'Oui en mode Bascule : un second clic retire le rôle. En mode Attribution définitive, le rôle reste une fois obtenu',
+        },
+        {
+          q: 'Quelle différence entre rôle réaction et autorôle sur Discord ?',
+          a: 'Un rôle réaction se choisit : le membre clique sur un bouton pour l’avoir. Un autorôle se donne seul, à l’arrivée ou selon le profil du membre. Kotbo fait les deux, depuis deux pages du dashboard',
         },
         {
           q: 'Comment donner un rôle aux membres qui portent le tag du serveur ?',
@@ -179,6 +183,10 @@ export default {
         {
           q: 'Can members remove a role themselves?',
           a: 'Yes in Toggle mode: a second click removes the role. In Grant only mode, the role stays once granted',
+        },
+        {
+          q: 'What’s the difference between reaction roles and autoroles?',
+          a: 'A reaction role is picked: the member clicks a button to get it. An autorole is given on its own, on join or based on the member’s profile. Kotbo does both, from two pages of the dashboard',
         },
         {
           q: 'How do I give a role to members wearing the server tag?',

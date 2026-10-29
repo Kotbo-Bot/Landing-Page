@@ -99,6 +99,10 @@ export default {
           a: 'Tape /giveaway cloturer avec l’identifiant du concours, ou clique sur Tirer gagnant dans la page Giveaways. Le tirage a lieu tout de suite',
         },
         {
+          q: 'Est-ce que le lot peut être remis automatiquement ?',
+          a: 'Pour les récompenses de Kotbo, oui : des pièces, de l’XP ou un objet du jeu de rôle sont crédités aux gagnants, après validation du staff si elle est demandée. Un lot extérieur, comme un abonnement Nitro, se remet à la main',
+        },
+        {
           q: 'Est-ce qu’un membre peut se retirer d’un giveaway ?',
           a: 'Oui, il reclique sur le bouton de participation. Kotbo lui confirme le retrait dans un message visible de lui seul',
         },
@@ -108,7 +112,7 @@ export default {
       title: 'How to do a giveaway on Discord with a bot',
       h1: 'How to do a giveaway on Discord, from launch to draw',
       description:
-        'How to do a giveaway on Discord: start it with a giveaway bot, set entry requirements, draw the winners on time and reroll when a winner doesn’t claim the prize.',
+        'How to do a giveaway on Discord: start it with a giveaway bot, set entry requirements, draw the winners on time and reroll if a winner doesn’t claim the prize.',
       lead: 'Discord has no built-in giveaway tool: to run a giveaway on Discord you need a bot that posts the announcement, counts entries and draws on time. With Kotbo, one command or a dashboard form does it, and entry requirements keep out accounts created just for the prize',
       sections: [
         {
@@ -195,6 +199,10 @@ export default {
         {
           q: 'How do I end a giveaway early?',
           a: 'Type /giveaway end with the giveaway id, or use the draw button in the Giveaways page. The draw happens right away',
+        },
+        {
+          q: 'Can the prize be handed out automatically?',
+          a: 'For Kotbo’s own rewards, yes: coins, roleplay XP or a roleplay item are credited to the winners, after staff validation if it’s on. An outside prize, like a Nitro subscription, you hand over yourself',
         },
         {
           q: 'Can a member leave a giveaway?',

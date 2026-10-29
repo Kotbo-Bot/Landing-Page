@@ -66,6 +66,16 @@ export default {
           h2: 'Une boîte à idées plus légère',
           body: 'Si tu préfères un salon où les membres écrivent librement, le module Messages à la une pose les emojis de vote d’office sur chaque nouveau message des salons choisis. Les idées les mieux notées sont republiées dans un salon dédié. Côté staff, une suggestion peut aussi rejoindre une liste de suivi pour ne pas oublier de la réaliser',
         },
+        {
+          h2: 'Tenir un salon suggestion qui vit',
+          body: 'Un salon suggestion meurt quand les idées restent sans réponse. Quelques habitudes qui le gardent en vie',
+          points: [
+            'Explique comment proposer dès l’entrée du salon, ou pose directement le formulaire avec /suggestion-config send-embed',
+            'Une idée par suggestion, sinon les votes ne veulent plus rien dire',
+            'Réponds aussi aux idées refusées : ta réponse s’affiche sous la suggestion, avec le score final',
+            'Les suggestions sans réponse remontent dans les tâches de l’accueil du dashboard, pour que le staff ne les oublie pas',
+          ],
+        },
       ],
       faq: [
         {
@@ -87,6 +97,10 @@ export default {
         {
           q: 'Est-ce qu’on peut proposer une suggestion sans commande ?',
           a: 'Oui. /suggestion-config send-embed publie un message avec un bouton qui ouvre un formulaire, et la suggestion part dans le salon configuré',
+        },
+        {
+          q: 'Comment changer le salon des suggestions ?',
+          a: 'Relance /suggestion-config enable avec le nouveau salon, ou change-le dans la configuration de la page Suggestions du dashboard. Les nouvelles suggestions y seront publiées',
         },
       ],
     },
@@ -150,6 +164,16 @@ export default {
           h2: 'A lighter idea box',
           body: 'If you’d rather have a channel where members write freely, the Featured messages module adds the vote emojis to every new message in the channels you pick. The best-rated ideas get reposted in a dedicated channel. On the staff side, a suggestion can also go on a tracking list so it actually gets built',
         },
+        {
+          h2: 'Keeping a suggestions channel alive',
+          body: 'A suggestions channel dies when ideas go unanswered. A few habits keep it going',
+          points: [
+            'Explain how to suggest right at the top of the channel, or post the form with /suggestion-config send-embed',
+            'One idea per suggestion, otherwise the votes stop meaning anything',
+            'Answer rejected ideas too: your reply shows under the suggestion, with the final score',
+            'Unanswered suggestions show up in the tasks on the dashboard home, so staff don’t forget them',
+          ],
+        },
       ],
       faq: [
         {
@@ -171,6 +195,10 @@ export default {
         {
           q: 'Can members suggest something without a command?',
           a: 'Yes. /suggestion-config send-embed posts a message with a button that opens a form, and the suggestion goes to the configured channel',
+        },
+        {
+          q: 'How do I change the suggestions channel?',
+          a: 'Run /suggestion-config enable again with the new channel, or change it in the configuration of the Suggestions page of the dashboard. New suggestions get posted there',
         },
       ],
     },
