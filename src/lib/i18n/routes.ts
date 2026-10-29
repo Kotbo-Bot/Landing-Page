@@ -9,7 +9,7 @@
 import type { Locale } from './state.svelte';
 import { FEATURES } from '$lib/data/features';
 import { RELEASES } from '$lib/articles/releases.js';
-import { BLOG } from '$lib/articles/blog.js';
+import { BLOG, blogSlug } from '$lib/articles/blog.js';
 
 type Pair = Record<Locale, string>;
 
@@ -40,7 +40,7 @@ export const BILINGUAL: Pair[] = [
 	FEATURES_ROUTE,
 	...FEATURES.map((f) => ({ fr: featurePath(f.slug, 'fr'), en: featurePath(f.slug, 'en') })),
 	...RELEASES.map((r) => ({ fr: releasePath(r.slug, 'fr'), en: releasePath(r.slug, 'en') })),
-	...BLOG.map((b) => ({ fr: blogPath(b.slug, 'fr'), en: blogPath(b.slug, 'en') })),
+	...BLOG.map((b) => ({ fr: blogPath(blogSlug(b, 'fr'), 'fr'), en: blogPath(blogSlug(b, 'en'), 'en') })),
 ];
 
 /**
@@ -83,7 +83,7 @@ export function releasePath(slug: string, locale: Locale): string {
 	return `${UPDATES_ROUTE[locale]}/${slug}`;
 }
 
-/** Un billet du blog, même slug dans les deux langues. */
+/** Un billet du blog, par son slug dans la langue (`blogSlug`). */
 export function blogPath(slug: string, locale: Locale): string {
 	return `${BLOG_ROUTE[locale]}/${slug}`;
 }

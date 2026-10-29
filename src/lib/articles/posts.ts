@@ -17,7 +17,7 @@ import { featureIcon } from '$lib/data/featureIcons';
 import { STAFF_FAQ } from '$lib/seo/faq.js';
 import { STAFF_ARTICLE, type ArticleSection } from './staff';
 import { RELEASES, type Release } from './releases.js';
-import { BLOG } from './blog.js';
+import { BLOG, blogSlug } from './blog.js';
 
 export interface Post {
 	key: string;
@@ -35,7 +35,7 @@ function words(text: string): number {
 }
 
 function sectionWords(section: ArticleSection): number {
-	const lists = [...(section.items ?? []), ...(section.steps ?? [])];
+	const lists = [...(section.items ?? []), ...(section.steps ?? []), ...(section.commands ?? []).map((c) => ({ title: c.name, body: c.body }))];
 	return (
 		words(section.h2) +
 		words(section.body) +
@@ -98,9 +98,9 @@ export const BLOG_POSTS: Post[] = BLOG.map((b) => {
 		return { name: t.h1, h1: t.h1, description: t.description, minutes: readingMinutes(t.lead, t.sections, t.faq ?? []) };
 	};
 	return {
-		key: `blog-${b.slug}`,
-		path: { fr: blogPath(b.slug, 'fr'), en: blogPath(b.slug, 'en') },
-		icon: 'msg',
+		key: `blog-${blogSlug(b, 'fr')}`,
+		path: { fr: blogPath(blogSlug(b, 'fr'), 'fr'), en: blogPath(blogSlug(b, 'en'), 'en') },
+		icon: b.modules?.length ? featureIcon(b.modules[0]) : 'msg',
 		pinned: false,
 		text: { fr: text('fr'), en: text('en') },
 	};

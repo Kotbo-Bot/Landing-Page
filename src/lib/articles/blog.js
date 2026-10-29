@@ -6,17 +6,38 @@
  * auteur. Comme elles, rien n'y est écrit qui ne soit pas décidé : pas de
  * date ni de chiffre promis.
  *
+ * Les annonces de l'équipe s'écrivent ici. Les guides, un par question que
+ * les admins tapent dans Google (« comment faire un giveaway sur discord »),
+ * vivent chacun dans son fichier sous `blog/`, listés par `blog/guides.js` :
+ * ils ont un slug par langue, pour viser les requêtes anglaises aussi, et
+ * chaque commande ou réglage cité se vérifie dans le dépôt produit.
+ *
  * JavaScript simple plutôt que TypeScript : `seo/jsonld.js` lit ces billets au
  * build pour la CSP, il doit pouvoir les importer sans Vite.
  */
 
+import { GUIDES } from './blog/guides.js';
+
 /**
- * @typedef {import('./releases.js').ReleaseText} BlogText
- * @typedef {{ slug: string, date: string, author: string, text: { fr: BlogText, en: BlogText } }} BlogPost
+ * @typedef {{ title: string, body: string, link?: { feature: string, label: string } }} BlogItem
+ * @typedef {{ name: string, body: string }} BlogCommand
+ * @typedef {{ h2: string, body: string, points?: string[], items?: BlogItem[], steps?: BlogItem[], commands?: BlogCommand[], figure?: { screen: 'tickets' | 'sanctions' | 'staff' | 'members', caption: string } }} BlogSection
+ * @typedef {{ title?: string, h1: string, description: string, lead: string, sections: BlogSection[], faq?: { q: string, a: string }[] }} BlogText
+ * @typedef {{ slug: string | { fr: string, en: string }, date: string, author: string, modules?: string[], text: { fr: BlogText, en: BlogText } }} BlogPost
  */
+
+/**
+ * Le slug d'un billet dans une langue : un seul pour une annonce, un par
+ * langue pour un guide.
+ * @param {BlogPost} post @param {'fr' | 'en'} locale
+ */
+export function blogSlug(post, locale) {
+  return typeof post.slug === 'string' ? post.slug : post.slug[locale];
+}
 
 /** @type {BlogPost[]} */
 export const BLOG = [
+  ...GUIDES,
   {
     slug: 'aegisai-by-kotbo',
     date: '2026-10-28',

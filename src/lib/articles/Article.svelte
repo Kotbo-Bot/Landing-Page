@@ -1,7 +1,8 @@
 <script lang="ts">
   /**
    * Un article : l'article staff (`articles/staff.ts`), une page de la
-   * console (`data/features.ts`) ou une note de version (`articles/releases.js`).
+   * console (`data/features.ts`), une note de version (`articles/releases.js`)
+   * ou un billet du blog, annonce ou guide (`articles/blog.js`).
    * Une note se range dans son propre forum (`forum`), porte sa date et le
    * lien vers la release GitHub (`source`), et mène aux versions d'avant. Un
    * billet du blog (`articles/blog.js`) a son forum, sa date et son auteur.
@@ -173,6 +174,18 @@
                   </li>
                 {/each}
               </ol>
+            {/if}
+
+            {#if section.commands}
+              <!-- Les commandes comme Discord les affiche dans un message : une mention cliquable. -->
+              <dl class="mt-8 divide-y divide-line border-y border-line">
+                {#each section.commands as command (command.name)}
+                  <div class="grid gap-x-6 gap-y-2 py-5 sm:grid-cols-[minmax(0,15rem)_1fr]">
+                    <dt><code class="inline-block max-w-full break-words rounded-md bg-glow/15 px-2 py-0.5 font-sans font-semibold text-glow">{command.name}</code></dt>
+                    <dd class="leading-relaxed text-fog">{command.body}</dd>
+                  </div>
+                {/each}
+              </dl>
             {/if}
 
             {#if section.figure && figure}
