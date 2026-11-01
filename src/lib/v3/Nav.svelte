@@ -31,6 +31,7 @@
         { id: 'ia', label: 'Intégration IA' },
         { id: 'prix', label: 'Tarifs' },
         { id: 'faq', label: 'FAQ' },
+        { id: 'docs', label: 'Documentation' },
         { id: 'blog', label: 'Blog' },
       ],
       menu: 'Menu',
@@ -49,6 +50,7 @@
         { id: 'ia', label: 'AI integration' },
         { id: 'prix', label: 'Pricing' },
         { id: 'faq', label: 'FAQ' },
+        { id: 'docs', label: 'Docs' },
         { id: 'blog', label: 'Blog' },
       ],
       menu: 'Menu',
@@ -70,6 +72,7 @@
   /** Hors de l'accueil, les zones qui ont leur page y mènent. */
   const PAGES: Partial<Record<string, Record<'fr' | 'en', string>>> = { qg: STAFF_ROUTE, modules: FEATURES_ROUTE, blog: BLOG_ROUTE };
   function hrefOf(id: string): string {
+    if (id === 'docs') return locale === 'fr' ? '/docs/' : '/docs/en/';
     if (home && id !== 'blog') return `#${id}`;
     const own = PAGES[id];
     return own ? `${base}${own[locale]}` : `${base}${homeOf(locale)}#${id}`;
