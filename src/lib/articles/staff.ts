@@ -35,8 +35,10 @@ export interface ArticleSection {
 	items?: ArticleItem[];
 	/** Étapes, dans l'ordre. */
 	steps?: ArticleItem[];
+	/** Commandes slash du bot, telles qu'on les tape, et ce qu'elles font. */
+	commands?: { name: string; body: string }[];
 	/** L'écran du dashboard qui suit le texte. */
-	figure?: { screen: 'staff' | 'sanctions' | 'tickets'; caption: string };
+	figure?: { screen: 'staff' | 'sanctions' | 'tickets' | 'members'; caption: string };
 }
 
 export interface StaffArticle {

@@ -17,7 +17,7 @@
  */
 import { FREE_FAQ, HOME_FAQ, HUB_FAQ, STAFF_FAQ, UPDATES_FAQ } from './faq.js';
 import { RELEASES } from '../articles/releases.js';
-import { BLOG } from '../articles/blog.js';
+import { BLOG, blogSlug } from '../articles/blog.js';
 // Les pages de la console, telles que `scripts/fetch-features.mjs` les écrit
 // avant le build : le JSON-LD de chaque article en sort.
 import featurePages from '../data/feature-pages.json' with { type: 'json' };
@@ -43,8 +43,9 @@ const featureUrl = (/** @type {{ fr: string, en: string }} */ slug, /** @type {'
 /** Comme `releasePath` (`i18n/routes.ts`). */
 const releaseUrl = (/** @type {string} */ slug, /** @type {'fr' | 'en'} */ locale) => `${SITE}${PATHS.updates[locale]}/${slug}`;
 
-/** Comme `blogPath` (`i18n/routes.ts`). */
-const blogUrl = (/** @type {string} */ slug, /** @type {'fr' | 'en'} */ locale) => `${SITE}${PATHS.blog[locale]}/${slug}`;
+/** Comme `blogPath` (`i18n/routes.ts`), pour un billet de `BLOG`. */
+const blogUrl = (/** @type {import('../articles/blog.js').BlogPost} */ post, /** @type {'fr' | 'en'} */ locale) =>
+  `${SITE}${PATHS.blog[locale]}/${blogSlug(post, locale)}`;
 
 /**
  * @typedef {{ name: string, title: string, description: string, h1: string, lead: string, faq: { q: string, a: string }[] }} FeatureText
@@ -340,7 +341,7 @@ export function blogJsonLd(locale) {
   const t = TEXT[locale];
   const url = `${SITE}${PATHS.blog[locale]}`;
   const items = [
-    ...BLOG.map((b) => ({ name: b.text[locale].h1, url: blogUrl(b.slug, locale) })),
+    ...BLOG.map((b) => ({ name: b.text[locale].h1, url: blogUrl(b, locale) })),
     { name: t.staffName, url: `${SITE}${PATHS.staff[locale]}` },
     ...RELEASES.slice(0, 1).map((r) => ({ name: `Kotbo ${r.version}`, url: releaseUrl(r.slug, locale) })),
     ...FEATURE_PAGES.map((p) => ({ name: p.text[locale].name, url: featureUrl(p.slug, locale) })),
@@ -376,15 +377,16 @@ export function blogJsonLd(locale) {
 }
 
 /**
- * Un billet du blog, signé de son auteur et daté.
- * @param {string} slug @param {'fr' | 'en'} locale
+ * Un billet du blog, signé de son auteur et daté. Un guide signé « Kotbo »
+ * l'est par l'organisation, pas par une personne.
+ * @param {string} slug le slug dans `locale` @param {'fr' | 'en'} locale
  */
 export function blogPostJsonLd(slug, locale) {
-  const post = BLOG.find((b) => b.slug === slug);
+  const post = BLOG.find((b) => blogSlug(b, locale) === slug);
   if (!post) return undefined;
   const t = TEXT[locale];
   const text = post.text[locale];
-  const url = blogUrl(slug, locale);
+  const url = blogUrl(post, locale);
   const hub = `${SITE}${PATHS.blog[locale]}`;
   return {
     '@context': 'https://schema.org',
@@ -395,7 +397,7 @@ export function blogPostJsonLd(slug, locale) {
         ...article(locale, { url, name: text.h1, headline: text.h1, description: text.description }),
         '@type': 'BlogPosting',
         datePublished: post.date,
-        author: { '@type': 'Person', name: post.author },
+        author: post.author === 'Kotbo' ? { '@id': ORG_ID } : { '@type': 'Person', name: post.author },
         isPartOf: { '@id': `${hub}#collection` },
         breadcrumb: {
           '@type': 'BreadcrumbList',
@@ -493,7 +495,7 @@ export function allJsonLd() {
     updatesJsonLd(locale),
     ...RELEASES.map((r) => /** @type {object} */ (releaseJsonLd(r.slug, locale))),
     blogJsonLd(locale),
-    ...BLOG.map((b) => /** @type {object} */ (blogPostJsonLd(b.slug, locale))),
+    ...BLOG.map((b) => /** @type {object} */ (blogPostJsonLd(blogSlug(b, locale), locale))),
     hubJsonLd(locale),
     ...FEATURE_PAGES.map((p) => /** @type {object} */ (featureJsonLd(p.key, locale))),
   ]);

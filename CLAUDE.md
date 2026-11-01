@@ -81,6 +81,14 @@ dans `articles/blog.js`, sur le modèle d'une note de version plus un auteur ;
 un billet s'ajoute en tête du tableau. L'index `/blog` rassemble tout le site
 (`ALL_POSTS`) : les billets, puis les articles, puis les notes de version.
 
+Les guides sont des billets qui répondent chacun à une recherche (« comment
+faire un giveaway sur discord », « discord anti raid bot ») : un fichier par
+guide dans `articles/blog/`, listé par `articles/blog/guides.js`. Ils ont un
+slug par langue (`blogSlug`), signent « Kotbo » (l'organisation dans le
+JSON-LD), et peuvent montrer des commandes slash (`commands`) et un écran du
+dashboard (`figure`). Chaque commande, option ou réglage cité se vérifie dans
+le dépôt produit avant publication.
+
 ## L'accueil v3
 
 L'accueil vit dans `src/lib/v3/` : la page se lit comme un serveur Discord, une

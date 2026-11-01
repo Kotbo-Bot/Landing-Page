@@ -3,8 +3,9 @@
    * L'index du blog, rendu par `/blog` et `/en/blog`.
    *
    * Il se lit comme les notes de version (`UpdatesHub`), dans son propre salon
-   * forum, et rassemble tout ce que le site publie (`ALL_POSTS`) : les billets
-   * de l'équipe (`articles/blog.js`), les articles et les notes de version.
+   * forum, et rassemble tout ce que le site publie (`ALL_POSTS`) : les guides
+   * et les billets de l'équipe (`articles/blog.js`), les articles et les notes
+   * de version.
    */
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
@@ -20,22 +21,22 @@
   const TEXT = {
     fr: {
       title: 'Le blog de Kotbo, le bot Discord | Kotbo',
-      description: 'Tous les articles de Kotbo, le bot Discord et son dashboard : les annonces de l’équipe, les guides des modules et les notes de version.',
+      description: 'Guides pour gérer un serveur Discord avec Kotbo : anti-raid, bienvenue, giveaways, économie, tickets, staff. Plus les annonces et les notes de version.',
       forum: 'blog',
-      topic: 'les annonces de l’équipe',
+      topic: 'guides et annonces de l’équipe',
       h1: 'Le blog',
-      lead: 'Tous les articles de Kotbo au même endroit : les annonces de l’équipe en tête, puis les guides des modules et les notes de version',
+      lead: 'Les questions que se posent les admins de serveurs Discord, avec la réponse et les commandes qui vont avec. Puis les annonces de l’équipe, les articles des modules et les notes de version',
       demo: 'Fouiller la démo du dashboard',
       list: 'Les articles',
       count: (n: number) => `${n} articles`,
     },
     en: {
       title: 'The Kotbo blog, the Discord bot | Kotbo',
-      description: 'Every article about Kotbo, the Discord bot and its dashboard: news from the team, module guides and release notes.',
+      description: 'Guides to running a Discord server with Kotbo: anti-raid, welcome messages, giveaways, economy, tickets, staff. Plus team news and release notes.',
       forum: 'blog',
-      topic: 'news from the team',
+      topic: 'guides and news from the team',
       h1: 'The blog',
-      lead: 'Every Kotbo article in one place: news from the team first, then module guides and release notes',
+      lead: 'The questions Discord server admins ask, answered, with the commands that go with them. Then news from the team, module articles and release notes',
       demo: 'Dig through the dashboard demo',
       list: 'Articles',
       count: (n: number) => `${n} articles`,
