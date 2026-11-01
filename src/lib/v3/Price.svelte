@@ -42,7 +42,7 @@
       plan: 'Offre',
       custom: 'Au-delà de 100 000 membres, on construit l’offre ensemble',
       customCta: 'Prendre rendez-vous',
-      trial: `${TRIAL_DAYS} jours de l’offre complète, une fois par serveur, sans carte bancaire. Sans abonnement, ton serveur reste en gratuit`,
+      trial: `${TRIAL_DAYS} jours d’essai de l’offre complète, une fois par serveur, rien n’est débité avant la fin. Sans abonnement, ton serveur reste en gratuit`,
       free: 'Gratuit, sans limite de durée : modération, AutoMod et anti-raid, logs, accueil, tickets, niveaux, giveaways, stats, alertes YouTube et Twitch',
       included:
         'L’offre complète ajoute ce qu’aucun bot gratuit ne fait : toute la gestion du staff, l’IA de modération, le site de ta communauté, saisons, clans, économie et RPG, le serveur MCP, le cross-serveur, et les modules qui sortiront après. Aucun module en option',
@@ -68,7 +68,7 @@
       plan: 'Plan',
       custom: 'Above 100,000 members, we build the plan together',
       customCta: 'Book a call',
-      trial: `${TRIAL_DAYS} days of the full plan, once per server, no credit card. Without a subscription, your server stays on free`,
+      trial: `${TRIAL_DAYS}-day trial of the full plan, once per server, nothing charged before it ends. Without a subscription, your server stays on free`,
       free: 'Free, forever: moderation, AutoMod and anti-raid, logs, welcome, tickets, levels, giveaways, stats, YouTube and Twitch alerts',
       included:
         'The full plan adds what no free bot does: full staff management, AI moderation, your community website, seasons, clans, economy and RPG, the MCP server, cross-server, and every module that ships later. No add-ons',

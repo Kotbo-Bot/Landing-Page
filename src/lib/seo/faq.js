@@ -53,7 +53,7 @@ export const HOME_FAQ = {
     },
     {
       q: "C'est gratuit ?",
-      a: "Oui. L'offre gratuite n'a pas de limite de durée : modération, AutoMod et anti-raid, logs, accueil, tickets, niveaux, giveaways, stats, alertes YouTube et Twitch. L'offre complète ajoute la gestion du staff, l'IA de modération, le site, saisons, clans et économie ; elle s'essaie 15 jours sans carte bancaire, puis son prix dépend seulement du nombre de membres, dès 2,50 €/mois à l'année sous 1 000 membres.",
+      a: "Oui. L'offre gratuite n'a pas de limite de durée : modération, AutoMod et anti-raid, logs, accueil, tickets, niveaux, giveaways, stats, alertes YouTube et Twitch. L'offre complète ajoute la gestion du staff, l'IA de modération, le site, saisons, clans et économie ; elle s'essaie 15 jours sans être débitée, puis son prix dépend seulement du nombre de membres, dès 2,50 €/mois à l'année sous 1 000 membres.",
     },
   ],
   en: [
@@ -91,7 +91,7 @@ export const HOME_FAQ = {
     },
     {
       q: 'Is it free?',
-      a: "Yes. The free plan has no time limit: moderation, AutoMod and anti-raid, logs, welcome, tickets, levels, giveaways, stats, YouTube and Twitch alerts. The full plan adds staff management, AI moderation, the website, seasons, clans and economy; try it for 15 days with no credit card, then its price only depends on member count, from €2.50/month billed yearly under 1,000 members.",
+      a: "Yes. The free plan has no time limit: moderation, AutoMod and anti-raid, logs, welcome, tickets, levels, giveaways, stats, YouTube and Twitch alerts. The full plan adds staff management, AI moderation, the website, seasons, clans and economy; try it for 15 days with nothing charged, then its price only depends on member count, from €2.50/month billed yearly under 1,000 members.",
     },
   ],
 };
@@ -169,11 +169,11 @@ export const STAFF_FAQ = {
 export const FREE_FAQ = {
   fr: {
     q: 'Est-ce gratuit ?',
-    a: "Oui : l'offre gratuite, sans limite de durée, couvre la modération, l'anti-raid, les logs, l'accueil, les tickets, les niveaux et les stats. L'offre complète (staff, IA, site, saisons, économie) s'essaie 15 jours sans carte bancaire, puis coûte à partir de 5 € HT par mois jusqu'à 1 000 membres.",
+    a: "Oui : l'offre gratuite, sans limite de durée, couvre la modération, l'anti-raid, les logs, l'accueil, les tickets, les niveaux et les stats. L'offre complète (staff, IA, site, saisons, économie) s'essaie 15 jours sans être débitée, puis coûte à partir de 5 € HT par mois jusqu'à 1 000 membres.",
   },
   en: {
     q: 'Is it free?',
-    a: 'Yes: the free plan, with no time limit, covers moderation, anti-raid, logs, welcome, tickets, levels and stats. The full plan (staff, AI, website, seasons, economy) comes with a 15-day trial, no card needed, then starts at €5 per month (excl. tax) up to 1,000 members.',
+    a: 'Yes: the free plan, with no time limit, covers moderation, anti-raid, logs, welcome, tickets, levels and stats. The full plan (staff, AI, website, seasons, economy) comes with a 15-day trial with nothing charged, then starts at €5 per month (excl. tax) up to 1,000 members.',
   },
 };
 

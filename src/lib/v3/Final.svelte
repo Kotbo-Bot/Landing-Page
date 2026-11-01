@@ -11,12 +11,12 @@
   const TEXT = {
     fr: {
       title: 'Allez, kick les six autres',
-      sub: `Gratuit, et ${TRIAL_DAYS} jours de l’offre complète sans carte bancaire. Ton serveur est prêt avant que t’aies fini ton kebab`,
+      sub: `Gratuit, sans carte bancaire, et ${TRIAL_DAYS} jours d’essai de l’offre complète. Ton serveur est prêt avant que t’aies fini ton kebab`,
       demo: 'Ou fouille d’abord la démo du dashboard',
     },
     en: {
       title: 'Go on, kick the other six',
-      sub: `Free, plus ${TRIAL_DAYS} days of the full plan with no credit card. Your server is ready before your food gets cold`,
+      sub: `Free with no credit card, plus a ${TRIAL_DAYS}-day trial of the full plan. Your server is ready before your food gets cold`,
       demo: 'Or dig through the dashboard demo first',
     },
   };
