@@ -15,7 +15,7 @@
   import Shell from '$lib/v3/Shell.svelte';
   import AddButton from '$lib/v3/AddButton.svelte';
   import ForumBar from '$lib/articles/ForumBar.svelte';
-  import PostList from '$lib/articles/PostList.svelte';
+  import BlogList from '$lib/articles/BlogList.svelte';
   import { ALL_POSTS } from '$lib/articles/posts';
 
   const TEXT = {
@@ -67,6 +67,6 @@
       <h2 id="list-title" class="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">{t.list}</h2>
       <p class="text-sm text-fog">{t.count(ALL_POSTS.length)}</p>
     </div>
-    <div class="mt-8"><PostList posts={ALL_POSTS} /></div>
+    <div class="mt-8"><BlogList posts={ALL_POSTS} /></div>
   </section>
 </Shell>
