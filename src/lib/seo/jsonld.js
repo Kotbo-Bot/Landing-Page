@@ -397,7 +397,7 @@ export function blogPostJsonLd(slug, locale) {
         ...article(locale, { url, name: text.h1, headline: text.h1, description: text.description }),
         '@type': 'BlogPosting',
         datePublished: post.date,
-        author: post.author === 'Kotbo' ? { '@id': ORG_ID } : { '@type': 'Person', name: post.author },
+        author: post.author === 'Kotbo' ? { '@id': ORG_ID } : { '@type': 'Person', name: post.author, url: hub },
         isPartOf: { '@id': `${hub}#collection` },
         breadcrumb: {
           '@type': 'BreadcrumbList',
