@@ -39,6 +39,135 @@ export function blogSlug(post, locale) {
 export const BLOG = [
   ...GUIDES,
   {
+    slug: 'kotbo-gratuit',
+    date: '2026-11-01',
+    author: 'Klaynight',
+    text: {
+      fr: {
+        h1: 'Kotbo devient gratuit : ce qui est inclus, ce qui reste dans l’offre complète',
+        description:
+          'Kotbo a maintenant une offre gratuite sans limite de durée : modération, anti-raid, logs, accueil, tickets, niveaux, stats. L’offre complète garde la gestion du staff, l’IA, le site et l’engagement poussé.',
+        lead: 'Jusqu’ici, un serveur sans abonnement avait le bot mais aucun module. C’est fini : Kotbo a une offre gratuite, sans limite de durée et sans carte bancaire, qui couvre ce qu’un serveur attend d’un bot',
+        sections: [
+          {
+            h2: 'Ce qui est gratuit',
+            body: 'Tout ce que les autres bots donnent gratuitement, réglé depuis le même dashboard que l’offre complète',
+            points: [
+              'Modération : sanctions, AutoMod, anti-raid, vérification, modération des pseudos',
+              'Logs Discord',
+              'Accueil et départ, règlement, rôles par réaction, créateur d’embeds, auto-réponses, auto-thread',
+              'Niveaux et XP, tickets, giveaways, événements et quiz, suggestions, Starlight',
+              'Analytics, déclencheurs, actualités et RSS, alertes YouTube et Twitch, rappel de bump',
+              'L’annuaire du staff',
+            ],
+          },
+          {
+            h2: 'La sécurité ne sera jamais payante',
+            body: 'Un serveur raidé parce qu’il n’avait pas payé, c’est un échec pour tout le monde. Sanctions, AutoMod, anti-raid, vérification et logs restent dans l’offre gratuite, et un test du code de Kotbo échoue si quelqu’un les en retire',
+          },
+          {
+            h2: 'Ce que garde l’offre complète',
+            body: 'Ce qu’aucun bot gratuit ne fait. C’est là que Kotbo se distingue',
+            points: [
+              'Toute la gestion du staff : hiérarchie, recrutement, tutorat, réunions, absences, listes de suivi, sondages, discipline, évaluations',
+              'L’IA de modération AegisAI, la détection des doubles comptes, les appels de bannissement',
+              'Le site de ta communauté, avec wiki, blog et forum',
+              'Saisons, prestige, clans, drops, économie et RPG, marché, quêtes, réputation',
+              'Le serveur MCP pour piloter Kotbo depuis une IA, et le cross-serveur',
+            ],
+          },
+          {
+            h2: 'Voir la gestion du staff avant de payer',
+            body: 'Sur une page staff verrouillée, le bouton Voir un exemple rempli ouvre la même page dans la démo publique, avec une équipe fictive. Tu vois exactement ce que tu débloques',
+          },
+          {
+            h2: 'Le prix ne change pas',
+            body: 'L’offre complète coûte toujours selon la taille du serveur : 5 € par mois jusqu’à 1 000 membres, 9,99 € jusqu’à 10 000, 25 € jusqu’à 100 000, hors taxes, avec au moins 50 % de remise à l’année. Elle s’essaie 15 jours, une fois par serveur',
+          },
+          {
+            h2: 'Si ton essai ou ton abonnement se termine',
+            body: 'Le serveur ne s’éteint plus. Il repasse en gratuit : la modération, l’accueil et les niveaux continuent de tourner, les modules de l’offre complète se mettent en pause avec leurs réglages et leurs données. Un abonnement les rallume dans l’état où tu les as laissés',
+          },
+        ],
+        faq: [
+          {
+            q: 'L’offre gratuite a-t-elle une limite de durée ?',
+            a: 'Non. Elle ne s’arrête pas et ne demande pas de carte bancaire',
+          },
+          {
+            q: 'Mon serveur était déjà installé sans abonnement : que se passe-t-il ?',
+            a: 'Les modules gratuits que tu avais allumés se mettent à tourner. Les autres s’allument depuis la page Modules du dashboard',
+          },
+          {
+            q: 'Je suis déjà abonné : qu’est-ce qui change pour moi ?',
+            a: 'Rien. Ton offre ouvre toujours tout le catalogue, au même prix',
+          },
+        ],
+      },
+      en: {
+        h1: 'Kotbo goes free: what is included, what stays in the full plan',
+        description:
+          'Kotbo now has a free plan with no time limit: moderation, anti-raid, logs, welcome, tickets, levels, stats. The full plan keeps staff management, AI, the website and advanced engagement.',
+        lead: 'Until now, a server without a subscription had the bot but no module. Not anymore: Kotbo has a free plan, with no time limit and no credit card, covering what a server expects from a bot',
+        sections: [
+          {
+            h2: 'What is free',
+            body: 'Everything other bots give away for free, set up from the same dashboard as the full plan',
+            points: [
+              'Moderation: sanctions, AutoMod, anti-raid, verification, nickname moderation',
+              'Discord logs',
+              'Welcome and goodbye, rules, reaction roles, embed builder, auto-responses, auto-thread',
+              'Levels and XP, tickets, giveaways, events and quizzes, suggestions, Starlight',
+              'Analytics, triggers, news and RSS, YouTube and Twitch alerts, bump reminder',
+              'The staff directory',
+            ],
+          },
+          {
+            h2: 'Security will never be paid',
+            body: 'A server raided because it did not pay is a failure for everyone. Sanctions, AutoMod, anti-raid, verification and logs stay in the free plan, and a test in Kotbo’s code fails if anyone removes them',
+          },
+          {
+            h2: 'What the full plan keeps',
+            body: 'What no free bot does. This is where Kotbo stands apart',
+            points: [
+              'Full staff management: hierarchy, recruitment, mentoring, meetings, time off, tracking lists, polls, discipline, reviews',
+              'AegisAI moderation, alt account detection, ban appeals',
+              'Your community website, with wiki, blog and forum',
+              'Seasons, prestige, clans, drops, economy and RPG, marketplace, quests, reputation',
+              'The MCP server to run Kotbo from an AI, and cross-server',
+            ],
+          },
+          {
+            h2: 'See staff management before you pay',
+            body: 'On a locked staff page, the Voir un exemple rempli button opens the same page in the public demo, with a sample team. You see exactly what you unlock',
+          },
+          {
+            h2: 'The price does not change',
+            body: 'The full plan is still priced by server size: €5 a month up to 1,000 members, €9.99 up to 10,000, €25 up to 100,000, excluding VAT, with at least 50% off yearly. It comes with a 15-day trial, once per server',
+          },
+          {
+            h2: 'If your trial or subscription ends',
+            body: 'The server no longer shuts down. It goes back to free: moderation, welcome and levels keep running, full-plan modules pause with their settings and data. A subscription brings them back as you left them',
+          },
+        ],
+        faq: [
+          {
+            q: 'Does the free plan have a time limit?',
+            a: 'No. It does not end and does not ask for a credit card',
+          },
+          {
+            q: 'My server was already set up without a subscription: what happens?',
+            a: 'The free modules you had switched on start running. Switch on the others from the Modules page of the dashboard',
+          },
+          {
+            q: 'I already subscribe: what changes for me?',
+            a: 'Nothing. Your plan still opens the whole catalogue, at the same price',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'documentation-kotbo-nouvelle-adresse',
     date: '2026-11-01',
     author: 'Klaynight',
