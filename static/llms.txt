@@ -20,7 +20,7 @@ Kotbo is a French Discord bot with a web dashboard. Beyond moderation, it runs a
 - [Features (English)](https://kotbo.fr/en/features)
 - [Discord staff management (English)](https://kotbo.fr/en/discord-staff-management): the staff page in English.
 - [Démo du dashboard](https://kotbo.fr/demo/): le dashboard dans le navigateur, sans compte.
-- [Documentation](https://docs.kotbo.fr/)
+- [Documentation](https://kotbo.fr/docs/)
 
 ## Gestion du staff
 

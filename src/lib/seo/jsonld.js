@@ -132,7 +132,7 @@ function organization(locale) {
     email: 'contact@kotbo.fr',
     areaServed: 'FR',
     knowsLanguage: [LANG.fr, LANG.en],
-    sameAs: ['https://top.gg/bot/1481651387317354598', 'https://docs.kotbo.fr/'],
+    sameAs: ['https://top.gg/bot/1481651387317354598', 'https://kotbo.fr/docs/'],
     alternateName: ALTERNATE_NAMES,
     inLanguage: LANG[locale],
   };
