@@ -26,7 +26,7 @@
     fr: {
       title: 'Conditions Générales de Vente',
       subtitleTemplate: (date: string) => `Dernière mise à jour : ${date} · Abonnements au service Kotbo`,
-      pricingDate: '6 septembre 2026',
+      pricingDate: '1er novembre 2026',
       sections: {
         objet: 'Objet & champ',
         vendeur: 'Identité du vendeur',
@@ -89,7 +89,7 @@
         h2: 'Offres et paliers',
         p1a: 'Kotbo est vendu',
         p1Strong1: 'tout-en-un',
-        p1b: "une offre payante ouvre l'intégralité du catalogue de modules, y compris ceux ajoutés ultérieurement. Il n'existe pas de module vendu à part ni d'option payante. Ce qui distingue les offres n'est donc pas leur contenu fonctionnel, mais",
+        p1b: "une offre payante ouvre l'intégralité du catalogue de modules, y compris ceux ajoutés ultérieurement. Il n'existe pas de module vendu à part ni d'option payante. L'offre Gratuit ouvre une partie du catalogue, sans limite de durée. Ce qui distingue les offres payantes entre elles n'est donc pas leur contenu fonctionnel, mais",
         p1Strong2: 'la taille du serveur',
         p1c: "à laquelle elles s'adressent.",
         thOffre: 'Offre',
@@ -98,7 +98,7 @@
         thSouscription: 'Souscription',
         rowGratuitOffre: 'Gratuit',
         rowGratuitTaille: '—',
-        rowGratuitContenu: 'Aucun module actif. Seules les pages de configuration, de gestion des modules et de facturation restent accessibles.',
+        rowGratuitContenu: 'Modules de base : modération, AutoMod (hors IA), anti-raid, vérification, logs, accueil, règlement, rôles par réaction, auto-réponses, niveaux, tickets, giveaways, événements, suggestions, statistiques, automatisations, alertes YouTube et Twitch, annuaire du staff. La liste à jour figure dans le dashboard.',
         rowGratuitSouscription: 'État par défaut, sans commande',
         rowStarterTaille: "Jusqu'à 1 000 membres",
         rowContenuTout: 'Tout le catalogue',
@@ -113,7 +113,7 @@
         p2: "L'offre applicable est déterminée par l'effectif du serveur au moment de la commande. Si un serveur franchit durablement le plafond de son offre, nous vous en informons et vous proposons le passage à l'offre supérieure ; à défaut d'accord, nous pouvons appliquer le tarif correspondant à l'échéance suivante, dans les conditions de l'article 14.",
         p3a: "L'offre",
         p3Strong: 'Gratuit',
-        p3b: "n'est pas une version d'essai : elle n'ouvre aucun module. Le bot peut être présent sur un serveur sans qu'aucune fonctionnalité vendue ne soit active.",
+        p3b: "n'est pas une version d'essai : elle est sans limite de durée et ouvre les modules de base décrits ci-dessus. Les autres modules (gestion du staff, IA de modération, site communautaire, saisons, clans, économie, serveur MCP, cross-serveur…) sont réservés aux offres payantes.",
       },
       prix: {
         h2: 'Prix et TVA',
@@ -334,7 +334,7 @@
     en: {
       title: 'Terms of Sale',
       subtitleTemplate: (date: string) => `Last updated: ${date} · Kotbo subscription service`,
-      pricingDate: '6 September 2026',
+      pricingDate: '1 November 2026',
       sections: {
         objet: 'Purpose & scope',
         vendeur: "Seller's identity",
@@ -397,7 +397,7 @@
         h2: 'Plans and tiers',
         p1a: 'Kotbo is sold as an',
         p1Strong1: 'all-in-one',
-        p1b: "package: a paid plan unlocks the entire module catalog, including modules added later. There is no module sold separately and no paid add-on. What distinguishes the plans is therefore not their functional content, but",
+        p1b: "package: a paid plan unlocks the entire module catalog, including modules added later. There is no module sold separately and no paid add-on. The Free plan unlocks part of the catalog, with no time limit. What distinguishes the paid plans from one another is therefore not their functional content, but",
         p1Strong2: 'the size of the server',
         p1c: 'they are intended for.',
         thOffre: 'Plan',
@@ -406,7 +406,7 @@
         thSouscription: 'Subscription',
         rowGratuitOffre: 'Free',
         rowGratuitTaille: '—',
-        rowGratuitContenu: 'No module active. Only the configuration, module management and billing pages remain accessible.',
+        rowGratuitContenu: 'Core modules: moderation, AutoMod (excluding AI), anti-raid, verification, logs, welcome, rules, reaction roles, auto-responses, levels, tickets, giveaways, events, suggestions, statistics, automations, YouTube and Twitch alerts, staff directory. The current list is shown in the dashboard.',
         rowGratuitSouscription: 'Default state, no order required',
         rowStarterTaille: 'Up to 1,000 members',
         rowContenuTout: 'Entire catalog',
@@ -421,7 +421,7 @@
         p2: 'The applicable plan is determined by the server\'s size at the time of the order. If a server durably exceeds the ceiling of its plan, we will inform you and offer an upgrade to the plan above; failing agreement, we may apply the corresponding rate at the next renewal, under the conditions of Article 14.',
         p3a: 'The',
         p3Strong: 'Free',
-        p3b: 'plan is not a trial version: it does not unlock any module. The bot may be present on a server without any paid feature being active.',
+        p3b: 'plan is not a trial version: it has no time limit and unlocks the core modules listed above. Other modules (staff management, AI moderation, community website, seasons, clans, economy, MCP server, cross-server…) are reserved for paid plans.',
       },
       prix: {
         h2: 'Price and VAT',
