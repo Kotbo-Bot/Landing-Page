@@ -11,6 +11,7 @@ import protegerServeurDiscordRaid from './proteger-serveur-discord-raid.js';
 import roleReactionDiscord from './role-reaction-discord.js';
 import sanctionsDiscordWarnMuteBan from './sanctions-discord-warn-mute-ban.js';
 import verificationCaptchaDiscord from './verification-captcha-discord.js';
+import bloquerArnaquesNitroPhishingDiscord from './bloquer-arnaques-nitro-phishing-discord.js';
 import rendreServeurDiscordActif from './rendre-serveur-discord-actif.js';
 import botEconomieDiscord from './bot-economie-discord.js';
 import notificationTwitchYoutubeDiscord from './notification-twitch-youtube-discord.js';
@@ -38,6 +39,7 @@ export const GUIDES = [
   roleReactionDiscord,
   sanctionsDiscordWarnMuteBan,
   verificationCaptchaDiscord,
+  bloquerArnaquesNitroPhishingDiscord,
   rendreServeurDiscordActif,
   botEconomieDiscord,
   notificationTwitchYoutubeDiscord,
