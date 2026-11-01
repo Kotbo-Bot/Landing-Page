@@ -30,10 +30,25 @@ import relierServeursDiscord from './relier-serveurs-discord.js';
 import systemeClanDiscord from './systeme-clan-discord.js';
 import systemeReputationDiscord from './systeme-reputation-discord.js';
 import starboardDiscord from './starboard-discord.js';
+import botTicketDiscord from './bot-ticket-discord.js';
+import systemeNiveauxXpDiscord from './systeme-niveaux-xp-discord.js';
+import automodDiscordAntiSpam from './automod-discord-anti-spam.js';
+import salonLogsDiscord from './salon-logs-discord.js';
+import reglementServeurDiscord from './reglement-serveur-discord.js';
+import sauvegardeServeurDiscord from './sauvegarde-serveur-discord.js';
+import quizEvenementDiscord from './quiz-evenement-discord.js';
+import confessionAnonymeDiscord from './confession-anonyme-discord.js';
+import jeuxSalonFunDiscord from './jeux-salon-fun-discord.js';
+import formulaireCandidatureDiscord from './formulaire-candidature-discord.js';
+import detecterDoublesComptesDiscord from './detecter-doubles-comptes-discord.js';
+import annoncesActualitesRssDiscord from './annonces-actualites-rss-discord.js';
 
 /** @type {import('../blog.js').BlogPost[]} */
 export const GUIDES = [
   faireUnGiveawayDiscord,
+  botTicketDiscord,
+  systemeNiveauxXpDiscord,
+  automodDiscordAntiSpam,
   messageBienvenueDiscord,
   protegerServeurDiscordRaid,
   roleReactionDiscord,
@@ -58,4 +73,13 @@ export const GUIDES = [
   systemeClanDiscord,
   systemeReputationDiscord,
   starboardDiscord,
+  salonLogsDiscord,
+  reglementServeurDiscord,
+  sauvegardeServeurDiscord,
+  quizEvenementDiscord,
+  confessionAnonymeDiscord,
+  jeuxSalonFunDiscord,
+  formulaireCandidatureDiscord,
+  detecterDoublesComptesDiscord,
+  annoncesActualitesRssDiscord,
 ];
