@@ -25,6 +25,8 @@ export interface Post {
 	/** Emoji du bot (`static/ktb/`). */
 	icon: string;
 	pinned: boolean;
+	/** Jour de publication (AAAA-MM-JJ), quand il est connu : billets et notes de version. */
+	date?: string;
 	text: Record<Locale, { name: string; h1: string; description: string; minutes: number }>;
 }
 
@@ -84,6 +86,7 @@ function releasePost(release: Release, pinned = false): Post {
 		path: { fr: releasePath(release.slug, 'fr'), en: releasePath(release.slug, 'en') },
 		icon: 'news',
 		pinned,
+		date: release.date,
 		text: { fr: text('fr'), en: text('en') },
 	};
 }
@@ -102,6 +105,7 @@ export const BLOG_POSTS: Post[] = BLOG.map((b) => {
 		path: { fr: blogPath(blogSlug(b, 'fr'), 'fr'), en: blogPath(blogSlug(b, 'en'), 'en') },
 		icon: b.modules?.length ? featureIcon(b.modules[0]) : 'msg',
 		pinned: false,
+		date: b.date,
 		text: { fr: text('fr'), en: text('en') },
 	};
 });
