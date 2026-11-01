@@ -145,7 +145,7 @@ export const STAFF_ARTICLE: Record<Locale, StaffArticle> = {
 		],
 		final: {
 			title: 'Essaie-le avec ton équipe',
-			body: `${TRIAL_DAYS} jours d’essai, une fois par serveur. Toutes les offres contiennent tout le catalogue, à partir de 5 € HT par mois`,
+			body: `${TRIAL_DAYS} jours d’essai de l’offre complète, une fois par serveur. La gestion du staff en fait partie, à partir de 5 € HT par mois ; l’annuaire du staff reste gratuit`,
 		},
 	},
 	en: {
@@ -241,7 +241,7 @@ export const STAFF_ARTICLE: Record<Locale, StaffArticle> = {
 		],
 		final: {
 			title: 'Try it with your team',
-			body: `${TRIAL_DAYS}-day trial, once per server. Every plan includes the whole catalog, from €5 per month excl. VAT`,
+			body: `${TRIAL_DAYS}-day trial of the full plan, once per server. Staff management is part of it, from €5 per month excl. VAT; the staff directory stays free`,
 		},
 	},
 };
