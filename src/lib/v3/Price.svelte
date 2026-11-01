@@ -1,6 +1,7 @@
 <script lang="ts">
   /**
    * Le prix, en une ligne : glisse la taille de ton serveur, lis ton prix.
+   * L'offre gratuite est dite au-dessus, l'offre complète en dessous.
    *
    * Les offres payantes de Kotbo sont identiques, seule la tranche de membres
    * change, et un serveur ne peut souscrire que la sienne
@@ -24,7 +25,7 @@
 
   const TEXT = {
     fr: {
-      title: 'Le prix dépend seulement du nombre de membres sur ton serveur',
+      title: 'Gratuit pour démarrer. L’offre complète dépend seulement du nombre de membres',
       sentenceA: 'Pour un serveur de',
       sentenceB: ', Kotbo te coûte',
       sentenceC: 'par mois',
@@ -41,15 +42,16 @@
       plan: 'Offre',
       custom: 'Au-delà de 100 000 membres, on construit l’offre ensemble',
       customCta: 'Prendre rendez-vous',
-      trial: `${TRIAL_DAYS} jours gratuits, une fois par serveur, sans carte bancaire. Tu configures tout avant de payer`,
+      trial: `${TRIAL_DAYS} jours de l’offre complète, une fois par serveur, sans carte bancaire. Sans abonnement, ton serveur reste en gratuit`,
+      free: 'Gratuit, sans limite de durée : modération, AutoMod et anti-raid, logs, accueil, tickets, niveaux, giveaways, stats, alertes YouTube et Twitch',
       included:
-        'Chaque offre contient tout Kotbo : modération, AutoMod et anti-raid, logs, tickets et candidatures, toute la gestion du staff, niveaux, économie, stats, alertes YouTube et Twitch, le dashboard, et les modules qui sortiront après. Aucun module en option',
+        'L’offre complète ajoute ce qu’aucun bot gratuit ne fait : toute la gestion du staff, l’IA de modération, le site de ta communauté, saisons, clans, économie et RPG, le serveur MCP, le cross-serveur, et les modules qui sortiront après. Aucun module en option',
       ht: 'Prix HT',
       euro: (cents: number) =>
         `${(cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: cents % 100 ? 2 : 0, maximumFractionDigits: 2 })} €`,
     },
     en: {
-      title: 'The price only depends on how many members your server has',
+      title: 'Free to start. The full plan only depends on how many members you have',
       sentenceA: 'For a server with',
       sentenceB: ', Kotbo costs you',
       sentenceC: 'a month',
@@ -66,9 +68,10 @@
       plan: 'Plan',
       custom: 'Above 100,000 members, we build the plan together',
       customCta: 'Book a call',
-      trial: `${TRIAL_DAYS} days free, once per server, no credit card. Set everything up before you pay`,
+      trial: `${TRIAL_DAYS} days of the full plan, once per server, no credit card. Without a subscription, your server stays on free`,
+      free: 'Free, forever: moderation, AutoMod and anti-raid, logs, welcome, tickets, levels, giveaways, stats, YouTube and Twitch alerts',
       included:
-        'Every plan has all of Kotbo: moderation, AutoMod and anti-raid, logs, tickets and applications, full staff management, levels, economy, stats, YouTube and Twitch alerts, the dashboard, and every module that ships later. No add-ons',
+        'The full plan adds what no free bot does: full staff management, AI moderation, your community website, seasons, clans, economy and RPG, the MCP server, cross-server, and every module that ships later. No add-ons',
       ht: 'Prices excl. VAT',
       euro: (cents: number) =>
         `€${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: cents % 100 ? 2 : 0, maximumFractionDigits: 2 })}`,
@@ -148,7 +151,8 @@
       </p>
     </div>
 
-    <p class="mt-10 max-w-3xl text-lg leading-relaxed text-mist">{t.included}</p>
+    <p class="mt-10 max-w-3xl text-lg font-semibold leading-relaxed text-ink">{t.free}</p>
+    <p class="mt-4 max-w-3xl text-lg leading-relaxed text-mist">{t.included}</p>
 
     <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
       <AddButton content="pricing" size="lg" />
