@@ -26,8 +26,9 @@ const config = {
 		}),
 		prerender: {
 			handleHttpError: ({ path, message }) => {
-				// /demo/ est une SPA autonome servie depuis static/demo/index.html
-				if (path.startsWith('/demo')) {
+				// /demo/ est une SPA autonome servie depuis static/demo/index.html ;
+				// /docs/ est fusionnée dans build/ par le workflow, après le build.
+				if (path.startsWith('/demo') || path.startsWith('/docs')) {
 					return;
 				}
 				throw new Error(message);
