@@ -18,6 +18,99 @@
 /** @type {BlogPost[]} */
 export const BLOG = [
   {
+    slug: 'documentation-kotbo-nouvelle-adresse',
+    date: '2026-11-01',
+    author: 'Klaynight',
+    text: {
+      fr: {
+        h1: 'La documentation de Kotbo déménage sur kotbo.fr/docs',
+        description:
+          'Le guide de Kotbo quitte docs.kotbo.fr pour kotbo.fr/docs. Les anciens liens redirigent automatiquement : ce qui change, ce qui ne change pas, et quoi mettre à jour de ton côté.',
+        lead: 'La documentation de Kotbo n’est plus sur docs.kotbo.fr : elle se trouve maintenant sur kotbo.fr/docs, avec le reste du site. Rien à refaire de ton côté, les anciens liens continuent de fonctionner',
+        sections: [
+          {
+            h2: 'Ce qui change',
+            body: 'Le guide du dashboard, les pages Discord et l’aide gardent exactement le même contenu, en français et en anglais. Seule l’adresse bouge',
+            points: [
+              'Avant : docs.kotbo.fr',
+              'Maintenant : kotbo.fr/docs',
+              'Un bandeau sur la documentation rappelle le changement, tu peux le fermer',
+            ],
+          },
+          {
+            h2: 'Les anciens liens',
+            body: 'Un lien docs.kotbo.fr/dashboard/moderation/sanctions t’amène directement sur kotbo.fr/docs/dashboard/moderation/sanctions. Les pages que tu as épinglées sur ton serveur, dans tes tickets ou dans ton règlement restent valables',
+          },
+          {
+            h2: 'Pourquoi ce changement',
+            body: 'Tout Kotbo est regroupé sous un seul domaine : le site, les fonctionnalités, le blog et maintenant la documentation. C’est plus simple à retenir, et les recherches sur kotbo.fr font aussi remonter le guide',
+          },
+          {
+            h2: 'À mettre à jour de ton côté',
+            body: 'Rien n’est obligatoire, mais si tu as copié des liens vers la documentation dans un salon, un message épinglé ou un site, tu peux les remplacer par la nouvelle adresse pour éviter la redirection',
+          },
+        ],
+        faq: [
+          {
+            q: 'Les anciens liens vont-ils continuer de marcher ?',
+            a: 'Oui. docs.kotbo.fr redirige vers la même page sur kotbo.fr/docs, chemin compris',
+          },
+          {
+            q: 'Le contenu de la documentation change-t-il ?',
+            a: 'Non. Le contenu est le même, seule l’adresse change',
+          },
+          {
+            q: 'La recherche et le sélecteur de langue fonctionnent-ils toujours ?',
+            a: 'Oui, la recherche et le passage du français à l’anglais fonctionnent comme avant sur la nouvelle adresse',
+          },
+        ],
+      },
+      en: {
+        h1: 'Kotbo’s documentation moves to kotbo.fr/docs',
+        description:
+          'The Kotbo guide leaves docs.kotbo.fr for kotbo.fr/docs. Old links redirect automatically: what changes, what does not, and what to update on your side.',
+        lead: 'Kotbo’s documentation is no longer at docs.kotbo.fr: it now lives at kotbo.fr/docs, alongside the rest of the site. Nothing to redo on your side, old links keep working',
+        sections: [
+          {
+            h2: 'What changes',
+            body: 'The dashboard guide, the Discord pages and the help section keep exactly the same content, in French and English. Only the address moves',
+            points: [
+              'Before: docs.kotbo.fr',
+              'Now: kotbo.fr/docs',
+              'A banner on the documentation reminds you of the change, and you can close it',
+            ],
+          },
+          {
+            h2: 'Old links',
+            body: 'A docs.kotbo.fr/dashboard/moderation/sanctions link takes you straight to kotbo.fr/docs/dashboard/moderation/sanctions. Pages you pinned on your server, in your tickets or in your rules stay valid',
+          },
+          {
+            h2: 'Why the change',
+            body: 'All of Kotbo is gathered under a single domain: the site, the features, the blog and now the documentation. It is easier to remember, and searches on kotbo.fr surface the guide too',
+          },
+          {
+            h2: 'What to update on your side',
+            body: 'Nothing is required, but if you copied documentation links into a channel, a pinned message or a website, you can replace them with the new address to skip the redirect',
+          },
+        ],
+        faq: [
+          {
+            q: 'Will old links keep working?',
+            a: 'Yes. docs.kotbo.fr redirects to the same page on kotbo.fr/docs, path included',
+          },
+          {
+            q: 'Does the documentation content change?',
+            a: 'No. The content is the same, only the address changes',
+          },
+          {
+            q: 'Do search and the language switcher still work?',
+            a: 'Yes, search and switching between French and English work as before at the new address',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'aegisai-by-kotbo',
     date: '2026-10-28',
     author: 'Klaynight',
