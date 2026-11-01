@@ -45,6 +45,24 @@ jobs:
       - name: Build
         run: npm run build
 
+      # kotbo.fr/docs : les docs (Kotbo-Bot/kotdocs) sont construites ici, GitHub
+      # Pages ne pouvant pas servir deux dépôts sur un même domaine.
+      - name: Checkout docs
+        uses: actions/checkout@v4
+        with:
+          repository: Kotbo-Bot/kotdocs
+          path: _docs
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Build docs
+        working-directory: _docs
+        run: bun install --frozen-lockfile && bun run build
+
+      - name: Merge docs into site
+        run: mkdir -p build/docs && cp -r _docs/dist/. build/docs/
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
