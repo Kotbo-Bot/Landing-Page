@@ -45,14 +45,14 @@
     fr: {
       title: 'Bot Discord français : modération, tickets, staff | Kotbo',
       description:
-        'Kotbo, le bot Discord français tout-en-un : modération, anti-raid, tickets, niveaux et gestion du staff, réglés depuis un dashboard web. 15 jours offerts, sans CB.',
+        'Kotbo, le bot Discord français tout-en-un : modération, anti-raid, tickets, niveaux et gestion du staff, réglés depuis un dashboard web. Gratuit, offre complète dès 2,50 €/mois.',
       path: '/',
       skip: 'Aller au contenu',
     },
     en: {
       title: 'All-in-One Discord Bot: Moderation, Tickets, Staff | Kotbo',
       description:
-        'Kotbo is an all-in-one Discord bot with a web dashboard: moderation, anti-raid, tickets, levels and full staff management. 15 days free, no credit card.',
+        'Kotbo is an all-in-one Discord bot with a web dashboard: moderation, anti-raid, tickets, levels and full staff management. Free plan, full plan from €2.50/month.',
       path: '/en',
       skip: 'Skip to content',
     },

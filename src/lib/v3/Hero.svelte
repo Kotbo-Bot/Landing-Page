@@ -23,7 +23,7 @@
   import { releasePath } from '$lib/i18n/routes';
   import { RELEASES } from '$lib/articles/releases.js';
   import { publicStats } from '$lib/data/stats.svelte';
-  import { TOPGG_RATING, TOPGG_URL, TRIAL_DAYS } from '$lib/product';
+  import { TOPGG_RATING, TOPGG_URL } from '$lib/product';
   import AddButton from './AddButton.svelte';
   import HeroVideo from './HeroVideo.svelte';
   import { MODULE_COUNT } from './modules';
@@ -34,7 +34,7 @@
       h1b: 'pendant que tu dors',
       sub: `Modo, tickets, niveaux et ton staff, tout au même endroit. Avec ${MODULE_COUNT} modules, ce que tu cherches est sûrement déjà dedans`,
       demo: 'Tester le dashboard',
-      reassure: `${TRIAL_DAYS} jours offerts · pas de CB · pas de droits admin`,
+      reassure: 'Gratuit · pas de CB · pas de droits admin',
       proof: 'Ils sont déjà dessus',
       members: (n: string) => `${n} membres`,
       newTab: '(nouvel onglet)',
@@ -45,7 +45,7 @@
       h1b: 'while you sleep',
       sub: `Mod, tickets, levels and your staff, all in one place. With ${MODULE_COUNT} modules, whatever you need is probably already in there`,
       demo: 'Try the dashboard',
-      reassure: `${TRIAL_DAYS} days free · no card · no admin perms`,
+      reassure: 'Free · no card · no admin perms',
       proof: 'Already running it',
       members: (n: string) => `${n} members`,
       newTab: '(new tab)',
