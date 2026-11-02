@@ -26,7 +26,7 @@
     fr: {
       title: 'Conditions Générales de Vente',
       subtitleTemplate: (date: string) => `Dernière mise à jour : ${date} · Abonnements au service Kotbo`,
-      pricingDate: '1er novembre 2026',
+      pricingDate: '2 novembre 2026',
       sections: {
         objet: 'Objet & champ',
         vendeur: 'Identité du vendeur',
@@ -86,12 +86,12 @@
         footnote: "Ci-après « le vendeur », « Kotbo » ou « nous ». Le client est désigné par « vous ».",
       },
       offres: {
-        h2: 'Offres et paliers',
+        h2: 'Offres',
         p1a: 'Kotbo est vendu',
         p1Strong1: 'tout-en-un',
-        p1b: "une offre payante ouvre l'intégralité du catalogue de modules, y compris ceux ajoutés ultérieurement. Il n'existe pas de module vendu à part ni d'option payante. L'offre Gratuit ouvre une partie du catalogue, sans limite de durée. Ce qui distingue les offres payantes entre elles n'est donc pas leur contenu fonctionnel, mais",
-        p1Strong2: 'la taille du serveur',
-        p1c: "à laquelle elles s'adressent.",
+        p1b: "une offre payante ouvre l'intégralité du catalogue de modules, y compris ceux ajoutés ultérieurement. Il n'existe pas de module vendu à part ni d'option payante. L'offre Gratuit ouvre une partie du catalogue, sans limite de durée. Une seule offre payante est vendue, Plus, et son prix est",
+        p1Strong2: 'le même pour tous les serveurs',
+        p1c: ', quelle que soit leur taille.',
         thOffre: 'Offre',
         thTaille: 'Taille du serveur',
         thContenu: 'Contenu',
@@ -100,17 +100,10 @@
         rowGratuitTaille: '—',
         rowGratuitContenu: 'Modules de base : modération, AutoMod (hors IA), anti-raid, vérification, logs, accueil, règlement, rôles par réaction, auto-réponses, niveaux, tickets, giveaways, événements, suggestions, statistiques, automatisations, alertes YouTube et Twitch, annuaire du staff. La liste à jour figure dans le dashboard.',
         rowGratuitSouscription: 'État par défaut, sans commande',
-        rowStarterTaille: "Jusqu'à 1 000 membres",
+        rowStarterTaille: 'Tous les serveurs',
         rowContenuTout: 'Tout le catalogue',
         rowSouscriptionLibre: 'En ligne, libre-service',
-        rowProTaille: 'De 1 001 à 10 000 membres',
-        rowUltimateTaille: 'De 10 001 à 100 000 membres',
-        rowSurMesureOffre: 'Sur mesure',
-        rowSurMesureTaille: 'Au-delà de 100 000 membres',
-        rowSurMesureContenu: 'Tout le catalogue, conditions convenues au cas par cas',
-        rowSurMesureSouscriptionBefore: 'Sur devis, après',
-        rowSurMesureLink: 'rendez-vous',
-        p2: "L'offre applicable est déterminée par l'effectif du serveur au moment de la commande. Si un serveur franchit durablement le plafond de son offre, nous vous en informons et vous proposons le passage à l'offre supérieure ; à défaut d'accord, nous pouvons appliquer le tarif correspondant à l'échéance suivante, dans les conditions de l'article 14.",
+        p2: "Les serveurs déjà abonnés à une ancienne offre (Pro, Ultimate) la conservent à son prix jusqu'à sa résiliation, et peuvent passer à l'offre Plus à tout moment depuis leur espace de facturation.",
         p3a: "L'offre",
         p3Strong: 'Gratuit',
         p3b: "n'est pas une version d'essai : elle est sans limite de durée et ouvre les modules de base décrits ci-dessus. Les autres modules (gestion du staff, IA de modération, site communautaire, saisons, clans, économie, serveur MCP, cross-serveur…) sont réservés aux offres payantes.",
@@ -127,12 +120,6 @@
         thAnnuel: 'Annuel',
         rowStarterMensuel: '5,00 € TTC / mois',
         rowStarterAnnuel: '30,00 € TTC / an',
-        rowProMensuel: '9,99 € TTC / mois',
-        rowProAnnuel: '49,99 € TTC / an',
-        rowUltimateMensuel: '25,00 € TTC / mois',
-        rowUltimateAnnuel: '149,99 € TTC / an',
-        rowSurMesure: 'Sur mesure',
-        rowSurDevis: 'Sur devis',
         p3a: 'Cette grille est reproduite à titre indicatif et à la date indiquée.',
         p3Strong: "Le prix qui vous engage est celui affiché sur la page de commande au moment où vous validez le paiement",
         p3b: ', récapitulé avant validation et confirmé par courriel.',
@@ -141,7 +128,7 @@
       commande: {
         h2: 'Commande et conclusion du contrat',
         intro: 'La commande se déroule depuis le tableau de bord Kotbo :',
-        li1: "choix du serveur concerné et de l'offre correspondant à sa taille ;",
+        li1: "choix du serveur concerné ;",
         li2: 'choix de la périodicité, mensuelle ou annuelle ;',
         li3: 'récapitulatif détaillé : offre, périodicité, montant TTC, date du premier prélèvement et date de reconduction ;',
         li4: 'acceptation des présentes CGV et, le cas échéant, renonciation expresse au droit de rétractation (article 10) ;',
@@ -155,7 +142,7 @@
         h2: 'Essai gratuit',
         p1a: 'Un essai gratuit de',
         p1Strong: `${TRIAL_DAYS} jours`,
-        p1b: 'est proposé à la première souscription d\'une offre vendue en libre-service (Starter, Pro et Ultimate). Il ouvre l\'intégralité des modules de l\'offre choisie.',
+        p1b: 'est proposé à la première souscription d\'une offre vendue en libre-service (Plus). Il ouvre l\'intégralité des modules de l\'offre choisie.',
         li1Strong: 'Un essai par personne et par serveur.',
         li1: "Ni un même compte Discord ni un même serveur ne peuvent en bénéficier deux fois, y compris en changeant d'administrateur ou en recréant un serveur.",
         li2Strong: "Un moyen de paiement est enregistré à l'ouverture de l'essai",
@@ -334,7 +321,7 @@
     en: {
       title: 'Terms of Sale',
       subtitleTemplate: (date: string) => `Last updated: ${date} · Kotbo subscription service`,
-      pricingDate: '1 November 2026',
+      pricingDate: '2 November 2026',
       sections: {
         objet: 'Purpose & scope',
         vendeur: "Seller's identity",
@@ -394,12 +381,12 @@
         footnote: 'Hereinafter "the seller", "Kotbo" or "we". The customer is referred to as "you".',
       },
       offres: {
-        h2: 'Plans and tiers',
+        h2: 'Plans',
         p1a: 'Kotbo is sold as an',
         p1Strong1: 'all-in-one',
-        p1b: "package: a paid plan unlocks the entire module catalog, including modules added later. There is no module sold separately and no paid add-on. The Free plan unlocks part of the catalog, with no time limit. What distinguishes the paid plans from one another is therefore not their functional content, but",
-        p1Strong2: 'the size of the server',
-        p1c: 'they are intended for.',
+        p1b: "package: a paid plan unlocks the entire module catalog, including modules added later. There is no module sold separately and no paid add-on. The Free plan unlocks part of the catalog, with no time limit. Only one paid plan is sold, Plus, and its price is",
+        p1Strong2: 'the same for every server',
+        p1c: ', whatever its size.',
         thOffre: 'Plan',
         thTaille: 'Server size',
         thContenu: 'Content',
@@ -408,17 +395,10 @@
         rowGratuitTaille: '—',
         rowGratuitContenu: 'Core modules: moderation, AutoMod (excluding AI), anti-raid, verification, logs, welcome, rules, reaction roles, auto-responses, levels, tickets, giveaways, events, suggestions, statistics, automations, YouTube and Twitch alerts, staff directory. The current list is shown in the dashboard.',
         rowGratuitSouscription: 'Default state, no order required',
-        rowStarterTaille: 'Up to 1,000 members',
+        rowStarterTaille: 'Every server',
         rowContenuTout: 'Entire catalog',
         rowSouscriptionLibre: 'Online, self-service',
-        rowProTaille: '1,001 to 10,000 members',
-        rowUltimateTaille: '10,001 to 100,000 members',
-        rowSurMesureOffre: 'Custom',
-        rowSurMesureTaille: 'Above 100,000 members',
-        rowSurMesureContenu: 'Entire catalog, terms agreed on a case-by-case basis',
-        rowSurMesureSouscriptionBefore: 'By quotation, after a',
-        rowSurMesureLink: 'consultation',
-        p2: 'The applicable plan is determined by the server\'s size at the time of the order. If a server durably exceeds the ceiling of its plan, we will inform you and offer an upgrade to the plan above; failing agreement, we may apply the corresponding rate at the next renewal, under the conditions of Article 14.',
+        p2: 'Servers already subscribed to a former plan (Pro, Ultimate) keep it at its price until it is cancelled, and may switch to the Plus plan at any time from their billing area.',
         p3a: 'The',
         p3Strong: 'Free',
         p3b: 'plan is not a trial version: it has no time limit and unlocks the core modules listed above. Other modules (staff management, AI moderation, community website, seasons, clans, economy, MCP server, cross-server…) are reserved for paid plans.',
@@ -435,12 +415,6 @@
         thAnnuel: 'Annual',
         rowStarterMensuel: '€5.00 incl. VAT / month',
         rowStarterAnnuel: '€30.00 incl. VAT / year',
-        rowProMensuel: '€9.99 incl. VAT / month',
-        rowProAnnuel: '€49.99 incl. VAT / year',
-        rowUltimateMensuel: '€25.00 incl. VAT / month',
-        rowUltimateAnnuel: '€149.99 incl. VAT / year',
-        rowSurMesure: 'Custom',
-        rowSurDevis: 'By quotation',
         p3a: 'This table is provided for information purposes as of the date indicated.',
         p3Strong: 'The price that binds you is the one displayed on the order page at the moment you confirm payment',
         p3b: ', summarized before confirmation and confirmed by email.',
@@ -449,7 +423,7 @@
       commande: {
         h2: 'Order and formation of the contract',
         intro: 'The order is placed from the Kotbo dashboard:',
-        li1: 'selecting the server concerned and the plan matching its size;',
+        li1: 'selecting the server concerned;',
         li2: 'selecting the billing period, monthly or annual;',
         li3: 'a detailed summary: plan, billing period, amount including VAT, date of the first payment and renewal date;',
         li4: 'acceptance of these Terms of Sale and, where applicable, express waiver of the right of withdrawal (Article 10);',
@@ -463,7 +437,7 @@
         h2: 'Free trial',
         p1a: 'A free trial of',
         p1Strong: `${TRIAL_DAYS} days`,
-        p1b: 'is offered on the first subscription to a self-service plan (Starter, Pro and Ultimate). It unlocks all the modules of the chosen plan.',
+        p1b: 'is offered on the first subscription to a self-service plan (Plus). It unlocks all the modules of the chosen plan.',
         li1Strong: 'One trial per person and per server.',
         li1: 'Neither the same Discord account nor the same server may benefit from it twice, including by changing administrator or recreating a server.',
         li2Strong: 'A payment method is registered when the trial begins',
@@ -729,10 +703,7 @@
         <thead><tr><th>{t.offres.thOffre}</th><th>{t.offres.thTaille}</th><th>{t.offres.thContenu}</th><th>{t.offres.thSouscription}</th></tr></thead>
         <tbody>
           <tr><td><strong>{t.offres.rowGratuitOffre}</strong></td><td>{t.offres.rowGratuitTaille}</td><td>{t.offres.rowGratuitContenu}</td><td>{t.offres.rowGratuitSouscription}</td></tr>
-          <tr><td><strong>Starter</strong></td><td>{t.offres.rowStarterTaille}</td><td>{t.offres.rowContenuTout}</td><td>{t.offres.rowSouscriptionLibre}</td></tr>
-          <tr><td><strong>Pro</strong></td><td>{t.offres.rowProTaille}</td><td>{t.offres.rowContenuTout}</td><td>{t.offres.rowSouscriptionLibre}</td></tr>
-          <tr><td><strong>Ultimate</strong></td><td>{t.offres.rowUltimateTaille}</td><td>{t.offres.rowContenuTout}</td><td>{t.offres.rowSouscriptionLibre}</td></tr>
-          <tr><td><strong>{t.offres.rowSurMesureOffre}</strong></td><td>{t.offres.rowSurMesureTaille}</td><td>{t.offres.rowSurMesureContenu}</td><td>{t.offres.rowSurMesureSouscriptionBefore} <a href="https://pros.kotbo.fr/rdv" target="_blank" rel="noopener noreferrer">{t.offres.rowSurMesureLink}</a></td></tr>
+          <tr><td><strong>Plus</strong></td><td>{t.offres.rowStarterTaille}</td><td>{t.offres.rowContenuTout}</td><td>{t.offres.rowSouscriptionLibre}</td></tr>
         </tbody>
       </table>
     </div>
@@ -755,10 +726,7 @@
       <table>
         <thead><tr><th>{t.prix.thOffre}</th><th>{t.prix.thMensuel}</th><th>{t.prix.thAnnuel}</th></tr></thead>
         <tbody>
-          <tr><td>Starter</td><td>{t.prix.rowStarterMensuel}</td><td>{t.prix.rowStarterAnnuel}</td></tr>
-          <tr><td>Pro</td><td>{t.prix.rowProMensuel}</td><td>{t.prix.rowProAnnuel}</td></tr>
-          <tr><td>Ultimate</td><td>{t.prix.rowUltimateMensuel}</td><td>{t.prix.rowUltimateAnnuel}</td></tr>
-          <tr><td>{t.prix.rowSurMesure}</td><td colspan="2">{t.prix.rowSurDevis}</td></tr>
+          <tr><td>Plus</td><td>{t.prix.rowStarterMensuel}</td><td>{t.prix.rowStarterAnnuel}</td></tr>
         </tbody>
       </table>
     </div>
