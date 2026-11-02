@@ -1,47 +1,32 @@
 <script lang="ts">
   /**
-   * Le prix, en une ligne : glisse la taille de ton serveur, lis ton prix.
-   * L'offre gratuite est dite au-dessus, l'offre complète en dessous.
+   * Le prix, en une phrase : Kotbo est gratuit, l'offre complète a un seul
+   * prix, quelle que soit la taille du serveur. Le sélecteur ne change que la
+   * périodicité.
    *
-   * Les offres payantes de Kotbo sont identiques, seule la tranche de membres
-   * change, et un serveur ne peut souscrire que la sienne
-   * (`planForMemberCount` côté bot). Pas de colonnes à comparer, donc : un
-   * curseur, un prix, et ce qui est inclus dit une fois.
-   *
-   * Montants en centimes, recopiés de `PLAN_REGISTRY` (comme `seo/jsonld.js`
-   * et `static/llms.txt` : les modifier ensemble).
+   * Montants en centimes, recopiés de `PLAN_REGISTRY` (offre `PLUS`, comme
+   * `seo/jsonld.js` et `static/llms.txt` : les modifier ensemble).
    */
   import { getLocale } from '$lib/i18n/state.svelte';
   import { trackOnView, track } from '$lib/funnel';
-  import { SALES_URL, TRIAL_DAYS } from '$lib/product';
+  import { TRIAL_DAYS } from '$lib/product';
   import AddButton from './AddButton.svelte';
   import ChannelHeader from './ChannelHeader.svelte';
 
-  const TIERS = [
-    { key: 'STARTER', name: 'Starter', max: 1_000, month: 500, year: 3_000 },
-    { key: 'PRO', name: 'Pro', max: 10_000, month: 999, year: 4_999 },
-    { key: 'ULTIMATE', name: 'Ultimate', max: 100_000, month: 2_500, year: 14_999 },
-  ];
+  const PLUS = { name: 'Plus', month: 500, year: 3_000 };
 
   const TEXT = {
     fr: {
-      title: 'Gratuit pour démarrer. L’offre complète dépend seulement du nombre de membres',
-      sentenceA: 'Pour un serveur de',
-      sentenceB: ', Kotbo te coûte',
-      sentenceC: 'par mois',
+      title: 'Gratuit pour démarrer, un seul prix pour tout le reste',
+      sentenceA: 'Kotbo est gratuit. L’offre complète coûte',
+      sentenceB: 'par mois, quelle que soit la taille de ton serveur',
       billing: 'Facturation',
-      valueText: (n: string, price: string) => `${n} membres, ${price} par mois`,
-      slider: 'Nombre de membres sur ton serveur',
-      members: 'membres',
       monthly: 'Au mois',
       yearly: 'À l’année',
       yearlyHint: '-50 %',
-      perMonth: '/mois',
       billedYearly: (n: string) => `Facturé ${n} par an`,
       noCommit: 'Sans engagement, résiliable quand tu veux',
       plan: 'Offre',
-      custom: 'Au-delà de 100 000 membres, on construit l’offre ensemble',
-      customCta: 'Prendre rendez-vous',
       trial: `${TRIAL_DAYS} jours d’essai de l’offre complète, une fois par serveur, rien n’est débité avant la fin. Sans abonnement, ton serveur reste en gratuit`,
       free: 'Gratuit, sans limite de durée : modération, AutoMod et anti-raid, logs, accueil, tickets, niveaux, giveaways, stats, alertes YouTube et Twitch',
       included:
@@ -51,23 +36,16 @@
         `${(cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: cents % 100 ? 2 : 0, maximumFractionDigits: 2 })} €`,
     },
     en: {
-      title: 'Free to start. The full plan only depends on how many members you have',
-      sentenceA: 'For a server with',
-      sentenceB: ', Kotbo costs you',
-      sentenceC: 'a month',
+      title: 'Free to start, one price for everything else',
+      sentenceA: 'Kotbo is free. The full plan costs',
+      sentenceB: 'a month, whatever the size of your server',
       billing: 'Billing',
-      valueText: (n: string, price: string) => `${n} members, ${price} a month`,
-            slider: 'Members on your server',
-      members: 'members',
       monthly: 'Monthly',
       yearly: 'Yearly',
       yearlyHint: '-50%',
-      perMonth: '/mo',
       billedYearly: (n: string) => `Billed ${n} a year`,
       noCommit: 'No commitment, cancel whenever',
       plan: 'Plan',
-      custom: 'Above 100,000 members, we build the plan together',
-      customCta: 'Book a call',
       trial: `${TRIAL_DAYS}-day trial of the full plan, once per server, nothing charged before it ends. Without a subscription, your server stays on free`,
       free: 'Free, forever: moderation, AutoMod and anti-raid, logs, welcome, tickets, levels, giveaways, stats, YouTube and Twitch alerts',
       included:
@@ -80,18 +58,12 @@
 
   const t = $derived(TEXT[getLocale()]);
 
-  /** Curseur 0–100, échelle logarithmique de 100 à 1 000 000 membres. */
-  let slider = $state(40);
   let yearly = $state(true);
   let touched = false;
+  const monthCents = $derived(yearly ? Math.round(PLUS.year / 12) : PLUS.month);
 
-  const members = $derived(Math.round(100 * Math.pow(10_000, slider / 100)));
-  const fmt = (n: number) => n.toLocaleString(getLocale() === 'fr' ? 'fr-FR' : 'en-US').replace(/\u202f/g, '\u00a0');
-  const shown = $derived(members >= 10_000 ? Math.round(members / 1000) * 1000 : members >= 1000 ? Math.round(members / 100) * 100 : Math.round(members / 10) * 10);
-  const tier = $derived(TIERS.find((x) => members <= x.max) ?? null);
-  const monthCents = $derived(tier ? (yearly ? Math.round(tier.year / 12) : tier.month) : 0);
-
-  function onSlide() {
+  function setYearly(value: boolean) {
+    yearly = value;
     if (touched) return;
     touched = true;
     track('playground_started', { content: 'pricing' });
@@ -106,48 +78,21 @@
     <div class="max-w-5xl">
     <h2 id="price-title" class="text-balance text-lg font-semibold text-mist">{t.title}</h2>
 
-    <!-- La phrase est le tarif : elle se relit à chaque cran du curseur. -->
     <p class="mt-6 font-display text-4xl font-extrabold leading-[1.1] tracking-[-0.02em] text-fog sm:text-6xl">
-      {#if tier}
-        {t.sentenceA}
-        <span class="whitespace-nowrap text-ink tabular-nums">{fmt(shown)}{members >= 1_000_000 ? '+' : ''} {t.members}</span>{t.sentenceB}
-        <span class="whitespace-nowrap text-ink tabular-nums">{t.euro(monthCents)}</span>
-        {t.sentenceC}
-      {:else}
-        {t.custom}
-      {/if}
+      {t.sentenceA}
+      <span class="whitespace-nowrap text-ink tabular-nums">{t.euro(monthCents)}</span>
+      {t.sentenceB}
     </p>
-
-    <label for="price-members" class="sr-only">{t.slider}</label>
-    <input
-      id="price-members"
-      type="range"
-      min="0"
-      max="100"
-      step="1"
-      bind:value={slider}
-      oninput={onSlide}
-      aria-valuetext={tier ? t.valueText(`${fmt(shown)}${members >= 1_000_000 ? '+' : ''}`, t.euro(monthCents)) : t.custom}
-      class="price-range mt-8 w-full"
-      style="--p: {slider}%"
-    />
-    <div class="mt-2 flex justify-between text-xs tabular-nums text-fog" aria-hidden="true">
-      <span>100</span><span>1 000</span><span>10 000</span><span>100 000</span><span>1 M</span>
-    </div>
 
     <div class="mt-10 flex flex-col gap-6 border-t border-line pt-8 sm:flex-row sm:items-center sm:justify-between">
       <div role="group" aria-label={t.billing} class="inline-grid grid-cols-2 rounded-xl border border-line-2 p-1 text-sm font-semibold">
-        <button type="button" aria-pressed={!yearly} onclick={() => (yearly = false)} class="min-h-10 rounded-lg px-4 transition-colors {!yearly ? 'bg-ink text-night' : 'text-fog hover:text-ink'}">{t.monthly}</button>
-        <button type="button" aria-pressed={yearly} onclick={() => (yearly = true)} class="min-h-10 rounded-lg px-4 transition-colors {yearly ? 'bg-ink text-night' : 'text-fog hover:text-ink'}">
+        <button type="button" aria-pressed={!yearly} onclick={() => setYearly(false)} class="min-h-10 rounded-lg px-4 transition-colors {!yearly ? 'bg-ink text-night' : 'text-fog hover:text-ink'}">{t.monthly}</button>
+        <button type="button" aria-pressed={yearly} onclick={() => setYearly(true)} class="min-h-10 rounded-lg px-4 transition-colors {yearly ? 'bg-ink text-night' : 'text-fog hover:text-ink'}">
           {t.yearly} <span class="ml-1 {yearly ? 'text-[#15803d] in-data-[theme=light]:text-[#4ade80]' : 'text-ok'}">{t.yearlyHint}</span>
         </button>
       </div>
       <p class="text-sm text-fog">
-        {#if tier}
-          {t.plan} <span class="font-semibold text-ink">{tier.name}</span> · {yearly ? t.billedYearly(t.euro(tier.year)) : t.noCommit} · {t.ht}
-        {:else}
-          <a href={SALES_URL} onclick={() => track('sales_clicked')} class="font-semibold text-ink underline decoration-line-2 underline-offset-4 hover:decoration-ink">{t.customCta}</a>
-        {/if}
+        {t.plan} <span class="font-semibold text-ink">{PLUS.name}</span> · {yearly ? t.billedYearly(t.euro(PLUS.year)) : t.noCommit} · {t.ht}
       </p>
     </div>
 
@@ -161,44 +106,3 @@
     </div>
   </div>
 </section>
-
-<style>
-  /* L'input fait 28 px de haut pour le doigt ; la piste dessinée en fait 8. */
-  .price-range {
-    appearance: none;
-    height: 28px;
-    background: transparent;
-    cursor: pointer;
-  }
-  .price-range::-webkit-slider-runnable-track {
-    height: 8px;
-    border-radius: 999px;
-    background: linear-gradient(to right, #818cf8 var(--p), #71717a var(--p));
-  }
-  .price-range::-moz-range-track {
-    height: 8px;
-    border-radius: 999px;
-    background: #71717a;
-  }
-  .price-range::-moz-range-progress {
-    height: 8px;
-    border-radius: 999px;
-    background: #818cf8;
-  }
-  .price-range::-webkit-slider-thumb {
-    appearance: none;
-    width: 26px;
-    height: 26px;
-    margin-top: -9px;
-    border-radius: 999px;
-    background: #fff;
-    border: 6px solid #4f46e5;
-  }
-  .price-range::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
-    border-radius: 999px;
-    background: #fff;
-    border: 6px solid #4f46e5;
-  }
-</style>
