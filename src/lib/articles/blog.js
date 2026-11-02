@@ -81,8 +81,8 @@ export const BLOG = [
             body: 'Sur une page staff verrouillée, le bouton Voir un exemple rempli ouvre la même page dans la démo publique, avec une équipe fictive. Tu vois exactement ce que tu débloques',
           },
           {
-            h2: 'Le prix ne change pas',
-            body: 'L’offre complète coûte toujours selon la taille du serveur : 5 € par mois jusqu’à 1 000 membres, 9,99 € jusqu’à 10 000, 25 € jusqu’à 100 000, hors taxes, avec au moins 50 % de remise à l’année. Elle s’essaie 15 jours, une fois par serveur',
+            h2: 'Un seul prix, pour tous les serveurs',
+            body: 'L’offre complète s’appelle Plus et coûte le même prix pour tous les serveurs, petits ou grands : 5 € par mois, ou 30 € par an, hors taxes. Elle s’essaie 15 jours, une fois par serveur',
           },
           {
             h2: 'Si ton essai ou ton abonnement se termine',
@@ -100,7 +100,7 @@ export const BLOG = [
           },
           {
             q: 'Je suis déjà abonné : qu’est-ce qui change pour moi ?',
-            a: 'Rien. Ton offre ouvre toujours tout le catalogue, au même prix',
+            a: 'Rien. Ton offre ouvre toujours tout le catalogue, au même prix. Si tu es sur Pro ou Ultimate, tu peux passer sur Plus depuis la page Facturation pour payer moins',
           },
         ],
       },
@@ -142,8 +142,8 @@ export const BLOG = [
             body: 'On a locked staff page, the Voir un exemple rempli button opens the same page in the public demo, with a sample team. You see exactly what you unlock',
           },
           {
-            h2: 'The price does not change',
-            body: 'The full plan is still priced by server size: €5 a month up to 1,000 members, €9.99 up to 10,000, €25 up to 100,000, excluding VAT, with at least 50% off yearly. It comes with a 15-day trial, once per server',
+            h2: 'One price, for every server',
+            body: 'The full plan is called Plus and costs the same for every server, small or large: €5 a month, or €30 a year, excluding VAT. It comes with a 15-day trial, once per server',
           },
           {
             h2: 'If your trial or subscription ends',
@@ -161,7 +161,7 @@ export const BLOG = [
           },
           {
             q: 'I already subscribe: what changes for me?',
-            a: 'Nothing. Your plan still opens the whole catalogue, at the same price',
+            a: 'Nothing. Your plan still opens the whole catalogue, at the same price. If you are on Pro or Ultimate, you can switch to Plus from the Billing page to pay less',
           },
         ],
       },
