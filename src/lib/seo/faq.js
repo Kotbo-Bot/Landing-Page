@@ -125,7 +125,7 @@ export const STAFF_FAQ = {
     },
     {
       q: 'Combien coûte la gestion du staff avec Kotbo ?',
-      a: "Elle est comprise dans toutes les offres payantes, avec le reste du catalogue : 5 € HT par mois ou 30 € HT par an, quelle que soit la taille du serveur. Chaque serveur a 15 jours d'essai, une fois, pour tout configurer avant de payer.",
+      a: "Elle est comprise dans toutes les offres payantes, avec le reste du catalogue : 5 € HT par mois ou 30 € HT par an, quelle que soit la taille du serveur. Avec un code de parrainage, un serveur a 15 jours offerts puis 10 % de remise sur sa première facture.",
     },
   ],
   en: [
@@ -155,7 +155,7 @@ export const STAFF_FAQ = {
     },
     {
       q: 'How much does staff management with Kotbo cost?',
-      a: "It comes with every paid plan, along with the rest of the catalog: €5 per month excl. VAT or €30 per year, whatever the size of the server. Every server gets a 15-day trial, once, to set everything up before paying.",
+      a: "It comes with every paid plan, along with the rest of the catalog: €5 per month excl. VAT or €30 per year, whatever the size of the server. With a referral code, a server gets 15 days free, then 10% off its first invoice.",
     },
   ],
 };
@@ -163,17 +163,16 @@ export const STAFF_FAQ = {
 /**
  * La question sur la gratuité, ajoutée à la fin de la FAQ de chaque page
  * fonctionnalité (`data/features.ts`) : elle n'a pas à être recopiée dans
- * chaque fiche de la console. Durée d'essai alignée sur `TRIAL_DAYS`
- * (`product.ts`).
+ * chaque fiche de la console.
  */
 export const FREE_FAQ = {
   fr: {
     q: 'Est-ce gratuit ?',
-    a: "Oui : l'offre gratuite, sans limite de durée, couvre la modération, l'anti-raid, les logs, l'accueil, les tickets, les niveaux et les stats. L'offre complète (staff, IA, site, saisons, économie) s'essaie 15 jours sans être débitée, puis coûte 5 € HT par mois, pour tous les serveurs.",
+    a: "Oui : l'offre gratuite, sans limite de durée, couvre la modération, l'anti-raid, les logs, l'accueil, les tickets, les niveaux et les stats. L'offre complète (staff, IA, site, saisons, économie) coûte 5 € HT par mois, pour tous les serveurs.",
   },
   en: {
     q: 'Is it free?',
-    a: 'Yes: the free plan, with no time limit, covers moderation, anti-raid, logs, welcome, tickets, levels and stats. The full plan (staff, AI, website, seasons, economy) comes with a 15-day trial with nothing charged, then costs €5 per month (excl. tax), for every server.',
+    a: 'Yes: the free plan, with no time limit, covers moderation, anti-raid, logs, welcome, tickets, levels and stats. The full plan (staff, AI, website, seasons, economy) costs €5 per month (excl. tax), for every server.',
   },
 };
 

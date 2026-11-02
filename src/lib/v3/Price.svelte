@@ -9,7 +9,7 @@
    */
   import { getLocale } from '$lib/i18n/state.svelte';
   import { trackOnView, track } from '$lib/funnel';
-  import { TRIAL_DAYS } from '$lib/product';
+  import { REFERRAL_DISCOUNT_PERCENT, TRIAL_DAYS } from '$lib/product';
   import AddButton from './AddButton.svelte';
   import ChannelHeader from './ChannelHeader.svelte';
 
@@ -27,7 +27,7 @@
       billedYearly: (n: string) => `Facturé ${n} par an`,
       noCommit: 'Sans engagement, résiliable quand tu veux',
       plan: 'Offre',
-      trial: `${TRIAL_DAYS} jours d’essai de l’offre complète, une fois par serveur, rien n’est débité avant la fin. Sans abonnement, ton serveur reste en gratuit`,
+      trial: `Avec un code de parrainage, ${TRIAL_DAYS} jours offerts puis -${REFERRAL_DISCOUNT_PERCENT} % sur ta première facture. Sans abonnement, ton serveur reste en gratuit`,
       free: 'Gratuit, sans limite de durée : modération, AutoMod et anti-raid, logs, accueil, tickets, niveaux, giveaways, stats, alertes YouTube et Twitch',
       included:
         'L’offre complète ajoute ce qu’aucun bot gratuit ne fait : toute la gestion du staff, l’IA de modération, le site de ta communauté, saisons, clans, économie et RPG, le serveur MCP, le cross-serveur, et les modules qui sortiront après. Aucun module en option',
@@ -46,7 +46,7 @@
       billedYearly: (n: string) => `Billed ${n} a year`,
       noCommit: 'No commitment, cancel whenever',
       plan: 'Plan',
-      trial: `${TRIAL_DAYS}-day trial of the full plan, once per server, nothing charged before it ends. Without a subscription, your server stays on free`,
+      trial: `With a referral code, ${TRIAL_DAYS} days free then ${REFERRAL_DISCOUNT_PERCENT}% off your first invoice. Without a subscription, your server stays on free`,
       free: 'Free, forever: moderation, AutoMod and anti-raid, logs, welcome, tickets, levels, giveaways, stats, YouTube and Twitch alerts',
       included:
         'The full plan adds what no free bot does: full staff management, AI moderation, your community website, seasons, clans, economy and RPG, the MCP server, cross-server, and every module that ships later. No add-ons',

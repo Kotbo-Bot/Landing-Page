@@ -22,7 +22,6 @@
   import { getLocale } from '$lib/i18n/state.svelte';
   import { featurePath, FEATURES_ROUTE, homeOf } from '$lib/i18n/routes';
   import { FEATURES } from '$lib/data/features';
-  import { TRIAL_DAYS } from '$lib/product';
   import Seo from '$lib/seo/Seo.svelte';
   import Shell from '$lib/v3/Shell.svelte';
   import AddButton from '$lib/v3/AddButton.svelte';
@@ -62,24 +61,24 @@
       author: 'Kotbo',
       minutes: (n: number) => `${n} min de lecture`,
       demo: 'Fouiller la démo du dashboard',
-      offer: `Kotbo est gratuit pour démarrer, sans carte bancaire, avec ${TRIAL_DAYS} jours d’essai de l’offre complète`,
+      offer: `Kotbo est gratuit pour démarrer, sans carte bancaire et sans limite de durée`,
       toc: 'Sur cette page',
       faq: 'Questions fréquentes',
       related: 'À lire aussi',
       all: 'Tous les articles',
-      final: { title: 'Essaie-le sur ton serveur', body: `Gratuit pour démarrer, sans carte bancaire, et ${TRIAL_DAYS} jours d’essai de l’offre complète` },
+      final: { title: 'Essaie-le sur ton serveur', body: `Gratuit pour démarrer, sans carte bancaire et sans limite de durée` },
       pricing: 'Voir les tarifs',
     },
     en: {
       author: 'Kotbo',
       minutes: (n: number) => `${n} min read`,
       demo: 'Dig through the dashboard demo',
-      offer: `Kotbo is free to start, with no credit card, plus a ${TRIAL_DAYS}-day trial of the full plan`,
+      offer: `Kotbo is free to start, with no credit card and no time limit`,
       toc: 'On this page',
       faq: 'Frequently asked questions',
       related: 'Read next',
       all: 'All articles',
-      final: { title: 'Try it on your server', body: `Free to start with no credit card, plus a ${TRIAL_DAYS}-day trial of the full plan` },
+      final: { title: 'Try it on your server', body: `Free to start with no credit card and no time limit` },
       pricing: 'See pricing',
     },
   };

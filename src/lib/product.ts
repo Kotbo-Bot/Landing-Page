@@ -6,8 +6,10 @@
  * côté dashboard, qui affiche les mêmes valeurs.
  */
 
-/** Aligné sur `TRIAL_DAYS` du bot. */
+/** Aligné sur `TRIAL_DAYS` du bot. Offert seulement avec un code de parrainage. */
 export const TRIAL_DAYS = 15;
+/** Aligné sur `REFERRAL_DISCOUNT_PERCENT` du bot : remise sur la première facture. */
+export const REFERRAL_DISCOUNT_PERCENT = 10;
 
 export const SALES_URL = 'https://pros.kotbo.fr/rdv';
 export const CONTACT_EMAIL = 'contact@kotbo.fr';

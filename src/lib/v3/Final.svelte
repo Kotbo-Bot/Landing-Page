@@ -5,18 +5,17 @@
    * reprend la promesse du héros (la pile de bots qui s'en va).
    */
   import { getLocale } from '$lib/i18n/state.svelte';
-  import { TRIAL_DAYS } from '$lib/product';
   import AddButton from './AddButton.svelte';
 
   const TEXT = {
     fr: {
       title: 'Allez, kick les six autres',
-      sub: `Gratuit, sans carte bancaire, et ${TRIAL_DAYS} jours d’essai de l’offre complète. Ton serveur est prêt avant que t’aies fini ton kebab`,
+      sub: `Gratuit, sans carte bancaire, sans limite de durée. Ton serveur est prêt avant que t’aies fini ton kebab`,
       demo: 'Ou fouille d’abord la démo du dashboard',
     },
     en: {
       title: 'Go on, kick the other six',
-      sub: `Free with no credit card, plus a ${TRIAL_DAYS}-day trial of the full plan. Your server is ready before your food gets cold`,
+      sub: `Free with no credit card and no time limit. Your server is ready before your food gets cold`,
       demo: 'Or dig through the dashboard demo first',
     },
   };

@@ -14,7 +14,7 @@
  * lisent.
  */
 import type { Locale } from '$lib/i18n/state.svelte';
-import { TRIAL_DAYS } from '$lib/product';
+import { REFERRAL_DISCOUNT_PERCENT, TRIAL_DAYS } from '$lib/product';
 
 export interface ArticleItem {
 	title: string;
@@ -145,7 +145,7 @@ export const STAFF_ARTICLE: Record<Locale, StaffArticle> = {
 		],
 		final: {
 			title: 'Essaie-le avec ton équipe',
-			body: `${TRIAL_DAYS} jours d’essai de l’offre complète, une fois par serveur. La gestion du staff en fait partie, à partir de 5 € HT par mois ; l’annuaire du staff reste gratuit`,
+			body: `La gestion du staff fait partie de l’offre complète, à 5 € HT par mois ; l’annuaire du staff reste gratuit. Avec un code de parrainage, ${TRIAL_DAYS} jours offerts puis -${REFERRAL_DISCOUNT_PERCENT} % sur la première facture`,
 		},
 	},
 	en: {
@@ -241,7 +241,7 @@ export const STAFF_ARTICLE: Record<Locale, StaffArticle> = {
 		],
 		final: {
 			title: 'Try it with your team',
-			body: `${TRIAL_DAYS}-day trial of the full plan, once per server. Staff management is part of it, from €5 per month excl. VAT; the staff directory stays free`,
+			body: `Staff management is part of the full plan, at €5 per month excl. VAT; the staff directory stays free. With a referral code, ${TRIAL_DAYS} days free then ${REFERRAL_DISCOUNT_PERCENT}% off the first invoice`,
 		},
 	},
 };

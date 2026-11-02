@@ -118,7 +118,7 @@ Prix hors taxes.
 
 - Gratuit, sans limite de durée : modération, AutoMod et anti-raid, vérification, logs, accueil, règlement, rôles par réaction, auto-réponses, niveaux, tickets, giveaways, événements, suggestions, statistiques, automatisations, alertes YouTube et Twitch, annuaire du staff.
 - Offre complète : tout le catalogue, dont la gestion du staff, l'IA de modération (AegisAI), le site communautaire, saisons, clans, économie et RPG, le serveur MCP et le cross-serveur. Offre Plus, au même prix quelle que soit la taille du serveur : 5 € par mois, ou 30 € par an.
-- 15 jours d'essai de l'offre complète, une fois par serveur : la carte n'est débitée qu'à la fin. L'offre gratuite ne demande pas de carte.
+- Avec un code de parrainage : 15 jours d'essai de l'offre complète, puis 10 % de remise sur la première facture. Sans code, pas d'essai. L'offre gratuite ne demande pas de carte.
 
 ## Contact
 

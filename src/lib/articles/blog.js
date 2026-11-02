@@ -82,7 +82,7 @@ export const BLOG = [
           },
           {
             h2: 'Un seul prix, pour tous les serveurs',
-            body: 'L’offre complète s’appelle Plus et coûte le même prix pour tous les serveurs, petits ou grands : 5 € par mois, ou 30 € par an, hors taxes. Elle s’essaie 15 jours, une fois par serveur',
+            body: 'L’offre complète s’appelle Plus et coûte le même prix pour tous les serveurs, petits ou grands : 5 € par mois, ou 30 € par an, hors taxes. Avec un code de parrainage, elle s’essaie 15 jours, puis la première facture a 10 % de remise',
           },
           {
             h2: 'Si ton essai ou ton abonnement se termine',
@@ -143,7 +143,7 @@ export const BLOG = [
           },
           {
             h2: 'One price, for every server',
-            body: 'The full plan is called Plus and costs the same for every server, small or large: €5 a month, or €30 a year, excluding VAT. It comes with a 15-day trial, once per server',
+            body: 'The full plan is called Plus and costs the same for every server, small or large: €5 a month, or €30 a year, excluding VAT. With a referral code, it comes with a 15-day trial, then 10% off the first invoice',
           },
           {
             h2: 'If your trial or subscription ends',
