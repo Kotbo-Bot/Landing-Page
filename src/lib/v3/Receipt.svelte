@@ -10,9 +10,8 @@
    * sur leurs pages publiques en septembre 2026 (conversion approximative pour
    * les prix en dollars), en ordre de grandeur, affichés « ≈ ». Ils
    * changent sans préavis : les revérifier avant de les toucher. Kotbo est
-   * opposé à son prix le plus bas (Starter payé à l'année, 2,50 €/mois) : annoncer un palier supérieur
-   * gonflerait la comparaison, et c'est le seul prix que tout serveur peut
-   * payer. Le tableur du staff ne coûte rien, il coûte du temps : il est
+   * opposé à son offre Plus payée à l'année (2,50 €/mois), la seule vendue,
+   * au même prix pour tous les serveurs. Le tableur du staff ne coûte rien, il coûte du temps : il est
    * compté en heures, pas en euros.
    */
   import { base } from '$app/paths';
@@ -57,7 +56,7 @@
       same: 'Même prix. Mais un seul bot, et ton staff en plus',
       empty: 'Coche au moins un truc, sinon le ticket est vide',
       thanks: 'Merci de ta visite. Reviens pas',
-      note: 'Prix premium d’entrée relevés sur la page de chaque bot en septembre 2026, en ordre de grandeur. Kotbo n’est affilié à aucun. Kotbo : Starter à l’année, HT',
+      note: 'Prix premium d’entrée relevés sur la page de chaque bot en septembre 2026, en ordre de grandeur. Kotbo n’est affilié à aucun. Kotbo : Plus à l’année, HT',
       priceFmt: (n: number) => `${n.toLocaleString('fr-FR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 })} €`,
     },
     en: {
@@ -79,7 +78,7 @@
       same: 'Same price. But one bot, and your staff on top',
       empty: 'Tick at least one thing, or the receipt is empty',
       thanks: 'Thanks for visiting. Don’t come back',
-      note: 'Entry-level premium prices from each bot’s page in September 2026, order of magnitude. Kotbo isn’t affiliated with any. Kotbo: Starter billed yearly, excl. VAT',
+      note: 'Entry-level premium prices from each bot’s page in September 2026, order of magnitude. Kotbo isn’t affiliated with any. Kotbo: Plus billed yearly, excl. VAT',
       priceFmt: (n: number) => `€${n.toLocaleString('en-US', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 })}`,
     },
   };

@@ -154,14 +154,14 @@ function software(locale) {
     inLanguage: [LANG.fr, LANG.en],
     image: `${SITE}/og-image.png`,
     featureList: t.features,
-    // L'offre gratuite, puis le prix mensuel le plus haut des offres de
-    // `v3/Price.svelte`, hors taxes : les modifier ensemble.
+    // L'offre gratuite et l'offre Plus de `v3/Price.svelte`, prix mensuel
+    // hors taxes : les modifier ensemble.
     offers: {
       '@type': 'AggregateOffer',
       priceCurrency: 'EUR',
       lowPrice: '0',
-      highPrice: '25.00',
-      offerCount: 4,
+      highPrice: '5.00',
+      offerCount: 2,
       url: `${SITE}${PATHS.home[locale]}#prix`,
     },
     publisher: { '@id': ORG_ID },

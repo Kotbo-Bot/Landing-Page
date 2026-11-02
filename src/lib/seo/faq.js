@@ -37,7 +37,7 @@ export const HOME_FAQ = {
     },
     {
       q: 'Ça coûte combien, comparé à MEE6, Dyno ou Ticket Tool ?',
-      a: "Kotbo démarre à 2,50 €/mois (offre Starter payée à l'année), tout compris. En face, compte environ 12 € pour MEE6, 5 € pour Dyno, 5 à 7 € pour Ticket Tool en premium. Le ticket de caisse plus haut fait l'addition avec ce que t'as vraiment.",
+      a: "Kotbo est gratuit, et son offre complète coûte 2,50 €/mois (offre Plus payée à l'année), tout compris, quelle que soit la taille du serveur. En face, compte environ 12 € pour MEE6, 5 € pour Dyno, 5 à 7 € pour Ticket Tool en premium. Le ticket de caisse plus haut fait l'addition avec ce que t'as vraiment.",
     },
     {
       q: 'Kotbo est un bot français ?',
@@ -53,7 +53,7 @@ export const HOME_FAQ = {
     },
     {
       q: "C'est gratuit ?",
-      a: "Oui. L'offre gratuite n'a pas de limite de durée : modération, AutoMod et anti-raid, logs, accueil, tickets, niveaux, giveaways, stats, alertes YouTube et Twitch. L'offre complète ajoute la gestion du staff, l'IA de modération, le site, saisons, clans et économie ; elle s'essaie 15 jours sans être débitée, puis son prix dépend seulement du nombre de membres, dès 2,50 €/mois à l'année sous 1 000 membres.",
+      a: "Oui. L'offre gratuite n'a pas de limite de durée : modération, AutoMod et anti-raid, logs, accueil, tickets, niveaux, giveaways, stats, alertes YouTube et Twitch. L'offre complète ajoute la gestion du staff, l'IA de modération, le site, saisons, clans et économie ; elle s'essaie 15 jours sans être débitée, puis elle coûte 2,50 €/mois à l'année, pour tous les serveurs.",
     },
   ],
   en: [
@@ -75,7 +75,7 @@ export const HOME_FAQ = {
     },
     {
       q: 'How much is it compared to MEE6, Dyno, or Ticket Tool?',
-      a: "Kotbo starts at €2.50/month (Starter, billed yearly), everything included. On the other side, count roughly €12 for MEE6, €5 for Dyno, €5 to €7 for Ticket Tool premium. The receipt above adds up what you actually run.",
+      a: "Kotbo is free, and its full plan costs €2.50/month (Plus, billed yearly), everything included, whatever the size of your server. On the other side, count roughly €12 for MEE6, €5 for Dyno, €5 to €7 for Ticket Tool premium. The receipt above adds up what you actually run.",
     },
     {
       q: 'Is Kotbo a French bot?',
@@ -91,7 +91,7 @@ export const HOME_FAQ = {
     },
     {
       q: 'Is it free?',
-      a: "Yes. The free plan has no time limit: moderation, AutoMod and anti-raid, logs, welcome, tickets, levels, giveaways, stats, YouTube and Twitch alerts. The full plan adds staff management, AI moderation, the website, seasons, clans and economy; try it for 15 days with nothing charged, then its price only depends on member count, from €2.50/month billed yearly under 1,000 members.",
+      a: "Yes. The free plan has no time limit: moderation, AutoMod and anti-raid, logs, welcome, tickets, levels, giveaways, stats, YouTube and Twitch alerts. The full plan adds staff management, AI moderation, the website, seasons, clans and economy; try it for 15 days with nothing charged, then it costs €2.50/month billed yearly, for every server.",
     },
   ],
 };
@@ -125,7 +125,7 @@ export const STAFF_FAQ = {
     },
     {
       q: 'Combien coûte la gestion du staff avec Kotbo ?',
-      a: "Elle est comprise dans toutes les offres payantes, avec le reste du catalogue : à partir de 5 € HT par mois pour un serveur jusqu'à 1 000 membres, ou 30 € HT par an. Chaque serveur a 15 jours d'essai, une fois, pour tout configurer avant de payer.",
+      a: "Elle est comprise dans toutes les offres payantes, avec le reste du catalogue : 5 € HT par mois ou 30 € HT par an, quelle que soit la taille du serveur. Chaque serveur a 15 jours d'essai, une fois, pour tout configurer avant de payer.",
     },
   ],
   en: [
@@ -155,7 +155,7 @@ export const STAFF_FAQ = {
     },
     {
       q: 'How much does staff management with Kotbo cost?',
-      a: "It comes with every paid plan, along with the rest of the catalog: from €5 per month excl. VAT for a server up to 1,000 members, or €30 per year. Every server gets a 15-day trial, once, to set everything up before paying.",
+      a: "It comes with every paid plan, along with the rest of the catalog: €5 per month excl. VAT or €30 per year, whatever the size of the server. Every server gets a 15-day trial, once, to set everything up before paying.",
     },
   ],
 };
@@ -169,11 +169,11 @@ export const STAFF_FAQ = {
 export const FREE_FAQ = {
   fr: {
     q: 'Est-ce gratuit ?',
-    a: "Oui : l'offre gratuite, sans limite de durée, couvre la modération, l'anti-raid, les logs, l'accueil, les tickets, les niveaux et les stats. L'offre complète (staff, IA, site, saisons, économie) s'essaie 15 jours sans être débitée, puis coûte à partir de 5 € HT par mois jusqu'à 1 000 membres.",
+    a: "Oui : l'offre gratuite, sans limite de durée, couvre la modération, l'anti-raid, les logs, l'accueil, les tickets, les niveaux et les stats. L'offre complète (staff, IA, site, saisons, économie) s'essaie 15 jours sans être débitée, puis coûte 5 € HT par mois, pour tous les serveurs.",
   },
   en: {
     q: 'Is it free?',
-    a: 'Yes: the free plan, with no time limit, covers moderation, anti-raid, logs, welcome, tickets, levels and stats. The full plan (staff, AI, website, seasons, economy) comes with a 15-day trial with nothing charged, then starts at €5 per month (excl. tax) up to 1,000 members.',
+    a: 'Yes: the free plan, with no time limit, covers moderation, anti-raid, logs, welcome, tickets, levels and stats. The full plan (staff, AI, website, seasons, economy) comes with a 15-day trial with nothing charged, then costs €5 per month (excl. tax), for every server.',
   },
 };
 
