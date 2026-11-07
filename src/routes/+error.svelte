@@ -4,6 +4,7 @@
    * le repli d'`adapter-static`). Dans la langue de Discord : le salon
    * n'existe pas. Elle renvoie vers ce qui existe, et ne s'indexe pas.
    */
+  import { onMount } from 'svelte';
   import { base } from '$app/paths';
   import { page } from '$app/state';
   import { getLocale } from '$lib/i18n/state.svelte';
@@ -25,6 +26,13 @@
     },
   };
   const t = $derived(TEXT[getLocale()]);
+
+  // GitHub Pages ignore `_redirects` : /demo/<page> tombe ici. La démo est une
+  // SPA servie depuis /demo/ seulement ; on lui passe la page voulue en `?to=`.
+  onMount(() => {
+    const m = location.pathname.match(/^\/demo(\/.+)$/);
+    if (m) location.replace(`/demo/?to=${encodeURIComponent(m[1] + location.search + location.hash)}`);
+  });
   const text = $derived(page.status === 404 ? t.missing : t.broken);
 </script>
 
