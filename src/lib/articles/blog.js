@@ -410,22 +410,66 @@ export const BLOG = [
     author: 'Klaynight',
     text: {
       fr: {
+        title: 'Kotbo gratuit : ce qui est inclus et ce qui reste payant',
         h1: 'Kotbo devient gratuit : ce qui est inclus, ce qui reste dans l’offre complète',
         description:
-          'Kotbo a maintenant une offre gratuite sans limite de durée : modération, anti-raid, logs, accueil, tickets, niveaux, stats. L’offre complète garde la gestion du staff, l’IA, le site et l’engagement poussé.',
+          'Kotbo a maintenant une offre gratuite sans limite de durée ni carte bancaire : modération, anti-raid, logs, accueil, tickets, niveaux, stats sur 7 jours. Le détail module par module, les limites, et ce que garde l’offre Plus.',
         teaser: 'Kotbo passe gratuit : modération, tickets, niveaux et stats sans abonnement ni carte',
-        lead: 'Jusqu’ici, un serveur sans abonnement avait le bot mais aucun module. C’est fini : Kotbo a une offre gratuite, sans limite de durée et sans carte bancaire, qui couvre ce qu’un serveur attend d’un bot',
+        lead: 'Jusqu’ici, un serveur sans abonnement avait le bot mais aucun module. C’est fini : Kotbo a une offre gratuite, sans limite de durée et sans carte bancaire, qui couvre ce qu’un serveur attend d’un bot. Voici le détail, module par module, et ce qui reste dans l’offre complète',
         sections: [
           {
-            h2: 'Ce qui est gratuit',
-            body: 'Tout ce que les autres bots donnent gratuitement, réglé depuis le même dashboard que l’offre complète',
+            h2: 'Ce qui change',
+            body: 'Avant, sans abonnement, Kotbo restait sur ton serveur sans rien faire tourner. Maintenant, un serveur sans abonnement est en offre gratuite : près de trente modules s’allument depuis le dashboard, sans essai qui expire et sans carte à donner',
             points: [
-              'Modération : sanctions, AutoMod, anti-raid, vérification, modération des pseudos',
-              'Logs Discord',
-              'Accueil et départ, règlement, rôles par réaction, créateur d’embeds, auto-réponses, auto-thread',
-              'Niveaux et XP, tickets, giveaways, événements et quiz, suggestions, Starlight',
-              'Analytics, déclencheurs, actualités et RSS, alertes YouTube et Twitch, rappel de bump',
-              'L’annuaire du staff',
+              'Pas de limite de durée : l’offre gratuite ne s’arrête pas',
+              'Pas de carte bancaire : rien à saisir pour l’utiliser',
+              'Le même dashboard que l’offre complète : les modules payants y sont visibles, avec un cadenas',
+            ],
+          },
+          {
+            h2: 'Ce qui est gratuit, module par module',
+            body: 'Tout ce que les autres bots donnent gratuitement, et un peu plus, réglé depuis le même dashboard',
+            items: [
+              {
+                title: 'Modération et sécurité',
+                body: 'Sanctions (avertissement, mute, exclusion, bannissement) avec historique, AutoMod, anti-raid, vérification à l’arrivée et modération des pseudos',
+                link: { feature: 'automod', label: 'Lire l’article sur l’AutoMod' },
+              },
+              {
+                title: 'Logs',
+                body: 'Les journaux du serveur dans les salons de ton choix : messages supprimés ou modifiés, arrivées et départs, rôles, salons, sanctions',
+                link: { feature: 'logs', label: 'Lire l’article sur les logs' },
+              },
+              {
+                title: 'Accueil et contenu',
+                body: 'Messages de bienvenue et de départ, règlement, rôles par réaction, créateur d’embeds, auto-réponses, auto-thread, actualités et flux RSS',
+              },
+              {
+                title: 'Niveaux et XP',
+                body: 'L’XP sur les messages et le vocal, le classement et les rôles de récompense',
+                link: { feature: 'leveling', label: 'Lire l’article sur les niveaux' },
+              },
+              {
+                title: 'Tickets',
+                body: 'Des panneaux de tickets pour le support de ton serveur, avec leur suivi dans le dashboard',
+                link: { feature: 'tickets', label: 'Lire l’article sur les tickets' },
+              },
+              {
+                title: 'Communauté',
+                body: 'Giveaways, événements et quiz, suggestions, Starlight pour mettre en avant les meilleurs messages, salons fun (comptage, histoire à un mot, nombre mystère)',
+              },
+              {
+                title: 'Intégrations',
+                body: 'Déclencheurs pour automatiser des actions, alertes YouTube et Twitch, rappel de bump',
+              },
+              {
+                title: 'Stats',
+                body: 'Analytics sur les 7 derniers jours, détaillé plus bas',
+              },
+              {
+                title: 'L’annuaire du staff',
+                body: 'La liste de ton équipe, rangée par grade. C’est la vitrine de la gestion du staff, le reste de la catégorie est dans l’offre complète',
+              },
             ],
           },
           {
@@ -433,23 +477,62 @@ export const BLOG = [
             body: 'Un serveur raidé parce qu’il n’avait pas payé, c’est un échec pour tout le monde. Sanctions, AutoMod, anti-raid, vérification et logs restent dans l’offre gratuite, et un test du code de Kotbo échoue si quelqu’un les en retire',
           },
           {
-            h2: 'Ce que garde l’offre complète',
-            body: 'Ce qu’aucun bot gratuit ne fait. C’est là que Kotbo se distingue',
+            h2: 'Les stats en gratuit : 7 jours d’historique',
+            body: 'Analytics est ouvert en gratuit sur les 7 derniers jours. Assez pour voir ce qui se passe cette semaine sur ton serveur',
             points: [
-              'Toute la gestion du staff : hiérarchie, recrutement, tutorat, réunions, absences, listes de suivi, sondages, discipline, évaluations',
-              'L’IA de modération AegisAI, la détection des doubles comptes, les appels de bannissement',
-              'Le site de ta communauté, avec wiki, blog et forum',
-              'Saisons, prestige, clans, drops, économie et RPG, marché, quêtes, réputation',
-              'Le serveur MCP pour piloter Kotbo depuis une IA, et le cross-serveur',
+              'Onglets ouverts : vue d’ensemble, messages, vocal, carte de chaleur, membres, croissance, modération',
+              'Les autres onglets et les filtres par salon ou par rôle sont dans l’offre complète. Chaque onglet verrouillé a un lien vers le même onglet dans la démo',
+              'Kotbo enregistre tout, même en gratuit : passer à l’offre complète ouvre l’historique déjà collecté, rien n’est à reconstruire',
             ],
           },
           {
-            h2: 'Voir la gestion du staff avant de payer',
-            body: 'Sur une page staff verrouillée, le bouton Voir un exemple rempli ouvre la même page dans la démo publique, avec une équipe fictive. Tu vois exactement ce que tu débloques',
+            h2: 'Ce que garde l’offre complète',
+            body: 'Ce qu’aucun bot gratuit ne fait. C’est là que Kotbo se distingue',
+            items: [
+              {
+                title: 'Toute la gestion du staff',
+                body: 'Hiérarchie et organigramme, recrutement, tutorat, réunions, absences, listes de suivi, sondages, discipline, évaluations',
+              },
+              {
+                title: 'L’IA et la protection avancée',
+                body: 'L’IA de modération AegisAI dans l’AutoMod, la détection des doubles comptes, les appels de bannissement',
+                link: { feature: 'double_accounts', label: 'Lire l’article sur les doubles comptes' },
+              },
+              {
+                title: 'Le site de ta communauté',
+                body: 'Un site à l’adresse de ton serveur, avec wiki, blog et forum',
+              },
+              {
+                title: 'L’engagement poussé',
+                body: 'Saisons, prestige, clans, drops, économie et RPG, marché, quêtes, réputation',
+              },
+              {
+                title: 'Piloter Kotbo depuis une IA, et le cross-serveur',
+                body: 'Le serveur MCP pour gérer ton serveur depuis Claude, ChatGPT ou Gemini, et les modules qui relient plusieurs serveurs',
+              },
+              {
+                title: 'Analytics complet',
+                body: 'Tout l’historique, tous les onglets, et les filtres par salon et par rôle',
+              },
+            ],
+          },
+          {
+            h2: 'Voir avant de payer',
+            body: 'Sur une page staff verrouillée, le bouton Voir un exemple rempli ouvre la même page dans la démo publique, avec une équipe d’exemple. Les onglets Analytics verrouillés renvoient de la même façon vers la démo. Tu vois exactement ce que tu débloques avant de sortir ta carte',
+          },
+          {
+            h2: 'Démarrer en gratuit',
+            body: 'Trois minutes, sans carte',
+            steps: [
+              { title: 'Ajoute Kotbo à ton serveur', body: 'Depuis le bouton Ajouter à Discord du site' },
+              { title: 'Suis le parcours de configuration', body: 'Le dashboard te demande quel salon sert à quoi et allume les premiers modules' },
+              { title: 'Choisis Continuer en gratuit', body: 'À l’étape de l’offre. Tu pourras passer à l’offre complète plus tard, depuis la page Facturation' },
+              { title: 'Allume ce dont tu as besoin', body: 'Les autres modules gratuits s’allument depuis la page Modules du dashboard' },
+            ],
           },
           {
             h2: 'Un seul prix, pour tous les serveurs',
-            body: 'L’offre complète s’appelle Plus et coûte le même prix pour tous les serveurs, petits ou grands : 5 € par mois, ou 30 € par an, hors taxes. Avec un code de parrainage, elle s’essaie 15 jours, puis la première facture a 10 % de remise',
+            body: 'L’offre complète s’appelle Plus et coûte le même prix pour tous les serveurs, petits ou grands : 5 € par mois, ou 30 € par an, hors taxes. Avec un code de parrainage donné par un autre serveur, elle s’essaie 15 jours, puis la première facture a 10 % de remise. Pour un partenariat ou une marque blanche, l’offre Sur mesure se discute par contact',
           },
           {
             h2: 'Si ton essai ou ton abonnement se termine',
@@ -462,6 +545,18 @@ export const BLOG = [
             a: 'Non. Elle ne s’arrête pas et ne demande pas de carte bancaire',
           },
           {
+            q: 'L’anti-raid et l’AutoMod sont-ils vraiment gratuits ?',
+            a: 'Oui, comme les sanctions, la vérification et les logs. Seule l’IA AegisAI, qui lit le ton des messages, est dans l’offre complète',
+          },
+          {
+            q: 'Les stats sont-elles limitées en gratuit ?',
+            a: 'Oui, à 7 jours d’historique et à sept onglets. Kotbo continue de tout enregistrer : l’offre complète ouvre l’historique déjà collecté',
+          },
+          {
+            q: 'Faut-il une carte pour essayer l’offre complète ?',
+            a: 'Oui. L’essai de 15 jours passe par un code de parrainage et par le paiement en ligne, qui demande une carte. L’offre gratuite, elle, n’en demande jamais',
+          },
+          {
             q: 'Mon serveur était déjà installé sans abonnement : que se passe-t-il ?',
             a: 'Les modules gratuits que tu avais allumés se mettent à tourner. Les autres s’allument depuis la page Modules du dashboard',
           },
@@ -469,25 +564,73 @@ export const BLOG = [
             q: 'Je suis déjà abonné : qu’est-ce qui change pour moi ?',
             a: 'Rien. Ton offre ouvre toujours tout le catalogue, au même prix. Si tu es sur Pro ou Ultimate, tu peux passer sur Plus depuis la page Facturation pour payer moins',
           },
+          {
+            q: 'Si j’arrête l’offre complète, je perds mes réglages ?',
+            a: 'Non. Les modules payants se mettent en pause avec leurs réglages et leurs données, et repartent tels quels si tu te réabonnes',
+          },
         ],
       },
       en: {
+        title: 'Kotbo free plan: everything included, and what stays paid',
         h1: 'Kotbo goes free: what is included, what stays in the full plan',
         description:
-          'Kotbo now has a free plan with no time limit: moderation, anti-raid, logs, welcome, tickets, levels, stats. The full plan keeps staff management, AI, the website and advanced engagement.',
+          'Kotbo now has a free plan with no time limit and no credit card: moderation, anti-raid, logs, welcome, tickets, levels, 7-day stats. The details module by module, the limits, and what the Plus plan keeps.',
         teaser: 'Kotbo goes free: moderation, tickets, levels and stats with no subscription or card',
-        lead: 'Until now, a server without a subscription had the bot but no module. Not anymore: Kotbo has a free plan, with no time limit and no credit card, covering what a server expects from a bot',
+        lead: 'Until now, a server without a subscription had the bot but no module. Not anymore: Kotbo has a free plan, with no time limit and no credit card, covering what a server expects from a bot. Here are the details, module by module, and what stays in the full plan',
         sections: [
           {
-            h2: 'What is free',
-            body: 'Everything other bots give away for free, set up from the same dashboard as the full plan',
+            h2: 'What changes',
+            body: 'Before, without a subscription, Kotbo sat on your server without running anything. Now, a server without a subscription is on the free plan: nearly thirty modules switch on from the dashboard, with no expiring trial and no card to hand over',
             points: [
-              'Moderation: sanctions, AutoMod, anti-raid, verification, nickname moderation',
-              'Discord logs',
-              'Welcome and goodbye, rules, reaction roles, embed builder, auto-responses, auto-thread',
-              'Levels and XP, tickets, giveaways, events and quizzes, suggestions, Starlight',
-              'Analytics, triggers, news and RSS, YouTube and Twitch alerts, bump reminder',
-              'The staff directory',
+              'No time limit: the free plan does not end',
+              'No credit card: nothing to enter to use it',
+              'The same dashboard as the full plan: paid modules are visible there, with a lock',
+            ],
+          },
+          {
+            h2: 'What is free, module by module',
+            body: 'Everything other bots give away for free, and a bit more, set up from the same dashboard',
+            items: [
+              {
+                title: 'Moderation and security',
+                body: 'Sanctions (warn, mute, kick, ban) with history, AutoMod, anti-raid, join verification and nickname moderation',
+                link: { feature: 'automod', label: 'Read the AutoMod article' },
+              },
+              {
+                title: 'Logs',
+                body: 'Server logs in the channels you pick: deleted or edited messages, joins and leaves, roles, channels, sanctions',
+                link: { feature: 'logs', label: 'Read the logs article' },
+              },
+              {
+                title: 'Welcome and content',
+                body: 'Welcome and goodbye messages, rules, reaction roles, embed builder, auto-responses, auto-thread, news and RSS feeds',
+              },
+              {
+                title: 'Levels and XP',
+                body: 'XP from messages and voice, the leaderboard and reward roles',
+                link: { feature: 'leveling', label: 'Read the levels article' },
+              },
+              {
+                title: 'Tickets',
+                body: 'Ticket panels for your server’s support, tracked from the dashboard',
+                link: { feature: 'tickets', label: 'Read the tickets article' },
+              },
+              {
+                title: 'Community',
+                body: 'Giveaways, events and quizzes, suggestions, Starlight to highlight the best messages, fun channels (counting, one-word story, mystery number)',
+              },
+              {
+                title: 'Integrations',
+                body: 'Triggers to automate actions, YouTube and Twitch alerts, bump reminder',
+              },
+              {
+                title: 'Stats',
+                body: 'Analytics over the last 7 days, detailed below',
+              },
+              {
+                title: 'The staff directory',
+                body: 'Your team’s list, sorted by rank. It is the showcase of staff management, the rest of the category is in the full plan',
+              },
             ],
           },
           {
@@ -495,23 +638,62 @@ export const BLOG = [
             body: 'A server raided because it did not pay is a failure for everyone. Sanctions, AutoMod, anti-raid, verification and logs stay in the free plan, and a test in Kotbo’s code fails if anyone removes them',
           },
           {
-            h2: 'What the full plan keeps',
-            body: 'What no free bot does. This is where Kotbo stands apart',
+            h2: 'Free stats: 7 days of history',
+            body: 'Analytics is open on the free plan over the last 7 days. Enough to see what is happening on your server this week',
             points: [
-              'Full staff management: hierarchy, recruitment, mentoring, meetings, time off, tracking lists, polls, discipline, reviews',
-              'AegisAI moderation, alt account detection, ban appeals',
-              'Your community website, with wiki, blog and forum',
-              'Seasons, prestige, clans, drops, economy and RPG, marketplace, quests, reputation',
-              'The MCP server to run Kotbo from an AI, and cross-server',
+              'Open tabs: overview, messages, voice, heatmap, members, growth, moderation',
+              'The other tabs and the per-channel or per-role filters are in the full plan. Each locked tab links to the same tab in the demo',
+              'Kotbo records everything, even on the free plan: moving to the full plan opens the history already collected, nothing to rebuild',
             ],
           },
           {
-            h2: 'See staff management before you pay',
-            body: 'On a locked staff page, the Voir un exemple rempli button opens the same page in the public demo, with a sample team. You see exactly what you unlock',
+            h2: 'What the full plan keeps',
+            body: 'What no free bot does. This is where Kotbo stands apart',
+            items: [
+              {
+                title: 'Full staff management',
+                body: 'Hierarchy and org chart, recruitment, mentoring, meetings, time off, tracking lists, polls, discipline, reviews',
+              },
+              {
+                title: 'AI and advanced protection',
+                body: 'AegisAI moderation inside AutoMod, alt account detection, ban appeals',
+                link: { feature: 'double_accounts', label: 'Read the alt accounts article' },
+              },
+              {
+                title: 'Your community website',
+                body: 'A site at your server’s address, with wiki, blog and forum',
+              },
+              {
+                title: 'Advanced engagement',
+                body: 'Seasons, prestige, clans, drops, economy and RPG, marketplace, quests, reputation',
+              },
+              {
+                title: 'Run Kotbo from an AI, and cross-server',
+                body: 'The MCP server to manage your server from Claude, ChatGPT or Gemini, and the modules that link several servers',
+              },
+              {
+                title: 'Full Analytics',
+                body: 'The whole history, every tab, and per-channel and per-role filters',
+              },
+            ],
+          },
+          {
+            h2: 'See it before you pay',
+            body: 'On a locked staff page, the Voir un exemple rempli button opens the same page in the public demo, with a sample team. Locked Analytics tabs link to the demo the same way. You see exactly what you unlock before taking out your card',
+          },
+          {
+            h2: 'Start for free',
+            body: 'Three minutes, no card',
+            steps: [
+              { title: 'Add Kotbo to your server', body: 'From the Add to Discord button on the site' },
+              { title: 'Follow the setup flow', body: 'The dashboard asks which channel is for what and switches on the first modules' },
+              { title: 'Pick Continue for free', body: 'At the plan step. You can move to the full plan later, from the Billing page' },
+              { title: 'Switch on what you need', body: 'The other free modules switch on from the Modules page of the dashboard' },
+            ],
           },
           {
             h2: 'One price, for every server',
-            body: 'The full plan is called Plus and costs the same for every server, small or large: €5 a month, or €30 a year, excluding VAT. With a referral code, it comes with a 15-day trial, then 10% off the first invoice',
+            body: 'The full plan is called Plus and costs the same for every server, small or large: €5 a month, or €30 a year, excluding VAT. With a referral code from another server, it comes with a 15-day trial, then 10% off the first invoice. For a partnership or white label, the Custom plan is discussed by contact',
           },
           {
             h2: 'If your trial or subscription ends',
@@ -524,12 +706,28 @@ export const BLOG = [
             a: 'No. It does not end and does not ask for a credit card',
           },
           {
+            q: 'Are anti-raid and AutoMod really free?',
+            a: 'Yes, as are sanctions, verification and logs. Only the AegisAI model, which reads the tone of messages, is in the full plan',
+          },
+          {
+            q: 'Are stats limited on the free plan?',
+            a: 'Yes, to 7 days of history and seven tabs. Kotbo keeps recording everything: the full plan opens the history already collected',
+          },
+          {
+            q: 'Do I need a card to try the full plan?',
+            a: 'Yes. The 15-day trial goes through a referral code and online payment, which asks for a card. The free plan never does',
+          },
+          {
             q: 'My server was already set up without a subscription: what happens?',
             a: 'The free modules you had switched on start running. Switch on the others from the Modules page of the dashboard',
           },
           {
             q: 'I already subscribe: what changes for me?',
             a: 'Nothing. Your plan still opens the whole catalogue, at the same price. If you are on Pro or Ultimate, you can switch to Plus from the Billing page to pay less',
+          },
+          {
+            q: 'If I stop the full plan, do I lose my settings?',
+            a: 'No. Paid modules pause with their settings and data, and pick up as they were if you subscribe again',
           },
         ],
       },
