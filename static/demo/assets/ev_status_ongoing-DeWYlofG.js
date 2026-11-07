@@ -1,0 +1,1 @@
+import{r as e}from"./i18n-B5iabLPd.js";var t=()=>`Publié`,n=()=>`Published`,r=((r={},i={})=>(i.locale??e())===`fr`?t(r):n(r)),i=()=>`En cours`,a=()=>`Ongoing`,o=((t={},n={})=>(n.locale??e())===`fr`?i(t):a(t));export{r as n,o as t};

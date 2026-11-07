@@ -1,0 +1,1 @@
+import{r as e}from"./i18n-B5iabLPd.js";var t=e=>`${e?.name} sera coupé à son prochain ping.`,n=e=>`${e?.name} will be cut off at its next ping.`,r=((r,i={})=>(i.locale??e())===`fr`?t(r):n(r)),i=e=>`${e?.name} est débanni.`,a=e=>`${e?.name} is unbanned.`,o=((t,n={})=>(n.locale??e())===`fr`?i(t):a(t));export{r as n,o as t};

@@ -1,0 +1,1 @@
+import{La as e,eo as t,to as n}from"./vendor-icons-C0AA-2dJ.js";import{Sh as r}from"./auth.svelte-DD-Cc58J.js";var i=n(null),a={get active(){return e(i)},get target(){return e(i)?.target??null},start(e){let n=e.href.split(/[?#]/)[0];t(i,{...e,path:n,startedAt:Date.now()},!0),r.goto(e.href)},stop(){t(i,null)}};export{a as t};
