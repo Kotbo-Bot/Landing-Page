@@ -32,6 +32,28 @@
       included:
         'L’offre complète ajoute ce qu’aucun bot gratuit ne fait : toute la gestion du staff, l’IA de modération, le site de ta communauté, saisons, clans, économie et RPG, le serveur MCP, le cross-serveur, et les modules qui sortiront après. Aucun module en option',
       ht: 'Prix HT',
+      compare: 'Ce que Plus ajoute au gratuit',
+      feature: 'Fonctionnalité',
+      freeCol: 'Gratuit',
+      yes: 'Inclus',
+      no: 'Non inclus',
+      // [libellé, gratuit (true, false ou une précision), Plus]
+      rows: [
+        ['Modération, AutoMod, anti-raid et vérification', true, true],
+        ['Logs du serveur', true, true],
+        ['Accueil, rôles-réactions, règlement, auto-réponses', true, true],
+        ['Tickets, niveaux, giveaways, événements, suggestions', true, true],
+        ['Alertes YouTube et Twitch, workflows', true, true],
+        ['Annuaire du staff', true, true],
+        ['Statistiques', '7 derniers jours, onglets principaux', 'Tout l’historique, tous les onglets'],
+        ['Gestion du staff : recrutement, évaluations, absences, planning, tutorat', false, true],
+        ['IA de modération (toxicité, climat du serveur)', false, true],
+        ['Site de ta communauté', false, true],
+        ['Saisons, clans, économie et RPG', false, true],
+        ['Serveur MCP et cross-serveur', false, true],
+        ['Nom et avatar du bot à ton image', false, true],
+        ['Modules qui sortiront après', false, true],
+      ] as [string, boolean | string, boolean | string][],
       euro: (cents: number) =>
         `${(cents / 100).toLocaleString('fr-FR', { minimumFractionDigits: cents % 100 ? 2 : 0, maximumFractionDigits: 2 })} €`,
     },
@@ -51,6 +73,27 @@
       included:
         'The full plan adds what no free bot does: full staff management, AI moderation, your community website, seasons, clans, economy and RPG, the MCP server, cross-server, and every module that ships later. No add-ons',
       ht: 'Prices excl. VAT',
+      compare: 'What Plus adds to free',
+      feature: 'Feature',
+      freeCol: 'Free',
+      yes: 'Included',
+      no: 'Not included',
+      rows: [
+        ['Moderation, AutoMod, anti-raid and verification', true, true],
+        ['Server logs', true, true],
+        ['Welcome, reaction roles, rules, auto-responses', true, true],
+        ['Tickets, levels, giveaways, events, suggestions', true, true],
+        ['YouTube and Twitch alerts, workflows', true, true],
+        ['Staff directory', true, true],
+        ['Stats', 'Last 7 days, main tabs', 'Full history, every tab'],
+        ['Staff management: recruitment, reviews, absences, schedule, mentoring', false, true],
+        ['AI moderation (toxicity, server mood)', false, true],
+        ['Your community website', false, true],
+        ['Seasons, clans, economy and RPG', false, true],
+        ['MCP server and cross-server', false, true],
+        ['Bot name and avatar of your own', false, true],
+        ['Modules that ship later', false, true],
+      ] as [string, boolean | string, boolean | string][],
       euro: (cents: number) =>
         `€${(cents / 100).toLocaleString('en-US', { minimumFractionDigits: cents % 100 ? 2 : 0, maximumFractionDigits: 2 })}`,
     },
@@ -98,6 +141,36 @@
 
     <p class="mt-10 max-w-3xl text-lg font-semibold leading-relaxed text-ink">{t.free}</p>
     <p class="mt-4 max-w-3xl text-lg leading-relaxed text-mist">{t.included}</p>
+
+    {#snippet cell(value: boolean | string)}
+      {#if typeof value === 'string'}
+        <span class="text-sm text-mist">{value}</span>
+      {:else if value}
+        <svg role="img" aria-label={t.yes} viewBox="0 0 24 24" class="mx-auto h-5 w-5 text-ok"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7" /></svg>
+      {:else}
+        <span class="text-fog" aria-label={t.no}>—</span>
+      {/if}
+    {/snippet}
+
+    <h3 class="mt-14 text-lg font-semibold text-ink">{t.compare}</h3>
+    <table class="mt-4 w-full max-w-3xl border-collapse text-left">
+      <thead>
+        <tr class="border-b border-line-2 text-sm text-fog">
+          <th scope="col" class="py-3 pr-4 font-semibold">{t.feature}</th>
+          <th scope="col" class="w-24 py-3 text-center font-semibold sm:w-40">{t.freeCol}</th>
+          <th scope="col" class="w-24 py-3 text-center font-semibold text-ink sm:w-40">{PLUS.name}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {#each t.rows as [label, free, plus] (label)}
+          <tr class="border-b border-line">
+            <th scope="row" class="py-3 pr-4 text-sm font-normal text-mist sm:text-base">{label}</th>
+            <td class="py-3 text-center">{@render cell(free)}</td>
+            <td class="py-3 text-center">{@render cell(plus)}</td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
 
     <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
       <AddButton content="pricing" size="lg" />
