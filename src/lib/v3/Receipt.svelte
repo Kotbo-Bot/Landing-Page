@@ -20,16 +20,17 @@
   import ChannelHeader from './ChannelHeader.svelte';
   import { MODULE_COUNT } from './modules';
 
-  type Line = { key: string; need: { fr: string; en: string }; bot: string; icon: string | null; price: number };
+  type L10n = { fr: string; en: string };
+  type Line = { key: string; need: L10n; bot: string; icon: string | null; price: number; kotbo: L10n };
 
   const LINES: Line[] = [
-    { key: 'levels', need: { fr: 'Niveaux & XP', en: 'Levels & XP' }, bot: 'MEE6', icon: 'mee6.png', price: 12 },
-    { key: 'mod', need: { fr: 'Modération', en: 'Moderation' }, bot: 'Dyno', icon: 'dyno.png', price: 5 },
-    { key: 'tickets', need: { fr: 'Tickets', en: 'Tickets' }, bot: 'Ticket Tool', icon: 'tickettool.png', price: 7 },
-    { key: 'raid', need: { fr: 'Anti-raid', en: 'Anti-raid' }, bot: 'Wick', icon: 'wick.png', price: 5 },
-    { key: 'stats', need: { fr: 'Stats', en: 'Stats' }, bot: 'Statbot', icon: 'statbot.png', price: 5 },
-    { key: 'eco', need: { fr: 'Économie', en: 'Economy' }, bot: 'UnbelievaBoat', icon: 'unbelievaboat.png', price: 4 },
-    { key: 'give', need: { fr: 'Giveaways', en: 'Giveaways' }, bot: 'GiveawayBot', icon: 'giveawaybot.png', price: 3 },
+    { key: 'levels', need: { fr: 'Niveaux & XP', en: 'Levels & XP' }, bot: 'MEE6', icon: 'mee6.png', price: 12, kotbo: { fr: 'Niveaux, XP et rôles de récompense, sans pub', en: 'Levels, XP and reward roles, no ads' } },
+    { key: 'mod', need: { fr: 'Modération', en: 'Moderation' }, bot: 'Dyno', icon: 'dyno.png', price: 5, kotbo: { fr: 'Modération, sanctions et automod, journalisées', en: 'Moderation, sanctions and automod, all logged' } },
+    { key: 'tickets', need: { fr: 'Tickets', en: 'Tickets' }, bot: 'Ticket Tool', icon: 'tickettool.png', price: 7, kotbo: { fr: 'Tickets à types, macros et transcripts', en: 'Tickets with types, macros and transcripts' } },
+    { key: 'raid', need: { fr: 'Anti-raid', en: 'Anti-raid' }, bot: 'Wick', icon: 'wick.png', price: 5, kotbo: { fr: 'Shield, l’anti-raid et l’anti-nuke de Kotbo', en: 'Shield, Kotbo’s anti-raid and anti-nuke' } },
+    { key: 'stats', need: { fr: 'Stats', en: 'Stats' }, bot: 'Statbot', icon: 'statbot.png', price: 5, kotbo: { fr: 'Analytics et Pulse, la santé du serveur', en: 'Analytics and Pulse, your server’s health' } },
+    { key: 'eco', need: { fr: 'Économie', en: 'Economy' }, bot: 'UnbelievaBoat', icon: 'unbelievaboat.png', price: 4, kotbo: { fr: 'Économie, boutique et quêtes', en: 'Economy, shop and quests' } },
+    { key: 'give', need: { fr: 'Giveaways', en: 'Giveaways' }, bot: 'GiveawayBot', icon: 'giveawaybot.png', price: 3, kotbo: { fr: 'Giveaways à conditions, relançables', en: 'Giveaways with conditions, rerollable' } },
   ];
 
   const KOTBO_PRICE = 2.5;
@@ -53,6 +54,11 @@
       kotboLine: `les ${MODULE_COUNT} modules, staff inclus`,
       kotboFrom: 'dès',
       saved: (n: string) => `T’économises ${n}/mois. Et tes dimanches`,
+      perYear: (n: string) => `soit ${n} par an`,
+      sheetKotbo: 'Espace staff : planning, absences, grades et tâches',
+      tipLabel: (need: string) => `Ce qui remplace « ${need} » dans Kotbo`,
+      tipIn: 'Dans Kotbo',
+      tipDemo: 'Le voir dans la démo',
       same: 'Même prix. Mais un seul bot, et ton staff en plus',
       empty: 'Coche au moins un truc, sinon le ticket est vide',
       thanks: 'Merci de ta visite. Reviens pas',
@@ -75,6 +81,11 @@
       kotboLine: `all ${MODULE_COUNT} modules, staff included`,
       kotboFrom: 'from',
       saved: (n: string) => `You save ${n}/mo. And your Sundays`,
+      perYear: (n: string) => `that’s ${n} a year`,
+      sheetKotbo: 'Staff space: schedule, absences, ranks and tasks',
+      tipLabel: (need: string) => `What replaces “${need}” in Kotbo`,
+      tipIn: 'In Kotbo',
+      tipDemo: 'See it in the demo',
       same: 'Same price. But one bot, and your staff on top',
       empty: 'Tick at least one thing, or the receipt is empty',
       thanks: 'Thanks for visiting. Don’t come back',
@@ -97,7 +108,49 @@
   function toggle(key: string) {
     picked = picked.includes(key) ? picked.filter((k) => k !== key) : [...picked, key];
   }
+
+  /** Infobulle ouverte au clic (tactile) ; le survol et le focus l'ouvrent aussi en CSS. */
+  let tip = $state<string | null>(null);
 </script>
+
+<svelte:window
+  onkeydown={(e) => e.key === 'Escape' && (tip = null)}
+  onclick={(e) => tip && !(e.target as HTMLElement).closest('[data-tip]') && (tip = null)}
+/>
+
+{#snippet check(on: boolean)}
+  <span aria-hidden="true" class="grid h-5 w-5 shrink-0 place-items-center rounded-md border transition-colors {on ? 'border-glow bg-glow text-night' : 'border-[#71717a]'}">
+    {#if on}<svg viewBox="0 0 16 16" class="h-3.5 w-3.5"><path fill="none" stroke="currentColor" stroke-width="2.5" d="m3.5 8.5 3 3 6-7" /></svg>{/if}
+  </span>
+{/snippet}
+
+{#snippet help(key: string, need: string, text: string)}
+  <span data-tip class="group/tip relative shrink-0">
+    <button
+      type="button"
+      aria-label={t.tipLabel(need)}
+      aria-expanded={tip === key}
+      aria-describedby="tip-{key}"
+      onclick={() => (tip = tip === key ? null : key)}
+      class="grid h-11 w-11 place-items-center rounded-full text-fog transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-glow"
+    >
+      <span aria-hidden="true" class="grid h-5 w-5 place-items-center rounded-full border border-current text-[11px] font-bold">?</span>
+    </button>
+    <span
+      id="tip-{key}"
+      role="tooltip"
+      class="absolute bottom-full right-0 z-20 mb-1 w-64 rounded-xl border border-line-2 bg-night-3 p-3.5 text-left shadow-[0_20px_40px_-15px_rgba(0,0,0,0.8)] {tip === key
+        ? 'block'
+        : 'hidden group-hover/tip:block group-focus-within/tip:block'}"
+    >
+      <span class="block text-[11px] font-semibold uppercase tracking-wider text-glow">{t.tipIn}</span>
+      <span class="mt-1 block text-sm text-ink">{text}</span>
+      <a href="/demo/" class="mt-2.5 inline-flex min-h-8 items-center text-sm font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">
+        {t.tipDemo} <span aria-hidden="true" class="ml-1">→</span>
+      </a>
+    </span>
+  </span>
+{/snippet}
 
 <section id="addition" aria-labelledby="receipt-title" class="relative overflow-hidden bg-night pb-16 sm:pb-24 lg:pb-32">
   <div class="bg-night/95 backdrop-blur-sm">
@@ -110,46 +163,39 @@
 
       <fieldset class="mt-10">
         <legend class="text-sm font-semibold text-fog">{t.pickLabel}</legend>
-        <div class="mt-4 grid gap-2 sm:grid-cols-2">
+        <ul class="mt-4 divide-y divide-line rounded-2xl border border-line-2 bg-night-2">
           {#each LINES as line (line.key)}
             {@const on = picked.includes(line.key)}
-            <label
-              class="flex min-h-14 cursor-pointer items-center gap-3 rounded-xl border px-3.5 transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-glow {on
-                ? 'border-glow/60 bg-[#4f46e5]/15'
-                : 'border-line-2 bg-night-2 hover:border-fog'}"
-            >
-              <input type="checkbox" checked={on} onchange={() => toggle(line.key)} class="sr-only" />
-              <img src="{base}/bots/{line.icon}" alt="" width="28" height="28" class="h-7 w-7 rounded-full bg-night-3" />
-              <span class="min-w-0 flex-1">
-                <span class="block text-sm font-semibold text-ink">{line.need[locale]}</span>
-                <span class="block text-xs text-fog">{line.bot}</span>
-              </span>
-              <span
-                aria-hidden="true"
-                class="grid h-5 w-5 place-items-center rounded-md border {on ? 'border-glow bg-glow text-night' : 'border-[#71717a]'}"
-              >
-                {#if on}<svg viewBox="0 0 16 16" class="h-3.5 w-3.5"><path fill="none" stroke="currentColor" stroke-width="2.5" d="m3.5 8.5 3 3 6-7" /></svg>{/if}
-              </span>
-            </label>
+            <li class="flex items-center gap-1 pr-1.5 transition-colors first:rounded-t-2xl {on ? 'bg-[#4f46e5]/12' : ''}">
+              <label class="flex min-h-15 min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-xl py-2 pl-3.5 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-glow">
+                <input type="checkbox" checked={on} onchange={() => toggle(line.key)} class="sr-only" />
+                {@render check(on)}
+                <img src="{base}/bots/{line.icon}" alt="" width="28" height="28" class="h-7 w-7 shrink-0 rounded-full bg-night-3" />
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate text-sm font-semibold text-ink">{line.need[locale]}</span>
+                  <span class="block truncate text-xs text-fog">{line.bot}</span>
+                </span>
+                <span class="shrink-0 font-mono text-sm tabular-nums {on ? 'text-ink' : 'text-fog line-through decoration-fog/50'}">≈ {t.priceFmt(line.price)}</span>
+              </label>
+              {@render help(line.key, line.need[locale], line.kotbo[locale])}
+            </li>
           {/each}
-          <label
-            class="flex min-h-14 cursor-pointer items-center gap-3 rounded-xl border px-3.5 transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-glow {sheet
-              ? 'border-glow/60 bg-[#4f46e5]/15'
-              : 'border-line-2 bg-night-2 hover:border-fog'}"
-          >
-            <input type="checkbox" bind:checked={sheet} class="sr-only" />
-            <span class="grid h-7 w-7 place-items-center rounded-full bg-[#107c41]" aria-hidden="true">
-              <svg viewBox="0 0 16 16" class="h-3.5 w-3.5 text-ink"><path fill="currentColor" d="M2 2h12v12H2zM3.5 3.5v2.5h3.5V3.5zm5 0v2.5h4V3.5zm-5 4V10h3.5V7.5zm5 0V10h4V7.5zm-5 4v1h3.5v-1zm5 0v1h4v-1z" /></svg>
-            </span>
-            <span class="min-w-0 flex-1">
-              <span class="block text-sm font-semibold text-ink">{t.sheet}</span>
-              <span class="block text-xs text-fog">{t.sheetBot}</span>
-            </span>
-            <span aria-hidden="true" class="grid h-5 w-5 place-items-center rounded-md border {sheet ? 'border-glow bg-glow text-night' : 'border-[#71717a]'}">
-              {#if sheet}<svg viewBox="0 0 16 16" class="h-3.5 w-3.5"><path fill="none" stroke="currentColor" stroke-width="2.5" d="m3.5 8.5 3 3 6-7" /></svg>{/if}
-            </span>
-          </label>
-        </div>
+          <li class="flex items-center gap-1 rounded-b-2xl pr-1.5 transition-colors {sheet ? 'bg-[#4f46e5]/12' : ''}">
+            <label class="flex min-h-15 min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-xl py-2 pl-3.5 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-glow">
+              <input type="checkbox" bind:checked={sheet} class="sr-only" />
+              {@render check(sheet)}
+              <span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#107c41]" aria-hidden="true">
+                <svg viewBox="0 0 16 16" class="h-3.5 w-3.5 text-ink"><path fill="currentColor" d="M2 2h12v12H2zM3.5 3.5v2.5h3.5V3.5zm5 0v2.5h4V3.5zm-5 4V10h3.5V7.5zm5 0V10h4V7.5zm-5 4v1h3.5v-1zm5 0v1h4v-1z" /></svg>
+              </span>
+              <span class="min-w-0 flex-1">
+                <span class="block truncate text-sm font-semibold text-ink">{t.sheet}</span>
+                <span class="block truncate text-xs text-fog">{t.sheetBot}</span>
+              </span>
+              <span class="shrink-0 font-mono text-sm tabular-nums {sheet ? 'text-ink' : 'text-fog line-through decoration-fog/50'}">{t.hours(SHEET_HOURS)}</span>
+            </label>
+            {@render help('sheet', t.sheet, t.sheetKotbo)}
+          </li>
+        </ul>
       </fieldset>
       <p class="mt-8 max-w-xl text-xs leading-relaxed text-fog">{t.note}</p>
       <p class="sr-only" role="status">{t.subtotal} ≈ {t.priceFmt(total)}{t.perMonth}. {saved > 0 ? t.saved(t.priceFmt(saved)) : t.same}</p>
@@ -192,12 +238,20 @@
 
 
           <div class="stay-dark mt-6 rounded-lg bg-[#1c1917] p-4 font-sans text-white">
-            <p class="flex items-center gap-2 font-display text-lg font-extrabold">
-              <img src="{base}/favicon.svg" alt="" width="22" height="22" class="h-5.5 w-5.5 rounded" />{t.kotbo}
-            </p>
-            <p class="mt-1 font-mono text-sm tabular-nums"><span class="text-[#d6d3d1]">{t.kotboFrom}</span> {t.priceFmt(KOTBO_PRICE)}{t.perMonth}</p>
+            <div class="flex items-start justify-between gap-3">
+              <p class="flex items-center gap-2 font-display text-lg font-extrabold">
+                <img src="{base}/favicon.svg" alt="" width="22" height="22" class="h-5.5 w-5.5 rounded" />{t.kotbo}
+              </p>
+              <p class="shrink-0 text-right font-mono tabular-nums">
+                <span class="block text-[11px] text-[#d6d3d1]">{t.kotboFrom}</span>
+                <span class="text-xl font-bold">{t.priceFmt(KOTBO_PRICE)}</span><span class="text-xs text-[#d6d3d1]">{t.perMonth}</span>
+              </p>
+            </div>
             <p class="mt-1 text-xs text-[#d6d3d1]">{t.kotboLine}</p>
-            <p class="mt-3 font-semibold text-[#86efac]">{saved > 0 ? t.saved(t.priceFmt(saved)) : t.same}</p>
+            <div class="mt-3 rounded-md bg-[#86efac]/10 px-3 py-2">
+              <p class="font-semibold text-[#86efac]">{saved > 0 ? t.saved(t.priceFmt(saved)) : t.same}</p>
+              {#if saved > 0}<p class="font-mono text-xs tabular-nums text-[#bbf7d0]">{t.perYear(t.priceFmt(saved * 12))}</p>{/if}
+            </div>
           </div>
         {/if}
         <p class="mt-6 text-center text-[11px] text-[#78716c]">{t.thanks}</p>
