@@ -35,7 +35,6 @@
     fr: {
       title: `Les ${MODULE_COUNT} modules sont tous dans l’abonnement, et les prochains aussi`,
       intro: 'Tu actives ce dont ton serveur a besoin depuis le dashboard, et tu coupes le reste. Ouvre un module pour le voir tourner',
-      sample: 'démo, membres fictifs',
       mod: {
         title: 'Modération & anti-raid',
         text: 'AutoMod, anti-raid, doubles comptes, sanctions graduées. Kotbo réagit en secondes, ton staff lit le rapport au réveil',
@@ -144,7 +143,6 @@
     en: {
       title: `All ${MODULE_COUNT} modules come with the subscription, and so will the next ones`,
       intro: 'Turn on what your server needs from the dashboard and switch off the rest. Open a module to see it run',
-      sample: 'demo, fictional members',
       mod: {
         title: 'Moderation & anti-raid',
         text: 'AutoMod, anti-raid, alt accounts, graduated sanctions. Kotbo reacts in seconds, your staff reads the report in the morning',
@@ -384,7 +382,6 @@
 {#snippet discordHead(channel: string)}
   <p class="mb-3 flex items-center justify-between gap-3 border-b border-black/30 pb-3 text-sm">
     <span class="font-semibold text-[#f2f3f5]">{channel}</span>
-    <span class="font-mono text-[10px] uppercase text-[#949ba4]">{t.sample}</span>
   </p>
 {/snippet}
 
@@ -402,7 +399,6 @@
       {#each t.mod.log as [time, text, tone] (time)}
         <p class="flex gap-3"><span class="shrink-0 text-fog">[{time}]</span><span class="min-w-0 break-words {TONE[tone]}">{text}</span></p>
       {/each}
-      <p class="mt-3 text-[10px] uppercase text-fog">{t.sample}</p>
     </div>
   {:else if key === 'tickets'}
     <div class="stay-dark rounded-2xl bg-[#313338] p-5">

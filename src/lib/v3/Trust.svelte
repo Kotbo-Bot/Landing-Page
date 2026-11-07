@@ -25,7 +25,6 @@
       inesRole: 'co-fonda',
       you: 'toi',
       today: (m: number) => `Aujourd’hui à 21:${String(14 + m).padStart(2, '0')}`,
-      fictive: 'conversation fictive',
       fictiveLong: 'Conversation fictive entre toi et ta co-fondatrice, Inès.',
       lines: [
         { who: 'ines', text: 'attends avant d’ajouter un énième bot. il demande les droits admin ?' },
@@ -45,7 +44,6 @@
       inesRole: 'co-founder',
       you: 'you',
       today: (m: number) => `Today at 9:${String(14 + m).padStart(2, '0')} PM`,
-      fictive: 'fictional conversation',
       fictiveLong: 'Fictional conversation between you and your co-founder, Inès.',
       lines: [
         { who: 'ines', text: 'wait before we add yet another bot. does it ask for admin?' },
@@ -109,7 +107,6 @@
         {/each}
       </ol>
       </figure>
-      <p class="mt-6 pl-16 text-xs text-fog" aria-hidden="true">{t.fictive}</p>
     </div>
   </div>
 </section>

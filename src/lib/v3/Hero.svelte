@@ -34,7 +34,6 @@
       h1b: 'pendant que tu dors',
       sub: `Modo, tickets, niveaux et ton staff, tout au même endroit. Avec ${MODULE_COUNT} modules, ce que tu cherches est sûrement déjà dedans`,
       demo: 'Tester le dashboard',
-      reassure: 'Gratuit · pas de CB · pas de droits admin',
       proof: 'Ils sont déjà dessus',
       members: (n: string) => `${n} membres`,
       newTab: '(nouvel onglet)',
@@ -45,7 +44,6 @@
       h1b: 'while you sleep',
       sub: `Mod, tickets, levels and your staff, all in one place. With ${MODULE_COUNT} modules, whatever you need is probably already in there`,
       demo: 'Try the dashboard',
-      reassure: 'Free · no card · no admin perms',
       proof: 'Already running it',
       members: (n: string) => `${n} members`,
       newTab: '(new tab)',
@@ -91,7 +89,6 @@
           </a>
         </div>
 
-        <p class="mt-4 text-sm text-fog">{t.reassure}</p>
         <a href="{base}{blogPath(blogSlug(featured, locale), locale)}" class="mt-5 inline-flex min-h-11 max-w-md items-center text-sm font-semibold text-ink underline decoration-ink/30 underline-offset-4 text-pretty hover:decoration-ink">{teaser}</a>
       </div>
     </div>

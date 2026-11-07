@@ -82,7 +82,6 @@
       intro:
         'Kotbo a un serveur MCP. Branche-le sur Claude, ChatGPT ou Gemini, et ton IA traite les tickets, sort les rapports, sanctionne et règle le dashboard, avec plus de 300 outils',
       beta: 'En bêta',
-      caption: 'Exemple dans Claude, conversations fictives. Ça marche pareil dans ChatGPT et Gemini',
       hello: 'Bonsoir, fonda',
       placeholder: 'Comment puis-je vous aider aujourd’hui ?',
       reply: 'Répondre…',
@@ -203,7 +202,6 @@
       intro:
         'Kotbo runs an MCP server. Plug it into Claude, ChatGPT or Gemini, and your AI handles tickets, pulls reports, issues sanctions and sets up the dashboard, with more than 300 tools',
       beta: 'In beta',
-      caption: 'Example in Claude, fictional conversations. It works the same in ChatGPT and Gemini',
       hello: 'Evening, owner',
       placeholder: 'How can I help you today?',
       reply: 'Reply…',
@@ -495,7 +493,6 @@
         {/if}
         <p class="sr-only" role="status">{scene ? t.status(t.scenes[scene].chip) : ''}</p>
       </div>
-      <figcaption class="mt-3 text-xs text-fog">{t.caption}</figcaption>
     </figure>
 
     <!-- Le branchement -->

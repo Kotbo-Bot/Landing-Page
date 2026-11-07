@@ -45,7 +45,6 @@
       fonda: '@Fonda',
       lockDate: 'samedi 13 juin',
       focus: 'Sommeil',
-      scene: 'Scène fictive',
       sceneChaos: 'Scène fictive : l’écran verrouillé d’un fondateur à 2 h 47, sans Kotbo.',
       sceneCalm: 'Scène fictive : le même écran, avec Kotbo.',
       more: (n: number) => `${n} autres notifications`,
@@ -91,7 +90,6 @@
       fonda: '@Owner',
       lockDate: 'Saturday, June 13',
       focus: 'Sleep',
-      scene: 'Fictional scene',
       sceneChaos: 'Fictional scene: a server owner’s lock screen at 2:47 a.m., without Kotbo.',
       sceneCalm: 'Fictional scene: the same screen, with Kotbo.',
       more: (n: number) => `${n} more notifications`,
@@ -336,7 +334,6 @@
             </div>
           </div>
       </figure>
-      <p class="mt-4 text-center text-xs text-fog" aria-hidden="true">{t.scene}</p>
     </div>
 
     <!-- Le salon du staff, dans Discord : la même nuit, vue de l'intérieur. -->
