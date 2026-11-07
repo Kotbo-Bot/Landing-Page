@@ -15,13 +15,13 @@
    * (masqués si elle ne répond pas), et la note Top.gg relevée à la main ;
    * près des boutons, les trois
    * réponses aux peurs d'avant l'invitation (prix, carte, droits admin), puis
-   * une ligne vers la note de la dernière version (`articles/releases.js`).
+   * une ligne vers le billet du blog mis en avant (`articles/blog.js`).
    */
   import { onMount } from 'svelte';
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
-  import { releasePath } from '$lib/i18n/routes';
-  import { RELEASES } from '$lib/articles/releases.js';
+  import { blogPath } from '$lib/i18n/routes';
+  import { BLOG, blogSlug } from '$lib/articles/blog.js';
   import { publicStats } from '$lib/data/stats.svelte';
   import { TOPGG_RATING, TOPGG_URL } from '$lib/product';
   import AddButton from './AddButton.svelte';
@@ -55,8 +55,9 @@
 
   const t = $derived(TEXT[getLocale()]);
   const locale = $derived(getLocale());
-  const latest = RELEASES[0];
-  const teaser = $derived(latest.text[locale].teaser ?? latest.text[locale].h1);
+  // Le billet annoncé sous les boutons : changer ce slug pour en mettre un autre en avant.
+  const featured = BLOG.find((b) => blogSlug(b, 'fr') === 'kotbo-gratuit')!;
+  const teaser = $derived(featured.text[locale].teaser ?? featured.text[locale].h1);
   const servers = $derived((publicStats.data?.servers ?? []).slice(0, 3));
   const fmt = (n: number) => n.toLocaleString(getLocale() === 'fr' ? 'fr-FR' : 'en-US').replace(/\u202f/g, '\u00a0');
 
@@ -91,7 +92,7 @@
         </div>
 
         <p class="mt-4 text-sm text-fog">{t.reassure}</p>
-        <a href="{base}{releasePath(latest.slug, locale)}" class="mt-5 inline-flex min-h-11 max-w-md items-center text-sm font-semibold text-ink underline decoration-ink/30 underline-offset-4 text-pretty hover:decoration-ink">{teaser}</a>
+        <a href="{base}{blogPath(blogSlug(featured, locale), locale)}" class="mt-5 inline-flex min-h-11 max-w-md items-center text-sm font-semibold text-ink underline decoration-ink/30 underline-offset-4 text-pretty hover:decoration-ink">{teaser}</a>
       </div>
     </div>
 
