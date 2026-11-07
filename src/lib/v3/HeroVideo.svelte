@@ -24,8 +24,8 @@
   const SRC = `${ORIGIN}/video/1235376117?background=1&dnt=1&autopause=0&app_id=58479`;
 
   const TEXT = {
-    fr: { title: 'Kotbo en 20 secondes', pause: 'Mettre le film en pause', play: 'Lancer le film', mute: 'Couper le son', unmute: 'Activer le son' },
-    en: { title: 'Kotbo in 20 seconds', pause: 'Pause the film', play: 'Play the film', mute: 'Mute', unmute: 'Turn sound on' },
+    fr: { title: 'Kotbo en 20 secondes', pause: 'Mettre le film en pause', play: 'Lancer le film', mute: 'Couper le son', unmute: 'Activer le son', volume: 'Volume' },
+    en: { title: 'Kotbo in 20 seconds', pause: 'Pause the film', play: 'Play the film', mute: 'Mute', unmute: 'Turn sound on', volume: 'Volume' },
   };
   const t = $derived(TEXT[getLocale()]);
 
@@ -44,11 +44,25 @@
     send(playing ? 'play' : 'pause');
   }
 
+  let volume = $state(1);
+
   function toggleSound() {
     muted = !muted;
+    if (!muted && volume === 0) volume = 1;
     send('setMuted', muted);
-    if (!muted) send('setVolume', 1);
+    if (!muted) send('setVolume', volume);
     if (!muted && !playing) togglePlay();
+  }
+
+  function setVolume(value: number) {
+    volume = value;
+    send('setVolume', value);
+    // Le curseur à zéro coupe le son ; le monter le rallume.
+    if ((value === 0) !== muted) {
+      muted = value === 0;
+      send('setMuted', muted);
+      if (!muted && !playing) togglePlay();
+    }
   }
 
   // Le lecteur peut annoncer `ready` avant que la page n'écoute : on
@@ -107,7 +121,19 @@
   </div>
 
   {#if ready}
-    <div class="absolute bottom-2 right-2 flex gap-2 sm:bottom-3 sm:right-3">
+    <div class="absolute bottom-2 right-2 flex items-center gap-2 sm:bottom-3 sm:right-3">
+      <label class="flex h-11 items-center rounded-full bg-night/80 px-3 backdrop-blur-md">
+        <span class="sr-only">{t.volume}</span>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.05"
+          value={muted ? 0 : volume}
+          oninput={(e) => setVolume(Number((e.currentTarget as HTMLInputElement).value))}
+          class="w-20 accent-white sm:w-24"
+        />
+      </label>
       <button
         type="button"
         onclick={toggleSound}
