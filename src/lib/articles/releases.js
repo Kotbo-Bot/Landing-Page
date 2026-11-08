@@ -23,6 +23,324 @@
 /** @type {Release[]} */
 export const RELEASES = [
   {
+    version: '9.6',
+    slug: '9-6',
+    tag: 'v9.6',
+    date: '2026-11-08',
+    text: {
+      fr: {
+        h1: 'Kotbo 9.6 : Kotbo devient gratuit, Shield protège ton serveur',
+        description:
+          'Kotbo 9.6 : offre gratuite sans abonnement, une seule offre Plus, Shield, Jail et Kotbo Vision contre les raids et les arnaques, éditeur de site plein écran, planning façon Outlook, listes de suivi façon Jira, rôles à boutons refaits et tournois.',
+        teaser: 'Kotbo 9.6 est là : le bot devient gratuit, Shield serre la sécurité pendant un raid et le planning passe façon Outlook',
+        lead: 'La 9.6 rend Kotbo gratuit : la modération, la sécurité et les modules essentiels tournent sans abonnement. La protection change d’échelle avec Shield, Jail et Kotbo Vision. Le site de ton serveur reçoit un éditeur plein écran, et le staff un planning façon Outlook et des listes de suivi façon Jira',
+        sections: [
+          {
+            h2: 'Kotbo devient gratuit',
+            body: 'Un serveur sans abonnement n’a plus un bot à l’arrêt : il est en offre gratuite, et la sécurité n’est jamais derrière un paiement',
+            points: [
+              'Sanctions, AutoMod, journaux, anti-raid, vérification et pseudos, sans abonnement',
+              'Aussi l’accueil, les niveaux, les tickets, les giveaways, les événements, les workflows, les réseaux sociaux et le bump',
+              'Analytics sur 7 jours avec les vues principales : vue d’ensemble, messages, vocal, carte de chaleur, membres, croissance et modération. La collecte, elle, n’est pas réduite',
+              'Les vues avancées et les modules staff verrouillés montrent un exemple rempli dans la démo',
+              'À la fin d’un essai ou d’un cadeau, le serveur repasse en gratuit au lieu d’être désactivé',
+              'L’IA de modération AegisAI et le serveur MCP restent dans les offres payantes',
+            ],
+          },
+          {
+            h2: 'Une seule offre payante : Plus',
+            body: 'Plus coûte 5 € par mois ou 30 € par an, quelle que soit la taille du serveur. Pro et Ultimate ne sont plus vendues, et ceux qui les ont déjà les gardent',
+            points: [
+              'L’essai de 15 jours et la remise de 10 % passent par un code de parrainage KOTBO-XXXXXX, à saisir ou à partager depuis le dashboard',
+              'Le parcours de configuration se termine sur l’offre gratuite, avec un bouton « Continuer en gratuit »',
+              'Une offre « Sur mesure » se demande par contact',
+            ],
+          },
+          {
+            h2: 'Shield, Jail et Kotbo Vision',
+            body: 'Trois nouvelles pièces pour tenir un serveur pendant une attaque, réglables depuis Anti-raid',
+            items: [
+              { title: 'Shield', body: 'Un niveau d’alerte du serveur, avec /shield ou la carte Shield de l’anti-raid. Il serre toutes les protections pendant un raid, puis ne défait que ce qu’il a lui-même activé' },
+              { title: 'Jail', body: 'Une quarantaine par rôle, avec /sanction jail et unjail. Les rôles du membre sont retirés puis rendus, pour un temps ou pour de bon. Les autres protections s’en servent aussi' },
+              { title: 'Kotbo Vision', body: 'Le filtre d’images repère les arnaques : texte lu dans l’image, QR codes, empreintes d’images connues et flux anti-phishing. Tu peux ajouter tes propres catalogues et faire vérifier par le staff' },
+              { title: 'Captcha intelligent', body: 'Le captcha se déclenche toujours, automatiquement ou selon le niveau Shield. L’image porte l’icône et la couleur de ton serveur' },
+              { title: '/setup en un clic', body: 'Une étape « Protection & sécurité » vérifie les permissions du bot et active Jail, le salon piège, Shield, le captcha intelligent, Kotbo Vision et l’anti-spam' },
+            ],
+          },
+          {
+            h2: 'AutoMod et arrivées',
+            body: 'Des filtres en plus, et un meilleur contrôle de qui entre',
+            points: [
+              'Filtre « Autres serveurs » : invitations, messages transférés et tags d’autres serveurs',
+              'Filtre « Extensions de fichiers » : groupes d’extensions et fichiers déguisés, avec des règles par salon',
+              'Âge minimum du compte, avec quarantaine ou exclusion temporaire jusqu’à l’âge requis',
+              'Rôles donnés aux bots à leur arrivée, et /bypass bot pour laisser entrer un bot une fois',
+              'Lockdown silencieux, mode lent préventif, et la quarantaine AutoMod de Discord synchronisée avec Jail',
+              'Salon piège avec délai de grâce, bouton d’annulation et sanctions permanentes',
+              'AegisAI se règle salon par salon : fils, vocaux et membres exemptés',
+            ],
+          },
+          {
+            h2: 'Le site de ton serveur, en plein écran',
+            body: 'L’éditeur du site travaille maintenant sur le rendu réel de la page',
+            points: [
+              'Sections et blocs déplaçables à la souris comme au doigt, avec un catalogue de sections à ajouter',
+              'Pour chaque section : fond, colonnes, largeur, animation d’apparition et affichage selon l’appareil',
+              'Une galerie de modèles officiels et partagés entre serveurs, qui s’appliquent et s’annulent en un clic',
+              'Des visuels créés depuis l’icône et les couleurs du serveur, et une banque d’images libres pour les fonds',
+              'Un espace membre en apps : tickets, candidatures, quêtes et événements, en liste, en kanban ou en fiche',
+              'Un en-tête en pilule flottante, dont le menu se replie quand il déborde',
+            ],
+          },
+          {
+            h2: 'Le planning du staff, façon Outlook',
+            body: 'Le Planning est refait de zéro et réunit tout ce qui a une date sur ton serveur',
+            points: [
+              'Ruban, volets, grille horaire, vue Agenda et vue « Ma journée »',
+              'Glisser-déposer, balayage au doigt, création et aperçu en bulle',
+              'Les événements, giveaways, publications planifiées, fins de période de test et de sanction, et les absences de l’équipe',
+              'Un abonnement iCal pour voir le planning dans ton agenda',
+              'Réponse à une réunion depuis le dashboard, et réunions ou appels qui se répètent',
+            ],
+          },
+          {
+            h2: 'Listes de suivi et tutorat',
+            body: 'Les outils de l’équipe passent au niveau d’un vrai logiciel de gestion de projet',
+            items: [
+              { title: 'Listes de suivi façon Jira', body: 'Une page par liste, un tableau en glisser-déposer et des étapes avec limite. Chaque carte a sa clé (BOUT-12), son type, ses sous-tâches, ses liens, ses points, ses commentaires et son historique' },
+              { title: 'Reliées au planning', body: 'Une carte attribuée apparaît au planning. Suggestions, tickets et messages Discord s’épinglent dans une liste' },
+              { title: 'Tutorat refait', body: 'Un accueil selon le rôle, une fiche par tutorat, des missions en liste de suivi, et une relance des tuteurs quand un point d’étape approche ou traîne' },
+              { title: 'Organigramme', body: 'Réorganisable, exportable et à plusieurs vues' },
+              { title: 'Équipe', body: 'Un rôle pour les anciens du staff, la liste du staff par grade dans un panneau Discord, et une absence qui prévient le tuteur, le fondateur ou un grade au-dessus' },
+              { title: 'Recrutement', body: 'Les candidatures en boîte de réception, des postes qui se ferment seuls et des panneaux Discord de statut' },
+            ],
+          },
+          {
+            h2: 'Des rôles à boutons plus simples',
+            body: 'Un menu de rôles se crée en quatre étapes, en langage clair, à partir de modèles prêts à l’emploi. Les rôles ne sont créés qu’à la publication',
+            points: [
+              'Mode « un seul rôle », et un rôle bloqué expliqué au membre comme au staff',
+              'Texte du message, couleur de l’embed, nombre de membres sur les boutons, boutons réordonnés à la souris',
+              'Aperçu Discord, cartes en mini-aperçu et duplication d’un menu',
+              'Suivi dans les journaux, Analytics et les workflows, avec un signalement quand un rôle, un message ou un panneau est supprimé',
+            ],
+          },
+          {
+            h2: 'Des tournois dans les événements',
+            body: 'Un événement peut maintenant être un tournoi, suivi en direct sur une page publique',
+            points: [
+              'Élimination directe, double élimination, ou poules avec classement',
+              'Têtes de série, inscription d’équipes, détail des manches et podium',
+              'La page /events est refaite',
+            ],
+          },
+          {
+            h2: 'Pour le staff',
+            body: 'Le dashboard, page par page',
+            items: [
+              { title: 'Fiche membre partout', body: 'Un clic sur un membre l’ouvre depuis les journaux, les tickets, les sanctions, les niveaux, l’économie, les suggestions, les invitations, Aegis…' },
+              { title: 'Automatisations testables', body: 'Un essai à blanc, un rejeu lisible et la correction depuis le rejeu. Délai de récupération, variables qui se gardent, message tenu à jour, et déclencheurs d’ancienneté et d’inactivité' },
+              { title: 'Sondages interserveurs', body: 'La console d’annonces envoie un sondage sur plusieurs serveurs, avec boutons de vote et résultats' },
+              { title: 'Sauvegardes', body: '/backup sauvegarde et restaure aussi la configuration Kotbo' },
+              { title: 'Identité du bot', body: 'Ouverte aux offres payantes, avec sa page à côté d’Accueil' },
+              { title: 'Analytics', body: 'La valeur de la période d’avant remplace les écarts en %' },
+            ],
+          },
+          {
+            h2: 'Et sur le serveur',
+            body: 'Côté Discord, en vrac',
+            points: [
+              'Confessions anonymes avec /confession envoyer : salon public, journal du staff, révélation tracée, délai réglable et mots interdits',
+              'Convocations : le membre accuse réception, choisit un créneau dans un fil, et une action s’applique à l’échéance',
+              'Panneaux de discussion dans Auto-Thread : un bouton ouvre un fil public, privé ou de forum, que son propriétaire gère depuis un panneau',
+              'Tickets : signature du staff sous les macros, envoi au nom du staff, et variables {ticket_channel} et {ticket_link}',
+              'Comptage : record, bilan par joueur et /stats-compteur. Starboard : retrait d’un message et vote de l’auteur ignoré',
+              'Messages sticky renvoyés après un temps d’inactivité du salon',
+              'Au retour d’un membre, ses rôles staff et admin peuvent lui être rendus',
+            ],
+          },
+          {
+            h2: 'Ce qui se met en pause',
+            body: 'Deux modules s’arrêtent, sans perte de données',
+            points: [
+              'Le Daily Algo est en pause : ses commandes et ses tâches sont retirées, et il est éteint sur les serveurs qui l’avaient activé. Aucune donnée n’est supprimée',
+              'Les Partenariats restent en pause, et le portail partenaire public est fermé',
+            ],
+          },
+        ],
+        faq: [
+          {
+            q: 'J’ai un abonnement Pro ou Ultimate, qu’est-ce qui change ?',
+            a: 'Rien : ton abonnement continue. Pro et Ultimate ne sont simplement plus proposées aux nouveaux abonnés, qui ont maintenant une seule offre, Plus',
+          },
+          {
+            q: 'Que devient mon serveur à la fin d’un essai ?',
+            a: 'Il repasse en offre gratuite au lieu d’être désactivé : la modération, la sécurité et les modules gratuits continuent de tourner',
+          },
+          {
+            q: 'Comment avoir l’essai de 15 jours ?',
+            a: 'Avec un code de parrainage KOTBO-XXXXXX, demandé à un serveur qui utilise déjà Kotbo et saisi depuis le dashboard. Le même code donne 10 % de remise',
+          },
+        ],
+      },
+      en: {
+        h1: 'Kotbo 9.6: Kotbo goes free, Shield protects your server',
+        description:
+          'Kotbo 9.6: a free plan with no subscription, a single Plus plan, Shield, Jail and Kotbo Vision against raids and scams, a full-screen site editor, an Outlook-style planner, Jira-style tracking lists, rebuilt button roles and tournaments.',
+        teaser: 'Kotbo 9.6 is out: the bot goes free, Shield tightens security during a raid and the planner goes Outlook-style',
+        lead: '9.6 makes Kotbo free: moderation, security and the essential modules run without a subscription. Protection steps up with Shield, Jail and Kotbo Vision. Your server’s website gets a full-screen editor, and staff get an Outlook-style planner and Jira-style tracking lists',
+        sections: [
+          {
+            h2: 'Kotbo goes free',
+            body: 'A server with no subscription no longer has an idle bot: it is on the free plan, and security is never behind a paywall',
+            points: [
+              'Sanctions, AutoMod, logs, anti-raid, verification and nicknames, with no subscription',
+              'Also welcome, levels, tickets, giveaways, events, workflows, social feeds and bump',
+              'Analytics over 7 days with the main views: overview, messages, voice, heatmap, members, growth and moderation. Data collection itself is not reduced',
+              'Advanced views and locked staff modules show a filled-in example in the demo',
+              'When a trial or a gift ends, the server goes back to free instead of being disabled',
+              'The AegisAI moderation model and the MCP server stay in the paid plans',
+            ],
+          },
+          {
+            h2: 'One paid plan: Plus',
+            body: 'Plus costs €5 a month or €30 a year, whatever the size of the server. Pro and Ultimate are no longer sold, and those who already have them keep them',
+            points: [
+              'The 15-day trial and the 10% discount come with a KOTBO-XXXXXX referral code, entered or shared from the dashboard',
+              'The setup flow ends on the free plan, with a "Continue for free" button',
+              'A "Custom" plan is available on request',
+            ],
+          },
+          {
+            h2: 'Shield, Jail and Kotbo Vision',
+            body: 'Three new pieces to hold a server together during an attack, set up from Anti-raid',
+            items: [
+              { title: 'Shield', body: 'A server alert level, with /shield or the Shield card in anti-raid. It tightens every protection during a raid, then only undoes what it turned on itself' },
+              { title: 'Jail', body: 'A role-based quarantine, with /sanction jail and unjail. The member’s roles are removed then given back, for a while or for good. Other protections use it too' },
+              { title: 'Kotbo Vision', body: 'The image filter catches scams: text read from the image, QR codes, fingerprints of known images and an anti-phishing feed. You can add your own catalogues and have staff review matches' },
+              { title: 'Smart captcha', body: 'The captcha triggers always, automatically or based on the Shield level. The image carries your server’s icon and colour' },
+              { title: 'One-click /setup', body: 'A "Protection & security" step checks the bot’s permissions and turns on Jail, the honeypot channel, Shield, smart captcha, Kotbo Vision and anti-spam' },
+            ],
+          },
+          {
+            h2: 'AutoMod and joins',
+            body: 'More filters, and better control over who gets in',
+            points: [
+              '"Other servers" filter: invites, forwarded messages and other servers’ tags',
+              '"File extensions" filter: extension groups and disguised files, with per-channel rules',
+              'Minimum account age, with quarantine or a timeout until the account is old enough',
+              'Roles given to bots when they join, and /bypass bot to let a bot in once',
+              'Silent lockdown, preventive slow mode, and Discord’s AutoMod quarantine synced with Jail',
+              'Honeypot channel with a grace period, an undo button and permanent sanctions',
+              'AegisAI scope is set per channel: threads, voice and exempt members',
+            ],
+          },
+          {
+            h2: 'Your server’s website, full screen',
+            body: 'The site editor now works on the real rendering of the page',
+            points: [
+              'Sections and blocks you drag with a mouse or a finger, with a catalogue of sections to add',
+              'For each section: background, columns, width, entrance animation and per-device display',
+              'A gallery of official templates and templates shared between servers, applied and undone in one click',
+              'Visuals made from the server’s icon and colours, and a free image library for backgrounds',
+              'A member area made of apps: tickets, applications, quests and events, as a list, a kanban or a card',
+              'A floating pill header whose menu folds up when it overflows',
+            ],
+          },
+          {
+            h2: 'An Outlook-style staff planner',
+            body: 'The Planner is rebuilt from scratch and brings together everything on your server that has a date',
+            points: [
+              'Ribbon, panes, time grid, Agenda view and a "My day" view',
+              'Drag and drop, swipe on touch, creation and preview in a bubble',
+              'Events, giveaways, scheduled posts, ends of trial periods and sanctions, and team absences',
+              'An iCal subscription to see the planner in your own calendar',
+              'Reply to a meeting from the dashboard, and recurring meetings and calls',
+            ],
+          },
+          {
+            h2: 'Tracking lists and mentoring',
+            body: 'The team’s tools move up to the level of real project management software',
+            items: [
+              { title: 'Jira-style tracking lists', body: 'One page per list, a drag-and-drop board and stages with limits. Every card has its key (BOUT-12), type, subtasks, links, points, comments and history' },
+              { title: 'Linked to the planner', body: 'An assigned card shows up in the planner. Suggestions, tickets and Discord messages can be pinned to a list' },
+              { title: 'Mentoring rebuilt', body: 'A home page by role, a page per mentorship, missions as tracking lists, and reminders to mentors when a checkpoint is near or overdue' },
+              { title: 'Org chart', body: 'Rearrangeable, exportable and with several views' },
+              { title: 'Team', body: 'A role for former staff, the staff list by rank in a Discord panel, and an absence that notifies the mentor, the founder or a higher rank' },
+              { title: 'Recruitment', body: 'Applications in an inbox, positions that close on their own and Discord status panels' },
+            ],
+          },
+          {
+            h2: 'Simpler button roles',
+            body: 'A role menu is created in four steps, in plain language, from ready-made templates. Roles are only created when you publish',
+            points: [
+              '"Single role" mode, and a blocked role explained to the member and to staff',
+              'Message text, embed colour, member count on buttons, buttons reordered with the mouse',
+              'Discord preview, mini-preview cards and menu duplication',
+              'Tracking in logs, Analytics and workflows, with a warning when a role, message or panel is deleted',
+            ],
+          },
+          {
+            h2: 'Tournaments in events',
+            body: 'An event can now be a tournament, followed live on a public page',
+            points: [
+              'Single elimination, double elimination, or groups with standings',
+              'Seeding, team sign-ups, match details and podium',
+              'The /events page is rebuilt',
+            ],
+          },
+          {
+            h2: 'For staff',
+            body: 'The dashboard, page by page',
+            items: [
+              { title: 'Member profile everywhere', body: 'One click on a member opens it from logs, tickets, sanctions, levels, economy, suggestions, invites, Aegis…' },
+              { title: 'Testable automations', body: 'A dry run, a readable replay and fixes from the replay. Cooldown, persistent variables, a message kept up to date, and tenure and inactivity triggers' },
+              { title: 'Cross-server polls', body: 'The announcement console sends a poll to several servers, with vote buttons and results' },
+              { title: 'Backups', body: '/backup also saves and restores the Kotbo configuration' },
+              { title: 'Bot identity', body: 'Open to paid plans, with its own page next to Home' },
+              { title: 'Analytics', body: 'The previous period’s value replaces the % changes' },
+            ],
+          },
+          {
+            h2: 'And on the server',
+            body: 'On the Discord side, in no particular order',
+            points: [
+              'Anonymous confessions with /confession envoyer: public channel, staff log, tracked reveal, adjustable delay and banned words',
+              'Summons: the member acknowledges, picks a slot in a thread, and an action applies at the deadline',
+              'Discussion panels in Auto-Thread: a button opens a public, private or forum thread, managed by its owner from a panel',
+              'Tickets: staff signature under macros, sending as the staff member, and {ticket_channel} and {ticket_link} variables',
+              'Counting: record, per-player stats and /stats-compteur. Starboard: message removal and the author’s own vote ignored',
+              'Sticky messages reposted after the channel has been quiet for a while',
+              'When a member comes back, their staff and admin roles can be given back',
+            ],
+          },
+          {
+            h2: 'What is paused',
+            body: 'Two modules stop, with no data lost',
+            points: [
+              'Daily Algo is paused: its commands and tasks are removed, and it is turned off on servers that had it on. No data is deleted',
+              'Partnerships stay paused, and the public partner portal is closed',
+            ],
+          },
+        ],
+        faq: [
+          {
+            q: 'I have a Pro or Ultimate subscription, what changes?',
+            a: 'Nothing: your subscription carries on. Pro and Ultimate are simply no longer offered to new subscribers, who now have a single plan, Plus',
+          },
+          {
+            q: 'What happens to my server when a trial ends?',
+            a: 'It goes back to the free plan instead of being disabled: moderation, security and the free modules keep running',
+          },
+          {
+            q: 'How do I get the 15-day trial?',
+            a: 'With a KOTBO-XXXXXX referral code, asked from a server that already uses Kotbo and entered from the dashboard. The same code gives a 10% discount',
+          },
+        ],
+      },
+    },
+  },
+  {
     version: '9.5',
     slug: '9-5',
     tag: 'v9.5',
