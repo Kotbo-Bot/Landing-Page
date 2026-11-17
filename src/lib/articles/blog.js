@@ -835,15 +835,15 @@ export const BLOG = [
         h1: 'AegisAI devient AegisAI by Kotbo',
         description:
           'AegisAI, l’IA qui repère les insultes et lit le ton des messages Discord, rejoint Kotbo. Rien ne change pour ton serveur, l’API passe sur aegisai.kotbo.fr et le modèle va grandir.',
-        lead: 'AegisAI, l’IA créée par Marcel (marvideo) qui note la toxicité et l’émotion des messages, rejoint Kotbo et devient AegisAI by Kotbo. Si ton serveur l’utilise déjà, tu n’as rien à faire',
+        lead: 'AegisAI, l’IA créée par Marvideo qui note la toxicité et l’émotion des messages, rejoint Kotbo et devient AegisAI by Kotbo. Si ton serveur l’utilise déjà, tu n’as rien à faire',
         sections: [
           {
             h2: 'D’où vient AegisAI',
-            body: 'Marcel, de marvideo.fr, a créé AegisAI : une API qui lit un message et renvoie sa note de toxicité et l’émotion qu’il porte. Kotbo s’en sert depuis la 9.5 pour repérer ce que les listes de mots bannis ratent : les fautes volontaires et les phrases polies mais méchantes',
+            body: 'Marvideo, de marvideo.fr, a créé AegisAI : une API qui lit un message et renvoie sa note de toxicité et l’émotion qu’il porte. Kotbo s’en sert depuis la 9.5 pour repérer ce que les listes de mots bannis ratent : les fautes volontaires et les phrases polies mais méchantes',
           },
           {
             h2: 'Ce que veut dire la fusion',
-            body: 'AegisAI passe sous la marque Kotbo. Marcel continue de le développer, désormais avec Kotbo et au plus près du bot qui s’en sert',
+            body: 'AegisAI passe sous la marque Kotbo. Marvideo continue de le développer, désormais avec Kotbo et au plus près du bot qui s’en sert',
           },
           {
             h2: 'Pour ton serveur, rien ne change',
@@ -890,15 +890,15 @@ export const BLOG = [
         h1: 'AegisAI becomes AegisAI by Kotbo',
         description:
           'AegisAI, the model that spots insults and reads the tone of Discord messages, joins Kotbo. Nothing changes for your server, the API moves to aegisai.kotbo.fr and the model is about to grow.',
-        lead: 'AegisAI, the model built by Marcel (marvideo) that scores the toxicity and emotion of messages, joins Kotbo and becomes AegisAI by Kotbo. If your server already uses it, there is nothing to do',
+        lead: 'AegisAI, the model built by Marvideo that scores the toxicity and emotion of messages, joins Kotbo and becomes AegisAI by Kotbo. If your server already uses it, there is nothing to do',
         sections: [
           {
             h2: 'Where AegisAI comes from',
-            body: 'Marcel, from marvideo.fr, built AegisAI: an API that reads a message and returns its toxicity score and the emotion it carries. Kotbo has used it since 9.5 to catch what banned-word lists miss: deliberate misspellings and polite but nasty sentences',
+            body: 'Marvideo, from marvideo.fr, built AegisAI: an API that reads a message and returns its toxicity score and the emotion it carries. Kotbo has used it since 9.5 to catch what banned-word lists miss: deliberate misspellings and polite but nasty sentences',
           },
           {
             h2: 'What the merger means',
-            body: 'AegisAI moves under the Kotbo brand. Marcel keeps building it, now with Kotbo and right next to the bot that uses it',
+            body: 'AegisAI moves under the Kotbo brand. Marvideo keeps building it, now with Kotbo and right next to the bot that uses it',
           },
           {
             h2: 'For your server, nothing changes',
