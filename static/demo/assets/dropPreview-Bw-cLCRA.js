@@ -1,0 +1,1 @@
+function e(e,t){return e.replace(/\{(\w+)\}/g,(e,n)=>t[n]??e)}export{e as t};

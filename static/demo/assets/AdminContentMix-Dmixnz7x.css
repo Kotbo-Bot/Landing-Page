@@ -1,0 +1,1 @@
+.heat.svelte-2kpbh3{grid-template-columns:auto repeat(24,minmax(0,1fr));gap:3px;display:grid}.cell.svelte-2kpbh3{aspect-ratio:1;background:color-mix(in srgb, var(--primary-color) calc(var(--level) * 100%), var(--surface-container));border-radius:5px;min-height:12px;max-height:26px}

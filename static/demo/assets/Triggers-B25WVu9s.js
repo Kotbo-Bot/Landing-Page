@@ -1,0 +1,1 @@
+import"./vendor-icons-D9fxVvXx.js";import{t as e}from"./Workflows-1LqnOfDE.js";function t(t){e(t,{})}export{t as default};

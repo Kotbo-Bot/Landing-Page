@@ -1,0 +1,1 @@
+.spinner.svelte-46uwdv{border:2px solid color-mix(in srgb, currentColor 30%, transparent);border-top-color:currentColor;border-radius:9999px;width:15px;height:15px;animation:.7s linear infinite svelte-46uwdv-spin}@keyframes svelte-46uwdv-spin{to{transform:rotate(360deg)}}@media (prefers-reduced-motion:reduce){.spinner.svelte-46uwdv{animation-duration:2s}}
