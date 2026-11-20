@@ -39,6 +39,202 @@ export function blogSlug(post, locale) {
 export const BLOG = [
   ...GUIDES,
   {
+    slug: 'kotbo-10-0',
+    date: '2026-11-20',
+    author: 'Klaynight',
+    modules: ['seasons', 'reputation', 'drops', 'leveling'],
+    text: {
+      fr: {
+        h1: 'Kotbo 10.0 : ton bot et ton domaine, les tags de serveur, des modules de communauté refaits',
+        description:
+          'Kotbo 10.0 : ton propre bot et ton domaine, l’automod des tags de serveur, Réputation, Saisons, Suggestions, Starlight et Drops refaits, import des niveaux depuis MEE6 ou DraftBot, dashboard accessible.',
+        teaser: 'Kotbo 10.0 : ton bot, ton domaine, les tags de serveur et l’import de tes niveaux',
+        lead: 'Kotbo 10.0 donne à ton serveur sa propre identité : tu peux lancer ton bot sous ton nom, servir ton dashboard sur ton domaine et suivre l’effet de ton tag de serveur. Réputation, Saisons, Suggestions, Starlight et Drops sont refaits, et tu reprends tes niveaux depuis MEE6 ou DraftBot',
+        sections: [
+          {
+            h2: 'Ton bot et ton domaine',
+            body: 'La page Identité du dashboard règle le profil de Kotbo chez toi, ou lance ton propre bot. Ces options font partie de l’offre Plus',
+            items: [
+              { title: 'Le profil de Kotbo chez toi', body: 'Tu choisis le nom, la photo et la bannière que ton serveur voit, importées depuis ton ordinateur ou par un lien' },
+              { title: 'Ton propre bot', body: 'Tu colles le jeton d’une application créée sur le portail développeur de Discord, et Kotbo la lance. Ton bot ne reste que sur ton serveur, et tu peux revenir au bot Kotbo quand tu veux' },
+              { title: 'Ton domaine', body: 'Ton dashboard s’ouvre sur ton adresse, et seulement pour ton serveur' },
+            ],
+            points: ['Si ton serveur quitte l’offre Plus, ton bot perso s’arrête'],
+          },
+          {
+            h2: 'Tags de serveur : les suivre, les protéger, les mesurer',
+            body: 'Les tags de serveur Discord s’affichent à côté des pseudos. Kotbo les prend en charge de bout en bout',
+            items: [
+              { title: 'Un automod dédié', body: 'Dans Filtres, onglet Tags, tes règles s’appliquent à l’arrivée d’un membre et à son changement de tag. Kotbo repère les tags qui imitent le tien et met en quarantaine quand une vague de membres arrive avec le même' },
+              { title: 'L’effet de ton tag', body: 'La carte « Le tag amène-t-il des membres ? » d’Analytics estime son effet sur les arrivées, à partir d’un relevé chaque soir de ses porteurs' },
+              { title: 'Une fiche par serveur', body: 'Chiffres clés, profil public, invitation et porteurs du tag sur une seule fiche, qui s’ouvre d’un clic depuis un tag' },
+            ],
+            points: ['Le tag apparaît à côté des membres dans les invitations, les niveaux, les tickets et les listes de membres'],
+          },
+          {
+            h2: 'Réputation, Saisons, Suggestions, Starlight, Drops : tout est refait',
+            body: 'Ces modules ont maintenant le même confort : une page claire, des réglages par serveur, des récompenses et des conseils quand quelque chose bloque',
+            items: [
+              { title: 'Réputation', body: 'Des rôles à partir de certains paliers, avec une annonce. Un remerciement peut rapporter de l’XP et des pièces, et se donner par réaction. Des garde-fous évitent les abus et le staff peut ajuster un score' },
+              { title: 'Saisons', body: 'Le classement compte l’XP gagnée pendant la période, sans remettre les niveaux à zéro. Récompenses, paliers et annonces se règlent, et chaque fin de saison a son bilan et son palmarès' },
+              { title: 'Suggestions', body: 'Tu peux revenir sur une décision, récompenser l’auteur d’une idée retenue, créer des catégories et fixer un seuil de votes' },
+              { title: 'Starlight', body: 'Une galerie réunit les messages à la une. Tu récompenses les auteurs, tu exclus des membres et tu règles un seuil par salon' },
+              { title: 'Drops', body: 'Un drop peut attendre que son salon soit actif. Les jackpots font gagner un multiple du montant un drop sur N, et des règles de ramassage fixent plafond, ancienneté ou rôle requis' },
+              { title: 'Salons fun', body: 'Les jeux se règlent en tuiles qu’il suffit d’activer, et le quiz se joue aussi sur le web' },
+            ],
+          },
+          {
+            h2: 'Reprendre tes niveaux',
+            body: 'Tu changes de bot de niveaux ? Tes membres gardent leur progression',
+            items: [
+              { title: 'Quatre sources', body: 'MEE6, DraftBot, Lurkr et Tatsu s’importent depuis la page Niveaux', link: { feature: 'leveling', label: 'Lire l’article sur les niveaux' } },
+              { title: 'Lecture par IA', body: 'Tu peux aussi donner une capture d’écran ou un texte de classement : une IA le lit et le convertit' },
+            ],
+            points: ['Le classement public des niveaux est fermé à l’aspiration, pour que personne ne copie ton classement'],
+          },
+          {
+            h2: 'Suivi des boosts',
+            body: 'Un badge s’affiche à côté du pseudo des boosters, dans leur fiche et sur leur profil public. L’onglet Boosts montre la courbe, la liste des boosters et un journal, calcule les avantages que ton serveur débloque, et Kotbo te prévient quand un boost se perd',
+          },
+          {
+            h2: 'Un dashboard accessible, et en deux langues',
+            body: 'Le dashboard suit les règles du référentiel d’accessibilité RGAA',
+            points: [
+              'Focus visible, champs étiquetés, fenêtres pilotables au clavier',
+              'Graphiques accompagnés d’un tableau de données, contrastes renforcés',
+              'Changement de langue sans recharger la page',
+              'Commandes en anglais, et textes envoyés sur Discord dans la langue de ton serveur',
+            ],
+          },
+          {
+            h2: 'Et aussi',
+            body: 'Le reste de la version',
+            points: [
+              'Accueil du dashboard : cinq nouveaux blocs (Pulse, Shield, mes tâches, boosts, climat) et une barre latérale redimensionnable',
+              'Modération : emojis, stickers et emojis d’un autre serveur interdits, plus d’images d’arnaque reconnues par Kotbo Vision, compteur de comptes piégés du honeypot',
+              'Kotbo × AegisAI réentraîné sur 157 074 messages, 97,5 % de précision : un modèle quatre fois plus léger, environ 7 ms par message',
+              'Fiche membre : historique de l’identité du membre',
+              'Facturation : transfert de l’abonnement vers un autre serveur',
+              'Aperçus de liens : un module gratuit qui affiche des cartes pour GitHub, X, TikTok et Steam',
+              'Commande /regle pour citer un article du règlement par son numéro ou son titre',
+              'Ponts entre serveurs : le trafic de chaque pont est compté et affiché',
+              'Vocaux temporaires : chaque membre règle son salon et sa visibilité',
+              'Daily Algo et Partenariats sont retirés de Kotbo',
+            ],
+          },
+        ],
+        faq: [
+          {
+            q: 'Le bot perso et le domaine perso sont-ils gratuits ?',
+            a: 'Non. Ils font partie de l’offre Plus, et le bot perso s’arrête si le serveur la quitte',
+          },
+          {
+            q: 'Quels bots de niveaux puis-je importer ?',
+            a: 'MEE6, DraftBot, Lurkr et Tatsu, ou une capture d’écran ou un texte de classement lus par IA',
+          },
+          {
+            q: 'Où sont les réglages des tags de serveur ?',
+            a: 'Dans Filtres, onglet Tags, pour l’automod, et dans Analytics, pour l’effet du tag sur les arrivées',
+          },
+        ],
+      },
+      en: {
+        h1: 'Kotbo 10.0: your own bot and domain, server tags, rebuilt community modules',
+        description:
+          'Kotbo 10.0: your own bot and domain, server tag automod, rebuilt Reputation, Seasons, Suggestions, Starlight and Drops, level import from MEE6 or DraftBot, an accessible dashboard.',
+        teaser: 'Kotbo 10.0: your own bot, your domain, server tags and level import',
+        lead: 'Kotbo 10.0 gives your server its own identity: run your bot under your name, serve your dashboard on your domain and track what your server tag does. Reputation, Seasons, Suggestions, Starlight and Drops are rebuilt, and you can bring your levels over from MEE6 or DraftBot',
+        sections: [
+          {
+            h2: 'Your bot and your domain',
+            body: 'The dashboard’s Identity page sets Kotbo’s profile on your server, or launches your own bot. These options are part of the Plus plan',
+            items: [
+              { title: 'Kotbo’s profile on your server', body: 'You pick the name, photo and banner your server sees, imported from your computer or by link' },
+              { title: 'Your own bot', body: 'You paste the token of an application created on Discord’s developer portal, and Kotbo launches it. Your bot stays on your server only, and you can switch back to the Kotbo bot whenever you want' },
+              { title: 'Your domain', body: 'Your dashboard opens on your address, and only for your server' },
+            ],
+            points: ['If your server leaves the Plus plan, your custom bot stops'],
+          },
+          {
+            h2: 'Server tags: follow them, protect them, measure them',
+            body: 'Discord server tags show next to usernames. Kotbo now handles them end to end',
+            items: [
+              { title: 'A dedicated automod', body: 'In Filters, Tags tab, your rules apply when a member joins and when they change tag. Kotbo spots tags that imitate yours and quarantines when a wave of members arrives with the same one' },
+              { title: 'What your tag does', body: 'The “Does the tag bring members?” card in Analytics estimates its effect on joins, from a nightly count of its holders' },
+              { title: 'One profile per server', body: 'Key figures, public profile, invite and tag holders on a single profile, one click away from any tag' },
+            ],
+            points: ['The tag shows next to members in invites, levels, tickets and member lists'],
+          },
+          {
+            h2: 'Reputation, Seasons, Suggestions, Starlight, Drops: all rebuilt',
+            body: 'These modules now share the same comfort: a clear page, per-server settings, rewards and hints when something is stuck',
+            items: [
+              { title: 'Reputation', body: 'Roles from certain tiers, with an announcement. A thank-you can earn XP and coins, and be given with a reaction. Safeguards prevent abuse and staff can adjust a score' },
+              { title: 'Seasons', body: 'The ranking counts the XP earned during the period, without resetting levels. Rewards, tiers and announcements are configurable, and every season ends with a recap and a hall of fame' },
+              { title: 'Suggestions', body: 'You can revisit a decision, reward the author of an accepted idea, create categories and set a vote threshold' },
+              { title: 'Starlight', body: 'A gallery gathers the highlighted messages. You reward authors, exclude members and set a threshold per channel' },
+              { title: 'Drops', body: 'A drop can wait until its channel is active. Jackpots pay a multiple of the amount one drop in N, and pickup rules set a cap, an account age or a required role' },
+              { title: 'Fun channels', body: 'Games are set up with tiles you just switch on, and the quiz can also be played on the web' },
+            ],
+          },
+          {
+            h2: 'Bring your levels over',
+            body: 'Switching leveling bots? Your members keep their progress',
+            items: [
+              { title: 'Four sources', body: 'MEE6, DraftBot, Lurkr and Tatsu import from the Levels page', link: { feature: 'leveling', label: 'Read the leveling article' } },
+              { title: 'AI reading', body: 'You can also hand over a screenshot or the text of a leaderboard: an AI reads and converts it' },
+            ],
+            points: ['The public levels leaderboard is closed to scraping, so nobody copies your ranking'],
+          },
+          {
+            h2: 'Boost tracking',
+            body: 'A badge shows next to boosters’ names, in their profile and on their public profile. The Boosts tab shows the curve, the list of boosters and a log, works out the perks your server unlocks, and Kotbo warns you when a boost is lost',
+          },
+          {
+            h2: 'An accessible dashboard, in two languages',
+            body: 'The dashboard follows the RGAA accessibility framework',
+            points: [
+              'Visible focus, labelled fields, dialogs you can drive from the keyboard',
+              'Charts that come with a data table, stronger contrast',
+              'Language switch without reloading the page',
+              'Commands in English, and texts sent on Discord in your server’s language',
+            ],
+          },
+          {
+            h2: 'Also in this release',
+            body: 'The rest of the version',
+            points: [
+              'Dashboard home: five new blocks (Pulse, Shield, my tasks, boosts, climate) and a resizable sidebar',
+              'Moderation: emojis, stickers and another server’s emojis can be banned, more scam images recognised by Kotbo Vision, a honeypot trapped-account counter',
+              'Kotbo × AegisAI retrained on 157,074 messages, 97.5% accuracy: a model four times lighter, about 7 ms per message',
+              'Member profile: the member’s identity history',
+              'Billing: transfer your subscription to another server',
+              'Link previews: a free module that shows cards for GitHub, X, TikTok and Steam',
+              'A new command quotes a rules article by number or title',
+              'Cross-server bridges: each bridge’s traffic is counted and shown',
+              'Temporary voice channels: each member sets their own channel and its visibility',
+              'Daily Algo and Partnerships are removed from Kotbo',
+            ],
+          },
+        ],
+        faq: [
+          {
+            q: 'Are the custom bot and custom domain free?',
+            a: 'No. They are part of the Plus plan, and the custom bot stops if the server leaves it',
+          },
+          {
+            q: 'Which leveling bots can I import?',
+            a: 'MEE6, DraftBot, Lurkr and Tatsu, or a screenshot or text of a leaderboard read by AI',
+          },
+          {
+            q: 'Where are the server tag settings?',
+            a: 'In Filters, Tags tab, for the automod, and in Analytics, for the tag’s effect on joins',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'organigramme-staff',
     date: '2026-11-07',
     author: 'Klaynight',

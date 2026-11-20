@@ -54,7 +54,7 @@
   const t = $derived(TEXT[getLocale()]);
   const locale = $derived(getLocale());
   // Le billet annoncé sous les boutons : changer ce slug pour en mettre un autre en avant.
-  const featured = BLOG.find((b) => blogSlug(b, 'fr') === 'kotbo-gratuit')!;
+  const featured = BLOG.find((b) => blogSlug(b, 'fr') === 'kotbo-10-0')!;
   const teaser = $derived(featured.text[locale].teaser ?? featured.text[locale].h1);
   const servers = $derived((publicStats.data?.servers ?? []).slice(0, 3));
   const fmt = (n: number) => n.toLocaleString(getLocale() === 'fr' ? 'fr-FR' : 'en-US').replace(/\u202f/g, '\u00a0');
