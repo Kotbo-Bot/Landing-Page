@@ -1,1 +1,0 @@
-import{ao as e,so as t,za as n}from"./vendor-icons-D9fxVvXx.js";var r=new class{#e=t(!1);get open(){return n(this.#e)}set open(t){e(this.#e,t,!0)}#t=t(null);get code(){return n(this.#t)}set code(t){e(this.#t,t,!0)}show(e){this.code=e,this.open=!0}close(){this.open=!1,this.code=null}};export{r as t};

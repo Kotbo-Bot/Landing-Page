@@ -1,0 +1,1 @@
+var e=[`suggestions`,`tickets`],t=[`LOW`,`MEDIUM`,`HIGH`],n=[`TASK`,`BUG`,`STORY`,`EPIC`],r=/^[A-Z][A-Z0-9]{1,9}$/;export{t as i,r as n,e as r,n as t};

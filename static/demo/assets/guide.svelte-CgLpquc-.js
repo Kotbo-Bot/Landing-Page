@@ -1,1 +1,0 @@
-import{ao as e,so as t,za as n}from"./vendor-icons-D9fxVvXx.js";import{Wv as r}from"./liveLocale.svelte-B7V6eClf.js";var i=t(null),a={get active(){return n(i)},get target(){return n(i)?.target??null},start(t){let n=t.href.split(/[?#]/)[0];e(i,{...t,path:n,startedAt:Date.now()},!0),r.goto(t.href)},stop(){e(i,null)}};export{a as t};

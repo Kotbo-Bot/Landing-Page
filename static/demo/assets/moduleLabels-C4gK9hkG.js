@@ -1,0 +1,1 @@
+import{n as e}from"./i18n-NV_o2Ij0.js";function t(t,n=``){return t?e[`mod_${t}_name`]?.()??(n||t):n}function n(t,n=``){return t?e[`mod_${t}_desc`]?.()??n:n}export{t as n,n as t};
