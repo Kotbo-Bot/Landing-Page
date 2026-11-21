@@ -22,7 +22,10 @@
   import { getLocale } from '$lib/i18n/state.svelte';
   import { featurePath, STAFF_ROUTE } from '$lib/i18n/routes';
   import { FEATURES } from '$lib/data/features';
-  import { ktb } from '$lib/playground/discord/theme';
+  import { KOTBO_AVATAR, ktb } from '$lib/playground/discord/theme';
+  import { ChannelHeader as DiscordChannelHeader } from '@arcscord/discord-ui-svelte';
+  import Surface from '$lib/playground/discord/Surface.svelte';
+  import Message from '$lib/playground/discord/Message.svelte';
   import Embed from '$lib/playground/discord/Embed.svelte';
   import DcButton from '$lib/playground/discord/DcButton.svelte';
   import RankCanvas from '$lib/playground/rank/RankCanvas.svelte';
@@ -379,20 +382,6 @@
   {/if}
 {/snippet}
 
-{#snippet discordHead(channel: string)}
-  <p class="mb-3 flex items-center justify-between gap-3 border-b border-black/30 pb-3 text-sm">
-    <span class="font-semibold text-[#f2f3f5]">{channel}</span>
-  </p>
-{/snippet}
-
-{#snippet kotbo(time: string)}
-  <p class="flex items-center gap-1.5">
-    <span class="font-semibold text-ink">Kotbo</span>
-    <span class="rounded bg-blurple px-1 text-[10px] font-semibold leading-4 text-white">APP</span>
-    <span class="text-xs text-[#949ba4]">{time}</span>
-  </p>
-{/snippet}
-
 {#snippet preview(key: Key)}
   {#if key === 'mod'}
     <div class="stay-dark rounded-2xl bg-black p-5 font-mono text-[12.5px] leading-6 sm:text-sm">
@@ -401,44 +390,42 @@
       {/each}
     </div>
   {:else if key === 'tickets'}
-    <div class="stay-dark rounded-2xl bg-[#313338] p-5">
-      {@render discordHead(t.tickets.channel)}
-      <div class="flex gap-3">
-        <img src="{base}/favicon.svg" alt="" width="40" height="40" class="h-10 w-10 shrink-0 rounded-full" />
-        <div class="min-w-0 flex-1">
-          {@render kotbo('14:02')}
-          <Embed
-            color="#5865f2"
-            icon={ktb('ticket')}
-            title={t.tickets.openTitle}
-            fields={[
-              { name: t.tickets.author, value: '@sarah' },
-              { name: t.tickets.reason, value: t.tickets.reasonValue },
-              { name: t.tickets.description, value: t.tickets.descriptionValue, inline: false },
-            ]}
-          >
-            {#snippet actions()}
-              <DcButton tone="primary" disabled={ticket !== 'open'} onclick={() => (ticket = 'claimed')}>{t.tickets.claim}</DcButton>
-              <DcButton tone="danger" disabled={ticket === 'closed'} onclick={() => (ticket = 'closed')}>{t.tickets.close}</DcButton>
-            {/snippet}
-          </Embed>
+    <Surface class="overflow-hidden rounded-2xl">
+      <DiscordChannelHeader name={t.tickets.channel.replace(/^#\s*/, '')} />
+      <Message author="Kotbo" bot avatar={KOTBO_AVATAR} time="14:02">
+        <Embed
+          color="#5865f2"
+          icon={ktb('ticket')}
+          title={t.tickets.openTitle}
+          fields={[
+            { name: t.tickets.author, value: '@sarah' },
+            { name: t.tickets.reason, value: t.tickets.reasonValue },
+            { name: t.tickets.description, value: t.tickets.descriptionValue, inline: false },
+          ]}
+        >
+          {#snippet actions()}
+            <DcButton tone="primary" disabled={ticket !== 'open'} onclick={() => (ticket = 'claimed')} label={t.tickets.claim} />
+            <DcButton tone="danger" disabled={ticket === 'closed'} onclick={() => (ticket = 'closed')} label={t.tickets.close} />
+          {/snippet}
+        </Embed>
+      </Message>
 
-          {#if ticket !== 'open'}
-            <div class="arsenal-in mt-4">
-              {@render kotbo('14:03')}
-              <Embed color="#248046" icon={ktb('check')} title={t.tickets.claimedTitle}>{t.tickets.claimedBody}</Embed>
-            </div>
-          {/if}
-          {#if ticket === 'closed'}
-            <div class="arsenal-in mt-4">
-              {@render kotbo('14:11')}
-              <Embed color="#da373c" icon={ktb('lock')} title={t.tickets.closedTitle}>{t.tickets.closedBody}</Embed>
-            </div>
-          {/if}
+      {#if ticket !== 'open'}
+        <div class="arsenal-in mt-4">
+          <Message author="Kotbo" bot avatar={KOTBO_AVATAR} time="14:03">
+            <Embed color="#248046" icon={ktb('check')} title={t.tickets.claimedTitle} description={t.tickets.claimedBody} />
+          </Message>
         </div>
-      </div>
+      {/if}
+      {#if ticket === 'closed'}
+        <div class="arsenal-in mt-4">
+          <Message author="Kotbo" bot avatar={KOTBO_AVATAR} time="14:11">
+            <Embed color="#da373c" icon={ktb('lock')} title={t.tickets.closedTitle} description={t.tickets.closedBody} />
+          </Message>
+        </div>
+      {/if}
       <p class="sr-only" role="status">{t.tickets.status[ticket]}</p>
-    </div>
+    </Surface>
     {#if ticket === 'closed'}
       <button type="button" onclick={() => (ticket = 'open')} class="mt-4 min-h-11 rounded-lg bg-night-4 px-5 text-sm font-semibold text-ink transition-colors hover:bg-line-2">
         {t.tickets.replay}
@@ -466,38 +453,33 @@
       </button>
     </div>
   {:else if key === 'giveaways'}
-    <div class="stay-dark rounded-2xl bg-[#313338] p-5">
-      {@render discordHead(t.giveaways.channel)}
-      <div class="flex gap-3">
-        <img src="{base}/favicon.svg" alt="" width="40" height="40" class="h-10 w-10 shrink-0 rounded-full" />
-        <div class="min-w-0 flex-1">
-          {@render kotbo('18:00')}
-          <Embed color="#5865f2" title={t.giveaways.prize} footer={t.giveaways.footer}>
-            <p>{t.giveaways.cta}</p>
-            <p class="mt-2"><strong class="text-[#f2f3f5]">{t.giveaways.ends}</strong> {t.giveaways.endsValue}</p>
-            <p><strong class="text-[#f2f3f5]">{t.giveaways.winners}</strong> 1</p>
-            <p><strong class="text-[#f2f3f5]">{t.giveaways.entrants}</strong> <span class="tabular-nums">{entrants}</span></p>
-            {#snippet actions()}
-              <DcButton tone="primary" onclick={toggleEntry}>{t.giveaways.join}</DcButton>
-            {/snippet}
-          </Embed>
-          {#if reply}
-            {#key reply}
-              <div class="arsenal-in mt-4">
-                {@render kotbo('18:02')}
-                <p class="mt-1 text-sm text-[#dbdee1]">{reply === 'joined' ? t.giveaways.joined : t.giveaways.left}</p>
-                <p class="mt-1 text-xs text-[#949ba4]">{t.giveaways.ephemeral}</p>
-              </div>
-            {/key}
-          {/if}
-        </div>
-      </div>
+    <Surface class="overflow-hidden rounded-2xl">
+      <DiscordChannelHeader name={t.giveaways.channel.replace(/^#\s*/, '')} />
+      <Message author="Kotbo" bot avatar={KOTBO_AVATAR} time="18:00">
+        <Embed color="#5865f2" title={t.giveaways.prize} footer={t.giveaways.footer}
+          description={`${t.giveaways.cta}\n\n**${t.giveaways.ends}** ${t.giveaways.endsValue}\n**${t.giveaways.winners}** 1\n**${t.giveaways.entrants}** ${entrants}`}
+        >
+          {#snippet actions()}
+            <DcButton tone="primary" onclick={toggleEntry} label={t.giveaways.join} />
+          {/snippet}
+        </Embed>
+      </Message>
+      {#if reply}
+        {#key reply}
+          <div class="arsenal-in mt-4">
+            <Message author="Kotbo" bot avatar={KOTBO_AVATAR} time="18:02" ephemeral>
+              <p class="mt-1 text-sm text-[var(--discord-ui-text)]">{reply === 'joined' ? t.giveaways.joined : t.giveaways.left}</p>
+              <p class="mt-1 text-xs text-[var(--discord-ui-muted)]">{t.giveaways.ephemeral}</p>
+            </Message>
+          </div>
+        {/key}
+      {/if}
       <p class="sr-only" role="status">{t.giveaways.status(entrants)}</p>
-    </div>
+    </Surface>
   {:else if key === 'logs'}
     {@const entry = t.logs.entries[log]}
-    <div class="stay-dark rounded-2xl bg-[#313338] p-5">
-      {@render discordHead(t.logs.channel)}
+    <Surface class="overflow-hidden rounded-2xl">
+      <DiscordChannelHeader name={t.logs.channel.replace(/^#\s*/, '')} />
       <div role="group" aria-label={t.logs.listLabel} class="flex flex-col gap-1">
         {#each LOG_KEYS as k (k)}
           {@const on = log === k}
@@ -505,7 +487,7 @@
             type="button"
             aria-pressed={on}
             onclick={() => (log = k)}
-            class="flex min-h-11 items-center gap-3 rounded-md px-3 text-left text-sm transition-colors {on ? 'bg-[#404249] text-[#f2f3f5]' : 'text-[#b5bac1] hover:bg-[#393c41] hover:text-[#dbdee1]'}"
+            class="flex min-h-11 items-center gap-3 rounded-md px-3 text-left text-sm transition-colors {on ? 'bg-[var(--discord-ui-row-hover)] text-[var(--discord-ui-strong)]' : 'text-[var(--discord-ui-muted)] hover:bg-[var(--discord-ui-row-hover)] hover:text-[var(--discord-ui-text)]'}"
           >
             <img src={ktb(t.logs.entries[k].icon)} alt="" width="18" height="18" class="h-4.5 w-4.5 shrink-0" />
             <span class="min-w-0 flex-1 truncate">{t.logs.entries[k].row}</span>
@@ -513,15 +495,13 @@
         {/each}
       </div>
       {#key log}
-        <div class="arsenal-in mt-4 flex gap-3">
-          <img src="{base}/favicon.svg" alt="" width="40" height="40" class="h-10 w-10 shrink-0 rounded-full" />
-          <div class="min-w-0 flex-1">
-            {@render kotbo('02:31')}
+        <div class="arsenal-in mt-4">
+          <Message author="Kotbo" bot avatar={KOTBO_AVATAR} time="02:31">
             <Embed color={entry.color} title={entry.title} fields={entry.fields} footer={entry.footer} />
-          </div>
+          </Message>
         </div>
       {/key}
-    </div>
+    </Surface>
   {:else}
     <div>
       <div role="group" aria-label={t.all.catsLabel} class="flex flex-wrap gap-2">

@@ -19,6 +19,11 @@
     d'origine : aucun ticket de démo n'a de salon supprimé.
 -->
 <script lang="ts">
+  import { ActionRow, Button as DiscordButton } from '@arcscord/discord-ui-svelte';
+  import Surface from '$lib/playground/discord/Surface.svelte';
+  import Message from '$lib/playground/discord/Message.svelte';
+  import Embed from '$lib/playground/discord/Embed.svelte';
+
   import { onMount, tick } from 'svelte';
   import { base } from '$app/paths';
   import Dash from '$lib/dash/Dash.svelte';
@@ -885,75 +890,42 @@
               role="log"
               aria-label={t.messages}
               class="chat-log flex-1 overflow-y-auto bg-[#313338] scrollbar-hide"
-              class:p-6={messages.length > 0}
-              class:space-y-3={messages.length > 0}
             >
-              {#if messages.length === 0}
-                <div class="flex flex-col items-center justify-center text-white/30 h-full">
-                  <Papicon icon="forum" size={28} class="opacity-50 mb-2" />
-                  <p class="text-xs">{t.noMessage}</p>
-                </div>
-              {:else}
-                {#each messages as msg (msg.id)}
-                  {@const avatar = msg.authorId === BOT_ID ? `${base}/favicon.svg` : msg.authorAvatar}
-                  <div class="flex items-start gap-4 p-2 rounded-xl hover:bg-white/5 transition-colors group">
-                    <div class="shrink-0">
-                      {#if avatar}
-                        <img src={avatar} alt="" class="h-10 w-10 rounded-full object-cover border border-white/10" />
-                      {:else}
-                        <div class="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center text-sm font-semibold text-white/80">
-                          {msg.authorName?.slice(0, 1).toUpperCase()}
-                        </div>
-                      {/if}
-                    </div>
-                    <div class="min-w-0 flex-1">
-                      <div class="flex items-baseline gap-1.5 flex-wrap">
-                        <span class="text-sm font-bold text-white">{msg.authorName || t.anonymous}</span>
-                        {#if msg.isStaff}
-                          <span class="bg-[#5865F2] text-white text-2xs font-semibold px-1 py-0.5 rounded leading-none">{t.staffBadge}</span>
-                        {/if}
-                        <span class="text-2xs text-white/60">{new Date(msg.createdAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</span>
-                      </div>
-                      {#if msg.content}
-                        <p class="text-sm text-white/90 mt-1 whitespace-pre-wrap leading-relaxed select-text">{messageText(msg.content)}</p>
-                      {/if}
-
-                      {#if msg.embeds && msg.embeds.length > 0}
-                        <div class="mt-2 space-y-2">
-                          {#each msg.embeds as embed, index (index)}
-                            <div class="bg-[#2b2d31] border-l-4 rounded-r-md p-2.5 max-w-lg" style="border-left-color: {embed.color || '#1e1f22'}">
-                              <div class="font-bold text-[#00a8fc] text-sm mb-1">{embed.title[locale]}</div>
-                              <div class="text-sm text-white/80 whitespace-pre-wrap leading-relaxed select-text">{embed.description[locale]}</div>
-                              {#if embed.fields && embed.fields.length > 0}
-                                <div class="mt-2 flex flex-wrap gap-2">
-                                  {#each embed.fields as field, fieldIndex (fieldIndex)}
-                                    <div class="flex-1 min-w-[45%]">
-                                      <div class="text-2xs font-bold text-white/60 uppercase">{field.name[locale]}</div>
-                                      <div class="text-xs text-white/80 select-text">{field.value[locale]}</div>
-                                    </div>
-                                  {/each}
-                                </div>
-                              {/if}
-                              {#if embed.buttons?.length}
-                                <!-- Les boutons d'un message Discord, en lecture seule : ils
-                                     agissent dans Discord, pas depuis le dashboard. -->
-                                <div class="mt-2 flex flex-wrap gap-1.5">
-                                  {#each embed.buttons as button, buttonIndex (buttonIndex)}
-                                    <span class="chat-button chat-button--style-{button.style}">
-                                      {#if button.emoji}<span>{button.emoji}</span>{/if}
-                                      {button.label[locale]}
-                                    </span>
-                                  {/each}
-                                </div>
-                              {/if}
-                            </div>
-                          {/each}
-                        </div>
-                      {/if}
-                    </div>
+              <Surface class="min-h-full">
+                {#if messages.length === 0}
+                  <div class="flex flex-col items-center justify-center text-white/30 h-full">
+                    <Papicon icon="forum" size={28} class="opacity-50 mb-2" />
+                    <p class="text-xs">{t.noMessage}</p>
                   </div>
-                {/each}
-              {/if}
+                {:else}
+                  {#each messages as msg (msg.id)}
+                    <Message author={msg.authorName || t.anonymous}
+                      avatar={msg.authorId === BOT_ID ? `${base}/favicon.svg` : msg.authorAvatar ?? undefined}
+                      bot={msg.authorId === BOT_ID}
+                      tag={msg.isStaff ? t.staffBadge : undefined}
+                      time={new Date(msg.createdAt).toLocaleTimeString(dateLocale, { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Zurich' })}>
+                      {#if msg.content}
+                        <p class="whitespace-pre-wrap select-text">{messageText(msg.content)}</p>
+                      {/if}
+                      {#each msg.embeds ?? [] as embed, index (index)}
+                        <Embed color={embed.color || '#1e1f22'} title={embed.title[locale]}
+                          description={embed.description[locale]}
+                          fields={embed.fields?.map((field) => ({ name: field.name[locale], value: field.value[locale] }))} />
+                        {#if embed.buttons?.length}
+                          <ActionRow>
+                            {#each embed.buttons as button, buttonIndex (buttonIndex)}
+                              <DiscordButton label={button.label[locale]} disabled
+                                variant={button.style === 1 ? 'primary' : button.style === 3 ? 'success' : button.style === 4 ? 'danger' : 'secondary'}>
+                                {#snippet emoji()}{button.emoji ?? ''}{/snippet}
+                              </DiscordButton>
+                            {/each}
+                          </ActionRow>
+                        {/if}
+                      {/each}
+                    </Message>
+                  {/each}
+                {/if}
+              </Surface>
             </div>
 
             <!-- Barre de saisie -->
@@ -1195,22 +1167,6 @@
     outline: 2px solid var(--primary-color);
     outline-offset: -2px;
   }
-
-  .chat-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.3rem 0.75rem;
-    border-radius: 0.25rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #fff;
-    background: #4e5058;
-    cursor: default;
-  }
-  .chat-button--style-1 { background: #5865f2; }
-  .chat-button--style-3 { background: #248046; }
-  .chat-button--style-4 { background: #da373c; }
 
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }

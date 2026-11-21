@@ -31,5 +31,8 @@
 		"typescript": "^6.0.3",
 		"vite": "^8.2.2",
 		"wrangler": "^4.129.0"
+	},
+	"dependencies": {
+		"@arcscord/discord-ui-svelte": "^0.1.0"
 	}
 }
