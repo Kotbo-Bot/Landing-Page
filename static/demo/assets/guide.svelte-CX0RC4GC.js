@@ -1,1 +1,0 @@
-import{Qa as e,go as t,mo as n}from"./vendor-icons-8yp11f8J.js";import{r}from"./toast.svelte-CIO_fSh3.js";var i=t(null),a={get active(){return e(i)},get target(){return e(i)?.target??null},start(e){let t=e.href.split(/[?#]/)[0];n(i,{...e,path:t,startedAt:Date.now()},!0),r.goto(e.href)},stop(){n(i,null)}};export{a as t};
