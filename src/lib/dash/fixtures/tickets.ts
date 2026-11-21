@@ -10,6 +10,8 @@
  * identifiants, pour que la fiche membre ouverte depuis un ticket soit la
  * bonne. Rien ici n'est réel.
  */
+import type { MessageComponent } from '@arcscord/discord-ui-svelte';
+import { ticketComponents, ticketMentionId } from '$lib/playground/discord/ticketMessages';
 import { MEMBERS, STAFF, ago, HOUR, DAY, type CastMember } from '$lib/dash/cast';
 import type { InboxTicket, SlaClock, TicketSla, TicketStatus } from '$lib/dash/types';
 
@@ -42,6 +44,8 @@ export type DemoMessage = {
   content: L | null;
   createdAt: string;
   embeds?: DemoEmbed[];
+  components?: { fr: MessageComponent[]; en: MessageComponent[] };
+  mentioned?: boolean;
   reactions?: { emoji: string; name: string; count: number }[];
 };
 
@@ -50,7 +54,7 @@ function said(id: string, who: CastMember, minutesAgo: number, content: L, isSta
 }
 
 /** Le message d'accueil que Kotbo poste à l'ouverture d'un ticket. */
-function welcome(id: string, minutesAgo: number, who: CastMember, type: L, reason: L): DemoMessage {
+function welcome(id: string, minutesAgo: number, who: CastMember, reason: L): DemoMessage {
   return {
     id,
     authorId: BOT_ID,
@@ -59,24 +63,10 @@ function welcome(id: string, minutesAgo: number, who: CastMember, type: L, reaso
     isStaff: false,
     content: null,
     createdAt: ago(minutesAgo),
-    embeds: [
-      {
-        title: l('Ticket ouvert', 'Ticket opened'),
-        description: l(
-          `Merci @${who.username}, un membre du staff va te répondre. Décris ta demande en détail.`,
-          `Thanks @${who.username}, a staff member will answer you. Describe your request in detail.`,
-        ),
-        color: '#5865f2',
-        fields: [
-          { name: l('Type', 'Type'), value: type },
-          { name: l('Raison', 'Reason'), value: reason },
-        ],
-        buttons: [
-          { label: l('Fermer', 'Close'), emoji: '🔒', style: 4 },
-          { label: l("S'assigner", 'Claim'), emoji: '🙋', style: 2 },
-        ],
-      },
-    ],
+    components: {
+      fr: ticketComponents('open', 'fr', { ticketId: id, userId: ticketMentionId(who.userId), description: reason.fr, disabled: true }),
+      en: ticketComponents('open', 'en', { ticketId: id, userId: ticketMentionId(who.userId), description: reason.en, disabled: true }),
+    },
   };
 }
 
@@ -189,7 +179,7 @@ export function buildTickets(): DemoTicket[] {
       waitingOn: 'staff',
       sla: sla(clock('at_risk', 8), clock('running', 24 * HOUR - 22)),
       messages: [
-        welcome('m-1042-1', 22, arka, TYPE.moderation, arkaReason),
+        welcome('m-1042-1', 22, arka, arkaReason),
         said('m-1042-2', arka, 21, l(
           "Salut, je viens de prendre un avertissement pour pub alors que je partageais juste le serveur d'un pote dans #général",
           "Hi, I just got a warning for advertising while I was only sharing a friend's server in #general",
@@ -211,7 +201,7 @@ export function buildTickets(): DemoTicket[] {
       waitingOn: 'staff',
       sla: sla(clock('met', -26 * HOUR + 30, 26 * HOUR - 12), clock('breached', -2 * HOUR)),
       messages: [
-        welcome('m-1041-1', 26 * HOUR, sacha, TYPE.report, sachaReason),
+        welcome('m-1041-1', 26 * HOUR, sacha, sachaReason),
         said('m-1041-2', sacha, 26 * HOUR - 2, l(
           "Quelqu'un m'envoie des MP insultants depuis hier soir, j'ai des captures",
           "Someone has been sending me insulting DMs since last night, I have screenshots",
@@ -236,7 +226,7 @@ export function buildTickets(): DemoTicket[] {
       waitingOn: 'member',
       sla: sla(clock('met', -2 * HOUR - 30, 2 * HOUR + 40), clock('running', 21 * HOUR)),
       messages: [
-        welcome('m-1039-1', 3 * HOUR, pixel, TYPE.partner, pixelReason),
+        welcome('m-1039-1', 3 * HOUR, pixel, pixelReason),
         said('m-1039-2', pixel, 3 * HOUR - 1, l(
           "Bonjour ! On anime un serveur d'illustration de 900 membres, un partenariat vous tenterait ?",
           'Hello! We run a 900-member illustration server, would you be up for a partnership?',
@@ -258,7 +248,7 @@ export function buildTickets(): DemoTicket[] {
       waitingOn: 'staff',
       sla: sla(clock('running', 21), clock('running', 24 * HOUR - 9)),
       messages: [
-        welcome('m-1043-1', 9, tomtom, TYPE.support, tomtomReason),
+        welcome('m-1043-1', 9, tomtom, tomtomReason),
         said('m-1043-2', tomtom, 8, l("J'ai fait la vérification mais je n'ai toujours pas le rôle Membre", "I did the verification but I still don't have the Member role")),
       ],
     }),
@@ -281,7 +271,7 @@ export function buildTickets(): DemoTicket[] {
       closedAt: ago(2 * DAY - 70),
       sla: sla(clock('met', -2 * DAY + 30, 2 * DAY - 15), clock('met', -DAY, 2 * DAY - 70)),
       messages: [
-        welcome('m-1036-1', 2 * DAY, bastos, TYPE.shop, l("Mon boost n'apparaît pas", "My boost doesn't show up")),
+        welcome('m-1036-1', 2 * DAY, bastos, l("Mon boost n'apparaît pas", "My boost doesn't show up")),
         said('m-1036-2', bastos, 2 * DAY - 1, l("J'ai boosté hier mais je n'ai pas le rôle Booster", "I boosted yesterday but I don't have the Booster role")),
         said('m-1036-3', STAFF.maelys, 2 * DAY - 15, l("C'est réglé, le rôle est revenu. Je ferme le ticket, bonne soirée !", "Sorted, the role is back. Closing the ticket, have a good evening!"), true),
       ],

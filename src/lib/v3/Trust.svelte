@@ -14,6 +14,9 @@
    */
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
+  import { DiscordUI } from '@arcscord/discord-ui-svelte';
+  import { defineTheme } from '@arcscord/discord-ui-svelte/themes';
+  import Message from '$lib/playground/discord/Message.svelte';
   import ChannelHeader from './ChannelHeader.svelte';
 
   type Line = { who: 'ines' | 'you'; text: string; link?: { href: string; label: string } };
@@ -60,11 +63,19 @@
   };
 
   const t = $derived(TEXT[getLocale()]);
-  const fmt = (n: number) => n.toLocaleString(getLocale() === 'fr' ? 'fr-FR' : 'en-US').replace(/ /g, ' ');
-
-  /** Deux messages d'affilée du même auteur se regroupent, comme dans Discord. */
-  const grouped = $derived(t.lines.map((line, i) => ({ ...line, head: i === 0 || t.lines[i - 1].who !== line.who })));
-
+  const conversationTheme = defineTheme({
+    name: 'kotbo-conversation',
+    extends: 'ash',
+    tokens: {
+      background: 'transparent',
+      focusBackground: 'transparent',
+      text: 'var(--color-mist)',
+      strong: 'var(--color-ink)',
+      muted: 'var(--color-fog)',
+      authorTagBackground: 'var(--color-night-4)',
+      link: 'var(--color-glow)',
+    },
+  });
 </script>
 
 <section id="confiance" aria-labelledby="trust-title" class="relative bg-night-2 pb-16 sm:pb-24 lg:pb-32">
@@ -77,36 +88,44 @@
     <div class="mt-12 max-w-3xl">
       <figure aria-labelledby="trust-fict">
       <figcaption id="trust-fict" class="sr-only">{t.fictiveLong}</figcaption>
-      <ol class="space-y-0.5">
-        {#each grouped as line, i (i)}
-          <li class="flex gap-4 rounded-md px-2 py-0.5 hover:bg-white/[0.02] {line.head ? 'mt-5 first:mt-0' : ''}">
-            <span class="w-10 shrink-0">
-              {#if line.head}
-                <span
-                  aria-hidden="true"
-                  class="mt-0.5 grid h-10 w-10 place-items-center rounded-full text-sm font-bold {line.who === 'ines' ? 'bg-[#be185d] text-white' : 'bg-[#4f46e5] text-white'}"
-                >{line.who === 'ines' ? 'IN' : t.you.slice(0, 2).toUpperCase()}</span>
-              {/if}
-            </span>
-            <div class="min-w-0">
-              {#if line.head}
-                <p class="flex flex-wrap items-baseline gap-x-2">
-                  <span class="font-semibold {line.who === 'ines' ? 'text-[#f9a8d4] in-data-[theme=light]:text-[#be185d]' : 'text-glow'}">{line.who === 'ines' ? t.ines : t.you}</span>
-                  {#if line.who === 'ines'}<span class="rounded bg-night-4 px-1 text-[11px] font-medium text-mist">{t.inesRole}</span>{/if}
-                  <span class="text-xs text-fog">{t.today(Math.floor(i / 2))}</span>
-                </p>
-              {/if}
-              <p class="text-[16px] leading-relaxed text-mist">
+      <DiscordUI theme={conversationTheme} class="trust-conversation"
+        locale={getLocale() === 'fr' ? 'fr-FR' : 'en-US'} timeZone="Europe/Zurich">
+        <ol class="space-y-0.5">
+          {#each t.lines as line, i (i)}
+            <li class:cofounder={line.who === 'ines'}>
+              <Message author={line.who === 'ines' ? t.ines : t.you}
+                tag={line.who === 'ines' ? t.inesRole : undefined}
+                time={t.today(Math.floor(i / 2))}>
                 {line.text}
                 {#if line.link}
-                  · <a href="{base}{line.link.href}" class="text-[#00a8fc] in-data-[theme=light]:text-[#0369a1] underline underline-offset-2">{line.link.label}</a>
+                  · <a href="{base}{line.link.href}" class="underline underline-offset-2">{line.link.label}</a>
                 {/if}
-              </p>
-            </div>
-          </li>
-        {/each}
-      </ol>
+              </Message>
+            </li>
+          {/each}
+        </ol>
+      </DiscordUI>
       </figure>
     </div>
   </div>
 </section>
+
+<style>
+  :global(.trust-conversation.arcscord-discord-ui) {
+    font-family: var(--font-sans);
+    color-scheme: inherit;
+    --conversation-cofounder: #f9a8d4;
+  }
+
+  :global([data-theme='light'] .trust-conversation) {
+    --conversation-cofounder: #be185d;
+  }
+
+  :global(.trust-conversation .dui-author-name) {
+    color: var(--color-glow);
+  }
+
+  .cofounder :global(.dui-author-name) {
+    color: var(--conversation-cofounder);
+  }
+</style>

@@ -23,6 +23,8 @@
   import { base } from '$app/paths';
   import { getLocale } from '$lib/i18n/state.svelte';
   import ChannelHeader from './ChannelHeader.svelte';
+  import { ChannelHeader as DiscordChannelHeader, Mention } from '@arcscord/discord-ui-svelte';
+  import Surface from '$lib/playground/discord/Surface.svelte';
   import Message from '$lib/playground/discord/Message.svelte';
   import Embed from '$lib/playground/discord/Embed.svelte';
   import { KOTBO_AVATAR, ktb } from '$lib/playground/discord/theme';
@@ -338,40 +340,28 @@
 
     <!-- Le salon du staff, dans Discord : la même nuit, vue de l'intérieur. -->
     <div class="lg:col-start-1 lg:row-start-2 lg:self-start">
-      <div class="stay-dark max-w-xl overflow-hidden rounded-lg bg-[#313338] shadow-[0_24px_60px_-30px_rgba(0,0,0,0.9)]">
-        <p class="flex h-12 items-center gap-2 border-b border-black/30 px-4 text-[15px] font-semibold text-[#f2f3f5]">
-          <span aria-hidden="true" class="text-xl font-normal text-[#80848e]">#</span>
-          <span translate="no">{calm ? t.logsChannel : t.staffChannel}</span>
-        </p>
+      <Surface class="max-w-xl overflow-hidden rounded-lg shadow-[0_24px_60px_-30px_rgba(0,0,0,0.9)]">
+        <DiscordChannelHeader name={calm ? t.logsChannel : t.staffChannel} />
         {#key calm}
           <div class="chat flex min-h-[22rem] flex-col justify-end py-3">
             {#if calm}
               <Message author="Kotbo" bot avatar={KOTBO_AVATAR} time="02:40" color="#a5b4fc">
-                <Embed color="#5865f2" title={t.reportTitle} icon={ktb('stats')} footer={t.reportFooter}>
-                  <ul class="space-y-1">
-                    {#each t.report as line (line.module)}
-                      <li class="flex items-start gap-2">
-                        <img src={ktb(line.icon)} alt="" width="18" height="18" class="mt-0.5 h-[18px] w-[18px] shrink-0" />
-                        <span><strong class="font-semibold text-[#f2f3f5]">{line.module}</strong> · {line.text}</span>
-                      </li>
-                    {/each}
-                  </ul>
-                </Embed>
+                <Embed color="#5865f2" title={t.reportTitle} icon={ktb('stats')} footer={t.reportFooter}
+                  description={t.report.map((line) => `**${line.module}** · ${line.text}`).join('\n')}
+                />
               </Message>
               <Message author={t.after.author} time={t.after.time} color="#f8a491">{t.after.text}</Message>
             {:else}
               {#each t.staffChat as msg, i (i)}
                 <!-- Comme dans Discord : un message qui te mentionne est surligné. -->
-                <div class={msg.ping ? 'ping border-l-2 border-[#f0b232] bg-[#f0b232]/[0.06]' : 'border-l-2 border-transparent'}>
-                  <Message author={msg.author} time={msg.time} color="#f8a491">
-                    {#if msg.ping}<span class="rounded bg-[#5865f2]/30 px-0.5 font-medium text-[#c9cdfb]">{t.fonda}</span>{' '}{/if}{msg.text}
-                  </Message>
-                </div>
+                <Message author={msg.author} time={msg.time} color="#f8a491" mentioned={msg.ping}>
+                    {#if msg.ping}<Mention name={t.fonda.replace(/^@/, '')} />{' '}{/if}{msg.text}
+                </Message>
               {/each}
             {/if}
           </div>
         {/key}
-      </div>
+      </Surface>
     </div>
   </div>
 </section>
@@ -384,11 +374,6 @@
   }
   .notif {
     animation: notif-in 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  /* Sur la surbrillance d'une mention, l'heure grise de Discord passe sous
-     4,5:1 : on l'éclaircit d'un cran. */
-  .ping :global(.dc-message .text-xs) {
-    color: #a3a9b1;
   }
   .chat {
     animation: line-in 380ms cubic-bezier(0.16, 1, 0.3, 1) both;

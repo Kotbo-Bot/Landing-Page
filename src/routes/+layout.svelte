@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '@arcscord/discord-ui-svelte/styles.css';
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { base } from '$app/paths';

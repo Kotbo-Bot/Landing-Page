@@ -1,4 +1,10 @@
 <script lang="ts">
+  import { ChannelHeader as DiscordChannelHeader, Mention } from '@arcscord/discord-ui-svelte';
+  import Surface from '$lib/playground/discord/Surface.svelte';
+  import Message from '$lib/playground/discord/Message.svelte';
+  import Embed from '$lib/playground/discord/Embed.svelte';
+  import { KOTBO_AVATAR } from '$lib/playground/discord/theme';
+
   /**
    * Le serveur MCP, montré là où il sert : dans Claude.
    *
@@ -579,32 +585,19 @@
 {/snippet}
 
 {#snippet discordMsg(channel: string, time: string, body: import('svelte').Snippet)}
-  <div class="stay-dark rounded-xl bg-[#313338] p-4">
-    <p class="text-xs font-semibold text-[#949ba4]"># {channel}</p>
-    <div class="mt-3 flex gap-3">
-      <img src="{base}/favicon.svg" alt="" width="40" height="40" class="h-10 w-10 shrink-0 rounded-full" />
-      <div class="min-w-0 flex-1">
-        <p class="flex flex-wrap items-center gap-1.5">
-          <span class="font-semibold text-ink">Kotbo</span>
-          <span class="rounded bg-blurple px-1 text-[10px] font-semibold leading-4 text-white">APP</span>
-          <span class="text-xs text-[#949ba4]">{time}</span>
-        </p>
-        {@render body()}
-      </div>
-    </div>
-  </div>
+  <Surface class="overflow-hidden rounded-xl">
+    <DiscordChannelHeader name={channel.replace(/^#\s*/, '')} />
+    <Message author="Kotbo" bot avatar={KOTBO_AVATAR} {time}>{@render body()}</Message>
+  </Surface>
 {/snippet}
 
 {#snippet ticketBody()}
-  <p class="mt-0.5 text-[15px] leading-relaxed text-[#dbdee1]">{t.ticket.text}</p>
+  <p class="mt-0.5 text-[15px] leading-relaxed">{t.ticket.text}</p>
 {/snippet}
 
 {#snippet announceBody()}
-  <p class="mt-0.5 text-[15px] text-[#dbdee1]"><span class="rounded bg-[#5865f2]/30 px-0.5 text-[#c9cdfb]">@everyone</span></p>
-  <div class="mt-1.5 rounded border-l-4 border-[#5865f2] bg-[#2b2d31] p-3.5">
-    <p class="font-semibold text-[#f2f3f5]">{t.announce.title}</p>
-    <p class="mt-1 text-sm leading-relaxed text-[#dbdee1]">{t.announce.body}</p>
-  </div>
+  <Mention name="everyone" />
+  <Embed title={t.announce.title} description={t.announce.body} />
 {/snippet}
 
 {#snippet outcome(s: Scene)}
