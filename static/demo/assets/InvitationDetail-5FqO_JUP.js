@@ -1,0 +1,1 @@
+import{Da as e,Eo as t,Li as n,To as r}from"./vendor-icons-CVbXZpAS.js";import{y as i}from"./index-UNTkhLFs.js";function a(a,o){t(o,!0);let s=n(o,`code`,3,``),c=new Set([`sources`,`top`,`suspensions`]);e(()=>{s()&&!c.has(s())&&i.show(s())}),r()}export{a as default};

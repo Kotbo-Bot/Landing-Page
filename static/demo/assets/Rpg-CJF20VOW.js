@@ -1,0 +1,1 @@
+import"./vendor-icons-CVbXZpAS.js";import{t as e}from"./Economy-C_y7l3RZ.js";function t(t){e(t,{section:`rpg`})}export{t as default};
