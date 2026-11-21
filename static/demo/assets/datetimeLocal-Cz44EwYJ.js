@@ -1,0 +1,1 @@
+function e(e){return new Date(e.getTime()-e.getTimezoneOffset()*6e4).toISOString().slice(0,16)}export{e as t};

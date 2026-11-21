@@ -1,0 +1,1 @@
+import{B8t as e,H8t as t,R8t as n,V8t as r,z8t as i}from"./i18n-BEq--jwU.js";var a=[`COMMON`,`UNCOMMON`,`RARE`,`EPIC`,`LEGENDARY`],o={COMMON:()=>n(),UNCOMMON:()=>t(),RARE:()=>r(),EPIC:()=>i(),LEGENDARY:()=>e()};function s(e){return o[e]?.()??e}export{a as n,s as t};
