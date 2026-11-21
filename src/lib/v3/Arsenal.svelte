@@ -28,6 +28,7 @@
   import Message from '$lib/playground/discord/Message.svelte';
   import Embed from '$lib/playground/discord/Embed.svelte';
   import DcButton from '$lib/playground/discord/DcButton.svelte';
+  import TicketPreview, { type TicketPreviewState } from '$lib/playground/discord/TicketPreview.svelte';
   import RankCanvas from '$lib/playground/rank/RankCanvas.svelte';
   import ChannelHeader from './ChannelHeader.svelte';
   import { CATALOG, MODULE_COUNT } from './modules';
@@ -52,21 +53,6 @@
       tickets: {
         title: 'Tickets',
         text: 'Le membre ouvre un ticket, ton staff le prend en un clic depuis Discord ou le dashboard, et le transcript reste après la fermeture',
-        channel: '#ticket-149',
-        openTitle: 'Ticket #149 · Signalement',
-        author: 'Auteur',
-        reason: 'Raison',
-        reasonValue: 'Signalement',
-        description: 'Description',
-        descriptionValue: 'Un membre m’envoie des liens chelous en MP',
-        claim: 'Prendre en charge',
-        close: 'Fermer',
-        claimedTitle: 'Pris en charge',
-        claimedBody: 'Ce ticket est désormais pris en charge par @toi.',
-        closedTitle: 'Ticket Fermé',
-        closedBody: 'Le ticket a été fermé par @toi. Le personnel peut le réouvrir, l’archiver en lecture seule sans rien perdre, le protéger contre la suppression, ou le supprimer définitivement.',
-        replay: 'Rejouer',
-        status: { open: 'Ticket ouvert, en attente du staff', claimed: 'Ticket pris en charge', closed: 'Ticket fermé' },
       },
       levels: {
         title: 'Niveaux & carte de rang',
@@ -160,21 +146,6 @@
       tickets: {
         title: 'Tickets',
         text: 'A member opens a ticket, your staff claim it in one click from Discord or the dashboard, and the transcript stays after it’s closed',
-        channel: '#ticket-149',
-        openTitle: 'Ticket #149 · Report',
-        author: 'Author',
-        reason: 'Reason',
-        reasonValue: 'Report',
-        description: 'Description',
-        descriptionValue: 'Someone keeps DMing me sketchy links',
-        claim: 'Claim',
-        close: 'Close',
-        claimedTitle: 'Claimed',
-        claimedBody: 'This ticket is now handled by @you.',
-        closedTitle: 'Ticket Closed',
-        closedBody: 'The ticket was closed by @you. Staff can reopen it, archive it read-only without losing anything, protect it from deletion, or delete it for good.',
-        replay: 'Replay',
-        status: { open: 'Ticket open, waiting for staff', claimed: 'Ticket claimed', closed: 'Ticket closed' },
       },
       levels: {
         title: 'Levels & rank card',
@@ -287,8 +258,9 @@
     }
   }
 
-  // Ticket
-  let ticket = $state<'open' | 'claimed' | 'closed'>('open');
+  const ticketDemo = $state<TicketPreviewState>({
+    ticketState: 'open', claimed: false, events: [], archived: false, locked: false, deleted: false, response: null,
+  });
 
   // Giveaway : le bouton du bot inscrit, puis désinscrit au clic suivant.
   let entrants = $state(47);
@@ -390,47 +362,7 @@
       {/each}
     </div>
   {:else if key === 'tickets'}
-    <Surface class="overflow-hidden rounded-2xl">
-      <DiscordChannelHeader name={t.tickets.channel.replace(/^#\s*/, '')} />
-      <Message author="Kotbo" bot avatar={KOTBO_AVATAR} time="14:02">
-        <Embed
-          color="#5865f2"
-          icon={ktb('ticket')}
-          title={t.tickets.openTitle}
-          fields={[
-            { name: t.tickets.author, value: '@sarah' },
-            { name: t.tickets.reason, value: t.tickets.reasonValue },
-            { name: t.tickets.description, value: t.tickets.descriptionValue, inline: false },
-          ]}
-        >
-          {#snippet actions()}
-            <DcButton tone="primary" disabled={ticket !== 'open'} onclick={() => (ticket = 'claimed')} label={t.tickets.claim} />
-            <DcButton tone="danger" disabled={ticket === 'closed'} onclick={() => (ticket = 'closed')} label={t.tickets.close} />
-          {/snippet}
-        </Embed>
-      </Message>
-
-      {#if ticket !== 'open'}
-        <div class="arsenal-in mt-4">
-          <Message author="Kotbo" bot avatar={KOTBO_AVATAR} time="14:03">
-            <Embed color="#248046" icon={ktb('check')} title={t.tickets.claimedTitle} description={t.tickets.claimedBody} />
-          </Message>
-        </div>
-      {/if}
-      {#if ticket === 'closed'}
-        <div class="arsenal-in mt-4">
-          <Message author="Kotbo" bot avatar={KOTBO_AVATAR} time="14:11">
-            <Embed color="#da373c" icon={ktb('lock')} title={t.tickets.closedTitle} description={t.tickets.closedBody} />
-          </Message>
-        </div>
-      {/if}
-      <p class="sr-only" role="status">{t.tickets.status[ticket]}</p>
-    </Surface>
-    {#if ticket === 'closed'}
-      <button type="button" onclick={() => (ticket = 'open')} class="mt-4 min-h-11 rounded-lg bg-night-4 px-5 text-sm font-semibold text-ink transition-colors hover:bg-line-2">
-        {t.tickets.replay}
-      </button>
-    {/if}
+    <TicketPreview demo={ticketDemo} />
   {:else if key === 'levels'}
     <div>
       <div class="stay-dark rounded-2xl bg-[#1e1f22] p-2.5 transition-transform {bump ? 'scale-[1.02]' : ''}">

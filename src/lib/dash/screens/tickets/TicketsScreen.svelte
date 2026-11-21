@@ -19,7 +19,7 @@
     d'origine : aucun ticket de démo n'a de salon supprimé.
 -->
 <script lang="ts">
-  import { ActionRow, Button as DiscordButton } from '@arcscord/discord-ui-svelte';
+  import { ActionRow, Button as DiscordButton, Markdown, MessageComponents } from '@arcscord/discord-ui-svelte';
   import Surface from '$lib/playground/discord/Surface.svelte';
   import Message from '$lib/playground/discord/Message.svelte';
   import Embed from '$lib/playground/discord/Embed.svelte';
@@ -29,7 +29,8 @@
   import Dash from '$lib/dash/Dash.svelte';
   import { Button, Modal, ModulePage, Papicon, RefreshButton, FormInput, Tabs } from '$lib/dash/ui';
   import MemberCaseModal from '$lib/dash/screens/members/MemberCaseModal.svelte';
-  import { STAFF } from '$lib/dash/cast';
+  import { MEMBERS, STAFF } from '$lib/dash/cast';
+  import { ticketComponents, ticketMentionId, type TicketMessageKind } from '$lib/playground/discord/ticketMessages';
   import { getLocale } from '$lib/i18n/state.svelte';
   import type { InboxTicket, InboxView, TicketPriority } from '$lib/dash/types';
   import {
@@ -367,6 +368,11 @@
 
   const selectedTicketDetail = $derived(tickets.find((ticket) => ticket.id === selectedTicketId) ?? null);
   const messages = $derived(selectedTicketDetail?.messages ?? []);
+  const messageEntities = {
+    users: Object.fromEntries([...Object.values(MEMBERS), ...Object.values(STAFF)].map(member => [
+      ticketMentionId(member.userId), { name: member.displayName },
+    ])),
+  };
   const knownTags = $derived([...new Set(tickets.flatMap((ticket) => ticket.tags))].sort());
   const agents = $derived(
     Object.values(STAFF).map((member) => ({
@@ -511,14 +517,45 @@
     scrollToBottom();
   }
 
+  function ticketEvent(kind: TicketMessageKind): DemoMessage {
+    const at = nowIso();
+    const options = {
+      ticketId: selectedTicketId ?? '',
+      userId: ticketMentionId(selectedTicketDetail?.userId ?? ''),
+      staffId: ticketMentionId(ME.userId),
+      disabled: true,
+    };
+    return {
+      id: `bot-${kind}-${at}`,
+      authorId: BOT_ID, authorName: 'Kotbo', authorAvatar: null, isStaff: false,
+      content: null, createdAt: at, mentioned: true,
+      components: {
+        fr: ticketComponents(kind, 'fr', options),
+        en: ticketComponents(kind, 'en', options),
+      },
+    };
+  }
+
   function claimTicket() {
-    patchSelected({ status: 'CLAIMED', claimedById: ME.userId, claimedByName: ME.displayName, claimedByAvatar: ME.avatarUrl });
+    const ticket = selectedTicketDetail;
+    if (!ticket || ticket.status !== 'OPEN') return;
+    patchSelected({
+      status: 'CLAIMED', claimedById: ME.userId, claimedByName: ME.displayName, claimedByAvatar: ME.avatarUrl,
+      messages: [...ticket.messages, ticketEvent('claimed')],
+    });
+    void tick().then(scrollToBottom);
   }
 
   function closeTicket() {
-    patchSelected({ status: 'CLOSED', closedAt: nowIso(), waitingOn: null });
+    const ticket = selectedTicketDetail;
+    if (!ticket || ticket.status === 'CLOSED') return;
+    patchSelected({
+      status: 'CLOSED', closedAt: nowIso(), waitingOn: null,
+      messages: [...ticket.messages, ticketEvent('closed')],
+    });
     showCloseModal = false;
     closeReason = '';
+    void tick().then(scrollToBottom);
   }
 
   function renameTicket() {
@@ -891,7 +928,7 @@
               aria-label={t.messages}
               class="chat-log flex-1 overflow-y-auto bg-[#313338] scrollbar-hide"
             >
-              <Surface class="min-h-full">
+              <Surface entities={messageEntities} class="min-h-full">
                 {#if messages.length === 0}
                   <div class="flex flex-col items-center justify-center text-white/30 h-full">
                     <Papicon icon="forum" size={28} class="opacity-50 mb-2" />
@@ -902,10 +939,14 @@
                     <Message author={msg.authorName || t.anonymous}
                       avatar={msg.authorId === BOT_ID ? `${base}/favicon.svg` : msg.authorAvatar ?? undefined}
                       bot={msg.authorId === BOT_ID}
+                      mentioned={msg.mentioned === true}
                       tag={msg.isStaff ? t.staffBadge : undefined}
                       time={new Date(msg.createdAt).toLocaleTimeString(dateLocale, { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Zurich' })}>
                       {#if msg.content}
-                        <p class="whitespace-pre-wrap select-text">{messageText(msg.content)}</p>
+                        <Markdown content={messageText(msg.content)} />
+                      {/if}
+                      {#if msg.components}
+                        <MessageComponents components={msg.components[locale]} />
                       {/if}
                       {#each msg.embeds ?? [] as embed, index (index)}
                         <Embed color={embed.color || '#1e1f22'} title={embed.title[locale]}
