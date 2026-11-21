@@ -14,11 +14,13 @@
     mentioned?: boolean;
     ephemeral?: boolean;
     tag?: string;
+    reply?: Snippet;
+    footer?: Snippet;
     children: Snippet;
   }
 
   const { author, color, bot = false, avatar, time, enter = false,
-    removed = false, mentioned = false, ephemeral = false, tag, children }: Props = $props();
+    removed = false, mentioned = false, ephemeral = false, tag, reply, footer, children }: Props = $props();
   const user: MessageAuthor = $derived({
     id: author,
     displayName: author,
@@ -31,7 +33,7 @@
 </script>
 
 <div class="dc-message {enter ? 'dc-enter' : ''} {removed ? 'opacity-45' : ''}">
-  <MessageFrame {mentioned} {ephemeral}>
+  <MessageFrame {mentioned} {ephemeral} {reply} {footer}>
     {#snippet avatar()}<Avatar author={user} />{/snippet}
     {#snippet header()}
       <header class="dui-message-header">

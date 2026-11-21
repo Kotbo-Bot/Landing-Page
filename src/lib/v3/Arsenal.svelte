@@ -27,7 +27,7 @@
   import Surface from '$lib/playground/discord/Surface.svelte';
   import Message from '$lib/playground/discord/Message.svelte';
   import Embed from '$lib/playground/discord/Embed.svelte';
-  import DcButton from '$lib/playground/discord/DcButton.svelte';
+  import GiveawayPreview, { type GiveawayPreviewState } from '$lib/playground/discord/GiveawayPreview.svelte';
   import TicketPreview, { type TicketPreviewState } from '$lib/playground/discord/TicketPreview.svelte';
   import RankCanvas from '$lib/playground/rank/RankCanvas.svelte';
   import ChannelHeader from './ChannelHeader.svelte';
@@ -64,19 +64,6 @@
       giveaways: {
         title: 'Giveaways',
         text: 'Un bouton pour participer, un deuxième clic pour se retirer, et le tirage tombe tout seul à la fin. Tu peux aussi fermer la porte aux doubles comptes',
-        channel: '#giveaways',
-        prize: 'GIVEAWAY : Nitro 1 mois',
-        cta: 'Cliquez sur le bouton ci-dessous pour participer !',
-        ends: 'Fin :',
-        endsValue: 'dans 2 jours',
-        winners: 'Nombre de gagnants :',
-        entrants: 'Participants :',
-        footer: 'ID : 8f3a2c',
-        join: 'Rejoindre',
-        joined: 'Inscription validée ! Bonne chance !',
-        left: 'Vous vous êtes retiré du giveaway.',
-        ephemeral: 'Seul toi peux voir ce message',
-        status: (n: number) => `${n} participants`,
       },
       logs: {
         title: 'Logs',
@@ -157,19 +144,6 @@
       giveaways: {
         title: 'Giveaways',
         text: 'One button to enter, a second click to back out, and the draw happens on its own at the end. You can also keep alt accounts out',
-        channel: '#giveaways',
-        prize: 'GIVEAWAY: 1 month of Nitro',
-        cta: 'Click the button below to enter!',
-        ends: 'Ends:',
-        endsValue: 'in 2 days',
-        winners: 'Winners:',
-        entrants: 'Entrants:',
-        footer: 'ID: 8f3a2c',
-        join: 'Enter',
-        joined: 'You are in! Good luck!',
-        left: 'You have withdrawn from the giveaway.',
-        ephemeral: 'Only you can see this',
-        status: (n: number) => `${n} entrants`,
       },
       logs: {
         title: 'Logs',
@@ -262,16 +236,7 @@
     ticketState: 'open', claimed: false, events: [], archived: false, locked: false, deleted: false, response: null,
   });
 
-  // Giveaway : le bouton du bot inscrit, puis désinscrit au clic suivant.
-  let entrants = $state(47);
-  let entered = $state(false);
-  let reply = $state<'joined' | 'left' | null>(null);
-
-  function toggleEntry() {
-    entered = !entered;
-    entrants += entered ? 1 : -1;
-    reply = entered ? 'joined' : 'left';
-  }
+  const giveawayDemo = $state<GiveawayPreviewState>({ entered: false, reply: null });
 
   // Catalogue : une catégorie à la fois
   let category = $state(CATALOG[0].key);
@@ -385,29 +350,7 @@
       </button>
     </div>
   {:else if key === 'giveaways'}
-    <Surface class="overflow-hidden rounded-2xl">
-      <DiscordChannelHeader name={t.giveaways.channel.replace(/^#\s*/, '')} />
-      <Message author="Kotbo" bot avatar={KOTBO_AVATAR} time="18:00">
-        <Embed color="#5865f2" title={t.giveaways.prize} footer={t.giveaways.footer}
-          description={`${t.giveaways.cta}\n\n**${t.giveaways.ends}** ${t.giveaways.endsValue}\n**${t.giveaways.winners}** 1\n**${t.giveaways.entrants}** ${entrants}`}
-        >
-          {#snippet actions()}
-            <DcButton tone="primary" onclick={toggleEntry} label={t.giveaways.join} />
-          {/snippet}
-        </Embed>
-      </Message>
-      {#if reply}
-        {#key reply}
-          <div class="arsenal-in mt-4">
-            <Message author="Kotbo" bot avatar={KOTBO_AVATAR} time="18:02" ephemeral>
-              <p class="mt-1 text-sm text-[var(--discord-ui-text)]">{reply === 'joined' ? t.giveaways.joined : t.giveaways.left}</p>
-              <p class="mt-1 text-xs text-[var(--discord-ui-muted)]">{t.giveaways.ephemeral}</p>
-            </Message>
-          </div>
-        {/key}
-      {/if}
-      <p class="sr-only" role="status">{t.giveaways.status(entrants)}</p>
-    </Surface>
+    <GiveawayPreview demo={giveawayDemo} />
   {:else if key === 'logs'}
     {@const entry = t.logs.entries[log]}
     <Surface class="overflow-hidden rounded-2xl">
