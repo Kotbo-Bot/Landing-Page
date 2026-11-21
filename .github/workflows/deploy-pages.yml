@@ -9,7 +9,7 @@ on:
   # (`/admin/feature-pages`) : le bot envoie ce signal pour que le site la
   # reprenne (featurePageService.ts, LANDING_DEPLOY_TOKEN).
   repository_dispatch:
-    types: [feature-pages]
+    types: [feature-pages, docs-updated]
   # Filet de sécurité si le signal se perd : une reconstruction par jour.
   schedule:
     - cron: '17 4 * * *'
