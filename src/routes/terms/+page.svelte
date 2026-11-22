@@ -7,7 +7,7 @@
   const TEXT = {
     fr: {
       title: "Conditions Générales d'Utilisation",
-      subtitle: 'Dernière mise à jour : 20 juillet 2026 · Bot Discord Kotbo et Dashboard associé',
+      subtitle: 'Dernière mise à jour : 22 novembre 2026 · Bot Discord Kotbo et Dashboard associé',
       metaDescription: "Conditions générales d'utilisation du bot Discord Kotbo et de son dashboard : accès, obligations, usages interdits, disponibilité, responsabilité et droit applicable.",
       sections: {
         objet: 'Objet & éditeur',
@@ -53,7 +53,7 @@
         li1a: "n'activer que les modules pour lesquels il dispose d'une base légale, et informer ses membres (voir",
         li1link: "modèle d'information",
         li1b: ') ;',
-        li2: 'informer préalablement ses membres avant d\'activer les modules les plus intrusifs (journalisation complète des messages, vérification anti multi-comptes, suivi détaillé du staff) ;',
+        li2: 'informer préalablement ses membres avant d\'activer les modules les plus intrusifs (journalisation complète des messages, vérification anti multi-comptes, analyse des messages par IA AegisAI, suivi détaillé du staff) ;',
         li3: "configurer les permissions du staff selon le besoin d'en connaître ;",
         li4: 'ne pas utiliser Kotbo pour surveiller ou cibler illégalement des personnes, ni pour collecter des données sensibles sans base légale ;',
         li5a: 'répondre aux demandes des personnes concernant les traitements dont il est responsable (voir',
@@ -89,7 +89,7 @@
       },
       s07: {
         h2: 'Limitation de responsabilité',
-        p1: "Dans les limites permises par la loi, Kotbo ne saurait être tenu responsable des dommages indirects, de la perte de données, de la perte d'exploitation ou d'un usage non conforme du service par un administrateur ou un membre. Notre responsabilité est limitée aux dommages directs et prévisibles résultant d'une faute qui nous serait imputable. Rien dans les présentes ne limite une responsabilité qui ne peut légalement l'être.",
+        p1: "Dans les limites permises par la loi, Kotbo ne saurait être tenu responsable des dommages indirects, de la perte de données, de la perte d'exploitation ou d'un usage non conforme du service par un administrateur ou un membre. Notre responsabilité est limitée aux dommages directs et prévisibles résultant d'une faute qui nous serait imputable. Les analyses automatiques (toxicité et émotions par AegisAI, détection d'arnaques) sont probabilistes et peuvent se tromper : elles constituent une aide à la décision, et l'administrateur reste responsable des sanctions appliquées sur son serveur. Rien dans les présentes ne limite une responsabilité qui ne peut légalement l'être.",
       },
       s08: {
         h2: 'Propriété intellectuelle & licence',
@@ -130,7 +130,7 @@
     },
     en: {
       title: 'Terms of Use',
-      subtitle: 'Last updated: July 20, 2026 · Kotbo Discord bot and associated Dashboard',
+      subtitle: 'Last updated: November 22, 2026 · Kotbo Discord bot and associated Dashboard',
       metaDescription: 'Terms of use for the Kotbo Discord bot and its dashboard: access, obligations, prohibited uses, availability, liability, and applicable law.',
       sections: {
         objet: 'Purpose & publisher',
@@ -176,7 +176,7 @@
         li1a: 'only enable modules for which they have a legal basis, and inform their members (see the',
         li1link: 'information template',
         li1b: ') ;',
-        li2: 'inform members in advance before enabling the most intrusive modules (full message logging, anti-multi-account verification, detailed staff tracking) ;',
+        li2: 'inform members in advance before enabling the most intrusive modules (full message logging, anti-multi-account verification, AI message analysis by AegisAI, detailed staff tracking) ;',
         li3: 'configure staff permissions according to the need-to-know principle ;',
         li4: 'not use Kotbo to unlawfully monitor or target individuals, nor to collect sensitive data without a legal basis ;',
         li5a: 'respond to data subject requests concerning the processing for which they are the controller (see the',
@@ -211,7 +211,7 @@
       },
       s07: {
         h2: 'Limitation of liability',
-        p1: 'To the extent permitted by law, Kotbo shall not be held liable for indirect damages, data loss, loss of business, or non-compliant use of the service by an administrator or a member. Our liability is limited to direct and foreseeable damages resulting from a fault attributable to us. Nothing in these Terms limits any liability that cannot legally be limited.',
+        p1: 'To the extent permitted by law, Kotbo shall not be held liable for indirect damages, data loss, loss of business, or non-compliant use of the service by an administrator or a member. Our liability is limited to direct and foreseeable damages resulting from a fault attributable to us. Automated analyses (toxicity and emotion scoring by AegisAI, scam detection) are probabilistic and may be wrong: they are a decision aid, and the administrator remains responsible for sanctions applied on their server. Nothing in these Terms limits any liability that cannot legally be limited.',
       },
       s08: {
         h2: 'Intellectual property & license',

@@ -7,7 +7,7 @@
   const TEXT = {
     fr: {
       title: 'Politique de Confidentialité',
-      subtitle: 'Dernière mise à jour : 14 octobre 2026 · Bot Discord Kotbo et Dashboard associé',
+      subtitle: 'Dernière mise à jour : 22 novembre 2026 · Bot Discord Kotbo et Dashboard associé',
       sections: {
         responsable: 'Responsable & rôles',
         collecte: 'Données collectées',
@@ -347,6 +347,8 @@
         s6data: 'Contenu à traduire — auto-hébergé par défaut',
         s7role: "Chargement à la demande des moteurs de l'éditeur de code",
         s7data: "IP et en-têtes techniques, à l'ouverture de l'IDE uniquement",
+        s8role: "Analyse de toxicité et d'émotion des messages (module AegisAI, activé par l'administrateur)",
+        s8data: "Texte du message, sans mentions, liens ni emojis — jamais les pièces jointes ni l'identité du membre. Conservé pour l'entraînement du modèle uniquement si l'administrateur y consent ; sinon noté puis oublié",
         p3: 'Kotbo ne vend, ne loue et ne partage pas vos données à des fins commerciales ou publicitaires.',
       },
       retention: {
@@ -463,7 +465,8 @@
         li2: 'la logique générale est décrite au §4 ;',
         li3a: 'une',
         li3Strong: 'analyse d\'impact (AIPD/DPIA)',
-        li3b: 'est menée au titre de l\'article 35 en raison du profilage et de la surveillance impliqués.',
+        li3b: 'est menée au titre de l\'article 35 en raison du profilage et de la surveillance impliqués ;',
+        li4: "l'analyse par IA AegisAI (toxicité, émotions) est optionnelle et activée par l'administrateur. Un score très élevé peut déclencher une suppression et une sanction automatiques ; en zone grise, un modérateur tranche. Le module de détresse n'entraîne jamais de sanction. Les émotions ne sont conservées qu'en statistiques agrégées par heure et par salon. Toute sanction peut être contestée auprès de l'administrateur du serveur. Les messages ne sont partagés avec AegisAI pour son entraînement que si l'administrateur l'a accepté (réglage modifiable à tout moment) : ils sont alors conservés en file de tri au plus 30 jours, et les phrases retenues rejoignent le jeu d'entraînement sans lien avec leur auteur.",
       },
       mineurs: {
         h2: 'Mineurs',
@@ -494,7 +497,7 @@
     },
     en: {
       title: 'Privacy Policy',
-      subtitle: 'Last updated: 14 October 2026 · Kotbo Discord bot and associated Dashboard',
+      subtitle: 'Last updated: 22 November 2026 · Kotbo Discord bot and associated Dashboard',
       sections: {
         responsable: 'Controller & roles',
         collecte: 'Data collected',
@@ -834,6 +837,8 @@
         s6data: 'Content to be translated — self-hosted by default',
         s7role: "On-demand loading of the code editor's engines",
         s7data: 'IP and technical headers, only when the IDE is opened',
+        s8role: 'Message toxicity and emotion analysis (AegisAI module, enabled by the administrator)',
+        s8data: "Message text, without mentions, links or emojis — never attachments or the member's identity. Kept to train the model only if the administrator consents; otherwise scored then discarded",
         p3: 'Kotbo does not sell, rent, or share your data for commercial or advertising purposes.',
       },
       retention: {
@@ -950,7 +955,8 @@
         li2: 'the general logic is described in §4;',
         li3a: 'a',
         li3Strong: 'data protection impact assessment (DPIA)',
-        li3b: 'is carried out under Article 35 because of the profiling and monitoring involved.',
+        li3b: 'is carried out under Article 35 because of the profiling and monitoring involved ;',
+        li4: "AI analysis by AegisAI (toxicity, emotions) is optional and enabled by the administrator. A very high score may trigger an automatic deletion and sanction; in the grey zone, a moderator decides. The distress module never results in a sanction. Emotions are kept only as statistics aggregated per hour and per channel. Any sanction can be contested with the server's administrator. Messages are shared with AegisAI for training only if the administrator has agreed (a setting that can be changed at any time): they are then kept in the triage queue for at most 30 days, and retained phrases join the training set with no link to their author.",
       },
       mineurs: {
         h2: 'Minors',
@@ -1323,6 +1329,7 @@
           <tr><td><strong>Sentry</strong> (optional)</td><td>{t.destinataires.s4role}</td><td>{t.destinataires.s4data}</td></tr>
           <tr><td><strong>YouTube Data API / Twitch API</strong></td><td>{t.destinataires.s5role}</td><td>{t.destinataires.s5data}</td></tr>
           <tr><td><strong>LibreTranslate</strong></td><td>{t.destinataires.s6role}</td><td>{t.destinataires.s6data}</td></tr>
+          <tr><td><strong>AegisAI</strong> (aegisai.kotbo.fr)</td><td>{t.destinataires.s8role}</td><td>{t.destinataires.s8data}</td></tr>
           <tr><td><strong>jsDelivr / GitHub</strong></td><td>{t.destinataires.s7role}</td><td>{t.destinataires.s7data}</td></tr>
         </tbody>
       </table>
@@ -1422,6 +1429,7 @@
       <li>{t.profilage.li1a} <strong>{t.profilage.li1Strong}</strong>{t.profilage.li1b} <strong>{t.profilage.li1Strong2}</strong> {t.profilage.li1c}</li>
       <li>{t.profilage.li2}</li>
       <li>{t.profilage.li3a} <strong>{t.profilage.li3Strong}</strong> {t.profilage.li3b}</li>
+      <li>{t.profilage.li4}</li>
     </ul>
   </section>
 
