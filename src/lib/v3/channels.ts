@@ -11,7 +11,7 @@
 import type { Locale } from '$lib/i18n/state.svelte';
 import { MODULE_COUNT } from './modules';
 
-export type ChannelId = 'bienvenue' | 'nuit' | 'qg' | 'addition' | 'modules' | 'ia' | 'confiance' | 'prix' | 'faq';
+export type ChannelId = 'bienvenue' | 'nuit' | 'qg' | 'addition' | 'modules' | 'ia' | 'aegis' | 'confiance' | 'prix' | 'faq';
 
 export interface Channel {
   id: ChannelId;
@@ -45,6 +45,7 @@ export const CHANNELS: Record<Locale, ChannelGroup[]> = {
       label: 'Ton serveur',
       channels: [
         { id: 'ia', name: 'ia', topic: 'branche ton IA sur ton serveur' },
+        { id: 'aegis', name: 'aegis-ai', topic: 'l’IA de Kotbo : toxicité, émotions, sujets' },
         { id: 'confiance', name: 'co-fondateurs', topic: 'avant d’ajouter un énième bot' },
         { id: 'prix', name: 'prix', topic: 'un curseur, un prix' },
         { id: 'faq', name: 'faq', topic: 'tout le reste' },
@@ -71,6 +72,7 @@ export const CHANNELS: Record<Locale, ChannelGroup[]> = {
       label: 'Your server',
       channels: [
         { id: 'ia', name: 'ai', topic: 'plug your AI into your server' },
+        { id: 'aegis', name: 'aegis-ai', topic: 'Kotbo’s AI: toxicity, emotions, topics' },
         { id: 'confiance', name: 'co-founders', topic: 'before adding yet another bot' },
         { id: 'prix', name: 'pricing', topic: 'one slider, one price' },
         { id: 'faq', name: 'faq', topic: 'everything else' },

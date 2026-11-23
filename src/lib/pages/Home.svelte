@@ -10,7 +10,7 @@
    * 3. ce que personne d'autre ne fait (le QG du staff, vrais écrans) ;
    * 4. combien je paye aujourd'hui (le ticket de caisse) ;
    * 5. qu'est-ce qu'il sait faire d'autre (les modules) ;
-   * 6. et avec mon IA (le serveur MCP, dans une fenêtre de chat) ;
+   * 6. et avec mon IA (le serveur MCP, dans une fenêtre de chat), puis celle de Kotbo (Aegis AI) ;
    * 7. est-ce que je peux lui faire confiance, combien, et les dernières questions ;
    * 8. le dernier appel.
    *
@@ -31,6 +31,7 @@
   import Receipt from '$lib/v3/Receipt.svelte';
   import Arsenal from '$lib/v3/Arsenal.svelte';
   import Mcp from '$lib/v3/Mcp.svelte';
+  import Aegis from '$lib/v3/Aegis.svelte';
   import Trust from '$lib/v3/Trust.svelte';
   import Price from '$lib/v3/Price.svelte';
   import Faq from '$lib/v3/Faq.svelte';
@@ -79,6 +80,7 @@
     <Receipt />
     <Arsenal />
     <Mcp />
+    <Aegis />
     <Trust />
     <Price />
     <Faq />
