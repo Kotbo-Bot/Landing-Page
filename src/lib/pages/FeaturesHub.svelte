@@ -46,6 +46,8 @@
 <Seo title={hub.title} description={hub.description} path={FEATURES_ROUTE[locale]} jsonLd={hubJsonLd(locale)} />
 
 <Shell>
+ <!-- Même langage que le blog, repris de tafac.fr (`.tafac-ui`, layout.css). -->
+ <div class="tafac-ui bg-[linear-gradient(180deg,color-mix(in_srgb,var(--color-glow)_11%,transparent),transparent_26rem)]">
   <div class="mx-auto max-w-7xl px-4 sm:px-6"><ForumBar /></div>
 
   <header class="mx-auto max-w-7xl px-4 pt-12 sm:px-6 lg:pt-16">
@@ -92,4 +94,5 @@
       </div>
     </div>
   </section>
+ </div>
 </Shell>

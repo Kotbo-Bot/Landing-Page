@@ -22,7 +22,7 @@
   const { items, trackAs = 'q', level = 'p' }: Props = $props();
 </script>
 
-<div class="divide-y divide-line border-y border-line">
+<div class="faq-list divide-y divide-line border-y border-line">
   {#each items as item, i (item.q)}
     <details
       class="group"
