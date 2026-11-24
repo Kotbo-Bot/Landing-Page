@@ -149,6 +149,7 @@
 <Seo title={seo.title} description={seo.description} path={seo.path} jsonLd={seo.jsonLd} image={coverPath} />
 
 <Shell>
+<div class="tafac-ui">
   <!-- La couleur de la famille du module teinte le haut de la page, les repères de section, les puces et les étapes. -->
   <article aria-labelledby="article-title" style="--accent: {accent}" class="bg-[linear-gradient(180deg,color-mix(in_srgb,var(--accent)_13%,transparent),transparent_28rem)]">
     <div class="mx-auto max-w-7xl px-4 sm:px-6"><ForumBar post={post.text[locale].name} {forum} /></div>
@@ -179,7 +180,7 @@
       {#key coverPath}
       <!-- Une maquette de l'interface, dans le style des bannières de mise à jour. L'image fixe est la page de départ ; la vidéo la remplace une fois lancée. -->
       <div class="mx-auto max-w-7xl px-4 pt-12 sm:px-6">
-        <div class="relative w-full max-w-4xl overflow-hidden rounded-2xl border border-line-2">
+        <div class="tf-card relative w-full max-w-4xl overflow-hidden">
           <img src="{base}{coverPath}" alt="{t.coverAlt} {h1}" width="1200" height="630" fetchpriority="high" class="block h-auto w-full" onerror={() => (coverMissing = true)} />
           <video
             bind:this={coverVideo}
@@ -219,10 +220,11 @@
             {/if}
 
             {#if section.items}
-              <ul class="mt-8 grid gap-x-10 sm:grid-cols-2">
+              <ul class="mt-8 grid gap-4 sm:grid-cols-2">
                 {#each section.items as item (item.title)}
                   {@const href = item.link ? linkOf(item.link.feature) : null}
-                  <li class="border-t border-[color-mix(in_srgb,var(--accent)_35%,var(--color-line))] py-5">
+                  <li class="tf-card p-5">
+                    <span aria-hidden="true" class="mb-3 block h-1.5 w-8 rounded-full bg-[var(--accent)]"></span>
                     <h3 class="font-display text-lg font-bold text-ink">{item.title}</h3>
                     <p class="mt-1 leading-relaxed text-fog">{item.body}</p>
                     {#if item.link && href}
@@ -234,9 +236,9 @@
             {/if}
 
             {#if section.steps}
-              <ol class="mt-8">
+              <ol class="mt-8 space-y-3">
                 {#each section.steps as step, n (step.title)}
-                  <li use:reveal class="step grid grid-cols-[2.5rem_1fr] gap-x-4 border-t border-[color-mix(in_srgb,var(--accent)_35%,var(--color-line))] py-5">
+                  <li use:reveal class="step tf-card grid grid-cols-[2.5rem_1fr] gap-x-4 p-5">
                     <span aria-hidden="true" class="num grid h-10 w-10 place-items-center rounded-full border-2 border-[var(--accent)] font-display text-lg font-black text-[var(--accent)]">{n + 1}</span>
                     <div>
                       <h3 class="font-display text-lg font-bold text-ink">{step.title}</h3>
@@ -317,6 +319,7 @@
       </div>
     </div>
   </section>
+</div>
 </Shell>
 
 <style>
