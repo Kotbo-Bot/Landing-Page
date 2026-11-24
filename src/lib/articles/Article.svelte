@@ -36,6 +36,8 @@
   interface Props {
     postKey: string;
     seo: { title: string; description: string; path: string; jsonLd?: object };
+    /** Couverture de l'article, `static/blog/covers/<clé>-<langue>.png` : clé de l'article, sans extension ni langue. */
+    cover?: string;
     h1: string;
     lead: string;
     sections: ArticleSection[];
@@ -54,7 +56,7 @@
     author?: string;
   }
 
-  const { postKey, seo, h1, lead, sections, faq = [], final, invite, figure, forum, date, source, author }: Props = $props();
+  const { postKey, seo, cover, h1, lead, sections, faq = [], final, invite, figure, forum, date, source, author }: Props = $props();
 
   const TEXT = {
     fr: {
@@ -63,6 +65,7 @@
       demo: 'Fouiller la démo du dashboard',
       offer: `Kotbo est gratuit pour démarrer, sans carte bancaire et sans limite de durée`,
       toc: 'Sur cette page',
+      coverAlt: 'Aperçu de l’interface Kotbo :',
       faq: 'Questions fréquentes',
       related: 'À lire aussi',
       all: 'Tous les articles',
@@ -75,6 +78,7 @@
       demo: 'Dig through the dashboard demo',
       offer: `Kotbo is free to start, with no credit card and no time limit`,
       toc: 'On this page',
+      coverAlt: 'Kotbo interface preview:',
       faq: 'Frequently asked questions',
       related: 'Read next',
       all: 'All articles',
@@ -97,6 +101,21 @@
     date ? new Date(`${date}T12:00:00Z`).toLocaleDateString(locale === 'fr' ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : null,
   );
   const closing = $derived(final ?? t.final);
+  const coverPath = $derived(cover ? `/blog/covers/${cover}-${locale}.png` : undefined);
+  let coverMissing = $state(false);
+  let coverPlaying = $state(false);
+  let coverVideo = $state<HTMLVideoElement>();
+  // L'animation ne se lance que si le visiteur n'a pas demandé moins de mouvement ; sans JS, l'image fixe reste.
+  $effect(() => {
+    // Un autre article réutilise le composant : on repart de l'image fixe.
+    coverPath;
+    coverMissing = false;
+    coverPlaying = false;
+  });
+  $effect(() => {
+    if (!coverVideo || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    coverVideo.play().catch(() => {});
+  });
 
   /** Le lien d'un point vers l'article qui le détaille, s'il est publié. */
   function linkOf(key: string): string | null {
@@ -105,7 +124,7 @@
   }
 </script>
 
-<Seo title={seo.title} description={seo.description} path={seo.path} jsonLd={seo.jsonLd} />
+<Seo title={seo.title} description={seo.description} path={seo.path} jsonLd={seo.jsonLd} image={coverPath} />
 
 <Shell>
   <article aria-labelledby="article-title">
@@ -132,6 +151,33 @@
         <p class="mt-4 text-sm text-fog">{t.offer}</p>
       </div>
     </header>
+
+    {#if coverPath && !coverMissing}
+      {#key coverPath}
+      <!-- Une maquette de l'interface, dans le style des bannières de mise à jour. L'image fixe est la page de départ ; la vidéo la remplace une fois lancée. -->
+      <div class="mx-auto max-w-7xl px-4 pt-12 sm:px-6">
+        <div class="relative w-full max-w-4xl overflow-hidden rounded-2xl border border-line-2">
+          <img src="{base}{coverPath}" alt="{t.coverAlt} {h1}" width="1200" height="630" fetchpriority="high" class="block h-auto w-full" onerror={() => (coverMissing = true)} />
+          <video
+            bind:this={coverVideo}
+            muted
+            loop
+            playsinline
+            preload="none"
+            aria-hidden="true"
+            tabindex="-1"
+            width="1200"
+            height="630"
+            onplaying={() => (coverPlaying = true)}
+            class="absolute inset-0 h-full w-full transition-opacity duration-300"
+            class:opacity-0={!coverPlaying}
+          >
+            <source src="{base}{coverPath.replace(/\.png$/, '.mp4')}" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+      {/key}
+    {/if}
 
     <div class="mx-auto grid max-w-7xl gap-12 px-4 pb-20 pt-16 sm:px-6 lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-20 lg:pb-28 lg:pt-24">
       <div class="min-w-0 max-w-3xl space-y-20">

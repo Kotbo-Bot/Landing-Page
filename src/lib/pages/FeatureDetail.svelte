@@ -19,6 +19,7 @@
 
 <Article
   postKey={feature.key}
+  cover="feature-{feature.key}"
   seo={{ title: text.title, description: text.description, path: featurePath(feature.slug, locale), jsonLd: featureJsonLd(feature.key, locale) }}
   h1={text.h1}
   lead={text.lead}

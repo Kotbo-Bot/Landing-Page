@@ -38,6 +38,7 @@
 
 <Article
   postKey={key}
+  cover={blogSlug(post, 'fr')}
   seo={{ title: text.title ? `${text.title} | Kotbo` : t.title(text.h1), description: text.description, path: blogPath(slug, locale), jsonLd: blogPostJsonLd(slug, locale) }}
   h1={text.h1}
   lead={text.lead}

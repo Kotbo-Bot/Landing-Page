@@ -224,9 +224,10 @@ function articleBreadcrumb(locale, name, url) {
 /**
  * Un article. Pas de date : les pages de la console n'en portent pas, et une
  * date inventée serait pire que pas de date.
- * @param {'fr' | 'en'} locale @param {{ url: string, name: string, headline: string, description: string }} a
+ * @param {'fr' | 'en'} locale @param {{ url: string, name: string, headline: string, description: string, image?: string }} a
+ * `image` : le chemin de la couverture de l'article, l'image du site sinon.
  */
-function article(locale, { url, name, headline, description }) {
+function article(locale, { url, name, headline, description, image = '/og-image.png' }) {
   return {
     '@type': 'Article',
     '@id': `${url}#article`,
@@ -236,7 +237,7 @@ function article(locale, { url, name, headline, description }) {
     name,
     description,
     inLanguage: LANG[locale],
-    image: `${SITE}/og-image.png`,
+    image: `${SITE}${image}`,
     author: { '@id': ORG_ID },
     publisher: { '@id': ORG_ID },
     about: { '@id': APP_ID },
@@ -394,7 +395,7 @@ export function blogPostJsonLd(slug, locale) {
       organization(locale),
       software(locale),
       {
-        ...article(locale, { url, name: text.h1, headline: text.h1, description: text.description }),
+        ...article(locale, { url, name: text.h1, headline: text.h1, description: text.description, image: `/blog/covers/${blogSlug(post, 'fr')}-${locale}.png` }),
         '@type': 'BlogPosting',
         datePublished: post.date,
         author: post.author === 'Kotbo' ? { '@id': ORG_ID } : { '@type': 'Person', name: post.author, url: hub },
@@ -427,7 +428,7 @@ export function featureJsonLd(key, locale) {
     '@graph': [
       organization(locale),
       software(locale),
-      article(locale, { url, name: text.name, headline: text.h1, description: text.description }),
+      article(locale, { url, name: text.name, headline: text.h1, description: text.description, image: `/blog/covers/feature-${key}-${locale}.png` }),
       // La FAQ affichée : celle de la fiche, plus la question sur la gratuité
       // (comme `data/features.ts`).
       faqPage([...text.faq, FREE_FAQ[locale]], url, locale),

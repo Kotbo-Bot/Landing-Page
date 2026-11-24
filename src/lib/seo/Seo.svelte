@@ -27,9 +27,11 @@
     robots?: string;
     /** Données structurées de la page, construites par `jsonld.js`. */
     jsonLd?: object;
+    /** Chemin d'une image 1200 × 630 propre à la page (`/blog/covers/…`) ; l'image du site par défaut. */
+    image?: string;
   }
 
-  let { title, description, path, robots = 'index, follow, max-image-preview:large', jsonLd }: Props = $props();
+  let { title, description, path, robots = 'index, follow, max-image-preview:large', jsonLd, image }: Props = $props();
 
   const TEXT = {
     fr: { imageAlt: 'Kotbo : ton serveur Discord, géré au même endroit. Aperçu du dashboard.' },
@@ -38,7 +40,7 @@
 
   /** Indigo de Kotbo (DESIGN.md) : la barre latérale de l'embed Discord. */
   const THEME_COLOR = '#4f46e5';
-  const IMAGE = `${SITE_URL}/og-image.png`;
+  const IMAGE = $derived(`${SITE_URL}${image ?? '/og-image.png'}`);
 
   const t = $derived(TEXT[getLocale()]);
   const url = $derived(`${SITE_URL}${path}`);
