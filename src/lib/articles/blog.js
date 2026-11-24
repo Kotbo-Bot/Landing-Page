@@ -39,6 +39,242 @@ export function blogSlug(post, locale) {
 export const BLOG = [
   ...GUIDES,
   {
+    slug: 'kotbo-10-1',
+    date: '2026-11-24',
+    author: 'Klaynight',
+    modules: ['giveaways', 'sanctions', 'workflows', 'quests'],
+    text: {
+      fr: {
+        h1: 'Kotbo 10.1 : giveaways à conditions, sanctions par paliers, pages publiques à ton image',
+        description:
+          'Kotbo 10.1 : conditions de participation aux giveaways, sanctions par paliers et bans jusqu’à un an, pages publiques personnalisables, vérification par lien avec captcha, droits MCP par module.',
+        teaser: 'Kotbo 10.1 : giveaways à conditions, sanctions par paliers, pages publiques',
+        lead: 'Kotbo 10.1 est la version des réglages fins. Chaque giveaway porte ses conditions, les sanctions montent par paliers, les pages publiques de ton serveur prennent ses couleurs et les clés MCP n’ouvrent que les modules que tu choisis. S’y ajoutent plus de 150 corrections, dont un durcissement de la sécurité',
+        sections: [
+          {
+            h2: 'Giveaways à conditions',
+            body: 'Chaque giveaway peut poser ses propres conditions de participation, à régler dans le dashboard, avec /giveaway start, dans un modèle de giveaway ou par le MCP',
+            items: [
+              { title: 'Les conditions', body: 'Rôles requis ou exclus, ancienneté du compte ou sur le serveur, boost, photo de profil, tag de serveur, messages et minutes de vocal sur une période, niveau, XP, pièces, réputation, invitations restées, vote Top.gg, présence dans un autre serveur' },
+              { title: 'ET et groupes OU', body: 'Toutes les conditions sont obligatoires, sauf celles que tu regroupes : un groupe est satisfait dès qu’une des siennes l’est. Quinze conditions au plus par giveaway' },
+              { title: 'Ce que voit le participant', body: 'La liste des conditions dans l’embed, un refus qui les cite toutes, et un bouton « Vérifier mes conditions » sous le message' },
+              { title: 'Revérifiées au tirage', body: 'Les conditions sont contrôlées au clic, puis avant le tirage et lors d’un reroll : un gagnant devenu invalide est écarté et un autre est tiré' },
+              { title: 'Un événement Discord', body: 'Une option crée l’événement planifié de ton giveaway en même temps que lui' },
+            ],
+          },
+          {
+            h2: 'Sanctions par paliers',
+            body: 'Les tableaux de sanctions gagnent en finesse, et rien de ce que tu supprimes n’est perdu',
+            items: [
+              { title: 'Des bans temporaires jusqu’à un an', body: 'Un palier peut déclencher un timeout ou un ban temporaire, avec une durée par défaut quand tu changes de palier' },
+              { title: 'Une gravité par palier', body: 'Chaque palier fixe le poids du warn, et un palier peut se répéter. L’éditeur résume le tableau en phrases' },
+              { title: 'Le rappel', body: 'Un warn de poids zéro prévient un membre sans compter dans les seuils' },
+              { title: 'Une corbeille', body: 'Une sanction supprimée garde son instantané, et les administrateurs peuvent la restaurer' },
+              { title: 'L’AutoMod de Discord, relié', body: 'Un warn automatique peut suivre les règles d’AutoMod de ton serveur, et un onglet dédié journalise leurs déclenchements dans Sanctions, Détections et Journaux' },
+            ],
+          },
+          {
+            h2: 'Des pages publiques à ton image',
+            body: 'Configuration, Pages publiques : un seul habillage par serveur, appliqué aux classements, aux clans et aux giveaways, avec un aperçu en direct',
+            points: [
+              'Titre, logo, bannière et texte d’accueil',
+              'Couleurs d’accent, de fond, de cartes et de texte, qui suivent le thème clair ou sombre du visiteur si tu n’en fixes pas',
+              'Police, arrondi des cartes, fond de page uni, en grille ou en halo, densité et verre dépoli',
+              'Un CSS personnalisé pour aller plus loin',
+              'La boutique publique du serveur se personnalise aussi, depuis ses réglages',
+            ],
+          },
+          {
+            h2: 'Vérification par lien et sécurité',
+            body: 'La vérification par lien gagne un captcha Turnstile et son propre niveau de vérification. Autour, la modération s’étoffe',
+            items: [
+              { title: 'Kotbo Vision', body: 'Le panneau garde l’historique des images bloquées, que tu retrouves dans l’export des données du membre' },
+              { title: 'AutoMod', body: 'Une liste prédéfinie de symboles haineux en Unicode, un curseur de sévérité sur la règle Liens, et des exceptions qui acceptent une catégorie entière de salons' },
+              { title: 'Tags de serveur', body: 'Des listes prédéfinies de tags à bloquer par catégorie, plusieurs tags ajoutés d’un coup dans l’assistant, et le rôle du tag unique dans l’onglet Rôles automatiques' },
+              { title: 'Durcissement', body: 'Treize correctifs de sécurité : droits de l’auteur d’une automatisation, tickets, ponts de salons, liens iCal révocables, clés API à permissions bornées' },
+            ],
+          },
+          {
+            h2: 'Staff : un organigramme libre et des rôles de pôle',
+            body: 'Les outils du staff s’adaptent à ton équipe plutôt que l’inverse',
+            points: [
+              'Un canvas libre pour l’organigramme du staff, et des séparateurs de rôle dans la hiérarchie',
+              'Un rôle Discord commun par pôle, attribué et synchronisé par Kotbo',
+              'Des rapports internes sur la fiche staff, recopiés sur le serveur staff lié',
+              'Les onglets de la fiche membre se règlent selon le rôle du staff qui la consulte',
+              'Un tutorat validé peut débloquer des modules, et attribuer des rôles Discord à la validation d’un objectif',
+              'Le serveur staff lié hérite de l’offre du serveur principal',
+            ],
+          },
+          {
+            h2: 'Centre de gestion et MCP : des droits au plus juste',
+            body: 'Tu décides qui ouvre quoi, y compris pour les assistants IA',
+            items: [
+              { title: 'Droits par module sur les clés MCP', body: 'Une clé n’ouvre que les modules que tu lui donnes, appliqués à chaque outil. Ils apparaissent dans la matrice d’accès du Centre de gestion' },
+              { title: 'La page Intégrations restreinte', body: 'Tu la réserves à un rôle depuis le Centre de gestion' },
+              { title: 'Copier les droits d’un rôle', body: 'Les droits d’un rôle se copient vers plusieurs rôles d’un coup' },
+              { title: 'Nouveaux outils MCP', body: 'Lecture et modification de la configuration complète de l’anti-raid, dégradé et style holographique pour les rôles, lecture des candidatures, générateur de widgets web intégrables' },
+            ],
+          },
+          {
+            h2: 'Quêtes, automatisations, tickets, réseaux',
+            body: 'Quatre chantiers qui avancent',
+            items: [
+              { title: 'Quêtes', body: 'Un constructeur de quêtes avec conditions, prérequis, dates, paliers et récompenses libres, sur un moteur unique' },
+              { title: 'Automatisations', body: 'Texte au-dessus d’un embed, vignette, grande image et pied de page jusque dans les messages privés, menu déroulant d’informations, classements du mois et d’XP insérables, conditions sur la photo de profil et le score de risque, déclencheurs Vérification réussie et Alerte AegisAI, action Renommer un salon' },
+              { title: 'Tickets', body: 'Un formulaire web, l’e-mail entrant et un suivi depuis /me, une relance du staff par notification ou salon dédié, et des transcriptions en JSON avec leur page de lecture' },
+              { title: 'Réseaux de serveurs', body: 'Des réseaux publics sous un même abonnement, avec une fusion sans perte à l’arrivée d’un serveur et une page Réseau de serveurs dans le groupe Intégration' },
+            ],
+          },
+          {
+            h2: 'Et aussi',
+            body: 'Le reste de la version',
+            points: [
+              'Logs : tu choisis type par type les journaux publiés et leur salon',
+              'Exports CSV et JSON des sanctions, candidatures, absences et progression',
+              'Retours : un onglet « Mes retours » dans la fenêtre de feedback, avec statut et conversation',
+              'Les statistiques du bot se publient vers Top.gg, Botillon et Discordium, et le rappel de bump gère DiscordL.org',
+              'Bien-être du staff : un module confidentiel de l’offre Plus, hors du Centre de gestion',
+              'Des dizaines d’aperçus Discord du dashboard refaits sur une bibliothèque commune',
+            ],
+          },
+        ],
+        faq: [
+          {
+            q: 'Comment limiter un giveaway aux membres actifs ?',
+            a: 'Ajoute une condition d’activité : un nombre de messages ou de minutes de vocal sur 7 jours, 30 jours ou depuis le lancement du giveaway. Les conditions se règlent dans le formulaire du giveaway ou avec /giveaway start',
+          },
+          {
+            q: 'Un membre qui ne remplit plus les conditions peut-il gagner ?',
+            a: 'Non. Les conditions sont revérifiées avant le tirage et lors d’un reroll, et un gagnant devenu invalide est écarté',
+          },
+          {
+            q: 'Où personnalise-t-on les pages publiques ?',
+            a: 'Dans Configuration, Pages publiques. Un seul habillage s’applique à toutes les pages publiques du serveur, avec un aperçu en direct',
+          },
+          {
+            q: 'Une clé MCP peut-elle être limitée à certains modules ?',
+            a: 'Oui. Les droits par module sont appliqués à chaque outil, et ils figurent dans la matrice d’accès du Centre de gestion',
+          },
+        ],
+      },
+      en: {
+        h1: 'Kotbo 10.1: giveaways with conditions, tiered sanctions, public pages in your style',
+        description:
+          'Kotbo 10.1: giveaway entry conditions, tiered sanctions and bans up to a year, customizable public pages, link verification with captcha, per-module MCP permissions.',
+        teaser: 'Kotbo 10.1: giveaways with conditions, tiered sanctions, public pages',
+        lead: 'Kotbo 10.1 is the fine-tuning release. Each giveaway carries its own conditions, sanctions climb in tiers, your server’s public pages take its colors, and MCP keys only open the modules you choose. On top come more than 150 fixes, including a security hardening',
+        sections: [
+          {
+            h2: 'Giveaways with conditions',
+            body: 'Each giveaway can set its own entry conditions, from the dashboard, with /giveaway start, in a giveaway template or through MCP',
+            items: [
+              { title: 'The conditions', body: 'Required or excluded roles, account or server age, boost, profile picture, server tag, messages and voice minutes over a period, level, XP, coins, reputation, invites that stayed, a Top.gg vote, presence in another server' },
+              { title: 'AND and OR groups', body: 'All conditions are required, except the ones you group: a group is met as soon as one of its conditions is. Fifteen conditions at most per giveaway' },
+              { title: 'What entrants see', body: 'The list of conditions in the embed, a refusal that names them all, and a “Check my conditions” button under the message' },
+              { title: 'Rechecked at the draw', body: 'Conditions are checked on click, then before the draw and on a reroll: a winner who no longer qualifies is dropped and another is drawn' },
+              { title: 'A Discord event', body: 'An option creates your giveaway’s scheduled event at the same time' },
+            ],
+          },
+          {
+            h2: 'Tiered sanctions',
+            body: 'Sanction tables get finer, and nothing you delete is lost',
+            items: [
+              { title: 'Temporary bans up to a year', body: 'A tier can trigger a timeout or a temporary ban, with a default duration when you switch tier' },
+              { title: 'A severity per tier', body: 'Each tier sets the weight of the warn, and a tier can repeat. The editor sums the table up in sentences' },
+              { title: 'The reminder', body: 'A zero-weight warn notifies a member without counting toward thresholds' },
+              { title: 'A recycle bin', body: 'A deleted sanction keeps its snapshot, and administrators can restore it' },
+              { title: 'Discord’s AutoMod, linked', body: 'An automatic warn can follow your server’s AutoMod rules, and a dedicated tab logs their triggers in Sanctions, Detections and Logs' },
+            ],
+          },
+          {
+            h2: 'Public pages in your style',
+            body: 'Configuration, Public pages: one theme per server, applied to leaderboards, clans and giveaways, with a live preview',
+            points: [
+              'Title, logo, banner and welcome text',
+              'Accent, background, card and text colors, which follow the visitor’s light or dark theme if you set none',
+              'Font, card rounding, plain, grid or glow page background, density and frosted glass',
+              'Custom CSS to go further',
+              'The server’s public shop can be customized too, from its settings',
+            ],
+          },
+          {
+            h2: 'Link verification and security',
+            body: 'Link verification gains a Turnstile captcha and its own verification level. Around it, moderation grows',
+            items: [
+              { title: 'Kotbo Vision', body: 'The panel keeps the history of blocked images, which also shows up in a member’s data export' },
+              { title: 'AutoMod', body: 'A preset list of hateful Unicode symbols, a strictness slider on the Links rule, and exceptions that accept a whole category of channels' },
+              { title: 'Server tags', body: 'Preset lists of tags to block by category, several tags added at once in the wizard, and the unique-tag role in the Auto roles tab' },
+              { title: 'Hardening', body: 'Thirteen security fixes: an automation author’s permissions, tickets, channel bridges, revocable iCal links, API keys with bounded permissions' },
+            ],
+          },
+          {
+            h2: 'Staff: a free-form org chart and team roles',
+            body: 'Staff tools adapt to your team, not the other way around',
+            points: [
+              'A free canvas for the staff org chart, and role separators in the hierarchy',
+              'A shared Discord role per team, assigned and synced by Kotbo',
+              'Internal reports on the staff profile, copied to the linked staff server',
+              'The member profile’s tabs are set by the role of the staff member viewing it',
+              'A validated mentoring can unlock modules, and give Discord roles when an objective is validated',
+              'The linked staff server inherits the main server’s plan',
+            ],
+          },
+          {
+            h2: 'Management center and MCP: permissions that fit',
+            body: 'You decide who opens what, AI assistants included',
+            items: [
+              { title: 'Per-module permissions on MCP keys', body: 'A key only opens the modules you give it, applied to every tool. They show in the Management center’s access matrix' },
+              { title: 'A restricted Integrations page', body: 'You reserve it for a role from the Management center' },
+              { title: 'Copy a role’s permissions', body: 'A role’s permissions can be copied to several roles at once' },
+              { title: 'New MCP tools', body: 'Read and edit the full anti-raid configuration, gradient and holographic styles for roles, reading recruitment applications, an embeddable web widget generator' },
+            ],
+          },
+          {
+            h2: 'Quests, automations, tickets, networks',
+            body: 'Four workstreams moving forward',
+            items: [
+              { title: 'Quests', body: 'A quest builder with conditions, prerequisites, dates, tiers and free-form rewards, on a single engine' },
+              { title: 'Automations', body: 'Text above an embed, thumbnail, large image and footer even in direct messages, a dropdown of information, month and XP leaderboards you can insert, conditions on profile picture and member risk score, Verification passed and AegisAI alert triggers, a Rename channel action' },
+              { title: 'Tickets', body: 'A web form, incoming email and tracking from /me, a staff reminder through a notification or a dedicated channel, and JSON transcripts with their reading page' },
+              { title: 'Server networks', body: 'Public networks under a single subscription, with a lossless merge when a server joins and a Server network page in the Integration group' },
+            ],
+          },
+          {
+            h2: 'Also in this release',
+            body: 'The rest of the version',
+            points: [
+              'Logs: you pick, type by type, which logs are published and in which channel',
+              'CSV and JSON exports of sanctions, applications, leave and progression',
+              'Feedback: a “My feedback” tab in the feedback window, with status and conversation',
+              'The bot’s stats are published to Top.gg, Botillon and Discordium, and the bump reminder handles DiscordL.org',
+              'Staff wellbeing: a confidential module on the Plus plan, outside the Management center',
+              'Dozens of the dashboard’s Discord previews rebuilt on a shared library',
+            ],
+          },
+        ],
+        faq: [
+          {
+            q: 'How do I limit a giveaway to active members?',
+            a: 'Add an activity condition: a number of messages or voice minutes over 7 days, 30 days or since the giveaway started. Conditions are set in the giveaway form or with /giveaway start',
+          },
+          {
+            q: 'Can a member who no longer meets the conditions still win?',
+            a: 'No. Conditions are rechecked before the draw and on a reroll, and a winner who no longer qualifies is dropped',
+          },
+          {
+            q: 'Where do I customize the public pages?',
+            a: 'In Configuration, Public pages. A single theme applies to all of the server’s public pages, with a live preview',
+          },
+          {
+            q: 'Can an MCP key be limited to certain modules?',
+            a: 'Yes. Per-module permissions are applied to every tool, and they appear in the Management center’s access matrix',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'kotbo-10-0',
     date: '2026-11-20',
     author: 'Klaynight',
