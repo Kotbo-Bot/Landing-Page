@@ -7,10 +7,10 @@ export default {
   modules: ['double_accounts'],
   text: {
     fr: {
-      title: 'Doubles comptes Discord : détecter les alts d’un membre banni',
-      h1: 'Doubles comptes Discord : repérer les membres qui reviennent avec un autre compte',
+      title: 'Vérifier un double compte Discord : méthode et bot',
+      h1: 'Comment vérifier si un membre a un double compte sur Discord',
       description:
-        'Doubles comptes Discord : comment repérer un membre banni qui revient avec un alt, lire les signaux de suspicion, confirmer ou rejeter un lien et garder une preuve, avec Kotbo.',
+        'Comment savoir si un compte Discord est un alt : les indices à vérifier à la main, puis un bot qui compare les arrivées. Le staff tranche. Gratuit.',
       lead: 'Un membre banni crée un autre compte et revient trois jours plus tard : c’est le problème le plus courant des serveurs modérés. Discord ne relie pas les comptes entre eux. Dans Kotbo, la page Comptes suspects repère les arrivées qui ressemblent à un compte déjà connu, affiche les raisons du soupçon, et laisse ton staff confirmer ou rejeter chaque lien. Un soupçon n’est jamais une preuve : c’est un modo qui décide',
       sections: [
         {
@@ -28,8 +28,19 @@ export default {
           body: 'Rien. Discord ne montre pas que deux comptes appartiennent à la même personne, et un banni peut revenir avec un nouveau pseudo et un nouvel avatar. Le modo ne dispose que de son œil. Un outil qui compare les comptes à l’arrivée fait gagner du temps, à condition de rester un outil d’aide à la décision',
         },
         {
+          h2: 'Vérifier à la main : les indices à regarder',
+          body: 'Sans outil, tu ne peux comparer que ce qui se voit. Ces vérifications suffisent pour un cas isolé, mais elles ne tiennent plus quand les arrivées se comptent par dizaines',
+          points: [
+            'L’âge du compte : active le mode développeur de Discord, copie l’ID du compte, puis passe-le dans un décodeur d’ID Discord pour lire sa date de création. Un compte de quelques jours arrivé juste après un bannissement est un premier indice',
+            'Le profil : avatar, bannière, pseudo d’affichage, présentation et comptes connectés, souvent recopiés ou à peine modifiés',
+            'Les serveurs en commun, visibles sur le profil, quand tu connais déjà le compte principal',
+            'Le moment d’arrivée et l’invitation utilisée : un compte arrivé peu après un départ ou un ban, par la même invitation, mérite un second regard',
+            'Le style d’écriture : mêmes tournures, mêmes fautes, mêmes emojis',
+          ],
+        },
+        {
           h2: 'Activer la détection avec Kotbo',
-          body: 'Tout se règle sur dash.kotbo.fr, page Comptes suspects, dans la section Protection',
+          body: 'Tout se règle sur dash.kotbo.fr, page Comptes suspects, dans la section Protection. La détection est gratuite',
           steps: [
             { title: 'Active la détection automatique', body: 'Kotbo signale les comptes récents à l’arrivée et les compare aux membres connus du serveur' },
             { title: 'Règle le seuil', body: 'Le score à partir duquel un compte est considéré comme suspect. Plus il est bas, plus tu verras de cas à vérifier' },
@@ -69,8 +80,27 @@ export default {
             { title: 'Filtrer et retrouver', body: 'Tu filtres par risque, type de signal, présence sur le serveur, ou par statut, et tu cherches par pseudo ou ID' },
           ],
         },
+        {
+          h2: 'Aller plus loin',
+          body: 'Le détecteur en détail : ce qu’il compare, ce qu’il demande et comment il apprend des décisions du staff',
+          items: [
+            {
+              title: 'Le détecteur de doubles comptes de Kotbo',
+              body: 'Gratuit, il tourne dans ton serveur et ne bannit jamais sans le staff',
+              link: { feature: 'double_accounts', label: 'Voir le détecteur de doubles comptes' },
+            },
+          ],
+        },
       ],
       faq: [
+        {
+          q: 'Comment savoir si un compte Discord est un alt ?',
+          a: 'Discord ne le montre pas. Regarde l’âge du compte, la ressemblance du profil avec un compte connu, l’invitation utilisée et le style d’écriture. Un bot comme Kotbo fait cette comparaison à chaque arrivée et montre les raisons du soupçon',
+        },
+        {
+          q: 'Peut-on voir les alts d’un utilisateur avec son ID ?',
+          a: 'Non, pas de façon fiable : Discord n’expose pas le lien entre deux comptes. L’ID donne seulement la date de création du compte. Kotbo compare les comptes à l’intérieur de ton serveur, avec les invitations, l’activité et la vérification',
+        },
         {
           q: 'Comment détecter les doubles comptes sur Discord ?',
           a: 'Avec Kotbo, active la détection automatique sur la page Comptes suspects. Les nouveaux comptes sont comparés aux membres connus, et chaque soupçon arrive avec ses signaux et un niveau de risque',
@@ -98,10 +128,10 @@ export default {
       ],
     },
     en: {
-      title: 'Discord alt accounts: detect a banned member’s alts',
-      h1: 'Discord alt accounts: spot members returning with another account',
+      title: 'How to Check Alt Accounts on Discord, by Hand or Bot',
+      h1: 'How to check if a Discord member has an alt account',
       description:
-        'Discord alt accounts: how to spot a banned member coming back with an alt, read the suspicion signals, confirm or reject a link and keep evidence, with Kotbo.',
+        'How to tell if a Discord account is an alt: the clues to check by hand, then a free bot that compares every join. Staff makes the call.',
       lead: 'A banned member creates another account and is back three days later: it’s the most common problem on moderated servers. Discord doesn’t link accounts together. In Kotbo, the Suspect accounts page spots arrivals that look like an already-known account, shows the reasons for the suspicion, and lets your staff confirm or reject each link. A suspicion is never proof: a moderator decides',
       sections: [
         {
@@ -119,8 +149,19 @@ export default {
           body: 'Nothing. Discord doesn’t show that two accounts belong to the same person, and a banned user can come back with a new name and avatar. The mod only has their eye. A tool that compares accounts on arrival saves time, as long as it stays a decision aid',
         },
         {
+          h2: 'Checking by hand: the clues to look at',
+          body: 'Without a tool, you can only compare what you can see. These checks are enough for a one-off case, but they stop scaling once joins come in by the dozen',
+          points: [
+            'Account age: turn on Discord’s developer mode, copy the account’s ID, then run it through a Discord ID decoder to read its creation date. A few-days-old account that joins right after a ban is a first clue',
+            'The profile: avatar, banner, display name, bio and connected accounts, often copied or barely changed',
+            'Mutual servers, visible on the profile, when you already know the main account',
+            'When it joined and which invite it used: an account that arrives shortly after a departure or a ban, through the same invite, deserves a second look',
+            'Writing style: the same turns of phrase, the same typos, the same emojis',
+          ],
+        },
+        {
           h2: 'Turning on detection with Kotbo',
-          body: 'Everything is set on dash.kotbo.fr, in the Suspect accounts page, under Protection',
+          body: 'Everything is set on dash.kotbo.fr, in the Suspect accounts page, under Protection. Detection is free',
           steps: [
             { title: 'Turn on automatic detection', body: 'Kotbo flags recent accounts on arrival and compares them to the server’s known members' },
             { title: 'Set the threshold', body: 'The score from which an account is considered suspect. The lower it is, the more cases you’ll have to check' },
@@ -160,8 +201,27 @@ export default {
             { title: 'Filter and find', body: 'Filter by risk, signal type, presence on the server or status, and search by name or ID' },
           ],
         },
+        {
+          h2: 'Go further',
+          body: 'The detector in detail: what it compares, what it needs and how it learns from staff decisions',
+          items: [
+            {
+              title: 'Kotbo’s alt account checker',
+              body: 'Free, it runs inside your server and never bans without staff',
+              link: { feature: 'double_accounts', label: 'See the alt account checker' },
+            },
+          ],
+        },
       ],
       faq: [
+        {
+          q: 'How do I tell if a Discord account is an alt?',
+          a: 'Discord doesn’t show it. Look at the account’s age, how much its profile resembles a known account, the invite it used and its writing style. A bot like Kotbo makes that comparison on every join and shows the reasons for the suspicion',
+        },
+        {
+          q: 'Can I see someone’s alts with their user ID?',
+          a: 'Not reliably: Discord doesn’t expose the link between two accounts. An ID only gives you the account’s creation date. Kotbo compares accounts inside your server, using invites, activity and verification',
+        },
         {
           q: 'How do I detect alt accounts on Discord?',
           a: 'With Kotbo, turn on automatic detection in the Suspect accounts page. New accounts are compared to known members, and each suspicion comes with its signals and a risk level',
