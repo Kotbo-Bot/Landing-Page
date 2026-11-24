@@ -110,7 +110,7 @@ export default {
       ],
     },
     en: {
-      title: 'Block Discord scams: fake Nitro and phishing links',
+      title: 'Fake Nitro on Discord: How to Block Scam Links',
       h1: 'Block fake Nitro and phishing links on your Discord server',
       description:
         'Block scam links on Discord: fake Nitro, phishing, lookalike domains, QR codes and booby-trapped screenshots. Kotbo’s anti-scam filter, command by command.',

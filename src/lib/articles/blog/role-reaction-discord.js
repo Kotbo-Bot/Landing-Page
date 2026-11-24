@@ -101,7 +101,7 @@ export default {
       ],
     },
     en: {
-      title: 'Discord reaction roles: let members pick their roles',
+      title: 'How to Set Up Reaction Roles on Discord (Buttons)',
       h1: 'Discord reaction roles: let members pick their own roles',
       description:
         'Discord reaction roles: what Discord Onboarding already does, then a button role menu with Kotbo, plus autoroles given on join, by server tag or by status.',

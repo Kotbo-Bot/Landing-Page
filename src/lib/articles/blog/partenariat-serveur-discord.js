@@ -103,7 +103,7 @@ export default {
       ],
     },
     en: {
-      title: 'Discord partnerships: how to set them up and track them',
+      title: 'Discord Partnerships: How to Find, Run and Track Them',
       h1: 'How to run Discord server partnerships that actually bring members',
       description:
         'Discord server partnerships: find the right server, agree on terms, swap ads and see which partner really brings members, with Discord and Kotbo’s tools.',

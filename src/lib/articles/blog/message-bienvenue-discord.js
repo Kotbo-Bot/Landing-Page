@@ -7,7 +7,7 @@ export default {
   modules: ['welcome_goodbye'],
   text: {
     fr: {
-      title: 'Message de bienvenue Discord : le guide complet',
+      title: 'Message de bienvenue Discord : le créer (bot gratuit)',
       h1: 'Comment faire un message de bienvenue sur Discord, avec ou sans bot',
       description:
         'Message de bienvenue Discord : ce que Discord fait tout seul, puis un bot de bienvenue avec variables, carte d’avatar, rôle automatique et message de départ.',
@@ -100,7 +100,7 @@ export default {
       ],
     },
     en: {
-      title: 'Discord welcome message: set one up with a bot',
+      title: 'Discord Welcome Message: How to Set One Up (Free Bot)',
       h1: 'How to set up a Discord welcome message, with or without a bot',
       description:
         'How to set up a Discord welcome message: what Discord does on its own, then a welcome bot with variables, avatar card, auto role on join and goodbye message.',

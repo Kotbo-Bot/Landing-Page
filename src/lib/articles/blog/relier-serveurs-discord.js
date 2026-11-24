@@ -104,10 +104,10 @@ export default {
       ],
     },
     en: {
-      title: 'Link Discord servers: shared chat and staff server',
+      title: 'Link Two Discord Servers: Shared Channel Setup',
       h1: 'Link Discord servers: a cross-server chat and a synced staff server',
       description:
-        'Link Discord servers: a channel shared across several servers with /link, and a staff server whose roles follow the main server’s staff hierarchy.',
+        'Link two Discord servers with a shared channel: messages sync both ways with /link. Add a staff server whose roles follow your main server’s.',
       lead: 'Discord doesn’t link servers together: roles, channels and messages stay with each server. For a shared channel or a separate staff server, you need a bot. Kotbo does both: /link copies a channel’s messages to other servers, and /staffserver keeps your team’s roles in step between your server and the staff one',
       sections: [
         {
