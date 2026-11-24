@@ -42,6 +42,9 @@ import jeuxSalonFunDiscord from './jeux-salon-fun-discord.js';
 import formulaireCandidatureDiscord from './formulaire-candidature-discord.js';
 import detecterDoublesComptesDiscord from './detecter-doubles-comptes-discord.js';
 import annoncesActualitesRssDiscord from './annonces-actualites-rss-discord.js';
+import contournementBanDiscord from './contournement-ban-discord.js';
+import choisirBotDetectionDoublesComptesDiscord from './choisir-bot-detection-doubles-comptes-discord.js';
+import securiserServeurDiscordChecklist from './securiser-serveur-discord-checklist.js';
 
 /** @type {import('../blog.js').BlogPost[]} */
 export const GUIDES = [
@@ -51,6 +54,7 @@ export const GUIDES = [
   automodDiscordAntiSpam,
   messageBienvenueDiscord,
   protegerServeurDiscordRaid,
+  securiserServeurDiscordChecklist,
   roleReactionDiscord,
   sanctionsDiscordWarnMuteBan,
   verificationCaptchaDiscord,
@@ -81,5 +85,7 @@ export const GUIDES = [
   jeuxSalonFunDiscord,
   formulaireCandidatureDiscord,
   detecterDoublesComptesDiscord,
+  contournementBanDiscord,
+  choisirBotDetectionDoublesComptesDiscord,
   annoncesActualitesRssDiscord,
 ];
