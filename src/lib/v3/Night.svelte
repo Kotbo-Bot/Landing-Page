@@ -30,7 +30,8 @@
   import { KOTBO_AVATAR, ktb } from '$lib/playground/discord/theme';
 
   type App = 'discord' | 'tickets' | 'sheet' | 'kotbo';
-  type Notif = { app: App; title: string; sub?: string; body: string; time: string };
+  type Notif = { app: App; title: string; sub?: string; body: string; min: number };
+  type Shown = Notif & { key: string };
   type Chat = { author: string; time: string; text: string; ping?: boolean };
   type Line = { icon: string; module: string; text: string };
 
@@ -50,6 +51,7 @@
       sceneChaos: 'Scène fictive : l’écran verrouillé d’un fondateur à 2 h 47, sans Kotbo.',
       sceneCalm: 'Scène fictive : le même écran, avec Kotbo.',
       more: (n: number) => `${n} autres notifications`,
+      ago: (m: number) => (m < 1 ? 'maintenant' : `il y a ${m} min`),
       sleep: 'Rendors-toi',
       staffChat: [
         { author: 'Inès (modo)', time: '02:11', text: 'j’ai refait le planning sur le sheet, checkez svp' },
@@ -69,15 +71,26 @@
       reportFooter: '2 choses à valider dans le dashboard',
       after: { author: 'Lucas (modo)', time: '02:48', text: 'ah bah c’est géré. bonne nuit' } as Chat,
       chaos: [
-        { app: 'discord', title: 'Lucas (modo)', sub: '#général', body: 'frr y’a un raid là je fais quoi ?? @Fonda', time: 'maintenant' },
-        { app: 'discord', title: 'Maxou', sub: 'Message privé', body: 'pk j’suis ban ?? j’ai rien fait, c’est un abus de pouvoir', time: 'il y a 3 min' },
-        { app: 'tickets', title: 'Ticket #148', body: 'Toujours sans réponse depuis 3 h', time: 'il y a 9 min' },
-        { app: 'discord', title: 'Enzo (modo)', sub: 'Message privé', body: 'jsuis pas là ce week-end, dis-le aux autres stp', time: 'il y a 21 min' },
-        { app: 'sheet', title: 'planning_staff_FINAL_v3', body: 'Inès a modifié 14 cellules', time: 'il y a 38 min' },
+        { app: 'discord', title: 'Lucas (modo)', sub: '#général', body: 'frr y’a un raid là je fais quoi ?? @Fonda', min: 0 },
+        { app: 'discord', title: 'Maxou', sub: 'Message privé', body: 'pk j’suis ban ?? j’ai rien fait, c’est un abus de pouvoir', min: 3 },
+        { app: 'tickets', title: 'Ticket #148', body: 'Toujours sans réponse depuis 3 h', min: 9 },
+        { app: 'discord', title: 'Enzo (modo)', sub: 'Message privé', body: 'jsuis pas là ce week-end, dis-le aux autres stp', min: 21 },
+        { app: 'sheet', title: 'planning_staff_FINAL_v3', body: 'Inès a modifié 14 cellules', min: 38 },
+      ] as Notif[],
+      // Le flux de la nuit : une nouvelle notification toutes les quelques secondes.
+      extra: [
+        { app: 'discord', title: 'Sofia (modo)', sub: '#général', body: 'y’a 12 nouveaux comptes avec le même avatar, c’est normal ??', min: 0 },
+        { app: 'discord', title: 'Théo', sub: 'Message privé', body: 'jsuis mute pourquoi ?? réponds stp', min: 0 },
+        { app: 'tickets', title: 'Ticket #151', body: 'Nouveau ticket : « je me suis fait hacker »', min: 0 },
+        { app: 'sheet', title: 'planning_staff_FINAL_v3', body: 'Lucas a modifié 3 cellules', min: 0 },
+        { app: 'discord', title: 'Inès (modo)', sub: '#staff', body: 'quelqu’un a vu le ticket 148 ?', min: 0 },
+        { app: 'discord', title: 'Maxou', sub: 'Message privé', body: 'je fais un thread sur twitter sur ton serveur', min: 0 },
+        { app: 'tickets', title: 'Ticket #152', body: 'Toujours sans réponse depuis 1 h', min: 0 },
+        { app: 'discord', title: 'Lucas (modo)', sub: '#général', body: 'ils spamment des liens, je les ban ou pas ??', min: 0 },
       ] as Notif[],
       calm: [
-        { app: 'kotbo', title: 'Raid bloqué à 02:13', sub: '#staff-logs', body: '38 comptes sortis automatiquement. Le rapport t’attend dans le dashboard.', time: 'il y a 34 min' },
-        { app: 'kotbo', title: 'Résumé de la nuit', sub: '#staff-logs', body: '1 ticket pris par Lena · 1 appel de ban · 1 absence à valider', time: 'il y a 7 min' },
+        { app: 'kotbo', title: 'Raid bloqué à 02:13', sub: '#staff-logs', body: '38 comptes sortis automatiquement. Le rapport t’attend dans le dashboard.', min: 34 },
+        { app: 'kotbo', title: 'Résumé de la nuit', sub: '#staff-logs', body: '1 ticket pris par Lena · 1 appel de ban · 1 absence à valider', min: 7 },
       ] as Notif[],
     },
     en: {
@@ -95,6 +108,7 @@
       sceneChaos: 'Fictional scene: a server owner’s lock screen at 2:47 a.m., without Kotbo.',
       sceneCalm: 'Fictional scene: the same screen, with Kotbo.',
       more: (n: number) => `${n} more notifications`,
+      ago: (m: number) => (m < 1 ? 'now' : `${m}m ago`),
       sleep: 'Go back to sleep',
       staffChat: [
         { author: 'Inès (mod)', time: '02:11', text: 'redid the schedule in the sheet, pls check' },
@@ -114,15 +128,26 @@
       reportFooter: '2 things to approve in the dashboard',
       after: { author: 'Lucas (mod)', time: '02:48', text: 'oh it’s handled. good night' } as Chat,
       chaos: [
-        { app: 'discord', title: 'Lucas (mod)', sub: '#general', body: 'bro we’re getting raided what do i do?? @Owner', time: 'now' },
-        { app: 'discord', title: 'Maxou', sub: 'Direct message', body: 'why am i banned?? i did nothing, this is power abuse', time: '3m ago' },
-        { app: 'tickets', title: 'Ticket #148', body: 'Still unanswered after 3 hours', time: '9m ago' },
-        { app: 'discord', title: 'Enzo (mod)', sub: 'Direct message', body: 'i’m out this weekend, tell the others pls', time: '21m ago' },
-        { app: 'sheet', title: 'staff_schedule_FINAL_v3', body: 'Inès edited 14 cells', time: '38m ago' },
+        { app: 'discord', title: 'Lucas (mod)', sub: '#general', body: 'bro we’re getting raided what do i do?? @Owner', min: 0 },
+        { app: 'discord', title: 'Maxou', sub: 'Direct message', body: 'why am i banned?? i did nothing, this is power abuse', min: 3 },
+        { app: 'tickets', title: 'Ticket #148', body: 'Still unanswered after 3 hours', min: 9 },
+        { app: 'discord', title: 'Enzo (mod)', sub: 'Direct message', body: 'i’m out this weekend, tell the others pls', min: 21 },
+        { app: 'sheet', title: 'staff_schedule_FINAL_v3', body: 'Inès edited 14 cells', min: 38 },
+      ] as Notif[],
+      // The night's feed: a new notification every few seconds.
+      extra: [
+        { app: 'discord', title: 'Sofia (mod)', sub: '#general', body: 'there are 12 new accounts with the same avatar, is that normal??', min: 0 },
+        { app: 'discord', title: 'Theo', sub: 'Direct message', body: 'why am i muted?? answer me pls', min: 0 },
+        { app: 'tickets', title: 'Ticket #151', body: 'New ticket: “i got hacked”', min: 0 },
+        { app: 'sheet', title: 'staff_schedule_FINAL_v3', body: 'Lucas edited 3 cells', min: 0 },
+        { app: 'discord', title: 'Inès (mod)', sub: '#staff', body: 'did anyone see ticket 148?', min: 0 },
+        { app: 'discord', title: 'Maxou', sub: 'Direct message', body: 'i’m making a twitter thread about your server', min: 0 },
+        { app: 'tickets', title: 'Ticket #152', body: 'Still unanswered after 1 hour', min: 0 },
+        { app: 'discord', title: 'Lucas (mod)', sub: '#general', body: 'they’re spamming links, do i ban them or not??', min: 0 },
       ] as Notif[],
       calm: [
-        { app: 'kotbo', title: 'Raid blocked at 02:13', sub: '#staff-logs', body: '38 accounts removed automatically. The report is waiting in the dashboard.', time: '34m ago' },
-        { app: 'kotbo', title: 'Night recap', sub: '#staff-logs', body: '1 ticket claimed by Lena · 1 ban appeal · 1 time-off request', time: '7m ago' },
+        { app: 'kotbo', title: 'Raid blocked at 02:13', sub: '#staff-logs', body: '38 accounts removed automatically. The report is waiting in the dashboard.', min: 34 },
+        { app: 'kotbo', title: 'Night recap', sub: '#staff-logs', body: '1 ticket claimed by Lena · 1 ban appeal · 1 time-off request', min: 7 },
       ] as Notif[],
     },
   };
@@ -155,8 +180,24 @@
   });
 
   const chaosShown = $derived(t.chaos.slice(t.chaos.length - arrived));
-  const list = $derived(calm ? t.calm : chaosShown);
   const night = $derived(!calm && arrived === t.chaos.length);
+
+  // Le flux : une fois la nuit installée, de nouvelles notifications tombent en
+  // haut, les plus anciennes sortent par le bas et tout vieillit de STEP minutes.
+  const STEP = 2;
+  const MAX = 5;
+  let streamed = $state(0);
+  let inView = $state(false);
+
+  const list = $derived.by((): Shown[] => {
+    if (calm) return t.calm.map((n, i) => ({ ...n, key: `k${i}` }));
+    const fresh = Array.from({ length: Math.min(streamed, MAX) }, (_, i) => {
+      const n = streamed - 1 - i;
+      return { ...t.extra[n % t.extra.length], key: `s${n}`, min: i * STEP };
+    });
+    const base = chaosShown.map((n, i) => ({ ...n, key: `c${n.title}${i}`, min: n.min + streamed * STEP }));
+    return [...fresh, ...base].slice(0, MAX);
+  });
 
   // Les notifications suivent le défilement : elles tombent pendant que le
   // téléphone traverse l'écran, et remontent si le visiteur remonte.
@@ -180,14 +221,33 @@
 
   function choose(next: boolean) {
     calm = next;
+    streamed = 0;
     if (!next) arrived = still ? t.chaos.length : target();
   }
 
+  // Le flux ne tourne que de nuit, avec le téléphone à l'écran et l'onglet visible.
+  $effect(() => {
+    if (!night || !inView || still) return;
+    const id = setInterval(() => {
+      if (document.hidden) return;
+      streamed += 1;
+      buzz += 1;
+    }, 3200);
+    return () => clearInterval(id);
+  });
+
+  // Remonter dans la page rejoue la nuit depuis le début.
+  $effect(() => {
+    if (!night) streamed = 0;
+  });
+
   onMount(() => {
+    const io = new IntersectionObserver(([e]) => (inView = e.isIntersecting), { threshold: 0.4 });
+    if (phone) io.observe(phone);
     still = matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (still) {
       arrived = t.chaos.length;
-      return;
+      return () => io.disconnect();
     }
     let frame = 0;
     const onScroll = () => {
@@ -198,6 +258,7 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
     return () => {
+      io.disconnect();
       cancelAnimationFrame(frame);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
@@ -293,13 +354,13 @@
 
                   <!-- Les notifications. -->
                   <ul class="mt-auto space-y-1.5 px-2.5 pb-2">
-                    {#each list as n (n.title)}
+                    {#each list as n (n.key)}
                       <li class="notif flex gap-2.5 rounded-[1.35rem] bg-white/[0.13] px-3 py-2.5 backdrop-blur-xl">
                         {@render appIcon(n.app)}
                         <div class="min-w-0 flex-1">
                           <p class="flex items-baseline justify-between gap-2">
                             <span class="truncate text-[0.82rem] font-semibold leading-tight">{n.title}</span>
-                            <span class="shrink-0 text-[0.7rem] text-ink/55">{n.time}</span>
+                            <span class="shrink-0 text-[0.7rem] text-ink/55">{t.ago(n.min)}</span>
                           </p>
                           {#if n.sub}<p class="truncate text-[0.72rem] leading-tight text-ink/60">{n.sub}</p>{/if}
                           <p class="line-clamp-2 text-[0.8rem] leading-snug text-ink/90">{n.body}</p>
@@ -314,7 +375,7 @@
                       <div class="stack relative">
                         <div class="mx-2 h-2.5 rounded-b-[1rem] bg-white/[0.09]"></div>
                         <div class="mx-5 h-2 rounded-b-[0.9rem] bg-white/[0.05]"></div>
-                        <p class="mt-1 text-center text-[0.7rem] font-medium text-ink/55">{t.more(HIDDEN_COUNT)}</p>
+                        <p class="mt-1 text-center text-[0.7rem] font-medium text-ink/55">{t.more(HIDDEN_COUNT + streamed)}</p>
                       </div>
                     {:else if calm}
                       <p class="sleep text-center font-display text-2xl font-extrabold">{t.sleep}</p>
