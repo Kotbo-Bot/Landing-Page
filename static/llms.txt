@@ -52,6 +52,10 @@ Chaque guide répond à une question d’admin de serveur Discord, avec les comm
 - [Système de clans Discord : créer des clans avec un bot](https://kotbo.fr/blog/systeme-clan-discord)
 - [Système de réputation Discord : le +rep et le prestige](https://kotbo.fr/blog/systeme-reputation-discord)
 - [Starboard Discord : mettre en avant les meilleurs messages](https://kotbo.fr/blog/starboard-discord)
+- [Vérifier un double compte Discord : méthode et bot](https://kotbo.fr/blog/detecter-doubles-comptes-discord)
+- [Contournement de ban Discord : empêcher le retour](https://kotbo.fr/blog/contournement-ban-discord)
+- [Bot détecteur d’alts Discord : 6 critères](https://kotbo.fr/blog/choisir-bot-detection-doubles-comptes-discord)
+- [Sécuriser un serveur Discord : la checklist](https://kotbo.fr/blog/securiser-serveur-discord-checklist)
 
 ### Guides (English)
 
@@ -76,7 +80,11 @@ Chaque guide répond à une question d’admin de serveur Discord, avec les comm
 - [Discord invite tracker: see who invited whom](https://kotbo.fr/en/blog/discord-invite-tracker)
 - [Disboard bump reminder: never miss a /bump again](https://kotbo.fr/en/blog/disboard-bump-reminder)
 - [Discord partnerships: how to set them up and track them](https://kotbo.fr/en/blog/discord-server-partnerships)
-- [Link Discord servers: shared chat and staff server](https://kotbo.fr/en/blog/link-discord-servers)
+- [Link Two Discord Servers: Shared Channel Setup](https://kotbo.fr/en/blog/link-discord-servers)
+- [How to Check Alt Accounts on Discord, by Hand or Bot](https://kotbo.fr/en/blog/detect-discord-alt-accounts)
+- [Discord Ban Evasion: How to Stop Banned Members](https://kotbo.fr/en/blog/discord-ban-evasion)
+- [Discord Alt Detector Bot: 6 Criteria to Choose](https://kotbo.fr/en/blog/discord-alt-detector-bot)
+- [Discord Server Security Checklist (10 Steps)](https://kotbo.fr/en/blog/discord-server-security-checklist)
 - [Discord clan bot: set up a clan system on your server](https://kotbo.fr/en/blog/discord-clan-bot)
 - [Discord reputation bot: +rep and prestige rankings](https://kotbo.fr/en/blog/discord-reputation-bot)
 - [Discord starboard bot: feature your best messages](https://kotbo.fr/en/blog/discord-starboard-bot)
