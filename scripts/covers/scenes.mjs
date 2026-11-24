@@ -458,7 +458,6 @@ export const SCENE_OF = {
   'choisir-bot-detection-doubles-comptes-discord': 'alt',
   'annonces-actualites-rss-discord': 'news',
   'kotbo-10-0': 'release',
-  'kotbo-10-1': 'release',
   'organigramme-staff': 'org',
   'automatisations-tester-et-corriger': 'flow',
   'roles-a-boutons-refaits': 'roles',
