@@ -97,6 +97,28 @@
   // Une page fonctionnalité met en tête le guide du blog qui couvre son module.
   const guides = $derived(pool === POSTS ? BLOG_POSTS.filter((p) => p.modules?.includes(postKey)) : []);
   const related = $derived([...guides, ...relatedTo(postKey, 3, pool)].slice(0, 3));
+  const accent = $derived(post.accent);
+
+  /**
+   * Une étape s'allume quand elle arrive à l'écran (pastille remplie, texte
+   * à pleine opacité), pour que la lecture déroule la procédure. Sans JS ou
+   * avec « moins de mouvement », tout reste allumé.
+   */
+  function reveal(node: HTMLElement) {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    node.dataset.armed = '';
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          node.dataset.in = '';
+          io.disconnect();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    io.observe(node);
+    return { destroy: () => io.disconnect() };
+  }
   const published = $derived(
     date ? new Date(`${date}T12:00:00Z`).toLocaleDateString(locale === 'fr' ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : null,
   );
@@ -127,14 +149,15 @@
 <Seo title={seo.title} description={seo.description} path={seo.path} jsonLd={seo.jsonLd} image={coverPath} />
 
 <Shell>
-  <article aria-labelledby="article-title">
+  <!-- La couleur de la famille du module teinte le haut de la page, les repères de section, les puces et les étapes. -->
+  <article aria-labelledby="article-title" style="--accent: {accent}" class="bg-[linear-gradient(180deg,color-mix(in_srgb,var(--accent)_13%,transparent),transparent_28rem)]">
     <div class="mx-auto max-w-7xl px-4 sm:px-6"><ForumBar post={post.text[locale].name} {forum} /></div>
 
     <header class="mx-auto max-w-7xl px-4 pt-12 sm:px-6 lg:pt-16">
       <div class="max-w-4xl">
         <!-- La ligne d'auteur d'un message Discord. -->
         <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-fog">
-          <img src="{base}/favicon.svg" alt="" width="28" height="28" class="h-7 w-7 rounded-full" />
+          <img src="{base}/favicon.svg" alt="" width="28" height="28" class="h-7 w-7 rounded-full ring-2 ring-[var(--accent)]" />
           <span class="font-semibold text-ink">{author ?? t.author}</span>
           {#if published}<time datetime={date}>{published}</time>{/if}
           <span>{t.minutes(post.text[locale].minutes)}</span>
@@ -183,11 +206,12 @@
       <div class="min-w-0 max-w-3xl space-y-20">
         {#each sections as section, i (section.h2)}
           <section id="section-{i + 1}" aria-labelledby="section-{i + 1}-title" class="scroll-mt-24">
+            <span aria-hidden="true" class="mb-4 block h-1 w-12 rounded-full bg-[var(--accent)]"></span>
             <h2 id="section-{i + 1}-title" class="text-balance font-display text-3xl font-extrabold leading-tight tracking-tight text-ink sm:text-4xl">{section.h2}</h2>
             <p class="mt-4 text-lg leading-relaxed text-mist">{section.body}</p>
 
             {#if section.points}
-              <ul class="mt-6 list-disc space-y-3 pl-5 leading-relaxed text-mist marker:text-glow">
+              <ul class="mt-6 list-disc space-y-3 pl-5 leading-relaxed text-mist marker:text-[var(--accent)]">
                 {#each section.points as point (point)}
                   <li>{point}</li>
                 {/each}
@@ -198,7 +222,7 @@
               <ul class="mt-8 grid gap-x-10 sm:grid-cols-2">
                 {#each section.items as item (item.title)}
                   {@const href = item.link ? linkOf(item.link.feature) : null}
-                  <li class="border-t border-line py-5">
+                  <li class="border-t border-[color-mix(in_srgb,var(--accent)_35%,var(--color-line))] py-5">
                     <h3 class="font-display text-lg font-bold text-ink">{item.title}</h3>
                     <p class="mt-1 leading-relaxed text-fog">{item.body}</p>
                     {#if item.link && href}
@@ -212,8 +236,8 @@
             {#if section.steps}
               <ol class="mt-8">
                 {#each section.steps as step, n (step.title)}
-                  <li class="grid grid-cols-[2.5rem_1fr] gap-x-4 border-t border-line py-5">
-                    <span aria-hidden="true" class="font-display text-3xl font-black leading-none text-fog">{n + 1}</span>
+                  <li use:reveal class="step grid grid-cols-[2.5rem_1fr] gap-x-4 border-t border-[color-mix(in_srgb,var(--accent)_35%,var(--color-line))] py-5">
+                    <span aria-hidden="true" class="num grid h-10 w-10 place-items-center rounded-full border-2 border-[var(--accent)] font-display text-lg font-black text-[var(--accent)]">{n + 1}</span>
                     <div>
                       <h3 class="font-display text-lg font-bold text-ink">{step.title}</h3>
                       <p class="mt-1 leading-relaxed text-fog">{step.body}</p>
@@ -251,7 +275,7 @@
           <p id="toc-title" class="text-sm font-semibold text-ink">{t.toc}</p>
           <ol class="mt-3 border-l border-line text-sm">
             {#each sections as section, i (section.h2)}
-              <li><a href="#section-{i + 1}" class="-ml-px block border-l border-transparent py-2 pl-4 leading-snug text-fog transition-colors hover:border-ink hover:text-ink">{section.h2}</a></li>
+              <li><a href="#section-{i + 1}" class="-ml-px block border-l border-transparent py-2 pl-4 leading-snug text-fog transition-colors hover:border-[var(--accent)] hover:text-ink">{section.h2}</a></li>
             {/each}
             {#if faq.length}
               <li><a href="#faq" class="-ml-px block border-l border-transparent py-2 pl-4 leading-snug text-fog transition-colors hover:border-ink hover:text-ink">{t.faq}</a></li>
@@ -294,3 +318,23 @@
     </div>
   </section>
 </Shell>
+
+<style>
+  /* Armée par JS : sans lui, ou avec « moins de mouvement », les étapes restent allumées. */
+  .step:global([data-armed]) {
+    opacity: 0.35;
+    transition: opacity 0.5s ease-out;
+  }
+  .step:global([data-armed]) .num {
+    transition:
+      background-color 0.4s ease-out 0.1s,
+      color 0.4s ease-out 0.1s;
+  }
+  .step:global([data-in]) {
+    opacity: 1;
+  }
+  .step:global([data-in]) .num {
+    background-color: var(--accent);
+    color: #0b0a1c;
+  }
+</style>
