@@ -18,9 +18,12 @@ import { STAFF_FAQ } from '$lib/seo/faq.js';
 import { STAFF_ARTICLE, type ArticleSection } from './staff';
 import { RELEASES, type Release } from './releases.js';
 import { BLOG, blogSlug } from './blog.js';
+import { ACCENTS, accentOf } from './accents.js';
 
 export interface Post {
 	key: string;
+	/** La couleur de sa famille de modules (`accents.js`), qui teinte son pictogramme, son étiquette et sa page. */
+	accent: string;
 	path: Record<Locale, string>;
 	/** Emoji du bot (`static/ktb/`). */
 	icon: string;
@@ -55,6 +58,7 @@ export function readingMinutes(lead: string, sections: ArticleSection[], faq: Re
 
 const STAFF_POST: Post = {
 	key: 'staff',
+	accent: ACCENTS.staff,
 	path: STAFF_ROUTE,
 	icon: 'crown',
 	pinned: true,
@@ -85,6 +89,7 @@ function releasePost(release: Release, pinned = false): Post {
 	};
 	return {
 		key: releaseKey(release),
+		accent: ACCENTS.news,
 		path: { fr: releasePath(release.slug, 'fr'), en: releasePath(release.slug, 'en') },
 		icon: 'news',
 		pinned,
@@ -104,6 +109,7 @@ export const BLOG_POSTS: Post[] = BLOG.map((b) => {
 	};
 	return {
 		key: `blog-${blogSlug(b, 'fr')}`,
+		accent: accentOf(b.modules, blogSlug(b, 'fr')),
 		path: { fr: blogPath(blogSlug(b, 'fr'), 'fr'), en: blogPath(blogSlug(b, 'en'), 'en') },
 		icon: b.modules?.length ? featureIcon(b.modules[0]) : 'msg',
 		pinned: false,
@@ -118,6 +124,7 @@ export const POSTS: Post[] = [
 	releasePost(RELEASES[0], true),
 	...FEATURES.map((f) => ({
 		key: f.key,
+		accent: accentOf([f.key]),
 		path: { fr: featurePath(f.slug, 'fr'), en: featurePath(f.slug, 'en') },
 		icon: featureIcon(f.key),
 		pinned: false,
