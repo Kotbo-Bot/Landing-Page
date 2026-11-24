@@ -16,7 +16,7 @@ export default {
         {
           h2: 'D’abord, les réglages de Discord',
           body: 'Ils ne coûtent rien et couvrent les attaques les plus courantes. Passe-les en revue avant d’installer un bot',
-          steps: [
+          items: [
             {
               title: '1. Monte le niveau de vérification',
               body: 'Il filtre les arrivants selon leur compte : e-mail vérifié, compte créé depuis plus de 5 minutes, membre depuis plus de 10 minutes, ou téléphone vérifié au niveau le plus haut',
@@ -38,7 +38,7 @@ export default {
         {
           h2: 'Ensuite, ce qu’un bot ajoute',
           body: 'Les réglages natifs filtrent, mais ils ne réagissent pas à ta façon. Les six derniers points reposent sur Kotbo, dont les protections ci-dessous sont gratuites',
-          steps: [
+          items: [
             {
               title: '5. Active les règles d’AutoMod',
               body: 'Kotbo crée pour toi les règles natives de Discord (mots interdits, invitations vers d’autres serveurs) et ajoute l’anti-spam, les liens avec une liste de domaines autorisés, les majuscules, les emojis et les mentions en rafale',
@@ -126,7 +126,7 @@ export default {
         {
           h2: 'First, Discord’s own settings',
           body: 'They cost nothing and cover the most common attacks. Go through them before installing a bot',
-          steps: [
+          items: [
             {
               title: '1. Raise the verification level',
               body: 'It filters newcomers by their account: verified email, account older than 5 minutes, member for more than 10 minutes, or a verified phone at the highest level',
@@ -148,7 +148,7 @@ export default {
         {
           h2: 'Then, what a bot adds',
           body: 'Native settings filter, but they don’t react your way. The last six points rely on Kotbo, whose protections below are free',
-          steps: [
+          items: [
             {
               title: '5. Turn on AutoMod rules',
               body: 'Kotbo creates Discord’s native rules for you (blocked words, invites to other servers) and adds anti-spam, links with an allow list of domains, caps, emoji floods and mass mentions',
