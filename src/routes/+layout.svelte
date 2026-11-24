@@ -7,6 +7,8 @@
 	import { onMount } from 'svelte';
 	import { applyLocale, initLocale } from '$lib/i18n/state.svelte';
 	import { localeOfPath, routePath } from '$lib/i18n/routes';
+	import { captureLandingAttribution } from '$lib/funnel';
+	import InvitePopupOverlay from '$lib/v3/InvitePopupOverlay.svelte';
 
 	let { children } = $props();
 
@@ -21,7 +23,10 @@
 		if (fixed) applyLocale(fixed);
 	});
 
-	onMount(() => initLocale(base));
+	onMount(() => {
+		initLocale(base);
+		captureLandingAttribution();
+	});
 </script>
 
 <svelte:head>
@@ -32,3 +37,4 @@
 	<link rel="apple-touch-icon" href="{base}/apple-touch-icon.png" />
 </svelte:head>
 {@render children()}
+<InvitePopupOverlay />

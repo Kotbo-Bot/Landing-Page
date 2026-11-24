@@ -7,7 +7,8 @@
    * Le logo Discord dit où l'on va : on quitte le site pour l'écran
    * d'autorisation de Discord, pas pour un formulaire.
    */
-  import { inviteUrl, track } from '$lib/funnel';
+  import { inviteUrl, normalizeInviteContent, track } from '$lib/funnel';
+  import { invitePopup } from './invitePopup.svelte';
   import { builder, encodeKit } from '$lib/playground/kit.svelte';
   import { getLocale } from '$lib/i18n/state.svelte';
 
@@ -26,7 +27,20 @@
     en: { label: 'Add to Discord', short: 'Add' },
   };
   const t = $derived(TEXT[getLocale()]);
-  const href = $derived(inviteUrl(content, encodeKit(builder.kit)));
+  const normalizedContent = $derived(normalizeInviteContent(content) || content);
+  const kit = $derived(encodeKit(builder.kit));
+  const href = $derived(inviteUrl(normalizedContent, kit));
+
+  function handleClick(event: MouseEvent) {
+    track('invite_clicked', { content: normalizedContent });
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+      return;
+    }
+    const opened = invitePopup.launch(normalizedContent, kit);
+    if (opened) {
+      event.preventDefault();
+    }
+  }
 
   const SIZES = {
     sm: 'min-h-10 gap-2 px-4 text-sm',
@@ -41,7 +55,7 @@
 
 <a
   {href}
-  onclick={() => track('invite_clicked', { content })}
+  onclick={handleClick}
   class="group inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-xl font-bold transition-[background-color,transform] active:translate-y-px {SIZES[size]} {TONES[tone]} {className}"
 >
   <svg aria-hidden="true" viewBox="0 0 24 24" class="{size === 'lg' ? 'h-6 w-6' : 'h-5 w-5'} shrink-0 fill-current">

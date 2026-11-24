@@ -105,8 +105,90 @@ const ENDPOINT = 'https://api.kotbo.fr/api/public/funnel';
 
 /** Identifiant de visite. `sessionStorage` : il meurt avec l'onglet. */
 const VISITOR_KEY = 'kotbo:vid';
+/** Attribution d'arrivée mémorisée pour la session. */
+const ATTR_STORAGE_KEY = 'kotbo:attr';
+/** Cookie cross-subdomain d'attribution (sans identifiant personnel). */
+const ATTR_COOKIE_NAME = 'kotbo_attr';
 /** Refus explicite, posé par l'interrupteur de la page /cookies. */
 const OPT_OUT_KEY = 'kotbo:no-measure';
+
+export interface LandingAttribution {
+  utmSource: string;
+  utmCampaign: string | null;
+  referrer: Referrer;
+  landingPath: string;
+}
+
+/**
+ * Normalise un identifiant de bouton (`utm_content`) pour éviter les doublons
+ * `*-final` dans le tableau de bord admin.
+ */
+export function normalizeInviteContent(content: string): string {
+  const cleaned = content.trim().toLowerCase().slice(0, 64);
+  if (!cleaned) return '';
+  if (cleaned !== 'final' && cleaned.endsWith('-final')) {
+    return cleaned.slice(0, -'-final'.length);
+  }
+  return cleaned;
+}
+
+function readStoredAttribution(): LandingAttribution | null {
+  if (!browser) return null;
+  try {
+    const raw = sessionStorage.getItem(ATTR_STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as LandingAttribution;
+  } catch {
+    return null;
+  }
+}
+
+export function writeAttributionCookie(buttonId?: string): void {
+  if (!browser || optedOut()) return;
+  try {
+    const attr = readStoredAttribution();
+    const payload = {
+      s: attr?.utmSource ?? 'landing',
+      c: buttonId ? normalizeInviteContent(buttonId) : null,
+      k: attr?.utmCampaign ?? null,
+      r: attr?.referrer ?? 'direct',
+      p: attr?.landingPath ?? window.location.pathname.slice(0, 200),
+    };
+    const encoded = encodeURIComponent(JSON.stringify(payload));
+    const host = window.location.hostname;
+    const isKotbo = host === 'kotbo.fr' || host.endsWith('.kotbo.fr');
+    const domainAttr = isKotbo ? '; Domain=.kotbo.fr; Secure' : '';
+    document.cookie = `${ATTR_COOKIE_NAME}=${encoded}; Path=/${domainAttr}; SameSite=Lax; Max-Age=3600`;
+  } catch {
+    // Stockage ou cookie refusé : le paramètre `state` signé sert de vecteur principal.
+  }
+}
+
+export function captureLandingAttribution(): LandingAttribution | null {
+  if (!browser) return null;
+  const existing = readStoredAttribution();
+  if (existing) {
+    writeAttributionCookie();
+    return existing;
+  }
+
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const utmSource = params.get('utm_source')?.trim().toLowerCase().slice(0, 64) || 'landing';
+    const utmCampaign = params.get('utm_campaign')?.trim().slice(0, 64) || null;
+    const attr: LandingAttribution = {
+      utmSource,
+      utmCampaign,
+      referrer: classifyReferrer(document.referrer),
+      landingPath: window.location.pathname.slice(0, 200) || '/',
+    };
+    sessionStorage.setItem(ATTR_STORAGE_KEY, JSON.stringify(attr));
+    writeAttributionCookie();
+    return attr;
+  } catch {
+    return null;
+  }
+}
 
 /** Étapes déjà envoyées dans cette page. Une section vue l'est une fois. */
 const sent = new Set<string>();
@@ -261,10 +343,23 @@ export function trackOnView(node: HTMLElement, step: FunnelStep) {
  * `playground/kit.svelte.ts`). Il voyage même quand la mesure est refusée : ce
  * n'est pas une statistique mais ce que le visiteur a demandé qu'on installe.
  */
-export function inviteUrl(content: string, kit: string | null = null): string {
-  const params = new URLSearchParams({ utm_source: 'landing', utm_content: content });
+export function inviteUrl(
+  content: string,
+  kit: string | null = null,
+  options: { popup?: boolean } = {},
+): string {
+  const normalizedContent = normalizeInviteContent(content) || content;
+  const attr = readStoredAttribution();
+  const params = new URLSearchParams({
+    utm_source: attr?.utmSource || 'landing',
+    utm_content: normalizedContent,
+  });
+  if (attr?.utmCampaign) params.set('utm_campaign', attr.utmCampaign);
+  if (attr?.referrer) params.set('referrer', attr.referrer);
+  if (attr?.landingPath) params.set('landing_path', attr.landingPath);
   const vid = visitorId();
   if (vid) params.set('vid', vid);
   if (kit) params.set('kit', kit);
+  if (options.popup) params.set('popup', '1');
   return `https://api.kotbo.fr/api/public/invite?${params.toString()}`;
 }
