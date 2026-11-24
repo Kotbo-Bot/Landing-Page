@@ -27,6 +27,8 @@ export interface Post {
 	pinned: boolean;
 	/** Jour de publication (AAAA-MM-JJ), quand il est connu : billets et notes de version. */
 	date?: string;
+	/** Pour un billet : les modules qu'il couvre, d'où la page fonctionnalité le propose en lecture. */
+	modules?: string[];
 	text: Record<Locale, { name: string; h1: string; description: string; minutes: number }>;
 }
 
@@ -106,6 +108,7 @@ export const BLOG_POSTS: Post[] = BLOG.map((b) => {
 		icon: b.modules?.length ? featureIcon(b.modules[0]) : 'msg',
 		pinned: false,
 		date: b.date,
+		modules: b.modules,
 		text: { fr: text('fr'), en: text('en') },
 	};
 });

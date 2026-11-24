@@ -90,7 +90,9 @@
     RELEASE_POSTS.some((p) => p.key === postKey) ? RELEASE_POSTS : BLOG_POSTS.some((p) => p.key === postKey) ? [...BLOG_POSTS, ...POSTS] : POSTS,
   );
   const post = $derived(pool.find((p) => p.key === postKey)!);
-  const related = $derived(relatedTo(postKey, 3, pool));
+  // Une page fonctionnalité met en tête le guide du blog qui couvre son module.
+  const guides = $derived(pool === POSTS ? BLOG_POSTS.filter((p) => p.modules?.includes(postKey)) : []);
+  const related = $derived([...guides, ...relatedTo(postKey, 3, pool)].slice(0, 3));
   const published = $derived(
     date ? new Date(`${date}T12:00:00Z`).toLocaleDateString(locale === 'fr' ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : null,
   );
