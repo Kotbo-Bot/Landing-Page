@@ -26,8 +26,9 @@
   {#each posts as post (post.key)}
     {@const text = post.text[locale]}
     <li>
-      <a href="{base}{post.path[locale]}" class="group grid grid-cols-[2.5rem_1fr] gap-x-4 px-1 py-6 transition-colors hover:bg-night-3 sm:grid-cols-[3rem_1fr] sm:px-4">
-        <img src={ktb(post.icon)} alt="" width="40" height="40" class="mt-1 h-9 w-9 rounded-lg bg-night-3 p-1.5 transition-colors group-hover:bg-night-4 sm:h-11 sm:w-11 sm:p-2" />
+      <!-- La couleur de la famille du module : le pictogramme, l'étiquette et le survol la prennent. -->
+      <a href="{base}{post.path[locale]}" style="--accent: {post.accent}" class="group grid grid-cols-[2.5rem_1fr] gap-x-4 px-1 py-6 transition-colors hover:bg-[color-mix(in_srgb,var(--accent)_8%,transparent)] sm:grid-cols-[3rem_1fr] sm:px-4">
+        <img src={ktb(post.icon)} alt="" width="40" height="40" class="mt-1 h-9 w-9 rounded-lg bg-[color-mix(in_srgb,var(--accent)_20%,transparent)] p-1.5 ring-1 ring-[color-mix(in_srgb,var(--accent)_38%,transparent)] transition-colors group-hover:bg-[color-mix(in_srgb,var(--accent)_32%,transparent)] sm:h-11 sm:w-11 sm:p-2" />
         <span class="flex min-w-0 flex-col">
           {#if post.pinned}
             <span class="mb-1.5 inline-flex items-center gap-1.5 text-sm font-semibold text-glow">
@@ -39,7 +40,7 @@
           <span class="mt-2 max-w-3xl leading-relaxed text-fog">{text.description}</span>
           <span class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-fog">
             <!-- L'étiquette du sujet, comme celles des forums Discord. -->
-            <span class="rounded-md bg-night-4 px-2 py-0.5 font-semibold text-mist">{text.name}</span>
+            <span class="rounded-md bg-[color-mix(in_srgb,var(--accent)_16%,transparent)] px-2 py-0.5 font-semibold text-[color-mix(in_srgb,var(--accent)_65%,var(--color-ink))]">{text.name}</span>
             <span>{t.minutes(text.minutes)}</span>
           </span>
         </span>
