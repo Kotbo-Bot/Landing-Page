@@ -49,6 +49,8 @@
 <Seo title={t.title} description={t.description} path={BLOG_ROUTE[locale]} jsonLd={blogJsonLd(locale)} />
 
 <Shell>
+ <!-- Le blog reprend le langage de tafac.fr : SN Pro, cartes à gros rayon, pilules (`.tafac-ui`, layout.css). -->
+ <div class="tafac-ui bg-[linear-gradient(180deg,color-mix(in_srgb,var(--color-glow)_11%,transparent),transparent_26rem)]">
   <div class="mx-auto max-w-7xl px-4 sm:px-6"><ForumBar forum={{ name: t.forum, href: `${base}${BLOG_ROUTE[locale]}`, topic: t.topic }} /></div>
 
   <header class="mx-auto max-w-7xl px-4 pt-12 sm:px-6 lg:pt-16">
@@ -69,4 +71,5 @@
     </div>
     <div class="mt-8"><BlogList posts={ALL_POSTS} /></div>
   </section>
+ </div>
 </Shell>

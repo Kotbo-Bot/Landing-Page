@@ -145,10 +145,10 @@
       enterkeyhint="search"
       placeholder={t.placeholder}
       onkeydown={(e) => e.key === 'Escape' && query && (query = '')}
-      class="h-14 w-full rounded-2xl border border-line-2 bg-night-2 pl-12 pr-24 text-lg text-ink placeholder:text-fog focus:border-glow focus:outline-none focus-visible:ring-2 focus-visible:ring-glow/40 [&::-webkit-search-cancel-button]:hidden"
+      class="h-14 w-full rounded-full border border-transparent bg-night-3 pl-12 pr-28 text-lg text-ink shadow-[var(--tf-shadow)] transition placeholder:text-fog focus:border-ink focus:outline-none [&::-webkit-search-cancel-button]:hidden"
     />
     {#if query}
-      <button type="button" onclick={() => ((query = ''), input?.focus())} class="absolute right-3 top-1/2 inline-flex h-9 -translate-y-1/2 items-center rounded-lg px-3 text-sm font-semibold text-fog hover:bg-night-4 hover:text-ink">{t.clear}</button>
+      <button type="button" onclick={() => ((query = ''), input?.focus())} class="tf-press absolute right-3 top-1/2 inline-flex h-9 -translate-y-1/2 items-center rounded-full bg-night-4 px-4 text-sm font-semibold text-mist hover:text-ink">{t.clear}</button>
     {:else}
       <kbd aria-hidden="true" class="pointer-events-none absolute right-4 top-1/2 hidden h-7 -translate-y-1/2 items-center rounded-md border border-line-2 px-2 font-mono text-sm text-fog sm:inline-flex">/</kbd>
     {/if}
@@ -159,7 +159,7 @@
       type="button"
       aria-pressed={theme === 'all'}
       onclick={() => (theme = 'all')}
-      class="inline-flex min-h-10 items-center gap-2 rounded-full border px-4 text-sm font-semibold transition-colors {theme === 'all' ? 'border-ink bg-ink text-night' : 'border-line-2 text-mist hover:border-fog hover:text-ink'}"
+      class="tf-press inline-flex min-h-10 items-center gap-2 rounded-full border border-transparent px-4 text-sm font-semibold transition-colors {theme === 'all' ? 'bg-ink text-night' : 'bg-night-3 text-mist hover:text-ink'}"
     >
       {t.all}<span class="text-xs opacity-70">{matching.length}</span>
     </button>
@@ -171,9 +171,9 @@
         disabled={item.count === 0 && !on}
         onclick={() => (theme = on ? 'all' : item.id)}
         style="--accent: {ACCENTS[item.id]}"
-        class="inline-flex min-h-10 items-center gap-2 rounded-full border px-4 text-sm font-semibold transition-colors disabled:opacity-40 {on
-          ? 'border-[var(--accent)] bg-[color-mix(in_srgb,var(--accent)_24%,transparent)] text-ink'
-          : 'border-line-2 text-mist hover:border-[var(--accent)] hover:bg-[color-mix(in_srgb,var(--accent)_10%,transparent)] hover:text-ink'}"
+        class="tf-press inline-flex min-h-10 items-center gap-2 rounded-full border px-4 text-sm font-semibold transition-colors disabled:opacity-40 {on
+          ? 'border-transparent bg-ink text-night'
+          : 'border-[color-mix(in_srgb,var(--accent)_25%,transparent)] bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] text-ink hover:bg-[color-mix(in_srgb,var(--accent)_22%,transparent)]'}"
       >
         <span aria-hidden="true" class="h-2.5 w-2.5 rounded-full bg-[var(--accent)]"></span>
         {item.label}<span class="text-xs opacity-70">{item.count}</span>
@@ -195,16 +195,16 @@
             <a
               href="{base}{post.path[locale]}"
               style="--accent: {post.accent}"
-              class="group flex w-full flex-col rounded-2xl border border-line bg-night-2 p-6 transition-colors hover:border-[var(--accent)] hover:bg-[color-mix(in_srgb,var(--accent)_7%,var(--color-night-2))]"
+              class="tf-card group flex w-full flex-col p-6 hover:border-[color-mix(in_srgb,var(--accent)_55%,transparent)]"
             >
               <span class="flex items-center gap-3 text-sm text-fog">
-                <img src={ktb(post.icon)} alt="" width="28" height="28" class="h-8 w-8 rounded-lg bg-[color-mix(in_srgb,var(--accent)_20%,transparent)] p-1.5 ring-1 ring-[color-mix(in_srgb,var(--accent)_38%,transparent)]" />
+                <img src={ktb(post.icon)} alt="" width="28" height="28" class="h-9 w-9 rounded-[11px] bg-[color-mix(in_srgb,var(--accent)_14%,transparent)] p-1.5 ring-1 ring-[color-mix(in_srgb,var(--accent)_28%,transparent)]" />
                 <span>{post.date ? `${fmt(post.date)} · ` : ''}{t.minutes(text.minutes)}</span>
               </span>
               <span class="mt-4 text-balance font-display text-xl font-extrabold leading-snug tracking-tight text-ink sm:text-2xl">{text.h1}</span>
               <span class="mt-3 leading-relaxed text-fog">{text.description}</span>
               <span class="mt-5 flex flex-wrap items-center gap-3">
-                <span class="rounded-md bg-[color-mix(in_srgb,var(--accent)_16%,transparent)] px-2 py-0.5 text-sm font-semibold text-[color-mix(in_srgb,var(--accent)_65%,var(--color-ink))]">{t.labels[themeOf(post)]}</span>
+                <span class="inline-flex h-6 items-center rounded-full border border-[color-mix(in_srgb,var(--accent)_25%,transparent)] bg-[color-mix(in_srgb,var(--accent)_12%,transparent)] px-2.5 text-xs font-semibold text-[color-mix(in_srgb,var(--accent)_65%,var(--color-ink))]">{t.labels[themeOf(post)]}</span>
                 <span class="ml-auto font-semibold text-[color-mix(in_srgb,var(--accent)_65%,var(--color-ink))] group-hover:underline">{t.more} →</span>
               </span>
             </a>
@@ -213,10 +213,10 @@
       </ul>
     </section>
   {:else}
-    <div class="rounded-2xl border border-dashed border-line-2 px-6 py-14 text-center">
+    <div class="tf-card px-6 py-14 text-center">
       <p class="font-display text-2xl font-extrabold text-ink">{t.none}</p>
       <p class="mt-2 text-fog">{t.noneHint}</p>
-      <button type="button" onclick={reset} class="mt-6 inline-flex min-h-11 items-center rounded-xl border border-line-2 px-5 font-semibold text-ink hover:border-fog">{t.reset}</button>
+      <button type="button" onclick={reset} class="tf-press mt-6 inline-flex min-h-11 items-center rounded-full bg-ink px-6 font-semibold text-night">{t.reset}</button>
     </div>
   {/each}
 </div>
