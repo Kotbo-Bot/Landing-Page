@@ -39,6 +39,133 @@ export function blogSlug(post, locale) {
 export const BLOG = [
   ...GUIDES,
   {
+    slug: 'aegisai-espace-developpeur-discord-organisations',
+    date: '2026-11-25',
+    author: 'Klaynight',
+    text: {
+      fr: {
+        h1: 'AegisAI : connexion Discord, demandes de clés par MP, organisations et bêta gratuite',
+        description:
+          'AegisAI passe à la connexion Discord unique, ajoute les demandes de clés avec notification en MP, les organisations, les managers de clés, les statistiques par portée et l’offre bêta gratuite.',
+        teaser: 'AegisAI : connexion Discord, clés par MP, organisations et bêta gratuite',
+        lead: 'Jusqu’ici, il fallait déjà avoir un token de bot pour ouvrir l’espace développeur d’AegisAI. C’est terminé : tout le monde se connecte désormais avec Discord, demande sa clé depuis le dashboard et suit son usage par organisation',
+        sections: [
+          {
+            h2: 'Tout passe par la connexion Discord',
+            body: 'L’ancienne connexion par clé API sur le portail est supprimée. Tu te connectes en un clic avec ton compte Discord sur aegisai.kotbo.fr/portal, aussi bien pour tester et gérer tes clés que pour l’administration',
+            points: [
+              'Une seule session unifiée pour l’espace développeur et l’administration selon tes droits Discord',
+              'Redirection automatique vers la page demandée après connexion',
+              'Plus de token brut à taper dans un formulaire de connexion',
+            ],
+          },
+          {
+            h2: 'Demander une clé et être prévenu en MP Discord',
+            body: 'Si tu n’as pas encore de clé API, tu en fais la demande directement dans l’onglet Clés API du dashboard en indiquant le nom de ton bot, l’usage prévu et, si tu veux, une organisation',
+            steps: [
+              { title: 'Autorise les messages privés', body: 'Sur la page de connexion ou dans tes préférences, active l’option pour recevoir un MP Discord quand ta clé est prête. Cela t’ajoute au serveur Discord commun si tes MP sont fermés aux inconnus' },
+              { title: 'Soumets ta demande', body: 'Ton dossier part dans la file de validation des administrateurs avec tes coordonnées Discord et ton nom de bot' },
+              { title: 'Reçois le lien en MP', body: 'Dès que la demande est validée, le bot AegisAI t’envoie un message privé avec un lien direct vers la clé sur ton espace membre. Une notification interne reste visible sur le site si tes MP restent bloqués' },
+              { title: 'Révèle ton token une seule fois', body: 'Le secret n’est jamais envoyé en clair dans Discord. Tu le révèles une seule fois depuis le site, et tu peux le régénérer à tout moment en cas de perte' },
+            ],
+          },
+          {
+            h2: 'Organisations, managers et statistiques dédiées',
+            body: 'Un bot est rarement géré par une seule personne sur la durée. Le nouvel espace membre te laisse organiser tes accès sans partager ton token principal à l’aveugle',
+            items: [
+              { title: 'Organisations', body: 'Regroupe plusieurs clés sous une même équipe et invite des membres par identifiant Discord avec le rôle owner, admin ou member' },
+              { title: 'Managers par clé', body: 'Ajoute un collaborateur sur une clé précise en tant que manager (stats, rotation, révocation) ou viewer (lecture seule des statistiques)' },
+              { title: 'Statistiques filtrées', body: 'Le graphique d’usage se filtre sur toutes tes clés, sur une organisation entière ou sur un seul bot, avec des chiffres réels mis à jour en direct' },
+              { title: 'Rotation et révocation', body: 'Tu crées une nouvelle clé sur un bot ou tu coupes un token compromis directement depuis le dashboard' },
+            ],
+          },
+          {
+            h2: 'Bêta gratuite et socle pour la suite',
+            body: 'Un onglet Facturation fait son apparition dans le dashboard avec le détail de l’offre Bêta gratuite : aucune carte bancaire demandée et une limite par défaut de 60 requêtes par minute par clé. Les plans payants viendront après la bêta, sans coupure surprise pour les clés existantes',
+          },
+        ],
+        faq: [
+          {
+            q: 'Peut-on encore se connecter avec un token API sur le portail ?',
+            a: 'Non. La connexion par clé est retirée : tout passe par la connexion Discord OAuth2',
+          },
+          {
+            q: 'Mon token est-il envoyé en clair dans le MP Discord ?',
+            a: 'Non. Le MP contient uniquement la confirmation et un lien direct vers ton tableau de bord, où le token s’affiche une seule fois',
+          },
+          {
+            q: 'Que se passe-t-il si mes MP Discord sont fermés ?',
+            a: 'L’acceptation crée toujours une notification visible dans ton espace membre dès ta connexion au site, et les administrateurs peuvent relancer l’envoi du MP plus tard',
+          },
+          {
+            q: 'L’API AegisAI est-elle payante pendant la bêta ?',
+            a: 'Non. L’offre Bêta gratuite ne demande aucune carte bancaire',
+          },
+        ],
+      },
+      en: {
+        h1: 'AegisAI: Discord login, DM key delivery, organisations and free beta',
+        description:
+          'AegisAI moves to Discord-only login, adds API key requests with Discord DM notifications, organisations, key managers, scoped stats and a Free Beta tier.',
+        teaser: 'AegisAI: Discord login, DM key delivery, organisations and free beta',
+        lead: 'Until now, you already needed a bot token just to open the AegisAI developer space. That is over: everyone now signs in with Discord, requests keys from the dashboard and tracks usage by organisation',
+        sections: [
+          {
+            h2: 'Everything goes through Discord login',
+            body: 'The old API-key login form on the portal is gone. You sign in with one click using Discord at aegisai.kotbo.fr/portal, whether you manage your own keys or administer the platform',
+            points: [
+              'One unified session for the developer dashboard and admin views based on your Discord permissions',
+              'Automatic redirect back to the requested page after sign-in',
+              'No raw bot token to paste into a login box',
+            ],
+          },
+          {
+            h2: 'Request a key and get notified by Discord DM',
+            body: 'If you do not have an API key yet, submit a request from the API keys tab with your bot name, intended use and an optional organisation',
+            steps: [
+              { title: 'Allow direct messages', body: 'On the sign-in screen or in your preferences, tick the Discord DM option so the bot can message you when your key is ready. This adds permission to join the shared Discord server if your DMs are closed to strangers' },
+              { title: 'Send your request', body: 'Your request enters the team review queue with your Discord profile and bot details' },
+              { title: 'Get the direct link by DM', body: 'As soon as an administrator approves it, the AegisAI bot sends a DM linking straight to your key in the dashboard. An in-app alert is also created in case your DMs are blocked' },
+              { title: 'Reveal your token once', body: 'The raw secret is never sent in plain text over Discord. You reveal it once on the website, and you can rotate the key at any time if it gets lost' },
+            ],
+          },
+          {
+            h2: 'Organisations, managers and scoped stats',
+            body: 'A bot is rarely maintained by a single person forever. The updated dashboard lets you share access without handing out your root secret blindly',
+            items: [
+              { title: 'Organisations', body: 'Group several keys under a shared team workspace and invite members by Discord ID with the owner, admin or member role' },
+              { title: 'Per-key managers', body: 'Assign a teammate on a single key as a manager (stats, rotation, revocation) or viewer (read-only stats)' },
+              { title: 'Scoped statistics', body: 'Filter usage charts across all your keys, a single organisation or one bot, using real live metrics' },
+              { title: 'Key rotation and revocation', body: 'Issue a replacement token or revoke a leaked key straight from the dashboard' },
+            ],
+          },
+          {
+            h2: 'Free beta and billing foundation',
+            body: 'A Billing tab now appears in the dashboard showing the active Free Beta plan: no credit card required and a default 60 requests per minute limit per key. Paid tiers will follow after the beta without cutting off existing keys overnight',
+          },
+        ],
+        faq: [
+          {
+            q: 'Can I still sign in to the portal with an API key?',
+            a: 'No. API-key login has been removed; authentication uses Discord OAuth2 only',
+          },
+          {
+            q: 'Is my raw token sent in plain text in the Discord DM?',
+            a: 'No. The DM only contains confirmation and a direct link to your dashboard, where the token is revealed once',
+          },
+          {
+            q: 'What if my Discord DMs are closed?',
+            a: 'Approval always creates an unread notification inside your dashboard, and administrators can also resend the DM later',
+          },
+          {
+            q: 'Do I have to pay for the AegisAI API during the beta?',
+            a: 'No. The Free Beta plan requires no credit card',
+          },
+        ],
+      },
+    },
+  },
+  {
     slug: 'kotbo-10-0',
     date: '2026-11-20',
     author: 'Klaynight',
