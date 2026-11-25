@@ -81,7 +81,7 @@ export const BLOG = [
           },
           {
             h2: 'Bêta gratuite et socle pour la suite',
-            body: 'Un onglet Facturation fait son apparition dans le dashboard avec le détail de l’offre Bêta gratuite : aucune carte bancaire demandée et une limite par défaut de 60 requêtes par minute par clé. Les plans payants viendront après la bêta, sans coupure surprise pour les clés existantes',
+            body: 'Un onglet Facturation fait son apparition dans le dashboard avec le détail de l’offre Bêta gratuite : aucune carte bancaire demandée et une limite par défaut de 60 requêtes par minute par clé. Les plans payants viendront après la bêta, sans coupure surprise pour les clés existantes. La référence complète des routes, exemples et codes HTTP est centralisée sur kotbo.fr/docs/aide/aegisai-api',
           },
         ],
         faq: [
@@ -141,7 +141,7 @@ export const BLOG = [
           },
           {
             h2: 'Free beta and billing foundation',
-            body: 'A Billing tab now appears in the dashboard showing the active Free Beta plan: no credit card required and a default 60 requests per minute limit per key. Paid tiers will follow after the beta without cutting off existing keys overnight',
+            body: 'A Billing tab now appears in the dashboard showing the active Free Beta plan: no credit card required and a default 60 requests per minute limit per key. Paid tiers will follow after the beta without cutting off existing keys overnight. Full endpoint specs, code samples and status codes live at kotbo.fr/docs/en/aide/aegisai-api',
           },
         ],
         faq: [

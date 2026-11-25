@@ -24,6 +24,7 @@
       ],
       note: 'Activé par l’administrateur, serveur par serveur. Tu choisis si les messages servent à entraîner le modèle',
       cta: 'Découvrir Aegis AI',
+      docs: 'Documentation API',
       newTab: '(nouvel onglet)',
     },
     en: {
@@ -37,10 +38,13 @@
       ],
       note: 'Turned on by the administrator, server by server. You choose whether messages help train the model',
       cta: 'Discover Aegis AI',
+      docs: 'API documentation',
       newTab: '(new tab)',
     },
   };
-  const t = $derived(TEXT[getLocale()]);
+  const locale = $derived(getLocale());
+  const t = $derived(TEXT[locale]);
+  const docsHref = $derived(locale === 'en' ? '/docs/en/aide/aegisai-api/' : '/docs/aide/aegisai-api/');
 </script>
 
 <section id="aegis" aria-labelledby="aegis-title" class="bg-night-2 pb-16 sm:pb-24 lg:pb-32">
@@ -63,11 +67,17 @@
     </ul>
 
     <p class="mt-8 max-w-3xl text-fog text-pretty">{t.note}</p>
-    <a
-      href={AEGIS_URL}
-      target="_blank"
-      rel="noopener"
-      class="mt-6 inline-flex min-h-11 items-center rounded-xl border border-line-2 px-5 font-bold text-ink transition-colors hover:bg-night-3"
-    >{t.cta}<span class="sr-only"> {t.newTab}</span></a>
+    <div class="mt-6 flex flex-wrap items-center gap-3">
+      <a
+        href={AEGIS_URL}
+        target="_blank"
+        rel="noopener"
+        class="inline-flex min-h-11 items-center rounded-xl border border-line-2 px-5 font-bold text-ink transition-colors hover:bg-night-3"
+      >{t.cta}<span class="sr-only"> {t.newTab}</span></a>
+      <a
+        href={docsHref}
+        class="inline-flex min-h-11 items-center rounded-xl border border-line px-5 font-semibold text-mist transition-colors hover:bg-night-3 hover:text-ink"
+      >{t.docs}</a>
+    </div>
   </div>
 </section>

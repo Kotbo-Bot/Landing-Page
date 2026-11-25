@@ -44,7 +44,7 @@ export default {
         },
         {
           h2: 'Travailler à plusieurs sur les mêmes clés',
-          body: 'Dans ton espace membre AegisAI, tu peux créer une organisation pour regrouper les clés de plusieurs bots, inviter tes co-développeurs en tant que owner, admin ou member, déléguer une clé précise en rôle manager ou viewer, et lancer une rotation instantanée si un token fuit',
+          body: 'Dans ton espace membre AegisAI, tu peux créer une organisation pour regrouper les clés de plusieurs bots, inviter tes co-développeurs en tant que owner, admin ou member, déléguer une clé précise en rôle manager ou viewer, et lancer une rotation instantanée si un token fuit. Retrouve les exemples cURL, TypeScript, Python et Rust complets dans la documentation officielle sur kotbo.fr/docs/aide/aegisai-api',
         },
       ],
       faq: [
@@ -108,7 +108,7 @@ export default {
         },
         {
           h2: 'Collaborate with organisations and key managers',
-          body: 'In your AegisAI dashboard, create an organisation to group your bots, invite teammates by Discord ID as owner, admin or member, grant per-key manager or viewer access, and rotate leaked tokens in one click',
+          body: 'In your AegisAI dashboard, create an organisation to group your bots, invite teammates by Discord ID as owner, admin or member, grant per-key manager or viewer access, and rotate leaked tokens in one click. Full cURL, TypeScript, Python and Rust samples are published in the official docs at kotbo.fr/docs/en/aide/aegisai-api',
         },
       ],
       faq: [
