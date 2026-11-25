@@ -22,11 +22,14 @@ Kotbo is a French Discord bot with a web dashboard. Beyond moderation, it runs a
 - [Démo du dashboard](https://kotbo.fr/demo/): le dashboard dans le navigateur, sans compte.
 - [Blog](https://kotbo.fr/blog): guides pour gérer un serveur Discord avec Kotbo, annonces, notes de version.
 - [Documentation](https://kotbo.fr/docs/)
+- [Documentation API AegisAI](https://kotbo.fr/docs/aide/aegisai-api/)
 
 ## Guides
 
 Chaque guide répond à une question d’admin de serveur Discord, avec les commandes et réglages réels du bot.
 
+- [Modération IA Discord : filtrer toxicité et émotions avec AegisAI](https://kotbo.fr/blog/moderation-ia-discord-aegisai)
+- [API de modération IA pour bot Discord (toxicité et émotions)](https://kotbo.fr/blog/api-moderation-ia-bot-discord)
 - [Comment faire un giveaway sur Discord (avec un bot)](https://kotbo.fr/blog/faire-un-giveaway-discord)
 - [Message de bienvenue Discord : le guide complet](https://kotbo.fr/blog/message-bienvenue-discord)
 - [Protéger son serveur Discord d’un raid : guide anti-raid](https://kotbo.fr/blog/proteger-serveur-discord-raid)
@@ -59,6 +62,8 @@ Chaque guide répond à une question d’admin de serveur Discord, avec les comm
 
 ### Guides (English)
 
+- [Discord AI moderation: detect toxicity and emotion with AegisAI](https://kotbo.fr/en/blog/ai-moderation-discord-aegisai)
+- [AI moderation API for a Discord bot (toxicity and emotion)](https://kotbo.fr/en/blog/ai-moderation-api-discord-bot)
 - [How to do a giveaway on Discord with a bot](https://kotbo.fr/en/blog/giveaway-on-discord)
 - [Discord welcome message: set one up with a bot](https://kotbo.fr/en/blog/discord-welcome-message)
 - [How to stop a raid on Discord: anti-raid bot guide](https://kotbo.fr/en/blog/discord-anti-raid-bot)

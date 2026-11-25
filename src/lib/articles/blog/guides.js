@@ -45,6 +45,8 @@ import annoncesActualitesRssDiscord from './annonces-actualites-rss-discord.js';
 import contournementBanDiscord from './contournement-ban-discord.js';
 import choisirBotDetectionDoublesComptesDiscord from './choisir-bot-detection-doubles-comptes-discord.js';
 import securiserServeurDiscordChecklist from './securiser-serveur-discord-checklist.js';
+import moderationIaDiscordAegisai from './moderation-ia-discord-aegisai.js';
+import apiModerationIaBotDiscord from './api-moderation-ia-bot-discord.js';
 
 /** @type {import('../blog.js').BlogPost[]} */
 export const GUIDES = [
@@ -52,6 +54,8 @@ export const GUIDES = [
   botTicketDiscord,
   systemeNiveauxXpDiscord,
   automodDiscordAntiSpam,
+  moderationIaDiscordAegisai,
+  apiModerationIaBotDiscord,
   messageBienvenueDiscord,
   protegerServeurDiscordRaid,
   securiserServeurDiscordChecklist,
