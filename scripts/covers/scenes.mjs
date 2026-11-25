@@ -413,6 +413,28 @@ export const GROUPS = {
     steps: [[L('Quand', 'When'), L('Un membre rejoint', 'A member joins'), C.green], [L('Si', 'If'), L('Compte de moins de 3 jours', 'Account under 3 days old'), C.orange], [L('Alors', 'Then'), L('Ouvrir un ticket de vérification', 'Open a verification ticket'), C.accent]],
     test: L('Test réussi · 3 / 3 étapes', 'Test passed · 3 / 3 steps'),
   },
+  aegisKeys: {
+    type: 'list',
+    title: L('Espace développeur AegisAI', 'AegisAI developer portal'),
+    count: L('Bêta gratuite', 'Free Beta'),
+    rows: [
+      { n: 'kotbo-bot', s: L('Organisation Kotbo · 60 req/min', 'Kotbo Org · 60 req/min'), chip: L('Active', 'Active'), color: C.green },
+      { n: 'mod-helper', s: L('MP Discord envoyé · lien prêt', 'Discord DM sent · link ready'), chip: L('À révéler', 'Ready'), color: C.accent },
+      { n: 'community-guard', s: L('2 managers · stats en direct', '2 managers · live stats'), chip: L('Active', 'Active'), color: C.green },
+      { n: 'sandbox-test', s: L('Demande en attente de validation', 'Pending team approval'), chip: L('En attente', 'Pending'), color: C.orange },
+    ],
+    stat: [L('Offre actuelle', 'Current plan'), 'Bêta', C.green],
+  },
+  aegisApi: {
+    type: 'code',
+    title: L('POST aegisai.kotbo.fr/scan', 'POST aegisai.kotbo.fr/scan'),
+    lines: [
+      ['you', 'Authorization: Aegis $AEGIS_API_TOKEN'],
+      ['tool', '{"text": "Message à analyser", "save": false}'],
+      ['ok', L('200 OK · toxicity: 0.04 · is_toxic: false', '200 OK · toxicity: 0.04 · is_toxic: false')],
+      ['ok', L('emotion: {"label": "joie", "score": 0.89}', 'emotion: {"label": "joie", "score": 0.89}')],
+    ],
+  },
 };
 
 /** Le groupe de chaque billet, par son adresse française ; les pages de la console, par leur clé. */
@@ -421,6 +443,8 @@ export const SCENE_OF = {
   'bot-ticket-discord': 'tickets',
   'systeme-niveaux-xp-discord': 'leveling',
   'automod-discord-anti-spam': 'automod',
+  'moderation-ia-discord-aegisai': 'toxicity',
+  'api-moderation-ia-bot-discord': 'aegisApi',
   'message-bienvenue-discord': 'welcome',
   'proteger-serveur-discord-raid': 'raid',
   'securiser-serveur-discord-checklist': 'checklist',
@@ -457,6 +481,7 @@ export const SCENE_OF = {
   'contournement-ban-discord': 'altgraph',
   'choisir-bot-detection-doubles-comptes-discord': 'alt',
   'annonces-actualites-rss-discord': 'news',
+  'aegisai-espace-developpeur-discord-organisations': 'aegisKeys',
   'kotbo-10-0': 'release',
   'organigramme-staff': 'org',
   'automatisations-tester-et-corriger': 'flow',
