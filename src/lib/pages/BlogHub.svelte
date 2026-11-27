@@ -17,6 +17,8 @@
   import ForumBar from '$lib/articles/ForumBar.svelte';
   import BlogList from '$lib/articles/BlogList.svelte';
   import { ALL_POSTS } from '$lib/articles/posts';
+  import { BLOG_RSS_ROUTE } from '$lib/seo/rss';
+  import { Rss } from '@lucide/svelte';
 
   const TEXT = {
     fr: {
@@ -27,6 +29,7 @@
       h1: 'Le blog',
       lead: 'Les questions que se posent les admins de serveurs Discord, avec la réponse et les commandes qui vont avec. Puis les annonces de l’équipe, les articles des modules et les notes de version',
       demo: 'Fouiller la démo du dashboard',
+      rss: 'Flux RSS',
       list: 'Les articles',
       count: (n: number) => `${n} articles`,
     },
@@ -38,6 +41,7 @@
       h1: 'The blog',
       lead: 'The questions Discord server admins ask, answered, with the commands that go with them. Then news from the team, module articles and release notes',
       demo: 'Dig through the dashboard demo',
+      rss: 'RSS feed',
       list: 'Articles',
       count: (n: number) => `${n} articles`,
     },
@@ -60,6 +64,13 @@
       <div class="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
         <AddButton content="blog" size="lg" />
         <a href="/demo/" class="inline-flex min-h-11 items-center font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">{t.demo}</a>
+        <a
+          href="{base}{BLOG_RSS_ROUTE[locale]}"
+          class="inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-fog transition-colors hover:text-ink"
+        >
+          <Rss class="h-4 w-4" aria-hidden="true" />
+          <span>{t.rss}</span>
+        </a>
       </div>
     </div>
   </header>

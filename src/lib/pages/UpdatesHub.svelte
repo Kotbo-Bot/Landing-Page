@@ -17,6 +17,8 @@
   import ForumBar from '$lib/articles/ForumBar.svelte';
   import PostList from '$lib/articles/PostList.svelte';
   import { RELEASE_POSTS } from '$lib/articles/posts';
+  import { UPDATES_RSS_ROUTE } from '$lib/seo/rss';
+  import { Rss } from '@lucide/svelte';
 
   const TEXT = {
     fr: {
@@ -27,6 +29,7 @@
       h1: 'Ce qui change à chaque mise à jour',
       lead: 'Une note par version, la plus récente en haut. Chacune garde ce qui change pour ton serveur et renvoie vers les notes complètes sur GitHub',
       demo: 'Fouiller la démo du dashboard',
+      rss: 'Flux RSS',
       list: 'Les versions',
       count: (n: number) => `${n} versions`,
       faq: 'Questions fréquentes',
@@ -39,6 +42,7 @@
       h1: 'What changes in every update',
       lead: 'One note per version, newest first. Each one keeps what changes for your server and links to the full notes on GitHub',
       demo: 'Dig through the dashboard demo',
+      rss: 'RSS feed',
       list: 'Versions',
       count: (n: number) => `${n} versions`,
       faq: 'Frequently asked questions',
@@ -62,6 +66,13 @@
       <div class="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
         <AddButton content="updates" size="lg" />
         <a href="/demo/" class="inline-flex min-h-11 items-center font-semibold text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink">{t.demo}</a>
+        <a
+          href="{base}{UPDATES_RSS_ROUTE[locale]}"
+          class="inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-fog transition-colors hover:text-ink"
+        >
+          <Rss class="h-4 w-4" aria-hidden="true" />
+          <span>{t.rss}</span>
+        </a>
       </div>
     </div>
   </header>

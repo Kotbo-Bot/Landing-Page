@@ -18,6 +18,7 @@
   import { pairOf } from '$lib/i18n/routes';
   import { SITE_URL } from '$lib/product';
   import { jsonLdString } from './jsonld.js';
+  import { BLOG_RSS_ROUTE, UPDATES_RSS_ROUTE } from './rss';
 
   interface Props {
     title: string;
@@ -34,8 +35,16 @@
   let { title, description, path, robots = 'index, follow, max-image-preview:large', jsonLd, image }: Props = $props();
 
   const TEXT = {
-    fr: { imageAlt: 'Kotbo : ton serveur Discord, géré au même endroit. Aperçu du dashboard.' },
-    en: { imageAlt: 'Kotbo: your Discord server, run from one place. Dashboard preview.' },
+    fr: {
+      imageAlt: 'Kotbo : ton serveur Discord, géré au même endroit. Aperçu du dashboard.',
+      rssBlog: 'Blog Kotbo (RSS)',
+      rssUpdates: 'Mises à jour Kotbo (RSS)',
+    },
+    en: {
+      imageAlt: 'Kotbo: your Discord server, run from one place. Dashboard preview.',
+      rssBlog: 'Kotbo Blog (RSS)',
+      rssUpdates: 'Kotbo Updates (RSS)',
+    },
   };
 
   /** Indigo de Kotbo (DESIGN.md) : la barre latérale de l'embed Discord. */
@@ -61,6 +70,8 @@
     <link rel="alternate" hreflang="en" href="{SITE_URL}{pair.en}" />
     <link rel="alternate" hreflang="x-default" href="{SITE_URL}{pair.fr}" />
   {/if}
+  <link rel="alternate" type="application/rss+xml" title={t.rssBlog} href="{SITE_URL}{BLOG_RSS_ROUTE[getLocale()]}" />
+  <link rel="alternate" type="application/rss+xml" title={t.rssUpdates} href="{SITE_URL}{UPDATES_RSS_ROUTE[getLocale()]}" />
   <meta name="theme-color" content={THEME_COLOR} />
 
   <meta property="og:site_name" content="Kotbo" />
